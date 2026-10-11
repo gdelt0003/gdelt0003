@@ -1,9 +1,15 @@
-name: Fetch YouTube and deploy Pages
+name: Update catalog and deploy Pages
 
 on:
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
+    inputs:
+      video_limit_per_source:
+        description: Maximum videos to index from each source (1-50)
+        required: false
+        default: '12'
+        type: string
 
 permissions:
   contents: read
@@ -17,9 +23,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     env:
-      YOUTUBE_URL: ${{ vars.YOUTUBE_URL || 'https://www.youtube.com/@gdelt0003' }}
-      VIDEO_LIMIT: ${{ vars.VIDEO_LIMIT || '8' }}
+      VIDEO_LIMIT_PER_SOURCE: ${{ inputs.video_limit_per_source || vars.VIDEO_LIMIT_PER_SOURCE || '12' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,15 +36,21 @@ jobs:
           python-version: '3.12'
 
       - name: Install yt-dlp
-        run: python -m pip install --upgrade pip yt-dlp
+        run: python -m pip install --disable-pip-version-check yt-dlp
 
-      - name: Fetch YouTube videos
+      - name: Prepare static site
+        run: |
+          mkdir -p site/assets
+          cp index.html site/index.html
+          cp assets/app.js assets/style.css site/assets/
+
+      - name: Fetch configured YouTube sources
         run: python scripts/fetch_youtube.py
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site
 
   deploy:
     needs: build

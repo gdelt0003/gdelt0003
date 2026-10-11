@@ -3,25 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gdelt0003 | YouTube Feed</title>
-    <meta name="description" content="A GitHub Pages site powered by a GitHub Action that fetches YouTube content." />
+    <meta name="description" content="A searchable catalog of public YouTube videos from selected channels and playlists." />
+    <meta name="theme-color" content="#101318" />
+    <title>Open Video — YouTube Catalog</title>
     <link rel="stylesheet" href="assets/style.css" />
   </head>
   <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Open Video home">
+        <span class="brand-mark" aria-hidden="true">▶</span>
+        <span>Open Video</span>
+      </a>
+      <p class="header-note">A catalog of public YouTube channels and playlists</p>
+    </header>
     <main class="page">
-      <header class="hero">
-        <p class="eyebrow">GitHub Pages + GitHub Actions</p>
-        <h1>gdelt0003</h1>
-        <p class="subtitle">Auto-fetch latest YouTube videos and publish them as a static site.</p>
-      </header>
-      <section class="panel">
-        <div class="toolbar">
-          <span id="status">Loading latest data…</span>
-          <button id="refreshBtn" type="button">Refresh</button>
-        </div>
-        <div id="videoGrid" class="video-grid"></div>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Independent video library</p>
+        <h1 id="page-title">Find something worth watching.</h1>
+        <p class="subtitle">Browse the latest videos from the channels and playlists we follow.</p>
       </section>
+
+      <section class="catalog" aria-label="Video catalog">
+        <div class="catalog-heading">
+          <div>
+            <h2>Latest videos</h2>
+            <p id="status" class="status" role="status" aria-live="polite">Loading catalog…</p>
+          </div>
+          <button id="refreshBtn" class="refresh-button" type="button">Refresh</button>
+        </div>
+        <div class="search-row">
+          <label class="search-box">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="visually-hidden">Search videos, channels, and playlists</span>
+            <input id="searchInput" type="search" placeholder="Search videos, channels, playlists…" autocomplete="off" />
+          </label>
+        </div>
+        <p id="resultSummary" class="result-summary"></p>
+        <div id="videoGrid" class="video-grid" aria-live="polite"></div>
+        <nav id="pagination" class="pagination" aria-label="Video pages"></nav>
+        <details id="sourceDetails" class="source-details" hidden>
+          <summary>Source update status</summary>
+          <ul id="sourceList"></ul>
+        </details>
+      </section>
+      <footer class="site-footer">
+        <span>Updated automatically from public YouTube sources.</span>
+        <a href="https://www.youtube.com/@WhiteHouse" target="_blank" rel="noopener noreferrer">Demo source: The White House</a>
+      </footer>
     </main>
-    <script src="assets/app.js"></script>
+    <script src="assets/app.js" defer></script>
   </body>
 </html>
