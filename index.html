@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gdelt0003 | YouTube Feed</title>
+    <meta name="description" content="A GitHub Pages site powered by a GitHub Action that fetches YouTube content." />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">GitHub Pages + GitHub Actions</p>
+        <h1>gdelt0003</h1>
+        <p class="subtitle">Auto-fetch latest YouTube videos and publish them as a static site.</p>
+      </header>
+      <section class="panel">
+        <div class="toolbar">
+          <span id="status">Loading latest data…</span>
+          <button id="refreshBtn" type="button">Refresh</button>
+        </div>
+        <div id="videoGrid" class="video-grid"></div>
+      </section>
+    </main>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
