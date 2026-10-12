@@ -1,8 +1,11 @@
 import importlib.util
+import json
+import os
 import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "create_short.py"
@@ -22,6 +25,28 @@ class VideoUrlTests(unittest.TestCase):
         for url in ("https://example.com/watch?v=x", "https://youtube.com/playlist?list=x"):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 create_short.validate_video_url(url)
+
+    def test_unconfirmed_request_is_refused_before_metadata_or_download(self):
+        with tempfile.TemporaryDirectory() as directory:
+            catalog_path = Path(directory) / "catalog.json"
+            catalog_path.write_text(json.dumps({"videos": [], "sources": []}), encoding="utf-8")
+            output_path = Path(directory) / "github-output"
+            with (
+                patch.object(create_short, "CATALOG_PATH", catalog_path),
+                patch.dict(os.environ, {
+                    "CLIP_AUTHORIZED": "false",
+                    "SHORT_VIDEO_URL": "https://youtube.com/watch?v=unapproved01",
+                    "ACTIONS_RUN_URL": "https://github.com/example/repo/actions/runs/123",
+                    "GITHUB_OUTPUT": str(output_path),
+                }),
+                patch.object(create_short, "create_short") as create,
+            ):
+                self.assertEqual(create_short.main(), 1)
+            create.assert_not_called()
+            catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+            self.assertEqual(catalog["shorts"][0]["status"], "failed")
+            self.assertIn("no metadata or subtitle request", catalog["shorts"][0]["error"])
+            self.assertEqual(catalog["videos"][0]["id"], "unapproved01")
 
 
 class SegmentTests(unittest.TestCase):

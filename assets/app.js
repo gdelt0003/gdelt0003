@@ -70,7 +70,8 @@
 
   function relatedShort(video) {
     return shorts.find(short => {
-      const active = short.status === 'available' && Date.parse(short.expiresAt) > Date.now();
+      const active = short.status === 'failed' ||
+        (short.status === 'available' && Date.parse(short.expiresAt) > Date.now());
       const sameVideo = short.videoId && String(short.videoId) === String(video.id);
       const sameSource = short.sourceUrl && (
         short.sourceUrl === video.url ||
@@ -141,7 +142,11 @@
     const short = relatedShort(video);
     if (short) {
       const derivative = createElement('section', `derived-short short-${short.status}`);
-      derivative.append(createElement('p', 'derivative-label', 'Derived short candidate'));
+      derivative.append(createElement(
+        'p',
+        'derivative-label',
+        short.status === 'available' ? 'Derived short candidate' : 'Short generation refused or failed',
+      ));
       if (short.status === 'available') {
         derivative.append(createElement('p', 'derivative-title', short.clipTitle || 'Short edit'));
         const details = createElement(
@@ -161,6 +166,14 @@
         derivative.append(createElement('p', 'derivative-note', short.reachDisclaimer || 'Editorial review recommended; reach is not guaranteed.'));
       } else {
         derivative.append(createElement('p', 'derivative-meta', `Generation failed: ${short.error || 'see the Actions run log'}`));
+        const runLinkUrl = safeRunUrl(short.runUrl);
+        if (runLinkUrl) {
+          const runLink = createElement('a', 'short-download', 'View refusal / failure in Actions');
+          runLink.href = runLinkUrl;
+          runLink.target = '_blank';
+          runLink.rel = 'noopener noreferrer';
+          derivative.append(runLink);
+        }
       }
       info.append(derivative);
     }

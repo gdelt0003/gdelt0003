@@ -19,6 +19,11 @@ on:
         required: false
         default: '45'
         type: string
+      clip_authorized:
+        description: I own this video or have permission to create an edit
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -37,6 +42,7 @@ jobs:
       VIDEO_LIMIT_PER_SOURCE: ${{ inputs.video_limit_per_source || vars.VIDEO_LIMIT_PER_SOURCE || '12' }}
       SHORT_VIDEO_URL: ${{ inputs.short_video_url || '' }}
       CLIP_DURATION_SECONDS: ${{ inputs.clip_duration_seconds || '45' }}
+      CLIP_AUTHORIZED: ${{ inputs.clip_authorized }}
       ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       SHORTS_OUTPUT_DIR: ${{ runner.temp }}/derived-shorts
       PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
@@ -80,7 +86,7 @@ jobs:
         run: python scripts/fetch_youtube.py
 
       - name: Install ffmpeg on GitHub-hosted runner
-        if: ${{ inputs.short_video_url != '' }}
+        if: ${{ inputs.short_video_url != '' && inputs.clip_authorized }}
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ffmpeg

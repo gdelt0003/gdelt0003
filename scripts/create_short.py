@@ -10,7 +10,7 @@ from bisect import bisect_left
 from datetime import datetime, timedelta, timezone
 from html import unescape
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 CATALOG_PATH = ROOT / "site" / "data" / "catalog.json"
@@ -49,6 +49,23 @@ def validate_video_url(value):
     ):
         raise ValueError("Provide a video URL, not a channel or playlist URL")
     return value
+
+
+def video_id_from_url(value):
+    try:
+        parsed = urlparse(value)
+        if parsed.scheme != "https" or parsed.hostname not in YOUTUBE_HOSTS:
+            return ""
+        if parsed.hostname in {"youtu.be", "www.youtu.be"}:
+            video_id = parsed.path.strip("/").split("/")[0]
+        elif parsed.path == "/watch":
+            video_id = parse_qs(parsed.query).get("v", [""])[0]
+        else:
+            match = re.match(r"^/(?:shorts|embed)/([^/]+)", parsed.path)
+            video_id = match.group(1) if match else ""
+        return video_id if re.fullmatch(r"[A-Za-z0-9_-]{1,64}", video_id) else ""
+    except ValueError:
+        return ""
 
 
 def choose_segment(metadata, clip_seconds):
@@ -350,22 +367,30 @@ def write_output(name, value):
             output_file.write(f"{name}={value}\n")
 
 
+def require_clip_authorization(value):
+    if str(value).strip().lower() != "true":
+        raise ShortCreationError(
+            "Refused: confirm you own this video or are authorized to edit it; "
+            "no metadata or subtitle request for this clip and no source-video download was made."
+        )
+
+
 def update_catalog(catalog, short, now=None):
     current_time = now or datetime.now(timezone.utc)
     videos = catalog.setdefault("videos", [])
-    if short.get("status") == "available" and not any(
+    if short.get("videoId") and not any(
         str(video.get("id")) == str(short["videoId"]) for video in videos
     ):
         videos.append({
             "id": short["videoId"],
-            "title": short["title"],
-            "author": short["author"],
-            "duration": short["originalDuration"],
-            "durationSeconds": short["originalDurationSeconds"],
+            "title": short.get("title") or "Original video (metadata not fetched)",
+            "author": short.get("author") or "YouTube",
+            "duration": short.get("originalDuration") or "",
+            "durationSeconds": short.get("originalDurationSeconds"),
             "url": short["sourceUrl"],
-            "thumbnail": short["thumbnail"],
+            "thumbnail": short.get("thumbnail") or "",
             "source": short["sourceUrl"],
-            "uploadDate": short["uploadDate"],
+            "uploadDate": short.get("uploadDate") or "",
         })
     active_shorts = []
     for old in catalog.get("shorts", []):
@@ -389,6 +414,7 @@ def main():
     run_url = os.environ.get("ACTIONS_RUN_URL", "").strip()
     clip_dir = Path(os.environ.get("SHORTS_OUTPUT_DIR", "/tmp/derived-shorts"))
     try:
+        require_clip_authorization(os.environ.get("CLIP_AUTHORIZED", "false"))
         clip_seconds = int(os.environ.get("CLIP_DURATION_SECONDS", "45"))
         short = create_short(video_url, clip_seconds, clip_dir, run_url)
         status = 0
@@ -396,6 +422,8 @@ def main():
         print(f"Created {short['clipFile']}: {short['selectionReason']}")
     except (OSError, ValueError, ShortCreationError) as error:
         short = {
+            "videoId": video_id_from_url(video_url),
+            "title": "Original video (metadata not fetched)",
             "sourceUrl": video_url,
             "runUrl": run_url,
             "status": "failed",
