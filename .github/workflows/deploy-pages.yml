@@ -1,4 +1,4 @@
-name: Generate default highlights and deploy Pages
+name: Publish White House highlights and deploy Pages
 
 on:
   push:
@@ -26,19 +26,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
-      - name: Generate default highlight clips
+      - name: Build White House timestamp links
         run: python scripts/generate_default_video_batch.py
 
-      - name: Save generated clips to the repository
+      - name: Save timestamp links to the repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add generated/
+          git add generated/default_batch.json
           git diff --cached --quiet || git commit -m "chore: refresh default highlight batch"
           git push
 

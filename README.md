@@ -1,11 +1,7 @@
-# gdelt0003 Pages highlights
-
-GitHub Actions cuts and saves three MP4 highlight examples from a public, 59-minute NASA Image and Video Library briefing. The Pages site loads the committed manifest and plays the actual generated clips.
+# gdelt0003 White House highlights
 
 ## Generate and deploy
 
-- Push to `main` to generate the default batch and deploy Pages.
-- Run **Generate default highlights and deploy Pages** manually to regenerate it.
-- Generated clips and their manifest are committed under `generated/`.
-
-The public NASA source is used because YouTube may require sign-in verification for downloads from GitHub-hosted Actions runners. Clip timestamps target the briefing's opening liftoff sequence, origin-of-life discussion, and unexpected Bennu findings. The page links to the original source.
+- GitHub Actions prepares three timestamped links for a 49-minute White House video and deploys the Pages site.
+- The links open the original video at the selected time in an Invidious front end.
+- Invidious is a playback front end; the links are not separately cut MP4 clips and do not save video files in the repository.
