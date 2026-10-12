@@ -69,7 +69,7 @@ jobs:
 
   download-source:
     if: github.event_name == 'workflow_dispatch' && inputs.download_full_source
-    runs-on: windows-latest
+    runs-on: macos-latest
     permissions:
       contents: write
     steps:
@@ -86,17 +86,15 @@ jobs:
       - name: Install yt-dlp and ffmpeg
         run: |
           python -m pip install --upgrade yt-dlp
-          if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
-            choco install ffmpeg --no-progress --yes
-          }
+          if ! command -v ffmpeg >/dev/null 2>&1; then brew install ffmpeg; fi
           ffmpeg -version
           ffprobe -version
-        shell: pwsh
+        shell: bash
 
       - name: Restore interrupted YouTube fragments
         uses: actions/cache/restore@v4
         with:
-          path: ${{ runner.temp }}\whitehouse-source
+          path: ${{ runner.temp }}/whitehouse-source
           key: whitehouse-source-KroMEOZ8oFo-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             whitehouse-source-KroMEOZ8oFo-
@@ -104,50 +102,44 @@ jobs:
       - name: Download complete White House source video
         id: download
         run: |
-          $directory = Join-Path $env:RUNNER_TEMP 'whitehouse-source'
-          New-Item -ItemType Directory -Force -Path $directory | Out-Null
-          $output = Join-Path $directory 'KroMEOZ8oFo.%(ext)s'
-          yt-dlp `
-            --concurrent-fragments 50 `
-            --js-runtimes node `
-            --merge-output-format mp4 `
-            --output $output `
+          mkdir -p "$RUNNER_TEMP/whitehouse-source"
+          yt-dlp \
+            --concurrent-fragments 50 \
+            --js-runtimes node \
+            --merge-output-format mp4 \
+            --output "$RUNNER_TEMP/whitehouse-source/KroMEOZ8oFo.%(ext)s" \
             "https://www.youtube.com/watch?v=KroMEOZ8oFo"
-          if ($LASTEXITCODE -ne 0) { throw "yt-dlp exited with code $LASTEXITCODE" }
-          $video = Join-Path $directory 'KroMEOZ8oFo.mp4'
-          if (-not (Test-Path -LiteralPath $video) -or (Get-Item -LiteralPath $video).Length -eq 0) {
-            throw "yt-dlp did not produce a complete MP4 source."
-          }
-          ffprobe -v error -select_streams v:0 `
-            -show_entries stream=width,height `
-            -of csv=s=x:p=0 $video
-          if ($LASTEXITCODE -ne 0) { throw "ffprobe could not validate the MP4 source." }
-          Get-FileHash -Algorithm SHA256 -LiteralPath $video
-        shell: pwsh
+          test -s "$RUNNER_TEMP/whitehouse-source/KroMEOZ8oFo.mp4"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=width,height \
+            -of csv=s=x:p=0 "$RUNNER_TEMP/whitehouse-source/KroMEOZ8oFo.mp4"
+          shasum -a 256 "$RUNNER_TEMP/whitehouse-source/KroMEOZ8oFo.mp4"
+        shell: bash
 
       - name: Preserve partial fragments for a later retry
         if: always() && steps.download.outcome != 'success'
         uses: actions/cache/save@v4
         with:
-          path: ${{ runner.temp }}\whitehouse-source
+          path: ${{ runner.temp }}/whitehouse-source
           key: whitehouse-source-KroMEOZ8oFo-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Publish complete source as a GitHub Release asset
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "white-house-source-KroMEOZ8oFo"
-          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
-          if ($LASTEXITCODE -ne 0) {
-            gh release create $tag --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA `
-              --title "White House source video KroMEOZ8oFo" `
+          tag="white-house-source-KroMEOZ8oFo"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "White House source video KroMEOZ8oFo" \
               --notes "Complete source video downloaded from the official White House YouTube channel."
-            if ($LASTEXITCODE -ne 0) { throw "Could not create the source-video release." }
+            test $? -eq 0
           fi
-          $video = Join-Path $env:RUNNER_TEMP 'whitehouse-source\KroMEOZ8oFo.mp4'
-          gh release upload $tag $video --repo $env:GITHUB_REPOSITORY --clobber
-          if ($LASTEXITCODE -ne 0) { throw "Could not upload the complete source MP4." }
-        shell: pwsh
+          gh release upload "$tag" "$RUNNER_TEMP/whitehouse-source/KroMEOZ8oFo.mp4" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
 
   deploy:
     needs: [build, download-source]
