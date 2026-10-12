@@ -1,0 +1,89 @@
+{
+  "source": {
+    "title": "President Trump Delivers Remarks, Oct. 6, 2026",
+    "url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+    "upload_date": "20261006",
+    "duration_seconds": 3532
+  },
+  "asr": "YouTube English auto-generated captions; review names and numbers.",
+  "translation": "Machine translation (MyMemory, en -> zh-CN); review before publishing.",
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "highlights": [
+    {
+      "id": "arsenal-production",
+      "start": 723.2,
+      "end": 779.0,
+      "title": "Arsenal 2: 9 million production hours",
+      "source_start": 723.2,
+      "source_end": 779.0,
+      "source_video": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "subtitles": "arsenal-production.en-zh.srt",
+      "variants": [
+        {
+          "style": "editorial",
+          "file": "arsenal-production-editorial.mp4",
+          "duration_seconds": 55.9,
+          "resolution": "1080x1920"
+        },
+        {
+          "style": "punchy",
+          "file": "arsenal-production-punchy.mp4",
+          "duration_seconds": 55.9,
+          "resolution": "1080x1920"
+        }
+      ]
+    },
+    {
+      "id": "navy-threats",
+      "start": 1258.4,
+      "end": 1304.8,
+      "title": "A new shipyard and the future Navy",
+      "source_start": 1258.4,
+      "source_end": 1304.8,
+      "source_video": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "subtitles": "navy-threats.en-zh.srt",
+      "variants": [
+        {
+          "style": "editorial",
+          "file": "navy-threats-editorial.mp4",
+          "duration_seconds": 46.43,
+          "resolution": "1080x1920"
+        },
+        {
+          "style": "punchy",
+          "file": "navy-threats-punchy.mp4",
+          "duration_seconds": 46.43,
+          "resolution": "1080x1920"
+        }
+      ]
+    },
+    {
+      "id": "eight-wars",
+      "start": 2517.1,
+      "end": 2536.8,
+      "title": "Trump on the Russia-Ukraine war",
+      "source_start": 2517.1,
+      "source_end": 2536.8,
+      "source_video": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "subtitles": "eight-wars.en-zh.srt",
+      "variants": [
+        {
+          "style": "editorial",
+          "file": "eight-wars-editorial.mp4",
+          "duration_seconds": 19.8,
+          "resolution": "1080x1920"
+        },
+        {
+          "style": "punchy",
+          "file": "eight-wars-punchy.mp4",
+          "duration_seconds": 19.8,
+          "resolution": "1080x1920"
+        }
+      ]
+    }
+  ]
+}
