@@ -10,6 +10,11 @@ on:
         type: boolean
         required: false
         default: false
+      download_full_source:
+        description: Download the full source video and attach it to a GitHub Release
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -62,8 +67,60 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: generate White House highlight clips"
           git push
 
+  download-source:
+    if: github.event_name == 'workflow_dispatch' && inputs.download_full_source
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Setup Node.js for yt-dlp
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install yt-dlp and ffmpeg
+        run: |
+          python -m pip install --upgrade yt-dlp
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+
+      - name: Download complete White House source video
+        run: |
+          yt-dlp \
+            --concurrent-fragments 50 \
+            --js-runtimes node \
+            --merge-output-format mp4 \
+            --output "$RUNNER_TEMP/KroMEOZ8oFo.%(ext)s" \
+            "https://www.youtube.com/watch?v=KroMEOZ8oFo"
+          test -s "$RUNNER_TEMP/KroMEOZ8oFo.mp4"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=width,height \
+            -of csv=s=x:p=0 "$RUNNER_TEMP/KroMEOZ8oFo.mp4"
+          sha256sum "$RUNNER_TEMP/KroMEOZ8oFo.mp4"
+
+      - name: Publish complete source as a GitHub Release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="white-house-source-KroMEOZ8oFo"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "White House source video KroMEOZ8oFo" \
+              --notes "Complete source video downloaded from the official White House YouTube channel."
+          fi
+          gh release upload "$tag" "$RUNNER_TEMP/KroMEOZ8oFo.mp4" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+
   deploy:
-    needs: build
+    needs: [build, download-source]
     if: always()
     runs-on: ubuntu-latest
     environment:
