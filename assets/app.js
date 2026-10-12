@@ -24,6 +24,11 @@ async function loadHighlights() {
       player.controls = true;
       player.preload = 'metadata';
       player.playsInline = true;
+      player.addEventListener('loadedmetadata', () => {
+        if (player.videoWidth && player.videoHeight) {
+          player.style.aspectRatio = `${player.videoWidth} / ${player.videoHeight}`;
+        }
+      });
       const source = document.createElement('source');
       source.src = clip.file;
       source.type = 'video/mp4';
@@ -36,7 +41,17 @@ async function loadHighlights() {
       title.textContent = clip.title;
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = `${clip.source_channel} · ${formatTime(clip.start_sec)}–${formatTime(clip.end_sec)} · ${clip.duration_sec}s`;
+      const details = [
+        clip.source_channel,
+        `${formatTime(clip.start_sec)}–${formatTime(clip.end_sec)}`,
+        `${clip.duration_sec}s`,
+        clip.output_resolution,
+        clip.source_resolution ? `源 ${clip.source_resolution}` : '',
+        Array.isArray(clip.subtitle_languages)
+          ? '中英字幕'
+          : '',
+      ].filter(Boolean);
+      meta.textContent = details.join(' · ');
       const description = document.createElement('p');
       description.className = 'clip-description';
       description.textContent = clip.note || '';
@@ -47,6 +62,16 @@ async function loadHighlights() {
       download.download = '';
       download.textContent = '下载 MP4';
 
+      const subtitleLink = clip.subtitle_file
+        ? document.createElement('a')
+        : null;
+      if (subtitleLink) {
+        subtitleLink.className = 'subtitle-link';
+        subtitleLink.href = clip.subtitle_file;
+        subtitleLink.download = '';
+        subtitleLink.textContent = '下载中英字幕';
+      }
+
       const sourceLink = document.createElement('a');
       sourceLink.className = 'source-link';
       sourceLink.href = clip.source_url;
@@ -54,7 +79,9 @@ async function loadHighlights() {
       sourceLink.rel = 'noreferrer';
       sourceLink.textContent = '白宫原视频';
 
-      info.append(title, meta, description, download, sourceLink);
+      info.append(title, meta, description, download);
+      if (subtitleLink) info.append(subtitleLink);
+      info.append(sourceLink);
       card.append(player, info);
       $highlightGrid.append(card);
     }

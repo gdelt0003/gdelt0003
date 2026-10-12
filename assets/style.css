@@ -50,8 +50,8 @@ button {
 .clip-player {
   width: 100%;
   display: block;
-  aspect-ratio: 16 / 9;
   background: #000;
+  object-fit: contain;
 }
 .video-info { padding: 14px; }
 .video-info h2 { font-size: 1rem; line-height: 1.5; margin: 0 0 10px; }
@@ -64,4 +64,4 @@ button {
 .highlights-heading h2 { margin: 6px 0 0; }
 .clip-title { margin: 0 0 8px; font-size: 1rem; }
 .clip-description { color: var(--muted); font-size: .9rem; }
-.clip-link, .source-link { display: inline-block; margin: 4px 12px 4px 0; }
+.clip-link, .subtitle-link, .source-link { display: inline-block; margin: 4px 12px 4px 0; }
