@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -24,6 +25,13 @@ def run(command, *, check=True):
     return result
 
 
+def write_manifest(payload):
+    (OUTPUT / "default_batch.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
 def find_source():
     for query in SEARCHES:
         result = run([
@@ -46,11 +54,43 @@ def main():
         source_dir.mkdir()
         video_id = find_source()
         source_url = f"https://www.youtube.com/watch?v={video_id}"
-        run([
+        download_command = [
             "yt-dlp", "--no-playlist", "--restrict-filenames",
             "--merge-output-format", "mp4", "-f", "best[ext=mp4]/best",
-            "-o", str(source_dir / "%(title)s.%(ext)s"), source_url,
-        ])
+            "-o", str(source_dir / "%(title)s.%(ext)s"),
+        ]
+        cookies = os.environ.get("YOUTUBE_COOKIES")
+        if cookies:
+            cookies_file = Path(tmp) / "youtube-cookies.txt"
+            cookies_file.write_text(cookies, encoding="utf-8")
+            download_command.extend(["--cookies", str(cookies_file)])
+        download_command.append(source_url)
+        download_result = run(download_command, check=False)
+        if download_result.returncode:
+            preview_clips = [{
+                "id": clip["id"],
+                "title": clip["title"],
+                "start_sec": clip["start"],
+                "end_sec": clip["end"],
+                "score": 94,
+                "status": "preview",
+                "source_channel": "White House",
+                "source_url": source_url,
+                "embed_url": f"https://www.youtube-nocookie.com/embed/{video_id}?start={clip['start']}&end={clip['end']}",
+                "file": None,
+                "note": "YouTube did not allow the Actions runner to download this video. This is a timestamped preview; no MP4 clip was generated.",
+            } for clip in CLIPS]
+            write_manifest({
+                "status": "preview",
+                "message": "Showing timestamped previews because YouTube blocked unauthenticated video download. Add the YOUTUBE_COOKIES Actions secret to enable MP4 generation.",
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "source_url": source_url,
+                "batch": preview_clips,
+            })
+            print(download_result.stderr, file=sys.stderr)
+            print("Wrote timestamped preview manifest; no MP4 clips were generated.")
+            return
+
         source_files = list(source_dir.glob("*.mp4"))
         if not source_files:
             raise RuntimeError("yt-dlp completed without an MP4 source file")
@@ -83,10 +123,7 @@ def main():
             "source_url": source_url,
             "batch": generated,
         }
-        (OUTPUT / "default_batch.json").write_text(
-            json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        write_manifest(manifest)
 
 
 if __name__ == "__main__":

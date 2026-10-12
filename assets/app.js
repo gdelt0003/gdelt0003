@@ -23,7 +23,7 @@ async function loadHighlights() {
     $highlightsStatus.textContent = `${defaultBatch.length} 个候选 · ${payload.message || '批次已就绪'}`;
     $highlightGrid.innerHTML = defaultBatch.map((clip) => `
       <article class="video-card">
-        ${clip.file ? `<video class="highlight-video" controls preload="metadata" src="${clip.file}"></video>` : ''}
+        ${clip.file ? `<video class="highlight-video" controls preload="metadata" src="${clip.file}"></video>` : clip.embed_url ? `<iframe class="highlight-video" src="${clip.embed_url}" title="${clip.title}" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` : ''}
         <div class="video-info">
           <h3 class="clip-title">${clip.title}</h3>
           <div class="meta">${clip.source_channel || 'YouTube'} · ${formatTime(clip.start_sec)}–${formatTime(clip.end_sec)} · ${clip.status || 'ready'}</div>

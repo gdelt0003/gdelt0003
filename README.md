@@ -15,3 +15,4 @@ A small GitHub Pages repo that fetches latest YouTube videos via GitHub Actions 
 - No local frontend install is required.
 - The workflow runs in GitHub Actions, installs `yt-dlp`, fetches data, and deploys the static site.
 - For production, replace the example YouTube URL with your real channel or playlist.
+- The default-highlight job creates MP4 clips when YouTube permits the runner to download the source video. If YouTube requires sign-in, it deploys timestamped previews instead; configure the repository Actions secret `YOUTUBE_COOKIES` with an authorized Netscape-format cookies file to enable clip downloads.
