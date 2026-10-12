@@ -44,7 +44,6 @@ jobs:
       CLIP_DURATION_SECONDS: ${{ inputs.clip_duration_seconds || '45' }}
       CLIP_AUTHORIZED: ${{ inputs.clip_authorized }}
       ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      SHORTS_OUTPUT_DIR: ${{ runner.temp }}/derived-shorts
       PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
     steps:
       - name: Checkout
@@ -95,6 +94,8 @@ jobs:
         id: shorts
         if: ${{ inputs.short_video_url != '' }}
         continue-on-error: true
+        env:
+          SHORTS_OUTPUT_DIR: ${{ runner.temp }}/derived-shorts
         run: python scripts/create_short.py
 
       - name: Upload generated short artifact

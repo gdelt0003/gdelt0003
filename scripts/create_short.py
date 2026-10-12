@@ -412,7 +412,10 @@ def update_catalog(catalog, short, now=None):
 def main():
     video_url = os.environ.get("SHORT_VIDEO_URL", "").strip()
     run_url = os.environ.get("ACTIONS_RUN_URL", "").strip()
-    clip_dir = Path(os.environ.get("SHORTS_OUTPUT_DIR", "/tmp/derived-shorts"))
+    clip_dir = Path(os.environ.get(
+        "SHORTS_OUTPUT_DIR",
+        str(Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "derived-shorts"),
+    ))
     try:
         require_clip_authorization(os.environ.get("CLIP_AUTHORIZED", "false"))
         clip_seconds = int(os.environ.get("CLIP_DURATION_SECONDS", "45"))
