@@ -52,3 +52,11 @@ button {
 .video-info a { color: var(--text); text-decoration: none; }
 .meta { font-size: .8rem; color: var(--muted); }
 .empty { color: var(--muted); text-align: center; padding: 24px; }
+.highlights-panel { margin-top: 24px; }
+.highlights-heading, .confirm-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.highlights-heading { margin-bottom: 18px; }
+.highlights-heading h2 { margin: 6px 0 0; }
+.highlight-video { width: 100%; display: block; aspect-ratio: 16 / 9; background: #0f172a; }
+.confirm-row { justify-content: flex-start; margin-top: 18px; flex-wrap: wrap; }
+.clip-title { margin: 0 0 8px; font-size: 1rem; }
+.clip-description { color: var(--muted); font-size: .9rem; }
