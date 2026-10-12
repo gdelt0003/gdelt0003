@@ -225,7 +225,6 @@ def main():
         if not 1 <= video_limit <= MAX_VIDEOS_PER_SOURCE:
             raise ValueError(f"VIDEO_LIMIT_PER_SOURCE must be between 1 and {MAX_VIDEOS_PER_SOURCE}")
         catalog = fetch_catalog(sources, video_limit)
-        catalog = merge_previous_shorts(catalog, os.environ.get("PREVIOUS_CATALOG_PATH"))
         OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         OUTPUT_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         failures = [source for source in catalog["sources"] if source["status"] == "failed"]

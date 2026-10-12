@@ -71,7 +71,8 @@
   function relatedShort(video) {
     return shorts.find(short => {
       const active = short.status === 'failed' ||
-        (short.status === 'available' && Date.parse(short.expiresAt) > Date.now());
+        (short.status === 'available' &&
+          /^clips\/[A-Za-z0-9_-]{1,64}-short\.mp4$/.test(short.clipPath || ''));
       const sameVideo = short.videoId && String(short.videoId) === String(video.id);
       const sameSource = short.sourceUrl && (
         short.sourceUrl === video.url ||
@@ -145,7 +146,7 @@
       derivative.append(createElement(
         'p',
         'derivative-label',
-        short.status === 'available' ? 'Derived short candidate' : 'Short generation refused or failed',
+        short.status === 'available' ? 'Derived short' : 'Short generation refused or failed',
       ));
       if (short.status === 'available') {
         derivative.append(createElement('p', 'derivative-title', short.clipTitle || 'Short edit'));
@@ -155,15 +156,25 @@
           `${short.durationSeconds}s · from ${short.startSeconds}s · ${short.captions || 'captions unavailable'} · ${short.selectionReason || ''}`,
         );
         derivative.append(details);
-        const runLinkUrl = safeRunUrl(short.runUrl);
-        if (runLinkUrl) {
-          const artifactLink = createElement('a', 'short-download', `Open Actions run to download ${short.clipFile || 'short'} (14 days)`);
-          artifactLink.href = runLinkUrl;
-          artifactLink.target = '_blank';
-          artifactLink.rel = 'noopener noreferrer';
-          derivative.append(artifactLink);
+        const clipPathPattern = /^clips\/[A-Za-z0-9_-]{1,64}-short\.mp4$/;
+        if (clipPathPattern.test(short.clipPath || '') && short.clipFile === short.clipPath.split('/').pop()) {
+          const clipPlayer = createElement('video', 'short-player');
+          clipPlayer.src = short.clipPath;
+          clipPlayer.controls = true;
+          clipPlayer.preload = 'metadata';
+          clipPlayer.playsInline = true;
+          clipPlayer.setAttribute('aria-label', `${short.clipTitle || 'Derived short'} from ${video.title || 'original video'}`);
+          derivative.append(clipPlayer);
+          const downloadLink = createElement('a', 'short-download', 'Download this short');
+          downloadLink.href = short.clipPath;
+          downloadLink.download = short.clipFile;
+          derivative.append(downloadLink);
         }
-        derivative.append(createElement('p', 'derivative-note', short.reachDisclaimer || 'Editorial review recommended; reach is not guaranteed.'));
+        derivative.append(createElement(
+          'p',
+          'derivative-note',
+          short.reachDisclaimer || 'Heuristic candidate only; review before sharing. Reach is not guaranteed.',
+        ));
       } else {
         derivative.append(createElement('p', 'derivative-meta', `Generation failed: ${short.error || 'see the Actions run log'}`));
         const runLinkUrl = safeRunUrl(short.runUrl);

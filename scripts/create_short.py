@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tempfile
 from bisect import bisect_left
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from html import unescape
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -25,7 +25,7 @@ YOUTUBE_HOSTS = {
 MAX_SOURCE_BYTES = 500 * 1024 * 1024
 MAX_CLIP_SECONDS = 60
 MIN_CLIP_SECONDS = 10
-MAX_OUTPUT_BYTES = 100 * 1024 * 1024
+MAX_OUTPUT_BYTES = 20 * 1024 * 1024
 HOOK_TERMS = {
     "announced", "answer", "breaking", "challenge", "change", "decision",
     "important", "launch", "new", "now", "plan", "record", "result",
@@ -275,7 +275,7 @@ def make_clip(source_path, output_path, segment, subtitles_path=None):
         raise ShortCreationError("ffmpeg did not produce a clip")
     if output_path.stat().st_size > MAX_OUTPUT_BYTES:
         output_path.unlink()
-        raise ShortCreationError("Generated clip exceeds the 100 MB artifact limit")
+        raise ShortCreationError("Generated clip exceeds the 20 MiB Pages per-clip limit")
 
 
 def create_short(video_url, clip_seconds, clip_dir, run_url):
@@ -349,13 +349,12 @@ def create_short(video_url, clip_seconds, clip_dir, run_url):
         "uploadDate": metadata.get("upload_date") or "",
         "sourceUrl": resolved_url,
         "clipFile": filename,
-        "artifactName": f"shorts-{os.environ.get('GITHUB_RUN_ID', 'run')}",
-        "runUrl": run_url,
+        "clipPath": f"clips/{filename}",
+        "clipBytes": output_path.stat().st_size,
         **segment,
         "status": "available",
         "captions": "English captions burned in" if captions_available else "No English captions available",
         "createdAt": datetime.now(timezone.utc).isoformat(),
-        "expiresAt": (datetime.now(timezone.utc) + timedelta(days=14)).isoformat(),
         "reachDisclaimer": "Heuristic candidate only; no reach or virality is guaranteed.",
     }
 
@@ -375,8 +374,7 @@ def require_clip_authorization(value):
         )
 
 
-def update_catalog(catalog, short, now=None):
-    current_time = now or datetime.now(timezone.utc)
+def update_catalog(catalog, short):
     videos = catalog.setdefault("videos", [])
     if short.get("videoId") and not any(
         str(video.get("id")) == str(short["videoId"]) for video in videos
@@ -394,15 +392,9 @@ def update_catalog(catalog, short, now=None):
         })
     active_shorts = []
     for old in catalog.get("shorts", []):
-        if old.get("status") != "available":
+        if old.get("status") != "available" or not old.get("clipPath"):
             continue
-        try:
-            expires_at = datetime.fromisoformat(old.get("expiresAt", ""))
-        except (TypeError, ValueError):
-            continue
-        if expires_at.tzinfo is None:
-            expires_at = expires_at.replace(tzinfo=timezone.utc)
-        if expires_at > current_time and old.get("videoId") != short.get("videoId"):
+        if old.get("videoId") != short.get("videoId"):
             active_shorts.append(old)
     active_shorts.append(short)
     catalog["shorts"] = active_shorts[-100:]

@@ -3,7 +3,6 @@ import json
 import os
 import tempfile
 import unittest
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -100,7 +99,6 @@ class SegmentTests(unittest.TestCase):
             self.assertIn("First & second line.", contents)
 
     def test_short_metadata_adds_an_original_card_when_not_in_feed(self):
-        now = datetime.now(timezone.utc)
         short = {
             "videoId": "outside01",
             "title": "Standalone original",
@@ -111,9 +109,8 @@ class SegmentTests(unittest.TestCase):
             "uploadDate": "20261001",
             "sourceUrl": "https://youtube.com/watch?v=outside01",
             "status": "available",
-            "expiresAt": (now + timedelta(days=14)).isoformat(),
         }
-        result = create_short.update_catalog({"videos": [], "sources": []}, short, now=now)
+        result = create_short.update_catalog({"videos": [], "sources": []}, short)
         self.assertEqual(result["videos"][0]["id"], "outside01")
         self.assertEqual(result["shorts"][0]["videoId"], "outside01")
 

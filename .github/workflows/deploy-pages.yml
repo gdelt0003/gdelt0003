@@ -26,7 +26,7 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -54,6 +54,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Run standard-library tests
+        run: python -m unittest discover -s tests -v
+
       - name: Install yt-dlp
         run: python -m pip install --disable-pip-version-check yt-dlp
 
@@ -63,23 +66,11 @@ jobs:
           cp index.html site/index.html
           cp assets/app.js assets/style.css site/assets/
 
-      - name: Preserve active short links from the previous Pages catalog
+      - name: Restore previously published clips
         env:
           PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
-        run: |
-          base_url="$PAGES_BASE_URL"
-          if [ -z "$base_url" ]; then
-            owner="$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')"
-            repository="${GITHUB_REPOSITORY#*/}"
-            base_url="https://${owner}.github.io/${repository}"
-          fi
-          if curl --fail --silent --show-error --location --max-time 20 \
-            "${base_url%/}/data/catalog.json" --output "$RUNNER_TEMP/previous-catalog.json"; then
-            echo "PREVIOUS_CATALOG_PATH=$RUNNER_TEMP/previous-catalog.json" >> "$GITHUB_ENV"
-            echo "Loaded prior catalog for short-link retention."
-          else
-            echo "No previous public Pages catalog found; starting a fresh index."
-          fi
+          SITE_DIR: site
+        run: python scripts/preserve_pages_clips.py
 
       - name: Fetch configured YouTube sources
         run: python scripts/fetch_youtube.py
@@ -95,17 +86,26 @@ jobs:
         if: ${{ inputs.short_video_url != '' }}
         continue-on-error: true
         env:
-          SHORTS_OUTPUT_DIR: ${{ runner.temp }}/derived-shorts
+          SHORTS_OUTPUT_DIR: ${{ github.workspace }}/site/clips
         run: python scripts/create_short.py
 
-      - name: Upload generated short artifact
-        if: ${{ steps.shorts.outputs.clip_created == 'true' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: shorts-${{ github.run_id }}
-          path: ${{ runner.temp }}/derived-shorts/
-          if-no-files-found: error
-          retention-days: 14
+      - name: Merge durable video history and enforce Pages media limits
+        run: python scripts/persist_archive.py
+
+      - name: Commit collected video metadata to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add archive/catalog.json
+          if git diff --cached --quiet; then
+            echo "No metadata archive changes to commit."
+          else
+            git commit -m "Update collected video archive"
+            if ! git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "::error title=Archive write-back failed::The workflow token could not update archive/catalog.json. Check contents:write permission and branch protection or repository rules."
+              exit 1
+            fi
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
