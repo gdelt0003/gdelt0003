@@ -1,0 +1,88 @@
+name: Test YouTube access from iOS simulators
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install yt-dlp
+        run: python -m pip install --upgrade yt-dlp
+
+      - name: Boot current high-end iPhone and iPad simulators
+        shell: bash
+        run: |
+          set -euo pipefail
+          devices="$(xcrun simctl list devices available --json)"
+          iphone="$(printf '%s' "$devices" | jq -r '
+            [.devices[][] | select(.name | test("^iPhone [0-9]+ Pro Max$"))]
+            | sort_by([(.name | capture("^iPhone (?<version>[0-9]+) Pro Max$").version | tonumber), .runtimeIdentifier])
+            | last | [.name, .udid] | @tsv
+          ')"
+          ipad="$(printf '%s' "$devices" | jq -r '
+            [.devices[][] | select(.name | test("^iPad Pro 13-inch"))]
+            | sort_by(.name, .runtimeIdentifier)
+            | last | [.name, .udid] | @tsv
+          ')"
+          test -n "$iphone" || { echo "No iPhone Pro Max simulator is installed" >&2; exit 1; }
+          test -n "$ipad" || { echo "No 13-inch iPad Pro simulator is installed" >&2; exit 1; }
+          printf 'iPhone simulator: %s\n' "${iphone%%$'\t'*}" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf 'iPad simulator: %s\n' "${ipad%%$'\t'*}" | tee -a "$GITHUB_STEP_SUMMARY"
+          printf 'IPHONE_UDID=%s\n' "${iphone##*$'\t'}" >> "$GITHUB_ENV"
+          printf 'IPAD_UDID=%s\n' "${ipad##*$'\t'}" >> "$GITHUB_ENV"
+
+      - name: Open the public video page in iPhone and iPad Safari
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/simulator-captures"
+          for device in "$IPHONE_UDID" "$IPAD_UDID"; do
+            xcrun simctl boot "$device" || true
+            xcrun simctl bootstatus "$device" -b
+            xcrun simctl openurl "$device" "https://www.youtube.com/watch?v=KroMEOZ8oFo"
+            sleep 20
+            if [ "$device" = "$IPHONE_UDID" ]; then
+              name=iphone-pro-max
+            else
+              name=ipad-pro
+            fi
+            xcrun simctl io "$device" screenshot "$RUNNER_TEMP/simulator-captures/$name.png"
+            xcrun simctl shutdown "$device"
+          done
+
+      - name: Test anonymous yt-dlp extraction on the same macOS runner
+        id: yt-dlp
+        continue-on-error: true
+        shell: bash
+        run: |
+          yt-dlp --no-warnings --skip-download --dump-single-json \
+            --js-runtimes node "https://www.youtube.com/watch?v=KroMEOZ8oFo" \
+            > "$RUNNER_TEMP/simulator-captures/yt-dlp.json" \
+            2> "$RUNNER_TEMP/simulator-captures/yt-dlp.log"
+          cat "$RUNNER_TEMP/simulator-captures/yt-dlp.log"
+
+      - name: Upload simulator screenshots and extraction result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-youtube-test
+          path: ${{ runner.temp }}/simulator-captures/
+          if-no-files-found: warn
+
+      - name: Fail if anonymous extraction was blocked
+        if: steps.yt-dlp.outcome != 'success'
+        run: exit 1

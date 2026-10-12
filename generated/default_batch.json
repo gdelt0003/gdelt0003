@@ -1,0 +1,57 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+  "message": "白宫视频高光片段已剪辑为 MP4 并保存到 GitHub 仓库。",
+  "status": "generated",
+  "invidious_instance": "https://invidious.f5.si",
+  "source_channel": "The White House",
+  "generated_at": "2026-10-12T06:30:07.2200628Z",
+  "source_duration_sec": 3532,
+  "source_title": "President Trump Delivers Remarks, Oct. 6, 2026",
+  "batch": [
+    {
+      "end_sec": 245,
+      "duration_sec": 75.0,
+      "source_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "play_url": "https://invidious.f5.si/watch?v=oW-PQlgw1wo&t=170",
+      "start_sec": 170,
+      "file_size_bytes": 6332656,
+      "source_channel": "The White House",
+      "source_title": "President Trump Delivers Remarks, Oct. 6, 2026",
+      "status": "available",
+      "title": "宣布建设 Arsenal 2 新船厂",
+      "file": "generated/clips/arsenal-2-shipyard.mp4",
+      "note": "介绍 Arsenal 2 新船厂计划及重建造船能力。",
+      "id": "arsenal-2-shipyard"
+    },
+    {
+      "end_sec": 770,
+      "duration_sec": 80.0,
+      "source_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "play_url": "https://invidious.f5.si/watch?v=oW-PQlgw1wo&t=690",
+      "start_sec": 690,
+      "file_size_bytes": 4936914,
+      "source_channel": "The White House",
+      "source_title": "President Trump Delivers Remarks, Oct. 6, 2026",
+      "status": "available",
+      "title": "扩大潜艇生产能力",
+      "file": "generated/clips/submarine-production.mp4",
+      "note": "介绍新船厂如何增加产能并缓解潜艇生产瓶颈。",
+      "id": "submarine-production"
+    },
+    {
+      "end_sec": 2465,
+      "duration_sec": 80.0,
+      "source_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "play_url": "https://invidious.f5.si/watch?v=oW-PQlgw1wo&t=2385",
+      "start_sec": 2385,
+      "file_size_bytes": 4273313,
+      "source_channel": "The White House",
+      "source_title": "President Trump Delivers Remarks, Oct. 6, 2026",
+      "status": "available",
+      "title": "Golden Fleet 舰队计划",
+      "file": "generated/clips/golden-fleet.mp4",
+      "note": "谈到美国海军 Golden Fleet 计划及造舰投资。",
+      "id": "golden-fleet"
+    }
+  ]
+}

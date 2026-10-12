@@ -1,24 +1,28 @@
-# gdelt0003
-A small GitHub Pages repo that fetches latest YouTube videos via GitHub Actions and publishes them to Pages.
+# gdelt0003 White House highlights
 
-## Quick start
+## Publish and download
 
 1. Create or update the repository variable `YOUTUBE_URL` to a target YouTube URL such as:
    - `https://www.youtube.com/@gdelt0003`
    - `https://www.youtube.com/playlist?list=...`
 2. Optionally set `VIDEO_LIMIT` (default: `8`).
 3. Optionally set `YT_DLP_BIN` to a custom `yt-dlp` binary path when you need to override the default executable.
-4. Push to `main` or run the workflow manually.
-5. GitHub Pages will publish the site automatically.
+4. Push to `main` or run the workflow manually. For the Pages workflow, pushing to `main` or running the workflow_dispatch will publish site assets.
 
 ## Notes
 
 - No local frontend install is required.
-- The workflow runs in GitHub Actions, installs `yt-dlp`, fetches data, and deploys the static site.
+- The workflow runs in GitHub Actions, installs `yt-dlp` and `ffmpeg` as needed, fetches data, and deploys the static site.
 - For production, replace the example YouTube URL with your real channel or playlist.
 - The fetch script also accepts `YT_DLP_BIN` for local testing or custom installations.
 
-## Generate bilingual shorts
+## Deploy / regeneration caveats
+
+- Three short MP4 highlights from the public White House video `oW-PQlgw1wo` are committed to `generated/clips/` and referenced by `generated/default_batch.json` when present.
+- The workflow can be run with `regenerate_clips` to attempt re-cutting from the official source; set `download_full_source` to attach a full-source Release asset when possible.
+- YouTube may challenge automated runners (cookies/auth required). When the runner cannot access formats or subtitles, the workflow fails and leaves the published clips unchanged.
+
+## Generate bilingual shorts (local)
 
 The repository also includes a local short-video editing pipeline. It downloads a long source video and its English captions, translates captions to Simplified Chinese, then renders each selected highlight in two 1080x1920 styles with the original audio:
 

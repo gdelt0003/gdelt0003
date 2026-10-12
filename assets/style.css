@@ -47,8 +47,21 @@ button {
 .video-card img {
   width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; background: #0f172a;
 }
+.clip-player {
+  width: 100%;
+  display: block;
+  background: #000;
+  object-fit: contain;
+}
 .video-info { padding: 14px; }
 .video-info h2 { font-size: 1rem; line-height: 1.5; margin: 0 0 10px; }
 .video-info a { color: var(--text); text-decoration: none; }
 .meta { font-size: .8rem; color: var(--muted); }
 .empty { color: var(--muted); text-align: center; padding: 24px; }
+.highlights-panel { margin-top: 24px; }
+.highlights-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.highlights-heading { margin-bottom: 18px; }
+.highlights-heading h2 { margin: 6px 0 0; }
+.clip-title { margin: 0 0 8px; font-size: 1rem; }
+.clip-description { color: var(--muted); font-size: .9rem; }
+.clip-link, .subtitle-link, .source-link { display: inline-block; margin: 4px 12px 4px 0; }
