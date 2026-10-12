@@ -34,6 +34,11 @@ jobs:
       - name: Install yt-dlp
         run: python -m pip install --upgrade yt-dlp
 
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+
       - name: Verify ffmpeg
         run: |
           ffmpeg -version
@@ -50,18 +55,22 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: generate White House highlight clips"
           git push
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
   deploy:
     needs: build
+    if: always()
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Checkout generated site files
+        uses: actions/checkout@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
