@@ -10,6 +10,15 @@ on:
         required: false
         default: '12'
         type: string
+      short_video_url:
+        description: Optional public video URL to turn into a vertical short
+        required: false
+        type: string
+      clip_duration_seconds:
+        description: Short duration (10-60 seconds)
+        required: false
+        default: '45'
+        type: string
 
 permissions:
   contents: read
@@ -26,6 +35,11 @@ jobs:
     timeout-minutes: 360
     env:
       VIDEO_LIMIT_PER_SOURCE: ${{ inputs.video_limit_per_source || vars.VIDEO_LIMIT_PER_SOURCE || '12' }}
+      SHORT_VIDEO_URL: ${{ inputs.short_video_url || '' }}
+      CLIP_DURATION_SECONDS: ${{ inputs.clip_duration_seconds || '45' }}
+      ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      SHORTS_OUTPUT_DIR: ${{ runner.temp }}/derived-shorts
+      PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,8 +58,47 @@ jobs:
           cp index.html site/index.html
           cp assets/app.js assets/style.css site/assets/
 
+      - name: Preserve active short links from the previous Pages catalog
+        env:
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
+        run: |
+          base_url="$PAGES_BASE_URL"
+          if [ -z "$base_url" ]; then
+            owner="$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')"
+            repository="${GITHUB_REPOSITORY#*/}"
+            base_url="https://${owner}.github.io/${repository}"
+          fi
+          if curl --fail --silent --show-error --location --max-time 20 \
+            "${base_url%/}/data/catalog.json" --output "$RUNNER_TEMP/previous-catalog.json"; then
+            echo "PREVIOUS_CATALOG_PATH=$RUNNER_TEMP/previous-catalog.json" >> "$GITHUB_ENV"
+            echo "Loaded prior catalog for short-link retention."
+          else
+            echo "No previous public Pages catalog found; starting a fresh index."
+          fi
+
       - name: Fetch configured YouTube sources
         run: python scripts/fetch_youtube.py
+
+      - name: Install ffmpeg on GitHub-hosted runner
+        if: ${{ inputs.short_video_url != '' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ffmpeg
+
+      - name: Create linked vertical short
+        id: shorts
+        if: ${{ inputs.short_video_url != '' }}
+        continue-on-error: true
+        run: python scripts/create_short.py
+
+      - name: Upload generated short artifact
+        if: ${{ steps.shorts.outputs.clip_created == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorts-${{ github.run_id }}
+          path: ${{ runner.temp }}/derived-shorts/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

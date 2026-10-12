@@ -21,6 +21,7 @@
   };
   let videos = [];
   let sourceStatuses = [];
+  let shorts = [];
   let generatedAt = '';
   let page = 1;
 
@@ -40,6 +41,43 @@
     if (className) element.className = className;
     if (text !== undefined) element.textContent = text;
     return element;
+  }
+
+  function safeRunUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && url.hostname === 'github.com' &&
+        /^\/[^/]+\/[^/]+\/actions\/runs\/\d+\/?$/.test(url.pathname)
+        ? url.href
+        : '';
+    } catch {
+      return '';
+    }
+  }
+
+  function videoIdFromUrl(value) {
+    try {
+      const url = new URL(value);
+      if (!YOUTUBE_HOSTS.has(url.hostname)) return '';
+      if (url.hostname === 'youtu.be' || url.hostname === 'www.youtu.be') return url.pathname.slice(1).split('/')[0];
+      if (url.pathname === '/watch') return url.searchParams.get('v') || '';
+      const match = url.pathname.match(/^\/(?:shorts|embed)\/([^/]+)/);
+      return match ? match[1] : '';
+    } catch {
+      return '';
+    }
+  }
+
+  function relatedShort(video) {
+    return shorts.find(short => {
+      const active = short.status === 'available' && Date.parse(short.expiresAt) > Date.now();
+      const sameVideo = short.videoId && String(short.videoId) === String(video.id);
+      const sameSource = short.sourceUrl && (
+        short.sourceUrl === video.url ||
+        videoIdFromUrl(short.sourceUrl) === String(video.id)
+      );
+      return active && (sameVideo || sameSource);
+    });
   }
 
   function makeCard(video) {
@@ -100,6 +138,32 @@
       }
     }
     info.append(meta);
+    const short = relatedShort(video);
+    if (short) {
+      const derivative = createElement('section', `derived-short short-${short.status}`);
+      derivative.append(createElement('p', 'derivative-label', 'Derived short candidate'));
+      if (short.status === 'available') {
+        derivative.append(createElement('p', 'derivative-title', short.clipTitle || 'Short edit'));
+        const details = createElement(
+          'p',
+          'derivative-meta',
+          `${short.durationSeconds}s · from ${short.startSeconds}s · ${short.captions || 'captions unavailable'} · ${short.selectionReason || ''}`,
+        );
+        derivative.append(details);
+        const runLinkUrl = safeRunUrl(short.runUrl);
+        if (runLinkUrl) {
+          const artifactLink = createElement('a', 'short-download', `Open Actions run to download ${short.clipFile || 'short'} (14 days)`);
+          artifactLink.href = runLinkUrl;
+          artifactLink.target = '_blank';
+          artifactLink.rel = 'noopener noreferrer';
+          derivative.append(artifactLink);
+        }
+        derivative.append(createElement('p', 'derivative-note', short.reachDisclaimer || 'Editorial review recommended; reach is not guaranteed.'));
+      } else {
+        derivative.append(createElement('p', 'derivative-meta', `Generation failed: ${short.error || 'see the Actions run log'}`));
+      }
+      info.append(derivative);
+    }
     card.append(imageLink, info);
     return card;
   }
@@ -203,6 +267,7 @@
       }
       videos = catalog.videos;
       sourceStatuses = catalog.sources;
+      shorts = Array.isArray(catalog.shorts) ? catalog.shorts : [];
       generatedAt = catalog.generatedAt || '';
       elements.search.value = new URLSearchParams(location.search).get('q') || '';
       page = 1;
@@ -211,6 +276,7 @@
     } catch (error) {
       videos = [];
       sourceStatuses = [];
+      shorts = [];
       generatedAt = '';
       elements.grid.replaceChildren(createElement('div', 'empty-state', 'Unable to load the video catalog. Please try again later.'));
       elements.status.textContent = error instanceof Error ? error.message : 'Catalog load failed';

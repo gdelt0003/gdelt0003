@@ -2,6 +2,7 @@ import importlib.util
 import json
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -31,6 +32,45 @@ class ReadSourcesTests(unittest.TestCase):
                 path.write_text(url + "\n", encoding="utf-8")
                 with self.subTest(url=url), self.assertRaises(ValueError):
                     fetch_youtube.read_sources(path)
+
+
+class PriorShortTests(unittest.TestCase):
+    def test_active_short_links_and_originals_survive_catalog_refresh(self):
+        now = datetime.now(timezone.utc)
+        current = {"videos": [], "sources": []}
+        previous = {
+            "videos": [],
+            "shorts": [
+                {
+                    "videoId": "active01",
+                    "sourceUrl": "https://www.youtube.com/watch?v=active01",
+                    "runUrl": "https://github.com/gdelt0003/gdelt0003/actions/runs/123",
+                    "status": "available",
+                    "expiresAt": (now + timedelta(days=2)).isoformat(),
+                    "title": "Original survives",
+                },
+                {
+                    "videoId": "expired1",
+                    "sourceUrl": "https://www.youtube.com/watch?v=expired1",
+                    "runUrl": "https://github.com/gdelt0003/gdelt0003/actions/runs/122",
+                    "status": "available",
+                    "expiresAt": (now - timedelta(minutes=1)).isoformat(),
+                },
+                {
+                    "videoId": "unsafe01",
+                    "sourceUrl": "https://example.com/watch?v=unsafe01",
+                    "runUrl": "https://github.com/gdelt0003/gdelt0003/actions/runs/121",
+                    "status": "available",
+                    "expiresAt": (now + timedelta(days=2)).isoformat(),
+                },
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            previous_path = Path(directory) / "catalog.json"
+            previous_path.write_text(json.dumps(previous), encoding="utf-8")
+            result = fetch_youtube.merge_previous_shorts(current, previous_path, now=now)
+        self.assertEqual([short["videoId"] for short in result["shorts"]], ["active01"])
+        self.assertEqual(result["videos"][0]["title"], "Original survives")
 
     def test_source_count_is_bounded(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -71,6 +72,62 @@ def parse_entries(stdout, source_url):
             "uploadDate": entry.get("upload_date") or "",
         })
     return videos
+
+
+def merge_previous_shorts(catalog, previous_catalog_path, now=None):
+    if not previous_catalog_path:
+        return catalog
+    path = Path(previous_catalog_path)
+    try:
+        previous = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return catalog
+    except (OSError, json.JSONDecodeError) as error:
+        print(f"Warning: could not preserve prior short links from {path}: {error}", file=sys.stderr)
+        return catalog
+
+    current_time = now or datetime.now(timezone.utc)
+    videos_by_id = {str(video.get("id")): video for video in catalog["videos"] if video.get("id")}
+    shorts_by_id = {}
+    for short in previous.get("shorts", []):
+        video_id = str(short.get("videoId") or "")
+        try:
+            expires_at = datetime.fromisoformat(short.get("expiresAt", ""))
+        except (TypeError, ValueError):
+            continue
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        parsed_url = urlparse(short.get("sourceUrl", ""))
+        run_url = urlparse(short.get("runUrl", ""))
+        if (
+            short.get("status") != "available"
+            or not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", video_id)
+            or expires_at <= current_time
+            or parsed_url.scheme != "https"
+            or parsed_url.hostname not in YOUTUBE_HOSTS
+            or run_url.scheme != "https"
+            or run_url.hostname != "github.com"
+            or not re.fullmatch(r"/[^/]+/[^/]+/actions/runs/\d+/?", run_url.path)
+        ):
+            continue
+        shorts_by_id[video_id] = short
+        if video_id not in videos_by_id:
+            videos_by_id[video_id] = {
+                "id": video_id,
+                "title": short.get("title") or "Untitled video",
+                "author": short.get("author") or "YouTube",
+                "duration": short.get("originalDuration") or "",
+                "durationSeconds": short.get("originalDurationSeconds"),
+                "url": parsed_url.geturl(),
+                "thumbnail": short.get("thumbnail") or "",
+                "source": parsed_url.geturl(),
+                "uploadDate": short.get("uploadDate") or "",
+            }
+
+    catalog["videos"] = list(videos_by_id.values())
+    catalog["videos"].sort(key=lambda video: video.get("uploadDate", ""), reverse=True)
+    catalog["shorts"] = list(shorts_by_id.values())[-100:]
+    return catalog
 
 
 def fetch_catalog(
@@ -168,6 +225,7 @@ def main():
         if not 1 <= video_limit <= MAX_VIDEOS_PER_SOURCE:
             raise ValueError(f"VIDEO_LIMIT_PER_SOURCE must be between 1 and {MAX_VIDEOS_PER_SOURCE}")
         catalog = fetch_catalog(sources, video_limit)
+        catalog = merge_previous_shorts(catalog, os.environ.get("PREVIOUS_CATALOG_PATH"))
         OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         OUTPUT_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         failures = [source for source in catalog["sources"] if source["status"] == "failed"]
