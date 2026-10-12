@@ -54,20 +54,23 @@ function renderCards(items) {
     return;
   }
 
-  els.videoGrid.innerHTML = items.map((item) => `
-    <article class="video-card">
-      <div class="video-thumb" aria-label="${item.title}"></div>
-      <div class="video-body">
-        <div class="video-header">
-          <h3 class="video-title">${item.title}</h3>
-          <span class="score-tag">${item.score}</span>
+  els.videoGrid.innerHTML = items.map((item) => {
+    const sourceChannel = item.source_channel || item.source_title || 'White House';
+    return `
+      <article class="video-card">
+        <div class="video-thumb" aria-label="${item.title}"></div>
+        <div class="video-body">
+          <div class="video-header">
+            <h3 class="video-title">${item.title}</h3>
+            <span class="score-tag">${item.score}</span>
+          </div>
+          <div class="video-meta">${sourceChannel} · ${formatTime(item.start_sec)}–${formatTime(item.end_sec)} · ${item.status}</div>
+          <p>${item.note}</p>
+          <div class="tag-list">${(item.tags || []).map((tag) => `<span class="tag">#${tag}</span>`).join('')}</div>
         </div>
-        <div class="video-meta">${item.source_channel} · ${formatTime(item.start_sec)}–${formatTime(item.end_sec)} · ${item.status}</div>
-        <p>${item.note}</p>
-        <div class="tag-list">${(item.tags || []).map((tag) => `<span class="tag">#${tag}</span>`).join('')}</div>
-      </div>
-    </article>
-  `).join('');
+      </article>
+    `;
+  }).join('');
 }
 
 function renderAll(items) {
