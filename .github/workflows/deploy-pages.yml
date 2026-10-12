@@ -121,7 +121,7 @@ jobs:
 
   deploy:
     needs: [build, download-source]
-    if: always()
+    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
