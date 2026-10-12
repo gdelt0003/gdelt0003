@@ -20,7 +20,86 @@
       <section class="hero" aria-labelledby="page-title">
         <p class="eyebrow">Independent video library</p>
         <h1 id="page-title">Find something worth watching.</h1>
-        <p class="subtitle">Browse originals and selected short-form edits derived on GitHub-hosted runners.</p>
+        <p class="subtitle">Search the archive, review original videos, and configure an authorized short-edit run on GitHub-hosted runners.</p>
+      </section>
+
+      <section class="creator-console" aria-labelledby="creator-title">
+        <div class="console-heading">
+          <div>
+            <p class="eyebrow">Hosted creator console</p>
+            <h2 id="creator-title">制作短视频</h2>
+            <p>选题、数量和样式在这里配置。点击“制作”会整理参数并打开 GitHub Actions；登录并确认版权后，由云端 runner 抓取、剪辑和发布 Pages。</p>
+          </div>
+          <a class="refresh-button workflow-link" href="https://github.com/gdelt0003/gdelt0003/actions/workflows/deploy-pages.yml" target="_blank" rel="noopener noreferrer">打开制作工作流</a>
+        </div>
+        <div class="creator-fields">
+          <label>选题方式
+            <select id="workflowTopicMode">
+              <option value="single">指定一个视频</option>
+              <option value="catalog">从已收录频道/播放列表挑选</option>
+              <option value="keyword">YouTube 关键词/热度发现</option>
+            </select>
+          </label>
+          <label>关键词 / 主题（关键词发现或目录筛选）
+            <input id="workflowTopicKeywords" type="text" maxlength="200" placeholder="例如：AI 工具、今日科技新闻" />
+          </label>
+          <label>指定源视频（选择“指定一个视频”时填写）
+            <input id="workflowVideoUrl" type="url" placeholder="https://www.youtube.com/watch?v=…" autocomplete="url" />
+          </label>
+          <label>输出数量（1–5）
+            <select id="workflowOutputCount">
+              <option value="1">1 条</option>
+              <option value="2">2 条</option>
+              <option value="3" selected>3 条</option>
+              <option value="4">4 条</option>
+              <option value="5">5 条</option>
+            </select>
+          </label>
+          <label>Target languages
+            <input id="workflowLanguages" type="text" placeholder="es-ES, fr-FR (optional)" />
+          </label>
+          <label>Clip length (seconds)
+            <input id="workflowDuration" type="number" min="10" max="60" value="45" />
+          </label>
+          <label>Caption/style template
+            <select id="workflowStyle">
+              <option value="auto-hook">自动高光候选（字幕/章节启发式）</option>
+              <option value="bold-captions">醒目大字字幕</option>
+              <option value="clean-captions">简洁字幕</option>
+              <option value="match-example">参考链接字幕节奏</option>
+              <option value="stock-broll">Pexels B-roll 插片</option>
+            </select>
+          </label>
+          <label>参考视频链接（仅分析字幕节奏）
+            <input id="workflowExampleUrl" type="url" placeholder="Optional; only its caption pacing is sampled" autocomplete="url" />
+          </label>
+          <label>Publishing visibility
+            <select id="workflowPrivacy">
+              <option value="unlisted">Unlisted where supported</option>
+              <option value="private">Private/draft where supported</option>
+              <option value="public">Public</option>
+            </select>
+          </label>
+        </div>
+        <div class="console-options">
+          <label class="check-option"><input id="workflowBroll" type="checkbox" /> 添加 Pexels 授权 B-roll（需配置密钥）</label>
+          <fieldset>
+            <legend>Optional publishing platforms</legend>
+            <label><input type="checkbox" name="workflowPlatform" value="youtube" /> YouTube Shorts</label>
+            <label><input type="checkbox" name="workflowPlatform" value="tiktok" /> TikTok</label>
+            <label><input type="checkbox" name="workflowPlatform" value="instagram" /> Instagram Reels</label>
+            <label><input type="checkbox" name="workflowPlatform" value="facebook" /> Facebook Reels</label>
+            <label><input type="checkbox" name="workflowPlatform" value="x" /> X</label>
+          </fieldset>
+          <p class="rights-notice">只能处理你拥有或明确获准剪辑的原视频。趋势/关键词只用于发现候选，并不代表获得剪辑权；在 Actions 中须确认所有入选视频均已获授权。系统只给出高光候选，不保证爆款。静态 Pages 不保存 GitHub 密钥，制作会跳转到 GitHub 登录确认。</p>
+        </div>
+        <div class="console-actions">
+          <button id="prepareWorkflowBtn" class="refresh-button primary-action" type="button">制作 / 准备任务</button>
+          <button id="copyWorkflowSettingsBtn" class="refresh-button" type="button">复制配置</button>
+          <a id="openWorkflowBtn" class="refresh-button workflow-link" href="https://github.com/gdelt0003/gdelt0003/actions/workflows/deploy-pages.yml" target="_blank" rel="noopener noreferrer">前往 GitHub Actions 确认运行</a>
+        </div>
+        <label class="run-settings-label" for="workflowSettings">将以下值填入 workflow_dispatch 对应输入；Pages 本身不会直接执行媒体处理</label>
+        <textarea id="workflowSettings" rows="4" readonly placeholder="Choose options above, then prepare the run settings."></textarea>
       </section>
 
       <section class="catalog" aria-label="Video catalog">
@@ -37,6 +116,24 @@
             <span class="visually-hidden">Search videos, channels, and playlists</span>
             <input id="searchInput" type="search" placeholder="Search videos, channels, playlists…" autocomplete="off" />
           </label>
+        </div>
+        <div class="search-controls">
+          <label>Keyword matching
+            <select id="searchMode">
+              <option value="and">All keywords (AND)</option>
+              <option value="or">Any keyword (OR)</option>
+            </select>
+          </label>
+          <label>Source
+            <select id="sourceFilter"><option value="">All sources</option></select>
+          </label>
+          <fieldset class="field-filters">
+            <legend>Search in</legend>
+            <label><input type="checkbox" name="searchField" value="title" checked /> Title</label>
+            <label><input type="checkbox" name="searchField" value="author" checked /> Channel</label>
+            <label><input type="checkbox" name="searchField" value="description" checked /> Description</label>
+            <label><input type="checkbox" name="searchField" value="source" checked /> Source</label>
+          </fieldset>
         </div>
         <p id="resultSummary" class="result-summary"></p>
         <div id="videoGrid" class="video-grid" aria-live="polite"></div>

@@ -16,7 +16,10 @@ MAX_SITE_MEDIA_BYTES = 950 * 1024 * 1024
 MAX_CLIP_BYTES = 20 * 1024 * 1024
 MAX_CLIP_COUNT = 100
 MAX_CLIPS_BYTES = 700 * 1024 * 1024
-CLIP_PATH_PATTERN = re.compile(r"^clips/[A-Za-z0-9_-]{1,64}-short\.mp4$")
+CLIP_PATH_PATTERN = re.compile(
+    r"^clips/[A-Za-z0-9_-]{1,64}(?:-[a-z]{2,3}-[A-Z]{2,3})?-short\.mp4$"
+)
+LANGUAGE_PATTERN = re.compile(r"^[a-z]{2,3}-[A-Z]{2,3}$")
 
 
 def valid_clip_path(short):
@@ -24,9 +27,12 @@ def valid_clip_path(short):
     clip_path = short.get("clipPath", "")
     if not isinstance(clip_path, str):
         return False
+    language = short.get("language")
+    suffix = f"-{language}" if language else ""
     return (
         re.fullmatch(r"[A-Za-z0-9_-]{1,64}", video_id)
-        and clip_path == f"clips/{video_id}-short.mp4"
+        and (not language or LANGUAGE_PATTERN.fullmatch(language))
+        and clip_path == f"clips/{video_id}{suffix}-short.mp4"
         and CLIP_PATH_PATTERN.fullmatch(clip_path)
         and Path(clip_path).name == short.get("clipFile")
     )
@@ -86,23 +92,29 @@ def merge_archive(current, previous, now=None):
 
 def validate_site_media(catalog, site_dir):
     clips = catalog.get("shorts", [])
-    if len(clips) > MAX_CLIP_COUNT:
-        raise ValueError(f"Pages clip count exceeds {MAX_CLIP_COUNT}")
     total_clip_bytes = 0
-    clips_dir = Path(site_dir) / "clips"
+    file_count = 0
     for short in clips:
         if short.get("status") != "available":
             continue
-        path = short.get("clipPath", "")
-        if not valid_clip_path(short):
-            raise ValueError(f"Invalid clip path in archive: {path}")
-        clip = Path(site_dir) / path
-        if not clip.is_file():
-            raise ValueError(f"Referenced Pages clip is missing: {path}")
-        size = clip.stat().st_size
-        if size <= 0 or size > MAX_CLIP_BYTES:
-            raise ValueError(f"Clip size is outside the allowed range: {path}")
-        total_clip_bytes += size
+        assets = [short] + [
+            localization for localization in short.get("localizations", [])
+            if localization.get("status") == "available"
+        ]
+        for asset in assets:
+            path = asset.get("clipPath", "")
+            if not valid_clip_path({**asset, "videoId": short.get("videoId")}):
+                raise ValueError(f"Invalid clip path in archive: {path}")
+            clip = Path(site_dir) / path
+            if not clip.is_file():
+                raise ValueError(f"Referenced Pages clip is missing: {path}")
+            size = clip.stat().st_size
+            if size <= 0 or size > MAX_CLIP_BYTES:
+                raise ValueError(f"Clip size is outside the allowed range: {path}")
+            total_clip_bytes += size
+            file_count += 1
+    if file_count > MAX_CLIP_COUNT:
+        raise ValueError(f"Pages clip count exceeds {MAX_CLIP_COUNT}")
     if total_clip_bytes > MAX_CLIPS_BYTES:
         raise ValueError("Pages clips exceed the 700 MiB retention budget")
     site_bytes = sum(path.stat().st_size for path in Path(site_dir).rglob("*") if path.is_file())
@@ -112,30 +124,60 @@ def validate_site_media(catalog, site_dir):
 
 def filter_available_shorts(catalog, site_dir):
     site_dir = Path(site_dir)
-    retained = []
-    for short in catalog.get("shorts", []):
-        clip_path = short.get("clipPath", "")
-        if (
-            short.get("status") == "available"
-            and valid_clip_path(short)
-            and (site_dir / clip_path).is_file()
-        ):
-            retained.append(short)
+    retained = [
+        short for short in catalog.get("shorts", [])
+        if short.get("status") == "available" and valid_clip_path(short)
+        and (site_dir / short["clipPath"]).is_file()
+    ]
     retained.sort(key=lambda short: (short.get("createdAt") or "", short.get("videoId") or ""), reverse=True)
     accepted = []
     total_bytes = 0
+    file_count = 0
     for short in retained:
         clip = site_dir / short["clipPath"]
         size = clip.stat().st_size
         if (
-            len(accepted) >= MAX_CLIP_COUNT
+            size <= 0
             or size > MAX_CLIP_BYTES
+            or file_count >= MAX_CLIP_COUNT
             or total_bytes + size > MAX_CLIPS_BYTES
         ):
             clip.unlink()
+            for localization in short.get("localizations", []):
+                if not isinstance(localization, dict) or not valid_clip_path({
+                    **localization, "videoId": short.get("videoId"),
+                }):
+                    continue
+                (site_dir / localization["clipPath"]).unlink(missing_ok=True)
             continue
+        localizations = []
+        for localization in short.get("localizations", []):
+            if not isinstance(localization, dict):
+                continue
+            localization = {**localization, "videoId": short.get("videoId")}
+            if localization.get("status") in {"skipped", "failed"}:
+                if LANGUAGE_PATTERN.fullmatch(str(localization.get("language") or "")):
+                    localizations.append(localization)
+                continue
+            if localization.get("status") != "available" or not valid_clip_path(localization):
+                continue
+            locale_clip = site_dir / localization["clipPath"]
+            if not locale_clip.is_file():
+                continue
+            locale_size = locale_clip.stat().st_size
+            if (
+                locale_size <= 0 or locale_size > MAX_CLIP_BYTES
+                or file_count + 1 >= MAX_CLIP_COUNT
+                or total_bytes + size + locale_size > MAX_CLIPS_BYTES
+            ):
+                locale_clip.unlink()
+                continue
+            total_bytes += locale_size
+            file_count += 1
+            localizations.append({**localization, "clipBytes": locale_size})
         total_bytes += size
-        accepted.append({**short, "clipBytes": size})
+        file_count += 1
+        accepted.append({**short, "clipBytes": size, "localizations": localizations})
     catalog["shorts"] = accepted
     return catalog
 
@@ -166,7 +208,7 @@ def main():
         ARCHIVE_PATH.parent.mkdir(parents=True, exist_ok=True)
         archive_text = json.dumps(merged, ensure_ascii=False, indent=2) + "\n"
         if len(archive_text.encode("utf-8")) > MAX_ARCHIVE_BYTES:
-            raise ValueError("Pretty-printed metadata archive exceeds the 200 MiB safety limit")
+            raise ValueError("Pretty-printed metadata archive exceeds the 90 MiB safety limit")
         ARCHIVE_PATH.write_text(archive_text, encoding="utf-8")
         SITE_CATALOG_PATH.write_text(archive_text, encoding="utf-8")
         for temporary_catalog in (PREVIOUS_CATALOG_PATH, PRESERVED_CLIPS_PATH):

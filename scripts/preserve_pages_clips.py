@@ -13,7 +13,10 @@ MAX_CLIP_BYTES = 20 * 1024 * 1024
 MAX_TOTAL_CLIP_BYTES = 700 * 1024 * 1024
 MAX_CLIP_COUNT = 100
 MAX_CATALOG_BYTES = 90 * 1024 * 1024
-CLIP_PATH_PATTERN = re.compile(r"^clips/[A-Za-z0-9_-]{1,64}-short\.mp4$")
+CLIP_PATH_PATTERN = re.compile(
+    r"^clips/[A-Za-z0-9_-]{1,64}(?:-[a-z]{2,3}-[A-Z]{2,3})?-short\.mp4$"
+)
+LANGUAGE_PATTERN = re.compile(r"^[a-z]{2,3}-[A-Z]{2,3}$")
 
 
 def validate_base_url(value):
@@ -38,11 +41,14 @@ def read_limited_response(request, maximum_bytes, opener, timeout):
         if not final_host or not final_host.endswith(".github.io"):
             raise ValueError("Refused Pages redirect outside *.github.io")
         content_length = response.headers.get("Content-Length")
-        if content_length and int(content_length) > maximum_bytes:
+        expected_length = int(content_length) if content_length else None
+        if expected_length is not None and (expected_length < 0 or expected_length > maximum_bytes):
             raise ValueError(f"Response exceeds {maximum_bytes} bytes")
         data = response.read(maximum_bytes + 1)
     if len(data) > maximum_bytes:
         raise ValueError(f"Response exceeds {maximum_bytes} bytes")
+    if expected_length is not None and len(data) != expected_length:
+        raise ValueError("Response size does not match Content-Length")
     return data
 
 
@@ -60,7 +66,10 @@ def read_catalog(base_url, opener=urlopen):
         print("Prior Pages catalog exceeded the 20 MiB read limit; skipping preservation.", file=sys.stderr)
         return {}
     try:
-        return json.loads(raw)
+        catalog = json.loads(raw)
+        if not isinstance(catalog, dict):
+            raise ValueError("Catalog root is not an object")
+        return catalog
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         print(f"Prior Pages catalog is invalid; skipping preservation: {error}", file=sys.stderr)
         return {}
@@ -72,54 +81,97 @@ def preserve_clips(catalog, base_url, site_dir, opener=urlopen):
     clips_dir.mkdir(parents=True, exist_ok=True)
     output = []
     total_bytes = 0
+    file_count = 0
     attempted_downloads = 0
     entries = sorted(
         catalog.get("shorts", []),
         key=lambda short: short.get("createdAt", ""),
         reverse=True,
     )
+    seen_video_ids = set()
     for short in entries:
         if short.get("status") != "available":
             continue
-        clip_path = short.get("clipPath", "")
-        if not isinstance(clip_path, str):
+        video_id = str(short.get("videoId") or "")
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", video_id):
             continue
-        match = CLIP_PATH_PATTERN.fullmatch(clip_path)
-        if not match or short.get("clipFile") != Path(clip_path).name:
+        if video_id in seen_video_ids:
             continue
-        video_id = Path(clip_path).stem.removesuffix("-short")
-        if short.get("videoId") != video_id:
+        seen_video_ids.add(video_id)
+
+        def restore_asset(asset, language=None):
+            nonlocal total_bytes, file_count, attempted_downloads
+            if file_count >= MAX_CLIP_COUNT:
+                return None
+            if not isinstance(asset, dict):
+                return None
+            suffix = f"-{language}" if language else ""
+            clip_path = asset.get("clipPath", "")
+            expected_path = f"clips/{video_id}{suffix}-short.mp4"
+            if (
+                not isinstance(clip_path, str)
+                or not CLIP_PATH_PATTERN.fullmatch(clip_path)
+                or clip_path != expected_path
+                or asset.get("clipFile") != Path(clip_path).name
+                or (language and not LANGUAGE_PATTERN.fullmatch(language))
+            ):
+                return None
+            existing = site_dir / clip_path
+            if existing.is_file():
+                size = existing.stat().st_size
+                with existing.open("rb") as clip_file:
+                    header = clip_file.read(12)
+                if size <= 0 or size > MAX_CLIP_BYTES or len(header) < 12 or header[4:8] != b"ftyp":
+                    existing.unlink()
+                    return None
+            else:
+                if attempted_downloads >= MAX_CLIP_COUNT:
+                    return None
+                url = f"{base_url}/{clip_path}"
+                request = Request(url, headers={"User-Agent": "OpenVideoCatalog/1.0"})
+                attempted_downloads += 1
+                try:
+                    data = read_limited_response(request, MAX_CLIP_BYTES, opener, timeout=45)
+                except (HTTPError, URLError, TimeoutError, OSError, ValueError) as error:
+                    print(f"Could not preserve {clip_path}: {error}", file=sys.stderr)
+                    return None
+                if not data or len(data) < 12 or data[4:8] != b"ftyp":
+                    print(f"Skipping {clip_path}: response is not a valid MP4 file.", file=sys.stderr)
+                    return None
+                size = len(data)
+                if total_bytes + size > MAX_TOTAL_CLIP_BYTES:
+                    return None
+                existing.parent.mkdir(parents=True, exist_ok=True)
+                existing.write_bytes(data)
+            if total_bytes + size > MAX_TOTAL_CLIP_BYTES:
+                existing.unlink(missing_ok=True)
+                return None
+            total_bytes += size
+            file_count += 1
+            return {**asset, "clipBytes": size}
+
+        main_clip = restore_asset(short)
+        if not main_clip:
             continue
-        existing = site_dir / clip_path
-        if existing.is_file() and existing.stat().st_size <= MAX_CLIP_BYTES:
-            size = existing.stat().st_size
-        elif existing.is_file():
-            existing.unlink()
-            continue
-        else:
-            if len(output) >= MAX_CLIP_COUNT or attempted_downloads >= MAX_CLIP_COUNT:
+        localizations = []
+        for localization in short.get("localizations", []):
+            if not isinstance(localization, dict) or localization.get("status") != "available":
+                if (
+                    isinstance(localization, dict)
+                    and localization.get("status") in {"skipped", "failed"}
+                    and LANGUAGE_PATTERN.fullmatch(str(localization.get("language") or ""))
+                ):
+                    localizations.append(localization)
                 continue
-            url = f"{base_url}/{clip_path}"
-            request = Request(url, headers={"User-Agent": "OpenVideoCatalog/1.0"})
-            attempted_downloads += 1
-            try:
-                data = read_limited_response(request, MAX_CLIP_BYTES, opener, timeout=45)
-            except (HTTPError, URLError, TimeoutError, OSError, ValueError) as error:
-                print(f"Could not preserve {clip_path}: {error}", file=sys.stderr)
-                continue
-            if not data or len(data) < 12 or data[4:8] != b"ftyp":
-                print(f"Skipping {clip_path}: response is not a valid MP4 file.", file=sys.stderr)
-                continue
-            if total_bytes + len(data) > MAX_TOTAL_CLIP_BYTES:
-                continue
-            existing.parent.mkdir(parents=True, exist_ok=True)
-            existing.write_bytes(data)
-            size = len(data)
-        if size <= 0 or size > MAX_CLIP_BYTES or total_bytes + size > MAX_TOTAL_CLIP_BYTES:
-            existing.unlink(missing_ok=True)
-            continue
-        total_bytes += size
-        output.append({**short, "clipBytes": size})
+            language = localization.get("language")
+            restored = restore_asset(localization, language)
+            if restored:
+                localizations.append(restored)
+        output.append({
+            **short,
+            **main_clip,
+            "localizations": localizations,
+        })
     print(f"Preserved {len(output)} clips ({total_bytes} bytes) for the Pages site.")
     return output
 
@@ -147,6 +199,8 @@ def main():
     if archive_path.is_file():
         try:
             archived = json.loads(archive_path.read_text(encoding="utf-8"))
+            if not isinstance(archived, dict):
+                raise ValueError("Archive root is not an object")
             seen = {short.get("videoId") for short in catalog.get("shorts", [])}
             catalog["shorts"] = list(catalog.get("shorts", [])) + [
                 short for short in archived.get("shorts", [])

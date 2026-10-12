@@ -24,6 +24,56 @@ on:
         required: true
         default: false
         type: boolean
+      style_reference_url:
+        description: Optional YouTube example; only English caption pacing is analyzed, never the video file
+        required: false
+        type: string
+      style_reference_authorized:
+        description: I own this example or have permission to use its caption pacing as a style reference
+        required: true
+        default: false
+        type: boolean
+      short_style:
+        description: Caption/highlight style template
+        required: false
+        default: auto-hook
+        type: choice
+        options:
+          - auto-hook
+          - bold-captions
+          - clean-captions
+          - match-example
+          - stock-broll
+      short_languages:
+        description: Optional comma-separated locales for translated captions and narration (max 4)
+        required: false
+        type: string
+      tts_voice_overrides:
+        description: Optional locale=AzureVoice pairs (for example es-ES=es-ES-ElviraNeural)
+        required: false
+        type: string
+      add_pexels_broll:
+        description: Search and overlay one Pexels-licensed B-roll shot (requires PEXELS_API_KEY)
+        required: false
+        default: false
+        type: boolean
+      publish_to:
+        description: Optional comma-separated platforms (youtube,tiktok,instagram,facebook,x)
+        required: false
+        type: string
+      publish_languages:
+        description: Optional comma-separated localized assets to publish (default publishes all generated languages)
+        required: false
+        type: string
+      publish_privacy:
+        description: Visibility requested where the platform supports it
+        required: false
+        default: unlisted
+        type: choice
+        options:
+          - unlisted
+          - private
+          - public
 
 permissions:
   contents: write
@@ -45,6 +95,14 @@ jobs:
       CLIP_AUTHORIZED: ${{ inputs.clip_authorized }}
       ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
+      SHORT_LANGUAGES: ${{ inputs.short_languages || '' }}
+      TTS_VOICE_OVERRIDES: ${{ inputs.tts_voice_overrides || '' }}
+      SHORT_STYLE: ${{ inputs.short_style || 'auto-hook' }}
+      STYLE_REFERENCE_URL: ${{ inputs.style_reference_url || '' }}
+      STYLE_REFERENCE_AUTHORIZED: ${{ inputs.style_reference_authorized }}
+      ENABLE_PEXELS_BROLL: ${{ inputs.add_pexels_broll || inputs.short_style == 'stock-broll' }}
+    outputs:
+      clip_created: ${{ steps.shorts.outputs.clip_created }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,6 +114,9 @@ jobs:
 
       - name: Run standard-library tests
         run: python -m unittest discover -s tests -v
+
+      - name: Run client interaction tests
+        run: node --test tests/app.test.js
 
       - name: Install yt-dlp
         run: python -m pip install --disable-pip-version-check yt-dlp
@@ -87,6 +148,10 @@ jobs:
         continue-on-error: true
         env:
           SHORTS_OUTPUT_DIR: ${{ github.workspace }}/site/clips
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python scripts/create_short.py
 
       - name: Merge durable video history and enforce Pages media limits
@@ -122,3 +187,39 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  publish:
+    needs: [build, deploy]
+    if: ${{ needs.build.outputs.clip_created == 'true' && inputs.publish_to != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Publish selected assets through official APIs
+        env:
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
+          SHORT_VIDEO_URL: ${{ inputs.short_video_url }}
+          PUBLISH_PLATFORMS: ${{ inputs.publish_to }}
+          PUBLISH_LANGUAGES: ${{ inputs.publish_languages || '' }}
+          PUBLISH_PRIVACY: ${{ inputs.publish_privacy || 'unlisted' }}
+          YT_OAUTH_CLIENT_ID: ${{ secrets.YT_OAUTH_CLIENT_ID }}
+          YT_OAUTH_CLIENT_SECRET: ${{ secrets.YT_OAUTH_CLIENT_SECRET }}
+          YT_OAUTH_REFRESH_TOKEN: ${{ secrets.YT_OAUTH_REFRESH_TOKEN }}
+          TIKTOK_ACCESS_TOKEN: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          META_GRAPH_API_VERSION: ${{ vars.META_GRAPH_API_VERSION || 'v22.0' }}
+        run: python scripts/publish_short.py

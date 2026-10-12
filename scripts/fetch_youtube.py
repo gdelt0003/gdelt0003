@@ -63,6 +63,7 @@ def parse_entries(stdout, source_url):
         videos.append({
             "id": video_id or video_url,
             "title": entry.get("title") or "Untitled video",
+            "description": entry.get("description") or "",
             "author": entry.get("channel") or entry.get("uploader") or "YouTube",
             "duration": entry.get("duration_string") or "",
             "durationSeconds": entry.get("duration"),

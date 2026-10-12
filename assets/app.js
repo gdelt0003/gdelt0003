@@ -18,6 +18,20 @@
     pagination: document.getElementById('pagination'),
     sourceDetails: document.getElementById('sourceDetails'),
     sourceList: document.getElementById('sourceList'),
+    searchMode: document.getElementById('searchMode'),
+    sourceFilter: document.getElementById('sourceFilter'),
+    searchFields: [...document.querySelectorAll('input[name="searchField"]')],
+    workflowVideoUrl: document.getElementById('workflowVideoUrl'),
+    workflowLanguages: document.getElementById('workflowLanguages'),
+    workflowDuration: document.getElementById('workflowDuration'),
+    workflowStyle: document.getElementById('workflowStyle'),
+    workflowExampleUrl: document.getElementById('workflowExampleUrl'),
+    workflowPrivacy: document.getElementById('workflowPrivacy'),
+    workflowBroll: document.getElementById('workflowBroll'),
+    workflowPlatforms: [...document.querySelectorAll('input[name="workflowPlatform"]')],
+    prepareWorkflow: document.getElementById('prepareWorkflowBtn'),
+    copyWorkflowSettings: document.getElementById('copyWorkflowSettingsBtn'),
+    workflowSettings: document.getElementById('workflowSettings'),
   };
   let videos = [];
   let sourceStatuses = [];
@@ -121,6 +135,9 @@
     title.append(titleLink);
     info.append(title);
     info.append(createElement('p', 'video-author', video.author || 'YouTube'));
+    if (video.description) {
+      info.append(createElement('p', 'video-description', video.description));
+    }
 
     const meta = createElement('div', 'video-meta');
     if (video.uploadDate) {
@@ -170,6 +187,62 @@
           downloadLink.download = short.clipFile;
           derivative.append(downloadLink);
         }
+        const localizations = Array.isArray(short.localizations)
+          ? short.localizations.filter(localization =>
+            /^[A-Za-z0-9_-]{1,64}$/.test(String(video.id || '')) &&
+            /^[a-z]{2,3}-[A-Z]{2,3}$/.test(localization.language || '') &&
+            (localization.status !== 'available' ||
+              (localization.clipPath === `clips/${video.id}-${localization.language}-short.mp4` &&
+                localization.clipFile === localization.clipPath.split('/').pop())))
+          : [];
+        for (const localization of localizations) {
+          const locale = createElement('div', 'localized-short');
+          if (localization.status !== 'available') {
+            locale.append(createElement(
+              'p',
+              'derivative-meta',
+              `${localization.language}: ${localization.status} — ${localization.error || 'localized asset unavailable'}`,
+            ));
+            derivative.append(locale);
+            continue;
+          }
+          locale.append(createElement(
+            'p',
+            'derivative-title',
+            `${localization.language} voice · ${localization.voice || 'Azure Speech'}`,
+          ));
+          const localePlayer = createElement('video', 'short-player');
+          localePlayer.src = localization.clipPath;
+          localePlayer.controls = true;
+          localePlayer.preload = 'none';
+          localePlayer.playsInline = true;
+          localePlayer.setAttribute('aria-label', `${localization.language} version from ${video.title || 'original video'}`);
+          locale.append(localePlayer);
+          const localeDownload = createElement('a', 'short-download', `Download ${localization.language} version`);
+          localeDownload.href = localization.clipPath;
+          localeDownload.download = localization.clipFile;
+          locale.append(localeDownload);
+          derivative.append(locale);
+        }
+        if (short.broll && short.broll.status === 'available') {
+          const attribution = createElement('p', 'derivative-meta');
+          attribution.append(createElement(
+            'span',
+            '',
+            `B-roll: ${short.broll.photographer || 'Pexels contributor'} · `,
+          ));
+          const attributionUrl = safeUrl(short.broll.attributionUrl, ['pexels.com']);
+          if (attributionUrl) {
+            const attributionLink = createElement('a', 'source-link', 'Pexels attribution');
+            attributionLink.href = attributionUrl;
+            attributionLink.target = '_blank';
+            attributionLink.rel = 'noopener noreferrer';
+            attribution.append(attributionLink);
+          } else {
+            attribution.append(createElement('span', '', 'Pexels license'));
+          }
+          derivative.append(attribution);
+        }
         derivative.append(createElement(
           'p',
           'derivative-note',
@@ -218,11 +291,24 @@
 
   function render() {
     const query = elements.search.value.trim().toLocaleLowerCase();
-    const filtered = videos.filter(video =>
-      [video.title, video.author, video.source]
-        .filter(Boolean)
-        .some(value => String(value).toLocaleLowerCase().includes(query)),
-    );
+    const terms = query.split(/\s+/u).filter(Boolean);
+    const selectedFields = elements.searchFields.filter(field => field.checked).map(field => field.value);
+    const filtered = videos.filter(video => {
+      if (elements.sourceFilter.value && video.source !== elements.sourceFilter.value) return false;
+      if (!terms.length) return true;
+      if (!selectedFields.length) return false;
+      const searchValues = selectedFields.map(field => {
+        if (field === 'source') return video.source || '';
+        if (field === 'author') return video.author || '';
+        if (field === 'description') return video.description || '';
+        return `${video.title || ''} ${video.id || ''} ${relatedShort(video)?.clipTitle || ''}`;
+      }).map(value => String(value).toLocaleLowerCase());
+      const searchText = searchValues.join(' ');
+      const matches = term => searchText.includes(term);
+      return elements.searchMode.value === 'or'
+        ? terms.some(matches)
+        : terms.every(matches);
+    });
     const totalPages = Math.max(1, Math.ceil(filtered.length / VIDEO_PAGE_SIZE));
     page = Math.min(page, totalPages);
     const start = (page - 1) * VIDEO_PAGE_SIZE;
@@ -279,6 +365,53 @@
     }
   }
 
+  function renderSourceOptions() {
+    const selected = elements.sourceFilter.value;
+    const sources = [...new Set(videos.map(video => video.source).filter(Boolean))].sort();
+    elements.sourceFilter.replaceChildren(createElement('option', '', 'All sources'));
+    for (const source of sources) {
+      const option = createElement('option', '', source);
+      option.value = source;
+      elements.sourceFilter.append(option);
+    }
+    if (sources.includes(selected)) elements.sourceFilter.value = selected;
+  }
+
+  function writeQueryToUrl() {
+    const params = new URLSearchParams(location.search);
+    if (elements.search.value.trim()) params.set('q', elements.search.value.trim());
+    else params.delete('q');
+    if (elements.searchMode.value !== 'and') params.set('mode', elements.searchMode.value);
+    else params.delete('mode');
+    if (elements.sourceFilter.value) params.set('source', elements.sourceFilter.value);
+    else params.delete('source');
+    const selectedFields = elements.searchFields.filter(field => field.checked).map(field => field.value);
+    if (selectedFields.length !== elements.searchFields.length) params.set('fields', selectedFields.join(','));
+    else params.delete('fields');
+    const query = params.toString();
+    history.replaceState(null, '', query ? `?${query}` : location.pathname);
+  }
+
+  function prepareWorkflowSettings() {
+    const platforms = elements.workflowPlatforms.filter(input => input.checked).map(input => input.value);
+    const lines = [
+      'short_video_url: ' + (elements.workflowVideoUrl.value.trim() || '(paste an authorized YouTube video URL)'),
+      'clip_authorized: confirm manually in Actions (required)',
+      'short_languages: ' + (elements.workflowLanguages.value.trim() || '(optional, e.g. es-ES,fr-FR)'),
+      'clip_duration_seconds: ' + (elements.workflowDuration.value || '45'),
+      'short_style: ' + elements.workflowStyle.value,
+      'style_reference_url: ' + (elements.workflowExampleUrl.value.trim() || '(optional)'),
+      'style_reference_authorized: confirm manually if an example URL is provided',
+      'add_pexels_broll: ' + String(elements.workflowBroll.checked),
+      'publish_to: ' + (platforms.join(',') || '(none)'),
+      'publish_languages: ' + (elements.workflowLanguages.value.trim() || '(all available localized versions)'),
+      'publish_privacy: ' + elements.workflowPrivacy.value,
+    ];
+    elements.workflowSettings.value = lines.join('\n');
+    elements.workflowSettings.focus();
+    elements.workflowSettings.select();
+  }
+
   async function loadCatalog() {
     elements.status.textContent = 'Loading catalog…';
     elements.refresh.disabled = true;
@@ -294,7 +427,18 @@
       shorts = Array.isArray(catalog.shorts) ? catalog.shorts : [];
       generatedAt = catalog.generatedAt || '';
       elements.search.value = new URLSearchParams(location.search).get('q') || '';
+      const params = new URLSearchParams(location.search);
+      elements.searchMode.value = params.get('mode') === 'or' ? 'or' : 'and';
+      const requestedFields = params.get('fields');
+      if (requestedFields) {
+        const fields = new Set(requestedFields.split(','));
+        elements.searchFields.forEach(field => { field.checked = fields.has(field.value); });
+      } else {
+        elements.searchFields.forEach(field => { field.checked = true; });
+      }
       page = 1;
+      renderSourceOptions();
+      elements.sourceFilter.value = params.get('source') || '';
       renderSourceStatuses();
       render();
     } catch (error) {
@@ -314,12 +458,35 @@
 
   elements.search.addEventListener('input', () => {
     page = 1;
-    const params = new URLSearchParams(location.search);
-    if (elements.search.value.trim()) params.set('q', elements.search.value.trim());
-    else params.delete('q');
-    const query = params.toString();
-    history.replaceState(null, '', query ? `?${query}` : location.pathname);
+    writeQueryToUrl();
     render();
+  });
+  elements.searchMode.addEventListener('change', () => {
+    page = 1;
+    writeQueryToUrl();
+    render();
+  });
+  elements.sourceFilter.addEventListener('change', () => {
+    page = 1;
+    writeQueryToUrl();
+    render();
+  });
+  elements.searchFields.forEach(field => field.addEventListener('change', () => {
+    page = 1;
+    writeQueryToUrl();
+    render();
+  }));
+  elements.prepareWorkflow.addEventListener('click', prepareWorkflowSettings);
+  elements.copyWorkflowSettings.addEventListener('click', async () => {
+    if (!elements.workflowSettings.value) prepareWorkflowSettings();
+    try {
+      await navigator.clipboard.writeText(elements.workflowSettings.value);
+      elements.status.textContent = 'Workflow settings copied; confirm media rights in GitHub Actions.';
+    } catch {
+      elements.workflowSettings.focus();
+      elements.workflowSettings.select();
+      elements.status.textContent = 'Settings selected; copy them into the GitHub Actions form.';
+    }
   });
   elements.refresh.addEventListener('click', loadCatalog);
   loadCatalog();

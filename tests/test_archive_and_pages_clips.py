@@ -78,6 +78,28 @@ class ArchiveTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         archive.validate_site_media(catalog, site)
 
+    def test_valid_localized_assets_share_the_same_site_budgets(self):
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            clips = site / "clips"
+            clips.mkdir()
+            (clips / "clip001-short.mp4").write_bytes(b"valid-placeholder")
+            (clips / "clip001-es-ES-short.mp4").write_bytes(b"valid-localized")
+            catalog = {"shorts": [{
+                "videoId": "clip001",
+                "clipPath": "clips/clip001-short.mp4",
+                "clipFile": "clip001-short.mp4",
+                "status": "available",
+                "localizations": [{
+                    "videoId": "clip001",
+                    "language": "es-ES",
+                    "clipPath": "clips/clip001-es-ES-short.mp4",
+                    "clipFile": "clip001-es-ES-short.mp4",
+                    "status": "available",
+                }],
+            }]}
+            archive.validate_site_media(catalog, site)
+
 
 class FakeResponse(io.BytesIO):
     def __init__(self, data, url, headers=None):
@@ -155,6 +177,37 @@ class PagesClipRestoreTests(unittest.TestCase):
             self.assertEqual(restored[0]["clipBytes"], len(mp4))
         self.assertEqual(opener.call_count, 1)
         self.assertEqual(opener.call_args.kwargs["timeout"], 45)
+
+    def test_restore_carries_localized_files_within_shared_budget(self):
+        base_url = "https://gdelt0003.github.io/repo"
+        base_mp4 = b"\x00\x00\x00\x18ftypisom\x00\x00\x00\x00"
+        locale_mp4 = b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00"
+        opener = Mock(side_effect=[
+            FakeResponse(base_mp4, f"{base_url}/clips/clip001-short.mp4",
+                         {"Content-Length": str(len(base_mp4))}),
+            FakeResponse(locale_mp4, f"{base_url}/clips/clip001-es-ES-short.mp4",
+                         {"Content-Length": str(len(locale_mp4))}),
+        ])
+        catalog = {"shorts": [{
+            "videoId": "clip001",
+            "clipPath": "clips/clip001-short.mp4",
+            "clipFile": "clip001-short.mp4",
+            "status": "available",
+            "localizations": [{
+                "language": "es-ES",
+                "clipPath": "clips/clip001-es-ES-short.mp4",
+                "clipFile": "clip001-es-ES-short.mp4",
+                "status": "available",
+            }],
+        }]}
+        with tempfile.TemporaryDirectory() as directory:
+            restored = preserve.preserve_clips(catalog, base_url, directory, opener=opener)
+            self.assertEqual(
+                (Path(directory) / "clips" / "clip001-es-ES-short.mp4").read_bytes(),
+                locale_mp4,
+            )
+        self.assertEqual(len(restored[0]["localizations"]), 1)
+        self.assertEqual(opener.call_count, 2)
 
     def test_restore_refuses_mismatched_video_id_before_network_access(self):
         opener = Mock()

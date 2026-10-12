@@ -32,6 +32,12 @@ HOOK_TERMS = {
     "reveal", "surprise", "today", "why", "what", "how",
 }
 LOW_VALUE_TERMS = {"intro", "introduction", "welcome", "opening", "outro", "closing", "conclusion"}
+SUBTITLE_STYLES = {
+    "auto-hook": "FontName=DejaVu Sans,FontSize=22,Outline=2,Shadow=1,Alignment=2,MarginV=120",
+    "bold-captions": "FontName=DejaVu Sans,FontSize=30,Bold=1,Outline=4,Shadow=1,Alignment=2,MarginV=160",
+    "clean-captions": "FontName=DejaVu Sans,FontSize=21,Outline=1,Shadow=0,Alignment=2,MarginV=120",
+}
+STYLE_PRESETS = {*SUBTITLE_STYLES, "match-example", "stock-broll"}
 
 
 class ShortCreationError(Exception):
@@ -235,7 +241,7 @@ def run_checked(command, *, timeout):
 def discover_video(directory):
     candidates = [
         path for path in directory.iterdir()
-        if path.is_file() and path.name.startswith("source.")
+        if path.is_file() and path.name.startswith("source.") and path.suffix.lower() not in {".vtt", ".srt"}
     ]
     if len(candidates) != 1:
         raise ShortCreationError("Could not identify the downloaded source video")
@@ -244,33 +250,93 @@ def discover_video(directory):
     return candidates[0]
 
 
-def make_clip(source_path, output_path, segment, subtitles_path=None):
+def _audio_tempo_filter(audio_path, duration_seconds):
+    result = run_checked([
+        "ffprobe", "-v", "error", "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1", str(audio_path),
+    ], timeout=20)
+    try:
+        source_duration = float(result.stdout.strip())
+    except ValueError as error:
+        raise ShortCreationError("Could not determine narration audio duration") from error
+    if source_duration <= 0 or duration_seconds <= 0:
+        raise ShortCreationError("Narration audio or clip duration is invalid")
+    tempo = source_duration / duration_seconds
+    filters = []
+    while tempo > 2:
+        filters.append("atempo=2")
+        tempo /= 2
+    while tempo < 0.5:
+        filters.append("atempo=0.5")
+        tempo /= 0.5
+    filters.append(f"atempo={tempo:.5f}")
+    return ",".join(filters) + f",apad,atrim=0:{duration_seconds}"
+
+
+def make_clip(
+    source_path, output_path, segment, subtitles_path=None, narration_path=None,
+    broll_path=None, style_preset="auto-hook",
+):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     subtitle_filter = ""
     if subtitles_path:
+        style = SUBTITLE_STYLES.get(style_preset, SUBTITLE_STYLES["auto-hook"])
         subtitle_filter = (
             f",subtitles='{subtitles_path.as_posix()}':"
-            "force_style='FontName=DejaVu Sans,FontSize=22,Outline=2,Shadow=1,Alignment=2,MarginV=120'"
+            f"force_style='{style}'"
         )
     filter_graph = (
         "[0:v]split=2[bg][fg];"
         "[bg]scale=1080:1920:force_original_aspect_ratio=increase,"
         "crop=1080:1920,boxblur=20:10[bg];"
         "[fg]scale=1080:1920:force_original_aspect_ratio=decrease[fg];"
-        f"[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30{subtitle_filter}[v]"
+        f"[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30{subtitle_filter}[base]"
     )
-    run_checked([
+    command = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-        "-ss", str(segment["startSeconds"]),
-        "-i", str(source_path),
+        "-ss", str(segment["startSeconds"]), "-i", str(source_path),
+    ]
+    next_input = 1
+    broll_input = None
+    narration_input = None
+    if broll_path:
+        broll_input = next_input
+        next_input += 1
+        command.extend(["-stream_loop", "-1", "-i", str(broll_path)])
+    if narration_path:
+        narration_input = next_input
+        command.extend(["-i", str(narration_path)])
+    if broll_input is not None:
+        filter_graph += (
+            f";[{broll_input}:v]scale=360:640:force_original_aspect_ratio=increase,"
+            "crop=360:640,setsar=1[broll];"
+            "[base][broll]overlay=W-w-24:24:enable='between(t,8,18)'[v]"
+        )
+    else:
+        filter_graph += ";[base]null[v]"
+    command.extend([
         "-t", str(segment["durationSeconds"]),
         "-filter_complex", filter_graph,
-        "-map", "[v]", "-map", "0:a?",
+        "-map", "[v]",
+    ])
+    if narration_input is not None:
+        command.extend([
+            "-map", f"{narration_input}:a:0",
+            "-af", _audio_tempo_filter(narration_path, segment["durationSeconds"]),
+        ])
+    else:
+        command.extend(["-map", "0:a?"])
+    command.extend([
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "25",
-        "-maxrate", "4500k", "-bufsize", "9000k",
+        "-maxrate", "2000k", "-bufsize", "4000k",
         "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
         "-movflags", "+faststart", str(output_path),
-    ], timeout=600)
+    ])
+    try:
+        run_checked(command, timeout=600)
+    except ShortCreationError:
+        output_path.unlink(missing_ok=True)
+        raise
     if not output_path.is_file() or output_path.stat().st_size == 0:
         raise ShortCreationError("ffmpeg did not produce a clip")
     if output_path.stat().st_size > MAX_OUTPUT_BYTES:
@@ -278,8 +344,33 @@ def make_clip(source_path, output_path, segment, subtitles_path=None):
         raise ShortCreationError("Generated clip exceeds the 20 MiB Pages per-clip limit")
 
 
-def create_short(video_url, clip_seconds, clip_dir, run_url):
+def infer_style_from_reference(reference_url, scratch_dir):
+    validate_video_url(reference_url)
+    reference_dir = Path(scratch_dir) / "style-reference"
+    reference_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        run_checked([
+            "yt-dlp", "--no-warnings", "--skip-download", "--no-playlist",
+            "--write-subs", "--write-auto-subs", "--sub-langs", "en",
+            "--sub-format", "vtt", "--socket-timeout", "20", "--retries", "1",
+            "-o", str(reference_dir / "reference.%(ext)s"), reference_url,
+        ], timeout=90)
+    except ShortCreationError as error:
+        print(f"Style reference captions unavailable; using clean-captions: {error}", file=sys.stderr)
+        return "clean-captions"
+    cues = []
+    for subtitle_file in reference_dir.glob("reference*.vtt"):
+        cues.extend(parse_webvtt(subtitle_file.read_text(encoding="utf-8", errors="replace")))
+    if not cues:
+        return "clean-captions"
+    average_words = sum(len(re.findall(r"[\w']+", cue["text"])) for cue in cues) / len(cues)
+    return "bold-captions" if average_words <= 6 else "clean-captions"
+
+
+def create_short(video_url, clip_seconds, clip_dir, run_url, style_reference_url="", style_preset="auto-hook"):
     validate_video_url(video_url)
+    if style_preset not in STYLE_PRESETS:
+        raise ValueError(f"Unsupported short style: {style_preset}")
     if not MIN_CLIP_SECONDS <= clip_seconds <= MAX_CLIP_SECONDS:
         raise ValueError(f"Clip duration must be between {MIN_CLIP_SECONDS} and {MAX_CLIP_SECONDS} seconds")
     metadata_result = run_checked([
@@ -301,6 +392,12 @@ def create_short(video_url, clip_seconds, clip_dir, run_url):
 
     with tempfile.TemporaryDirectory(prefix="source-") as temporary:
         download_dir = Path(temporary)
+        resolved_style = style_preset
+        if style_preset == "match-example":
+            resolved_style = (
+                infer_style_from_reference(style_reference_url, download_dir)
+                if style_reference_url else "clean-captions"
+            )
         try:
             run_checked([
                 "yt-dlp", "--no-warnings", "--no-playlist", "--skip-download",
@@ -332,12 +429,61 @@ def create_short(video_url, clip_seconds, clip_dir, run_url):
         source_path = discover_video(download_dir)
         filename = f"{video_id}-short.mp4"
         output_path = clip_dir / filename
-        make_clip(source_path, output_path, segment, srt_path if captions_available else None)
+        broll_path = None
+        broll = {"status": "skipped", "reason": "B-roll is disabled"}
+        if os.environ.get("ENABLE_PEXELS_BROLL", "").strip().lower() == "true":
+            pexels_key = os.environ.get("PEXELS_API_KEY", "").strip()
+            if not pexels_key:
+                broll = {"status": "skipped", "reason": "PEXELS_API_KEY is not configured"}
+            else:
+                try:
+                    from media_enhancements import EnhancementError, download_pexels_broll
+
+                    broll_path = download_dir / "licensed-broll.mp4"
+                    broll = {
+                        "status": "available",
+                        **download_pexels_broll(
+                            segment.get("clipTitle") or metadata.get("title") or "video",
+                            pexels_key,
+                            broll_path,
+                        ),
+                    }
+                except (OSError, ValueError, EnhancementError) as error:
+                    broll = {"status": "failed", "reason": str(error)[:400]}
+                    print(f"B-roll skipped: {error}", file=sys.stderr)
+        make_clip(
+            source_path,
+            output_path,
+            segment,
+            srt_path if captions_available else None,
+            broll_path=broll_path,
+            style_preset=resolved_style,
+        )
         if captions_available:
             (clip_dir / f"{video_id}-captions.srt").write_text(
                 srt_path.read_text(encoding="utf-8"),
                 encoding="utf-8",
             )
+        from media_enhancements import EnhancementError, create_localizations
+
+        def create_localized_clip(*args):
+            try:
+                make_clip(*args)
+            except ShortCreationError as error:
+                raise EnhancementError(str(error)) from error
+
+        localizations = create_localizations(
+            source_path,
+            cues if captions_available else [],
+            segment,
+            video_id,
+            clip_dir,
+            download_dir,
+            broll_path,
+            resolved_style,
+            create_localized_clip,
+            write_srt,
+        )
 
     return {
         "videoId": video_id,
@@ -351,6 +497,10 @@ def create_short(video_url, clip_seconds, clip_dir, run_url):
         "clipFile": filename,
         "clipPath": f"clips/{filename}",
         "clipBytes": output_path.stat().st_size,
+        "stylePreset": resolved_style,
+        "styleReferenceUrl": style_reference_url,
+        "localizations": localizations,
+        "broll": broll,
         **segment,
         "status": "available",
         "captions": "English captions burned in" if captions_available else "No English captions available",
@@ -371,6 +521,14 @@ def require_clip_authorization(value):
         raise ShortCreationError(
             "Refused: confirm you own this video or are authorized to edit it; "
             "no metadata or subtitle request for this clip and no source-video download was made."
+        )
+
+
+def require_style_reference_authorization(reference_url, value):
+    if reference_url and str(value).strip().lower() != "true":
+        raise ShortCreationError(
+            "Refused: confirm authorization to use the example's caption style; "
+            "no request was made for the example video."
         )
 
 
@@ -404,14 +562,30 @@ def update_catalog(catalog, short):
 def main():
     video_url = os.environ.get("SHORT_VIDEO_URL", "").strip()
     run_url = os.environ.get("ACTIONS_RUN_URL", "").strip()
+    style_reference_url = os.environ.get("STYLE_REFERENCE_URL", "").strip()
     clip_dir = Path(os.environ.get(
         "SHORTS_OUTPUT_DIR",
         str(Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "derived-shorts"),
     ))
     try:
         require_clip_authorization(os.environ.get("CLIP_AUTHORIZED", "false"))
+        require_style_reference_authorization(
+            style_reference_url,
+            os.environ.get("STYLE_REFERENCE_AUTHORIZED", "false"),
+        )
+        from media_enhancements import parse_languages, parse_voice_overrides
+
+        parse_languages(os.environ.get("SHORT_LANGUAGES", ""))
+        parse_voice_overrides(os.environ.get("TTS_VOICE_OVERRIDES", ""))
         clip_seconds = int(os.environ.get("CLIP_DURATION_SECONDS", "45"))
-        short = create_short(video_url, clip_seconds, clip_dir, run_url)
+        short = create_short(
+            video_url,
+            clip_seconds,
+            clip_dir,
+            run_url,
+            style_reference_url=style_reference_url,
+            style_preset=os.environ.get("SHORT_STYLE", "auto-hook"),
+        )
         status = 0
         write_output("clip_created", "true")
         print(f"Created {short['clipFile']}: {short['selectionReason']}")
