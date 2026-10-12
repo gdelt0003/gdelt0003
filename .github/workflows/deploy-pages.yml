@@ -15,6 +15,11 @@ on:
         type: boolean
         required: false
         default: false
+      download_same_clip:
+        description: Test the exact local yt-dlp section-download command on oW-PQlgw1wo
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -141,9 +146,60 @@ jobs:
             --clobber
         shell: bash
 
+  download-same-clip:
+    if: github.event_name == 'workflow_dispatch' && inputs.download_same_clip
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Setup Node.js for yt-dlp
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install yt-dlp and ffmpeg
+        run: |
+          python -m pip install --upgrade yt-dlp
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          yt-dlp --version
+          ffmpeg -version
+
+      - name: Download the same highlight with the local command
+        run: |
+          mkdir -p "$RUNNER_TEMP/whitehouse-clip"
+          yt-dlp \
+            --no-warnings \
+            --download-sections '*723.2-779.0' \
+            --force-keyframes-at-cuts \
+            --merge-output-format mp4 \
+            -f 'bestvideo[height>=1080]+bestaudio/best[height>=1080]/bestvideo+bestaudio/best' \
+            -o "$RUNNER_TEMP/whitehouse-clip/arsenal-production.mp4" \
+            'https://www.youtube.com/watch?v=oW-PQlgw1wo'
+          test -s "$RUNNER_TEMP/whitehouse-clip/arsenal-production.mp4"
+          ffprobe -v error -show_entries format=duration \
+            -of default=noprint_wrappers=1:nokey=1 \
+            "$RUNNER_TEMP/whitehouse-clip/arsenal-production.mp4"
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height \
+            -of csv=s=x:p=0 "$RUNNER_TEMP/whitehouse-clip/arsenal-production.mp4"
+          sha256sum "$RUNNER_TEMP/whitehouse-clip/arsenal-production.mp4"
+        shell: bash
+
+      - name: Upload runner test clip
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitehouse-oW-PQlgw1wo-runner-test
+          path: ${{ runner.temp }}/whitehouse-clip/arsenal-production.mp4
+          if-no-files-found: error
+          retention-days: 3
+
   deploy:
-    needs: [build, download-source]
-    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled'
+    needs: [build, download-source, download-same-clip]
+    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
