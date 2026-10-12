@@ -51,16 +51,27 @@ function formatTime(seconds) {
   return `${mins}:${String(secs).padStart(2, '0')}`;
 }
 
-// If a generated batch manifest exists, show highlights; otherwise the repo's feed loader can be used.
 async function loadHighlights() {
   try {
-    const response = await fetch('./generated/default_batch.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Default batch manifest is unavailable');
+    const outputDirectory = './outputs/whitehouse-oct-06-2026/';
+    const response = await fetch(`${outputDirectory}manifest.json`, { cache: 'no-store' });
+    if (!response.ok) throw new Error('Bilingual shorts manifest is unavailable');
     const payload = await response.json();
-    const batch = Array.isArray(payload.batch) ? payload.batch : [];
-    $highlightsStatus.textContent = `${batch.length} 个已剪辑 MP4 · ${payload.source_title || ''}`;
+    const highlights = Array.isArray(payload.highlights) ? payload.highlights : [];
+    const clips = highlights.flatMap((highlight) =>
+      (Array.isArray(highlight.variants) ? highlight.variants : []).map((variant) => ({
+        ...variant,
+        id: highlight.id,
+        title: highlight.title,
+        start: highlight.start,
+        end: highlight.end,
+        source: highlight.source_video || payload.source?.url,
+        subtitles: `${outputDirectory}${highlight.subtitles}`,
+      })),
+    );
+    $highlightsStatus.textContent = `${clips.length} 支双风格短片 · ${payload.source?.title || ''}`;
     $highlightGrid.replaceChildren();
-    for (const clip of batch) {
+    for (const clip of clips) {
       const card = document.createElement('article');
       card.className = 'video-card';
 
@@ -83,54 +94,46 @@ async function loadHighlights() {
       info.className = 'video-info';
       const title = document.createElement('h3');
       title.className = 'clip-title';
-      title.textContent = clip.title;
+      title.textContent = `${clip.title} · ${clip.style === 'punchy' ? 'Punchy' : 'Editorial'}`;
       const meta = document.createElement('div');
       meta.className = 'meta';
       const details = [
-        clip.source_channel,
-        `${formatTime(clip.start_sec)}–${formatTime(clip.end_sec)}`,
-        `${clip.duration_sec}s`,
-        clip.output_resolution,
-        clip.source_resolution ? `源 ${clip.source_resolution}` : '',
-        Array.isArray(clip.subtitle_languages)
-          ? '中英字幕'
-          : '',
+        `原片 ${formatTime(clip.start)}–${formatTime(clip.end)}`,
+        `${clip.duration_seconds}s`,
+        clip.resolution,
+        '中英硬字幕',
       ].filter(Boolean);
       meta.textContent = details.join(' · ');
       const description = document.createElement('p');
       description.className = 'clip-description';
-      description.textContent = clip.note || '';
+      description.textContent = '白宫官方视频精选片段 · 英文自动转写及简体中文翻译';
 
       const download = document.createElement('a');
       download.className = 'clip-link';
-      download.href = clip.file;
+      download.href = `${outputDirectory}${clip.file}`;
       download.download = '';
       download.textContent = '下载 MP4';
 
-      const subtitleLink = clip.subtitle_file
-        ? document.createElement('a')
-        : null;
-      if (subtitleLink) {
-        subtitleLink.className = 'subtitle-link';
-        subtitleLink.href = clip.subtitle_file;
-        subtitleLink.download = '';
-        subtitleLink.textContent = '下载中英字幕';
-      }
+      const subtitleLink = document.createElement('a');
+      subtitleLink.className = 'subtitle-link';
+      subtitleLink.href = clip.subtitles;
+      subtitleLink.download = '';
+      subtitleLink.textContent = '下载中英字幕';
 
       const sourceLink = document.createElement('a');
       sourceLink.className = 'source-link';
-      sourceLink.href = clip.source_url;
+      sourceLink.href = clip.source;
       sourceLink.target = '_blank';
       sourceLink.rel = 'noreferrer';
       sourceLink.textContent = '白宫原视频';
 
       info.append(title, meta, description, download);
-      if (subtitleLink) info.append(subtitleLink);
+      info.append(subtitleLink);
       info.append(sourceLink);
       card.append(player, info);
       $highlightGrid.append(card);
     }
-    if (batch.length === 0) {
+    if (clips.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'empty';
       empty.textContent = '暂无已生成的视频。';
@@ -138,17 +141,9 @@ async function loadHighlights() {
     }
   } catch (error) {
     console.error(error);
-    $highlightsStatus.textContent = '分段链接暂不可用';
-    $highlightGrid.textContent = 'Actions 尚未发布白宫剪辑视频，请稍后重试。';
+    $highlightsStatus.textContent = '短片清单暂不可用';
+    $highlightGrid.textContent = '高清双语短片暂不可用，请稍后重试。';
   }
 }
 
-// Try highlights first; if that fails, the repository may expose a generic feed endpoint.
-(async function init() {
-  try {
-    await loadHighlights();
-  } catch (e) {
-    // fallback: leave space for the legacy feed loader (which is rendered server-side in some branches)
-    console.warn('Highlights loader failed, leaving legacy feed UI in place', e);
-  }
-})();
+loadHighlights();
