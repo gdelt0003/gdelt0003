@@ -1,58 +1,129 @@
 import json
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-VIDEO_ID = "KFHqevUWLWE"
-VIDEO_TITLE = "President Trump Makes an Announcement, Oct. 7, 2026"
+VIDEO_ID = "oW-PQlgw1wo"
+VIDEO_TITLE = "President Trump Delivers Remarks, Oct. 6, 2026"
 CHANNEL = "The White House"
-VIDEO_DURATION = 2990
+VIDEO_DURATION = 3532
+VIDEO_URL = f"https://www.youtube.com/watch?v={VIDEO_ID}"
 INVIDIOUS_INSTANCE = "https://invidious.f5.si"
-YOUTUBE_SOURCE = f"https://www.youtube.com/watch?v={VIDEO_ID}"
 OUTPUT = Path("generated")
+CLIP_OUTPUT = OUTPUT / "clips"
 SEGMENTS = [
-    {"id": "white-house-opening", "title": "开场片段", "start": 82, "end": 156},
-    {"id": "white-house-middle", "title": "中段片段", "start": 542, "end": 612},
-    {"id": "white-house-later", "title": "后段片段", "start": 1209, "end": 1294},
+    {
+        "id": "arsenal-2-shipyard",
+        "title": "宣布建设 Arsenal 2 新船厂",
+        "start": 170,
+        "end": 245,
+        "note": "介绍 Arsenal 2 新船厂计划及重建造船能力。",
+    },
+    {
+        "id": "submarine-production",
+        "title": "扩大潜艇生产能力",
+        "start": 690,
+        "end": 770,
+        "note": "介绍新船厂如何增加产能并缓解潜艇生产瓶颈。",
+    },
+    {
+        "id": "golden-fleet",
+        "title": "Golden Fleet 舰队计划",
+        "start": 2385,
+        "end": 2465,
+        "note": "谈到美国海军 Golden Fleet 计划及造舰投资。",
+    },
 ]
 
 
+def run(command):
+    subprocess.run(command, check=True)
+
+
 def main():
-    OUTPUT.mkdir(parents=True, exist_ok=True)
-    segments = []
+    CLIP_OUTPUT.mkdir(parents=True, exist_ok=True)
+    clips = []
+
     for item in SEGMENTS:
         if item["end"] > VIDEO_DURATION or item["end"] <= item["start"]:
             raise ValueError(f"Invalid segment range for {item['id']}")
-        segments.append({
+
+        output = CLIP_OUTPUT / f"{item['id']}.%(ext)s"
+        run([
+            "yt-dlp",
+            "--force-ipv4",
+            "--js-runtimes",
+            "node",
+            "--no-playlist",
+            "--force-overwrites",
+            "--download-sections",
+            f"*{item['start']}-{item['end']}",
+            "--force-keyframes-at-cuts",
+            "--recode-video",
+            "mp4",
+            "--format",
+            "134+140",
+            "--output",
+            str(output),
+            VIDEO_URL,
+        ])
+
+        clip_path = CLIP_OUTPUT / f"{item['id']}.mp4"
+        if not clip_path.is_file() or clip_path.stat().st_size == 0:
+            raise RuntimeError(f"yt-dlp did not create {clip_path}")
+
+        duration_text = subprocess.check_output([
+            "ffprobe",
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(clip_path),
+        ], text=True).strip()
+        duration = round(float(duration_text))
+        expected_duration = item["end"] - item["start"]
+        if abs(duration - expected_duration) > 2:
+            raise RuntimeError(
+                f"Unexpected clip duration for {item['id']}: "
+                f"expected {expected_duration}s, got {duration}s"
+            )
+
+        clips.append({
             "id": item["id"],
             "title": item["title"],
             "start_sec": item["start"],
             "end_sec": item["end"],
-            "duration_sec": item["end"] - item["start"],
-            "status": "timestamp_link",
+            "duration_sec": duration,
+            "status": "available",
             "source_channel": CHANNEL,
             "source_title": VIDEO_TITLE,
-            "source_url": YOUTUBE_SOURCE,
-            "play_url": f"{INVIDIOUS_INSTANCE}/watch?v={VIDEO_ID}&t={item['start']}",
-            "file": None,
-            "note": "在 Invidious 打开白宫原视频并从该时间点播放；这不是单独导出的 MP4。",
+            "source_url": VIDEO_URL,
+            "play_url": (
+                f"{INVIDIOUS_INSTANCE}/watch?v={VIDEO_ID}&t={item['start']}"
+            ),
+            "file": f"generated/clips/{clip_path.name}",
+            "file_size_bytes": clip_path.stat().st_size,
+            "note": item["note"],
         })
 
     manifest = {
-        "status": "timestamp_links",
-        "message": "白宫视频的分段播放链接已准备；Invidious 播放链接不会生成或保存独立 MP4。",
+        "status": "generated",
+        "message": "白宫视频高光片段已剪辑为 MP4 并保存到 GitHub 仓库。",
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source_url": YOUTUBE_SOURCE,
+        "source_url": VIDEO_URL,
         "source_title": VIDEO_TITLE,
         "source_channel": CHANNEL,
         "source_duration_sec": VIDEO_DURATION,
         "invidious_instance": INVIDIOUS_INSTANCE,
-        "batch": segments,
+        "batch": clips,
     }
     (OUTPUT / "default_batch.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"Wrote {len(segments)} timestamped White House playback links.")
+    print(f"Generated and validated {len(clips)} MP4 highlight clips.")
 
 
 if __name__ == "__main__":

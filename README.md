@@ -2,6 +2,7 @@
 
 ## Generate and deploy
 
-- GitHub Actions prepares three timestamped links for a 49-minute White House video and deploys the Pages site.
-- The links open the original video at the selected time in an Invidious front end.
-- Invidious is a playback front end; the links are not separately cut MP4 clips and do not save video files in the repository.
+- GitHub Actions downloads and cuts three short MP4 highlights from the public White House video `oW-PQlgw1wo`.
+- Generated MP4 files and their manifest are committed to `generated/clips/` and `generated/default_batch.json`.
+- GitHub Pages plays the stored clips directly and provides an MP4 download link.
+- The clips are 360p H.264/AAC segments selected from the shipyard announcement, submarine-production remarks, and Golden Fleet remarks.

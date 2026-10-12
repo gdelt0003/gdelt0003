@@ -47,6 +47,12 @@ button {
 .video-card img {
   width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; background: #0f172a;
 }
+.clip-player {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
 .video-info { padding: 14px; }
 .video-info h2 { font-size: 1rem; line-height: 1.5; margin: 0 0 10px; }
 .video-info a { color: var(--text); text-decoration: none; }
