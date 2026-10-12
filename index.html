@@ -3,37 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gdelt0003 | YouTube Feed</title>
-    <meta name="description" content="A GitHub Pages site powered by a GitHub Action that fetches YouTube content." />
+    <title>gdelt0003 | 默认高光短视频</title>
+    <meta name="description" content="GitHub Actions 自动生成并发布的默认高光短视频。" />
     <link rel="stylesheet" href="assets/style.css" />
   </head>
   <body>
     <main class="page">
       <header class="hero">
-        <p class="eyebrow">GitHub Pages + GitHub Actions</p>
-        <h1>gdelt0003</h1>
-        <p class="subtitle">Auto-fetch latest YouTube videos and publish them as a static site.</p>
+        <p class="eyebrow">GITHUB ACTIONS · PAGES</p>
+        <h1>默认高光短视频</h1>
+        <p class="subtitle">Action 自动剪辑并保存 MP4，打开页面即可播放。</p>
       </header>
-      <section class="panel">
-        <div class="toolbar">
-          <span id="status">Loading latest data…</span>
-          <button id="refreshBtn" type="button">Refresh</button>
-        </div>
-        <div id="videoGrid" class="video-grid"></div>
-      </section>
       <section class="panel highlights-panel" aria-labelledby="highlights-title">
         <div class="highlights-heading">
           <div>
-            <p class="eyebrow">DEFAULT HIGHLIGHTS</p>
-            <h2 id="highlights-title">默认高光短视频</h2>
+            <p class="eyebrow">READY-TO-PLAY CLIPS</p>
+            <h2 id="highlights-title">已剪辑视频</h2>
           </div>
-          <span id="highlightsStatus" class="meta" role="status">正在读取默认批次…</span>
+          <span id="highlightsStatus" class="meta" role="status">正在读取已剪辑视频…</span>
         </div>
         <div id="highlightGrid" class="video-grid"></div>
-        <div class="confirm-row">
-          <button id="confirmBatchBtn" type="button">确认默认批次</button>
-          <span id="confirmStatus" class="meta" role="status"></span>
-        </div>
       </section>
     </main>
     <script src="assets/app.js"></script>

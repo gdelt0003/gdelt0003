@@ -1,129 +1,111 @@
 import json
-import os
+import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-CLIPS = [
-    {"id": "white-house-open-briefing", "title": "Opening hook and policy framing", "start": 82, "end": 156},
-    {"id": "white-house-stat-contrast", "title": "Stat drop and contrast beat", "start": 542, "end": 612},
-    {"id": "white-house-closing-call", "title": "Closing call and emotional payoff", "start": 1209, "end": 1294},
-]
-SEARCHES = (
-    "White House briefing official",
-    "White House press briefing official",
-)
+NASA_ID = "20230830_OSIRIS_Briefing_hbr"
+NASA_TITLE = "Press Conference - OSIRIS-REx Sample Return"
+NASA_BASE = f"https://images-assets.nasa.gov/video/{NASA_ID}"
+NASA_SOURCE = f"{NASA_BASE}/{NASA_ID}~mobile.mp4"
+NASA_PAGE = f"https://images.nasa.gov/details/{NASA_ID}"
 OUTPUT = Path("generated")
+CLIPS = [
+    {
+        "id": "nasa-osiris-liftoff",
+        "title": "Countdown and OSIRIS-REx liftoff",
+        "start": 0,
+        "end": 45,
+        "note": "Opening launch sequence and countdown from the NASA briefing.",
+    },
+    {
+        "id": "nasa-bennu-origin-of-life",
+        "title": "Could Bennu samples explain the origin of life?",
+        "start": 1460,
+        "end": 1525,
+        "note": "Science discussion of Bennu, organic material, and the origin-of-life question.",
+    },
+    {
+        "id": "nasa-bennu-unexpected-discovery",
+        "title": "What surprised the team about Bennu?",
+        "start": 2280,
+        "end": 2340,
+        "note": "A discussion of unexpected findings in the returned asteroid material.",
+    },
+]
 
 
-def run(command, *, check=True):
+def run(command):
     result = subprocess.run(command, capture_output=True, text=True)
-    if check and result.returncode:
+    if result.returncode:
         raise RuntimeError(f"{' '.join(command)} failed: {result.stderr.strip()}")
     return result
 
 
-def write_manifest(payload):
-    (OUTPUT / "default_batch.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+def download_source(destination):
+    request = urllib.request.Request(
+        NASA_SOURCE,
+        headers={"User-Agent": "gdelt0003-pages-highlight-generator/1.0"},
     )
-
-
-def find_source():
-    for query in SEARCHES:
-        result = run([
-            "yt-dlp", "--no-warnings", "--skip-download", "--flat-playlist",
-            "--print", "%(id)s|%(duration)s", f"ytsearch10:{query}",
-        ], check=False)
-        for line in result.stdout.splitlines():
-            parts = line.split("|", 1)
-            if len(parts) == 2 and parts[1].isdigit() and int(parts[1]) >= 1296:
-                return parts[0]
-    raise RuntimeError("No public White House video at least 22 minutes long was found")
+    with urllib.request.urlopen(request, timeout=60) as response, destination.open("wb") as output:
+        shutil.copyfileobj(response, output)
 
 
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     clip_dir = OUTPUT / "clips"
     clip_dir.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="default-highlights-") as tmp:
-        source_dir = Path(tmp) / "source"
-        source_dir.mkdir()
-        video_id = find_source()
-        source_url = f"https://www.youtube.com/watch?v={video_id}"
-        download_command = [
-            "yt-dlp", "--no-playlist", "--restrict-filenames",
-            "--merge-output-format", "mp4", "-f", "best[ext=mp4]/best",
-            "-o", str(source_dir / "%(title)s.%(ext)s"),
-        ]
-        cookies = os.environ.get("YOUTUBE_COOKIES")
-        if cookies:
-            cookies_file = Path(tmp) / "youtube-cookies.txt"
-            cookies_file.write_text(cookies, encoding="utf-8")
-            download_command.extend(["--cookies", str(cookies_file)])
-        download_command.append(source_url)
-        download_result = run(download_command, check=False)
-        if download_result.returncode:
-            preview_clips = [{
-                "id": clip["id"],
-                "title": clip["title"],
-                "start_sec": clip["start"],
-                "end_sec": clip["end"],
-                "score": 94,
-                "status": "preview",
-                "source_channel": "White House",
-                "source_url": source_url,
-                "embed_url": f"https://www.youtube-nocookie.com/embed/{video_id}?start={clip['start']}&end={clip['end']}",
-                "file": None,
-                "note": "YouTube did not allow the Actions runner to download this video. This is a timestamped preview; no MP4 clip was generated.",
-            } for clip in CLIPS]
-            write_manifest({
-                "status": "preview",
-                "message": "Showing timestamped previews because YouTube blocked unauthenticated video download. Add the YOUTUBE_COOKIES Actions secret to enable MP4 generation.",
-                "generated_at": datetime.now(timezone.utc).isoformat(),
-                "source_url": source_url,
-                "batch": preview_clips,
-            })
-            print(download_result.stderr, file=sys.stderr)
-            print("Wrote timestamped preview manifest; no MP4 clips were generated.")
-            return
+    generated = []
 
-        source_files = list(source_dir.glob("*.mp4"))
-        if not source_files:
-            raise RuntimeError("yt-dlp completed without an MP4 source file")
-        source_file = max(source_files, key=lambda path: path.stat().st_size)
-        generated = []
+    with tempfile.TemporaryDirectory(prefix="nasa-highlights-") as tmp:
+        source = Path(tmp) / "nasa-source.mp4"
+        print(f"Downloading public NASA source: {NASA_PAGE}")
+        download_source(source)
+
         for clip in CLIPS:
             filename = f"{clip['id']}.mp4"
+            destination = clip_dir / filename
             run([
-                "ffmpeg", "-y", "-ss", str(clip["start"]), "-t", str(clip["end"] - clip["start"]),
-                "-i", str(source_file), "-c:v", "libx264", "-preset", "veryfast",
-                "-crf", "23", "-c:a", "aac", "-movflags", "+faststart",
-                str(clip_dir / filename),
+                "ffmpeg", "-y", "-ss", str(clip["start"]),
+                "-t", str(clip["end"] - clip["start"]), "-i", str(source),
+                "-vf", "scale='min(720,iw)':-2",
+                "-c:v", "libx264", "-preset", "veryfast", "-crf", "28",
+                "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart",
+                str(destination),
             ])
+            if not destination.exists() or destination.stat().st_size == 0:
+                raise RuntimeError(f"ffmpeg did not create a valid clip: {destination}")
             generated.append({
                 "id": clip["id"],
                 "title": clip["title"],
                 "start_sec": clip["start"],
                 "end_sec": clip["end"],
-                "score": 94,
+                "duration_sec": clip["end"] - clip["start"],
                 "status": "ready",
-                "source_channel": "White House",
-                "source_url": source_url,
+                "source_channel": "NASA",
+                "source_title": NASA_TITLE,
+                "source_url": NASA_PAGE,
                 "file": f"generated/clips/{filename}",
-                "note": "Generated by GitHub Actions from a public long-form video.",
+                "file_size_bytes": destination.stat().st_size,
+                "note": clip["note"],
             })
-        manifest = {
-            "status": "create",
-            "message": "Default highlight clips generated by GitHub Actions.",
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-            "source_url": source_url,
-            "batch": generated,
-        }
-        write_manifest(manifest)
+            print(f"Generated {destination} ({destination.stat().st_size} bytes)")
+
+    manifest = {
+        "status": "ready",
+        "message": "Three real MP4 highlight clips were generated from NASA public media by GitHub Actions.",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source_url": NASA_PAGE,
+        "source_attribution": "NASA Image and Video Library",
+        "batch": generated,
+    }
+    (OUTPUT / "default_batch.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":
