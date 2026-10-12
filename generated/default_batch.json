@@ -1,0 +1,47 @@
+{
+  "status": "preview",
+  "message": "Showing timestamped previews because YouTube blocked unauthenticated video download. Add the YOUTUBE_COOKIES Actions secret to enable MP4 generation.",
+  "generated_at": "2026-10-12T06:03:11.353003+00:00",
+  "source_url": "https://www.youtube.com/watch?v=KFHqevUWLWE",
+  "batch": [
+    {
+      "id": "white-house-open-briefing",
+      "title": "Opening hook and policy framing",
+      "start_sec": 82,
+      "end_sec": 156,
+      "score": 94,
+      "status": "preview",
+      "source_channel": "White House",
+      "source_url": "https://www.youtube.com/watch?v=KFHqevUWLWE",
+      "embed_url": "https://www.youtube-nocookie.com/embed/KFHqevUWLWE?start=82&end=156",
+      "file": null,
+      "note": "YouTube did not allow the Actions runner to download this video. This is a timestamped preview; no MP4 clip was generated."
+    },
+    {
+      "id": "white-house-stat-contrast",
+      "title": "Stat drop and contrast beat",
+      "start_sec": 542,
+      "end_sec": 612,
+      "score": 94,
+      "status": "preview",
+      "source_channel": "White House",
+      "source_url": "https://www.youtube.com/watch?v=KFHqevUWLWE",
+      "embed_url": "https://www.youtube-nocookie.com/embed/KFHqevUWLWE?start=542&end=612",
+      "file": null,
+      "note": "YouTube did not allow the Actions runner to download this video. This is a timestamped preview; no MP4 clip was generated."
+    },
+    {
+      "id": "white-house-closing-call",
+      "title": "Closing call and emotional payoff",
+      "start_sec": 1209,
+      "end_sec": 1294,
+      "score": 94,
+      "status": "preview",
+      "source_channel": "White House",
+      "source_url": "https://www.youtube.com/watch?v=KFHqevUWLWE",
+      "embed_url": "https://www.youtube-nocookie.com/embed/KFHqevUWLWE?start=1209&end=1294",
+      "file": null,
+      "note": "YouTube did not allow the Actions runner to download this video. This is a timestamped preview; no MP4 clip was generated."
+    }
+  ]
+}
