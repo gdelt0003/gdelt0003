@@ -1,9 +1,15 @@
-name: Generate White House highlight clips and deploy Pages
+name: Publish stored White House clips to Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      regenerate_clips:
+        description: Attempt to download and recut source clips from YouTube
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -16,6 +22,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name == 'workflow_dispatch' && inputs.regenerate_clips
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
