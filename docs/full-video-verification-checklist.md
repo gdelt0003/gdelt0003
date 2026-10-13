@@ -1,54 +1,59 @@
-# Full-video subtitle and source-footage verification
+# Full-video verification and V0.03 release checklist
 
-Use this checklist for every subtitle correction or replacement source. Do not mark a check passed from a plan, code change, search snippet, or inaccessible page alone.
+Use this checklist for the current full-video instance and for later source-footage research. A planned check, code change, search result, inaccessible page, or manifest claim alone is not evidence that the check passed.
 
-## Acceptance scope
+## Scope decision
 
-- Use the White House's official 58:52 recording as the event/timing reference: [official event page](https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/) and [official YouTube recording](https://www.youtube.com/watch?v=oW-PQlgw1wo).
-- Treat the supplied 8:14 screenshot as a confirmed defect: the English cue `afternoon,` was paired with Chinese `大家`.
-- Keep bilingual text synchronized; do not split English and Chinese by unrelated character counts.
-- Make spoken English subtitles visibly larger than Chinese; use at least a 1.20 font-size ratio.
-- Check translation fidelity, names, numbers, negation, sentence meaning, reading comfort, lower-third obstruction, source/output resolution and duration.
-- Search for at least ten credible source publishers and classify usable footage as same angle, longer/more complete, or genuinely different angle; distinguish clean/unobstructed source footage from branded or overlaid copies.
-- Run downloads, frame extraction, probing, rendering and deployment on GitHub-hosted cloud runners only. Do not use local video files or local video processing.
+The user decision is: “长期还没实现的宏观规划 可以放到下一期做,当前完成V0.03版本,可以跑通一个个例” (“Long-term macro plans that are not implemented can move to the next phase; complete V0.03 by running one example end to end”).
 
-## Implemented in the repository
+V0.03 is the single official White House recording `oW-PQlgw1wo` (58:52), from cloud processing through operation-audit verification, GitHub Release, Pages deployment, and post-deployment review. This narrower scope defers generalized multi-event and broad source-discovery work; it does **not** waive any quality check for the one V0.03 instance. The official event reference is the [White House event page](https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/) and [official YouTube recording](https://www.youtube.com/watch?v=oW-PQlgw1wo).
 
-- [x] Group incomplete ASR subtitle fragments into phrase/sentence units before translation or re-rendering. The comma-alignment regression splits the greeting into `Good afternoon,` / `下午好,` and `everybody.` / `大家。` rather than mispairing fragments.
-- [x] Preserve complete bilingual cues unless a shared sentence boundary or a defensible bilingual clause boundary exists.
-- [x] Set the 1080p English font to 68 px versus 56 px Chinese (about 21.4% larger); use an 78% horizontal safe width and a 30% lower margin.
-- [x] Add automated checks for missing-language cues, invalid/out-of-range timing, cue overlap, video resolution/duration preservation, minimum font-size ratio, and English/Chinese reading-speed outliers.
-- [x] Record unresolved checks explicitly in `manifest.json`; cue-level pairing is not mislabeled as word-level audio alignment or translation accuracy.
-- [x] Add a fail-closed pre-release workflow gate requiring verified source audio, at least three source cross-checks, ten translation models, three independent LLM judges, readable-speed checks, and a rendered-frame review.
-- [x] Block Pages deployment on main-branch pushes unless the committed full-video manifest passes the same release-evidence gate; manual deployment is limited to successful full-video processing or restyling jobs.
-- [x] Add reusable skills for credible footage research and bilingual subtitle verification.
+### V0.03 acceptance blockers
 
-## Required verification before release
+Do not mark V0.03 complete until every item below has evidence tied to the successful run and the deployed artifacts.
 
-- [x] Run the updated test suite, Python syntax check, workflow-YAML validation, and `git diff --check` after the latest edits.
-- [x] Complete the sentence-level regression against the live defect: `Good afternoon,` pairs with `下午好,`, and `everybody.` pairs with `大家。`, with shared intervals covering each phrase.
-- [ ] Compare the complete English transcript against the original event audio/video in three documented passes; resolve names, numbers, negation, quotes, sentence boundaries, and speaker changes.
-- [ ] Translate the reviewed source with at least ten distinct models, blind-score a full-span/high-risk sample with at least three independent LLM judges, inspect disagreement flags, and select the best-supported Chinese text. Record model IDs, sample design, scores, costs, source checks and adjudication.
-- [ ] Cross-check exact wording against the official recording and at least three genuinely independent transcript/subtitle/news references where available. News context is not proof of verbatim speech; label ASR and inaccessible sources accurately.
-- [ ] Inspect rendered cloud-runner frames at representative opening, middle and ending timestamps plus every flagged cue. Confirm no clipping, unreadable line breaks, lower-third/banner collision, or subtitle overlap.
-- [ ] Inspect at least ten actual publisher/source pages for event identity, attribution, duration, resolution, visible branding/overlays, camera angle and continuity. De-duplicate syndicated/re-uploaded footage; do not count a text article or search result as a verified video.
-- [ ] For each verified candidate, record its direct URL, publisher, source lineage, recording/upload date, duration, resolution, relevant timestamps, clean-frame evidence and confidence. Use `Not found` for an unverified category.
-- [ ] Confirm the verification manifest contains completed source-audio/model/judge/frame-review evidence and passes the fail-closed workflow gate.
-- [ ] Merge the reviewed PR, run the full render on the highest GitHub-hosted runner available to the repository, deploy Pages, then check live VTT timing/text, MP4 asset update time/size/resolution/duration and all published URLs.
+- [ ] Run the cloud ASR, Chinese translation, subtitle render/burn-in, and video encode for `oW-PQlgw1wo`; record source/output duration, resolution, audio presence, and encode result.
+- [ ] Validate every required per-operation audit, retain the audit artifact, and confirm the audit identifies successful operations and their outputs.
+- [ ] Publish the video and subtitle assets to the intended GitHub Release and upload the generated Pages subtitle/manifest artifact.
+- [ ] Deploy Pages, then run the post-deployment quality gate against the live URLs. Match the deployed manifest, VTT/SRT, and video to the exact processing run; check HTTP status, timestamps, sizes, cue integrity, duration, resolution, and audio presence. A successful Pages deploy alone is not a quality pass.
+- [ ] Review the full English transcript against the original event audio/video in three documented passes. Check names, numbers, negation, quotes, sentence boundaries, and speaker changes.
+- [ ] Compare complete reviewed sentences with at least ten distinct translation models and blind-score a representative full-span/high-risk sample with at least three independent judges. Record exact model IDs, sample method, rubric, scores, costs, disagreements, and adjudication. Model agreement does not replace source-audio review.
+- [ ] Cross-check exact wording against the official recording and at least three genuinely independent transcript/subtitle/news references where available. News context is not proof of verbatim speech; identify ASR and inaccessible sources accurately.
+- [ ] Inspect actual frames from the cloud-rendered output at representative beginning, middle, and ending points and every flagged cue. Confirm English and Chinese stay paired, phrase boundaries are sensible, there are no overlaps/clipping or unreadable wraps, English is at least 1.20x the Chinese font size, both language lines stay within safe width, and captions do not obscure lower-thirds or essential scene content.
+- [ ] Verify the known 8:14 defect is fixed in the deployed captions: `Good afternoon,` must pair with `下午好,`, and `everybody.` with `大家。`; confirm the live cue intervals, not just source files.
+- [ ] Keep cue-level timing distinct from word-level forced alignment; do not describe subtitle accuracy as verified until the audio and independent comparison above are complete.
 
-## Current evidence and blockers (13 October 2026)
+### Next-phase scope (explicit assumption; not completed)
 
-- [x] The published VTT was fetched directly from Pages. Around 8:14 it shows:
-  - `00:08:04.740–00:08:10.737`: `Good` / `下午好,`
-  - `00:08:10.737–00:08:16.733`: `afternoon,` / `大家`
-  - `00:08:16.733–00:08:22.730`: `everybody.` / `。`
-- [x] The official White House page confirms the 58:52 source and the embedded YouTube video ID `oW-PQlgw1wo`.
-- [x] Public-page attempts found the prior Reuters/AP/Baltimore Sun/WUSA9 leads, but access was blocked (401/403); C-SPAN search was blocked, and general search endpoints were rate-limited or returned no usable index results. A search lead is not verified footage.
-- [ ] No independent clean, unobstructed source or distinct camera angle has yet been verified; ten clean video sources have not been established.
-- [ ] No ten-model translation run, three-judge score, three-pass source-audio review, or visual review of a newly rendered cloud output has yet been completed.
-- [ ] PR #4 remains open; the latest synchronization/style/quality-gate changes have not yet been merged, rendered, or published.
-- [ ] The repository has no configured `OPENROUTER_API_KEY` Actions secret. The existing benchmark workflow estimates about US$25.12 for all 971 cues and the 120-cue judge sample; confirm the spending ceiling before any billable run.
+The following broader work is deferred from V0.03 on the assumption that it is not necessary to prove one known official source can run end to end. These items remain **not done**, not passed:
+
+- [ ] Generalize discovery and scheduled processing across multiple events; implement reusable batch processing and operations beyond this single source.
+- [ ] Inspect at least ten actual publishers/source pages and classify footage as same angle, longer/more complete, or genuinely different angle. Deduplicate syndicated/re-uploaded copies; record provenance, date, duration, resolution, timestamps, clean-frame evidence, and confidence. The earlier ten-publisher / alternate-angle requirement is deferred only under this V0.03 scope assumption; if the selected V0.03 content requires an alternate source or camera angle, reinstate it as a V0.03 blocker.
+
+## Deployment and re-verification plan
+
+1. Run the single-instance cloud processing and operation-audit checks.
+2. Publish the produced assets to the GitHub Release and Pages.
+3. Run the post-deployment quality gate against the live deployment. The first Pages deployment is allowed before this gate; deployment status and release-quality status are separate.
+4. If the post-deployment gate fails or reports `not_verified`, record the exact blocker, do not call V0.03 accepted, correct the processing/evidence, redeploy as needed, and rerun the post-deployment gate. Acceptance requires a passing gate against the current live artifacts.
+
+## Run evidence and status
+
+Run status below was last checked at **2026-10-13T14:10:39Z**. Live Pages artifacts were fetched at **2026-10-13T14:08:43Z**. UTC job times are from GitHub Actions; Pages `Last-Modified` values are HTTP response headers.
+
+| Run | Observed result |
+|---|---|
+| `38393870553` (main, SHA `6f7a1dc`) | Render completed, but `Verify caption structure and visual-style contract` failed at 13:05:29Z. Release publication and Pages artifact upload were skipped; the deploy job was skipped at 13:05:33Z. |
+| `38408560804` (main, SHA `496ad85`) | Still in progress at 14:10:39Z. Setup, dependencies, and source download succeeded; cloud generation/burn-in has been running since 13:54:11Z. Operation-audit validation/preservation, Release upload, Pages artifact upload, deploy, and post-deployment gate have not run yet. Translation comparison was skipped, so the ten-model/three-judge review remains unverified. Do not report this run as deployed or accepted. |
+
+Latest live Pages evidence fetched at 14:08:43Z still predates run `38408560804`: manifest `Last-Modified` was 2026-10-13 07:33:08Z and VTT was 07:33:07Z. The manifest reports `translation_review.status: not_performed`, `llm_judges: 0`, `source_cross_check_passes: 0`, `reused_existing_subtitles: true`, and 2,021 cues. The live VTT still has the 8:14 mismatch:
+
+- `00:08:04.740–00:08:10.737`: `Good` / `下午好,`
+- `00:08:10.737–00:08:16.733`: `afternoon,` / `大家`
+- `00:08:16.733–00:08:22.730`: `everybody.` / `。`
+
+The Pages URL for `generated/full-video/whitehouse-oW-PQlgw1wo-bilingual.mp4` returned HTTP 404 at 14:08:43Z. A GitHub Release MP4 existed from an earlier render, but it is not evidence that the new run was published or that the current V0.03 checks passed.
 
 ## Release decision
 
-Do not describe subtitles or footage as fully verified, and do not replace the published MP4/VTT, until every required release check above is passed with evidence. The currently published video remains the old render and still contains the demonstrated cue-level mismatch.
+At the status cutoff above, **V0.03 is not accepted**: the active run has not reached deployment, its ten-model/three-judge comparison is skipped, and known live output defects remain. Preserve every failed or unavailable check as `failed` or `not_verified`; do not convert it to passed based on a successful render or deploy.
