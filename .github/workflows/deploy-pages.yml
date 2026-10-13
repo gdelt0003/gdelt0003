@@ -524,9 +524,28 @@ jobs:
           retention-days: 30
 
   main_pages_quality_gate:
+    needs: [deploy, process-full-video, restyle-full-video]
     if: >-
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && inputs.validate_release_evidence)
+      always() &&
+      (
+        (
+          github.event_name == 'push' &&
+          needs.deploy.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.validate_release_evidence
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (
+            inputs.deploy_site_only ||
+            inputs.process_full_video ||
+            inputs.restyle_full_video
+          ) &&
+          needs.deploy.result == 'success'
+        )
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -539,19 +558,25 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Download the manifest for the newly rendered video
+        if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: generated/full-video
+
       - name: Verify committed full-video release evidence
         run: >-
           python scripts/verify_full_video_release.py
           --manifest generated/full-video/manifest.json
 
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, main_pages_quality_gate]
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video]
     if: >-
       always() &&
       (
         (
-          github.event_name == 'push' &&
-          needs.main_pages_quality_gate.result == 'success'
+          github.event_name == 'push'
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&

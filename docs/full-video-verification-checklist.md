@@ -25,7 +25,7 @@ Use this checklist for every subtitle correction or replacement source. Do not m
 - [x] Add automated checks for missing-language cues, invalid/out-of-range timing, cue overlap, video resolution/duration preservation, minimum font-size ratio, and English/Chinese reading-speed outliers.
 - [x] Record unresolved checks explicitly in `manifest.json`; cue-level pairing is not mislabeled as word-level audio alignment or translation accuracy.
 - [x] Add a candidate fail-closed release verifier requiring both status checks and evidence records/files with SHA-256 for ten model outputs, three judges, three independent source checks, three full-span source-audio passes, and opening/middle/ending frames.
-- [x] Candidate branch routes main-push, process, and restyle release decisions through that verifier; manual deploy is limited to successful selected full-video jobs. The candidate is not merged, so this is not yet the active main-branch protection.
+- [x] Pages deployments run before the full-video evidence gate; the gate then checks the published commit or freshly rendered manifest and fails the workflow when required evidence is missing. Manual evidence-only validation remains available without deploying.
 - [x] Add reusable skills for credible footage research (including source-overlay classification and evidenced 3D camera geometry) and bilingual subtitle verification.
 - [x] Add a data contract and an event page placeholder for a 3D camera map. The White House event camera coordinates remain unverified; the UI must say so and never plot invented positions.
 
