@@ -7,11 +7,14 @@ from scripts.process_full_video import (
     ass_escape,
     ass_time,
     bilingual_srt_text,
+    copy_review_evidence,
+    merge_sentence_fragments,
     reflow_cues,
     read_srt,
     srt_text,
     timestamp,
     vtt_from_bilingual_srt,
+    verify_cues,
     write_ass,
 )
 
@@ -54,11 +57,13 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(r"{\rChinese}中文\N{\rEnglish}Text \{one\}", content)
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
-        self.assertIn("Style: English,Noto Sans CJK SC,60,&H00FFFFFF", content)
-        self.assertIn(",324,1\n", content)
+        self.assertIn("Style: English,Noto Sans CJK SC,68,&H00FFFFFF", content)
+        self.assertIn("&H70000000,1,0,0,0,100,100,0,0,3,6,0,2", content)
+        self.assertIn(",211,211,194,1", content)
+        self.assertIn(",194,1\n", content)
         self.assertIn("WrapStyle: 0", content)
 
-    def test_reflows_long_bilingual_cues_without_changing_total_timing(self):
+    def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
             0,
             42.39,
@@ -66,19 +71,38 @@ class FullVideoSubtitleTests(unittest.TestCase):
             "of the industrial base that constructs and sustains those systems.",
             "我们生产的系统的质量以及构建和维持这些系统的工业基础的强度。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
+        self.assertEqual(
+            [
+                (
+                    cue.english,
+                    cue.chinese,
+                )
+                for cue in reflowed
+            ],
+            [
+                (
+                    "The quality of the systems that we produce",
+                    "我们生产的系统的质量",
+                ),
+                (
+                    "and the strength of the industrial base that constructs "
+                    "and sustains those systems.",
+                    "以及构建和维持这些系统的工业基础的强度。",
+                ),
+            ],
+        )
         self.assertEqual(reflowed[0].start, original.start)
         self.assertEqual(reflowed[-1].end, original.end)
         self.assertTrue(
-            all(
-                cue.end - cue.start <= 7.01
-                for cue in reflowed
-            )
-        )
-        self.assertTrue(
             all(left.end == right.start for left, right in zip(reflowed, reflowed[1:]))
+        )
+        first_clause_words = len(reflowed[0].english.split())
+        total_words = len(original.english.split())
+        self.assertAlmostEqual(
+            reflowed[0].end - reflowed[0].start,
+            42.39 * first_clause_words / total_words,
         )
         self.assertEqual(
             " ".join(cue.english for cue in reflowed),
@@ -89,32 +113,18 @@ class FullVideoSubtitleTests(unittest.TestCase):
             original.chinese,
         )
 
-    def test_reflow_balances_timing_instead_of_overholding_short_chunks(self):
+    def test_reflow_does_not_split_an_unmatched_translation_order(self):
         original = Cue(
             1336.28,
             1362.42,
             "Ladies and gentlemen, the Secretary of War, the Honorable Exeter.",
             "女士们，先生们，战争部长，尊敬的埃克塞特。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
-        self.assertTrue(
-            all(cue.end - cue.start <= 7.01 for cue in reflowed)
-        )
-        self.assertTrue(
-            all(left.end == right.start for left, right in zip(reflowed, reflowed[1:]))
-        )
-        self.assertEqual(
-            " ".join(cue.english for cue in reflowed),
-            original.english,
-        )
-        self.assertIn(
-            "the Secretary of War,",
-            [cue.english for cue in reflowed],
-        )
+        self.assertEqual(reflowed, [original])
 
-    def test_reflow_splits_long_lines_before_wrapping(self):
+    def test_reflow_keeps_a_long_intro_sentence_bilingually_together(self):
         original = Cue(
             0,
             6.2,
@@ -122,31 +132,184 @@ class FullVideoSubtitleTests(unittest.TestCase):
             "of Anduril Industries, Brian Schimpf.",
             "欢迎Anduril Industries联合创始人兼首席执行官Brian Schimpf。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
-        self.assertTrue(
-            all(len(cue.english) <= 48 for cue in reflowed)
+        self.assertEqual(reflowed, [original])
+
+    def test_reflow_splits_matching_complete_sentences(self):
+        original = Cue(
+            0,
+            12,
+            "The shipyard opened today. Workers will build submarines.",
+            "造船厂今天开业。工人将建造潜艇。",
         )
-        self.assertTrue(all(cue.chinese for cue in reflowed))
+        reflowed = reflow_cues([original])
+
         self.assertEqual(
-            " ".join(cue.english for cue in reflowed),
-            original.english,
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                ("The shipyard opened today.", "造船厂今天开业。"),
+                ("Workers will build submarines.", "工人将建造潜艇。"),
+            ],
         )
-        self.assertTrue(
-            any("Industries" in cue.chinese for cue in reflowed)
-        )
-        self.assertTrue(any("Schimpf" in cue.chinese for cue in reflowed))
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        self.assertEqual(reflowed[0].end, reflowed[1].start)
 
     def test_reflow_keeps_short_english_chunks_synchronized(self):
-        reflowed = reflow_cues(
-            [Cue(0, 3, "Hello world.", "你好，世界。")],
-            1920,
-            1080,
-        )
+        reflowed = reflow_cues([Cue(0, 3, "Hello world.", "你好，世界。")])
         self.assertEqual(len(reflowed), 1)
         self.assertEqual(reflowed[0].chinese, "你好，世界。")
         self.assertEqual(reflowed[0].english, "Hello world.")
+
+    def test_merges_asr_fragments_before_rendering_bilingual_captions(self):
+        fragments = [
+            Cue(484.740, 490.737, "Good", "下午好,"),
+            Cue(490.737, 496.733, "afternoon,", "大家"),
+            Cue(496.733, 502.730, "everybody.", "。"),
+            Cue(502.830, 504.870, "Distinguished guests,", "尊敬的嘉宾,"),
+        ]
+
+        merged = merge_sentence_fragments(fragments)
+
+        self.assertEqual(
+            merged,
+            [
+                Cue(
+                    484.740,
+                    502.730,
+                    "Good afternoon, everybody.",
+                    "下午好,大家。",
+                ),
+                Cue(
+                    502.830,
+                    504.870,
+                    "Distinguished guests,",
+                    "尊敬的嘉宾,",
+                ),
+            ],
+        )
+        reflowed = reflow_cues(merged)
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                ("Good afternoon,", "下午好,"),
+                ("everybody.", "大家。"),
+                ("Distinguished guests,", "尊敬的嘉宾,"),
+            ],
+        )
+        self.assertAlmostEqual(reflowed[0].end, fragments[2].start, delta=0.001)
+        self.assertAlmostEqual(reflowed[1].end, fragments[2].end, delta=0.001)
+
+    def test_fragment_merging_preserves_ascii_spaces_inside_names(self):
+        merged = merge_sentence_fragments([
+            Cue(0, 1, "Welcome to New", "欢迎来到New"),
+            Cue(1, 2, "York.", "York。"),
+        ])
+        self.assertEqual(merged[0].english, "Welcome to New York.")
+        self.assertEqual(merged[0].chinese, "欢迎来到New York。")
+
+    def test_caption_verification_records_unverified_translation_and_style(self):
+        report = verify_cues(
+            [Cue(0, 2, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+        )
+        self.assertEqual(report["structural_checks"], "passed")
+        self.assertEqual(report["bilingual_cue_sync"]["status"], "passed")
+        self.assertEqual(
+            report["bilingual_cue_sync"]["audio_level_alignment"],
+            "not_verified",
+        )
+        self.assertEqual(
+            report["translation_accuracy"]["status"],
+            "not_verified",
+        )
+        self.assertGreaterEqual(
+            report["subtitle_readability"]["english_to_chinese_size_ratio"],
+            1.2,
+        )
+        self.assertEqual(
+            report["subtitle_readability"]["lower_margin_percent"],
+            18,
+        )
+
+    def test_copies_review_evidence_for_output_gate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            output = root / "output"
+            evidence = source / "review" / "audio-pass.json"
+            evidence.parent.mkdir(parents=True)
+            evidence.write_text("reviewed audio", encoding="utf-8")
+            review = {
+                "source_audio_passes": [
+                    {"evidence_file": "review/audio-pass.json"}
+                ]
+            }
+            copy_review_evidence(source, output, review, {})
+            self.assertEqual(
+                (output / "review" / "audio-pass.json").read_text(
+                    encoding="utf-8"
+                ),
+                "reviewed audio",
+            )
+
+    def test_rejects_review_evidence_outside_manifest_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            output = root / "output"
+            source.mkdir()
+            with self.assertRaisesRegex(RuntimeError, "must stay within"):
+                copy_review_evidence(
+                    source,
+                    output,
+                    {"models": [{"evidence_file": "../outside.json"}]},
+                    {},
+                )
+
+    def test_caption_verification_rejects_overlapping_cues(self):
+        with self.assertRaisesRegex(RuntimeError, "overlaps"):
+            verify_cues(
+                [
+                    Cue(0, 2, "First.", "第一句。"),
+                    Cue(1.9, 3, "Second.", "第二句。"),
+                ],
+                duration=10,
+                width=1920,
+                height=1080,
+            )
+
+    def test_caption_verification_preserves_completed_accuracy_review(self):
+        report = verify_cues(
+            [Cue(0, 2, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+            translation_review={
+                "status": "verified",
+                "audio_level_alignment": True,
+                "source_audio_review": True,
+                "independent_translation_review": True,
+                "translation_models_compared": 10,
+                "llm_judges": 3,
+                "source_cross_check_passes": 3,
+            },
+        )
+        self.assertEqual(
+            report["translation_accuracy"],
+            {
+                "status": "verified",
+                "audio_level_alignment": "passed",
+                "source_audio_review": "passed",
+                "independent_translation_review": "passed",
+                "translation_models_compared": 10,
+                "llm_judges": 3,
+                "source_cross_check_passes": 3,
+            },
+        )
 
     def test_reads_srt_cue_times_and_multiline_text(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -3,59 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gdelt0003 | 白宫高光片段</title>
-    <meta name="description" content="白宫视频高光片段，播放或下载已剪辑并保存到 GitHub 的 MP4。" />
+    <title>gdelt0003 | 事件视频资料</title>
+    <meta name="description" content="按事件组织的来源证据、发现线索与经复核的视频作品。" />
     <link rel="stylesheet" href="assets/style.css?v=whitehouse-4" />
   </head>
   <body>
     <main class="page">
-      <header class="hero">
-        <p class="eyebrow">GITHUB ACTIONS · PAGES</p>
-        <h1>白宫高光片段</h1>
-        <p class="subtitle">白宫官方长视频精选 · 1080 × 1920 竖屏 · 中英双语字幕</p>
-        <p class="meta">三个不同高亮时段，各含 Editorial 与 Punchy 两种剪辑版本。英文自动转写与机器翻译，请在发布前复核专名和数字。</p>
-      </header>
-      <section class="panel" aria-labelledby="full-video-title">
-        <div class="highlights-heading">
-          <div>
-            <p class="eyebrow">WHITE HOUSE · FULL-LENGTH VIDEO</p>
-            <h2 id="full-video-title">完整演讲 · 中英双语字幕</h2>
-          </div>
+      <nav class="site-nav" aria-label="主要导航">
+        <a class="site-brand" href="#top">GDELT · 事件视频</a>
+        <div class="site-nav-links">
+          <a href="#featured-video">主视频</a>
+          <a href="#highlights">短片</a>
+          <a href="#event-research">事件与来源</a>
+          <a href="#camera-map">机位证据</a>
         </div>
-        <video controls preload="none" playsinline style="width: 100%; max-height: 75vh; background: #000">
-          <source src="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4" type="video/mp4" />
-          <track
-            kind="captions"
-            label="English + 简体中文"
-            srclang="zh"
-            src="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.vtt"
-            default
-          />
-          你的浏览器不支持 HTML 视频。请使用下方下载链接观看。
-        </video>
-        <p class="meta">
-          <a href="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4">下载已烧录字幕的完整 MP4</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en.srt">English SRT</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt">简体中文 SRT</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt">中英双语 SRT</a>
-        </p>
-        <p class="meta">字幕由 Whisper large-v3-turbo 自动转写、M2M100 单模型翻译，尚未经过十模型对比、多大模型评分或逐条新闻/字幕交叉复核；请勿视为已独立核验。视频来自白宫官方频道。</p>
+      </nav>
+      <header class="hero">
+        <span id="top"></span>
+        <p class="eyebrow">GITHUB ACTIONS · PAGES</p>
+        <h1>事件视频资料与高光片段</h1>
+        <p class="subtitle">全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态</p>
+        <p class="meta">页面现存的历史短片/全长视频不代表通过本轮来源、画面、英文识别和中文翻译验收。Columbus Day 白宫锚实帧可见横幅、Logo 与 QR；AP 有 1080p 同事件候选但保留 AP 水印、机位来源未证，尚无无水印干净素材。新云端生产流程尚未运行。</p>
+      </header>
+      <section class="panel featured-video-panel" id="featured-video" aria-labelledby="full-video-title">
+        <div class="watch-layout">
+          <div class="watch-main">
+            <video class="full-video-player" controls preload="none" playsinline>
+              <source src="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4" type="video/mp4" />
+              你的浏览器不支持 HTML 视频。请使用下方下载链接观看。
+            </video>
+            <div class="watch-title">
+              <h2 id="full-video-title">总统造船厂讲话 · 完整视频</h2>
+              <p class="meta">白宫官方频道 · 原始画面 1920 × 1080（16:9）· 2026-10-06 上传（上传日期不代替事件时间）</p>
+            </div>
+            <p class="watch-links">
+              <a href="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4">下载双语 MP4</a>
+              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en.srt">English SRT</a>
+              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt">简体中文 SRT</a>
+              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt">中英双语 SRT</a>
+            </p>
+          </div>
+          <aside class="watch-sidebar" aria-label="视频核验信息">
+            <p class="eyebrow">SOURCE & CAPTIONS</p>
+            <h3>来源与字幕状态</h3>
+            <p>官方白宫视频可作事件锚点，不等同于干净剪辑素材。源画面横幅、标志与 QR 已记录。</p>
+            <p class="review-status">字幕：视频内硬字幕，仍待复核<br />翻译准确性：未独立核实<br />音频逐词对齐：未核实</p>
+            <p class="meta">硬字幕已有错配报告；暂不加载可能重复显示的播放器字幕轨。须在云端重新渲染并通过音频、翻译与画面复审后，才能替换公开版本。</p>
+          </aside>
+        </div>
       </section>
-      <section class="panel highlights-panel" aria-labelledby="highlights-title">
+      <section class="panel highlights-panel" id="highlights" aria-labelledby="highlights-title">
         <div class="highlights-heading">
           <div>
             <p class="eyebrow">WHITE HOUSE · BILINGUAL SHORTS</p>
-            <h2 id="highlights-title">高清双语高光短片</h2>
+            <h2 id="highlights-title">既有短片 · 推荐观看</h2>
           </div>
-          <span id="highlightsStatus" class="meta" role="status">正在读取分段链接…</span>
+          <span id="highlightsStatus" class="meta" role="status">竖屏 9:16 · 正在读取分段链接…</span>
         </div>
         <div id="highlightGrid" class="video-grid"></div>
-        <p class="meta">选段时间以原片为准。每支短片均可在线播放、下载 MP4，并下载对应的中英 SRT 字幕。</p>
+        <p class="meta">保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。</p>
+      </section>
+      <section class="panel event-research-panel" id="event-research" aria-labelledby="event-research-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">EVENTS · SOURCE EVIDENCE</p>
+            <h2 id="event-research-title">按事件整理的来源与候选</h2>
+          </div>
+          <a class="workbook-link" href="outputs/event-source-review.xlsx">下载来源核验 Excel</a>
+        </div>
+        <p class="meta">来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。</p>
+        <div id="eventCatalog" class="event-catalog" aria-live="polite"></div>
+        <div class="discovery-heading">
+          <h3>最新视频与新闻文章发现线索</h3>
+          <span id="eventDiscoveryStatus" class="meta" role="status">等待云端例行检索…</span>
+        </div>
+        <div id="eventDiscovery" class="event-discovery"></div>
+      </section>
+      <section class="panel event-production-panel" aria-labelledby="event-production-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">REVIEWED EVENT PRODUCTIONS</p>
+            <h2 id="event-production-title">已审阅的事件短片</h2>
+          </div>
+          <span id="publishedEventsStatus" class="meta" role="status">正在读取已发布作品…</span>
+        </div>
+        <div id="publishedEvents" class="published-events"></div>
+        <p class="meta">只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。</p>
+      </section>
+      <section class="panel camera-map-panel" id="camera-map" aria-labelledby="camera-map-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">EVENT CAMERA GEOMETRY</p>
+            <h2 id="camera-map-title">活动 3D 机位图</h2>
+          </div>
+          <span id="cameraMapStatus" class="meta" role="status" aria-live="polite">正在读取测绘证据…</span>
+        </div>
+        <div id="cameraMapScene" class="camera-map-scene"></div>
+        <ul id="cameraMapDetails" class="camera-map-details"></ul>
+        <p class="meta">仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。</p>
       </section>
     </main>
+    <script src="assets/events.js?v=event-catalog-2"></script>
+    <script src="assets/camera-map.js?v=camera-map-1"></script>
     <script src="assets/app.js?v=whitehouse-4"></script>
   </body>
 </html>

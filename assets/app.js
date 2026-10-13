@@ -63,6 +63,7 @@ async function loadHighlights() {
         ...variant,
         id: highlight.id,
         title: highlight.title,
+        reason: highlight.reason,
         start: highlight.start,
         end: highlight.end,
         source: highlight.source_video || payload.source?.url,
@@ -80,13 +81,16 @@ async function loadHighlights() {
       player.controls = true;
       player.preload = 'metadata';
       player.playsInline = true;
+      const dimensions = /^(\d+)\s*x\s*(\d+)$/i.exec(clip.resolution || '');
+      if (dimensions) player.style.aspectRatio = `${dimensions[1]} / ${dimensions[2]}`;
       player.addEventListener('loadedmetadata', () => {
         if (player.videoWidth && player.videoHeight) {
           player.style.aspectRatio = `${player.videoWidth} / ${player.videoHeight}`;
         }
       });
+      const clipUrl = `${outputDirectory}${clip.file}`;
       const source = document.createElement('source');
-      source.src = clip.file;
+      source.src = clipUrl;
       source.type = 'video/mp4';
       player.append(source);
 
@@ -106,11 +110,14 @@ async function loadHighlights() {
       meta.textContent = details.join(' · ');
       const description = document.createElement('p');
       description.className = 'clip-description';
-      description.textContent = '白宫官方视频精选片段 · 英文自动转写及简体中文翻译';
+      description.textContent = [
+        clip.reason,
+        '英文为 YouTube 自动字幕；中文为机器翻译，尚待人工复核。',
+      ].filter(Boolean).join(' ');
 
       const download = document.createElement('a');
       download.className = 'clip-link';
-      download.href = `${outputDirectory}${clip.file}`;
+      download.href = clipUrl;
       download.download = '';
       download.textContent = '下载 MP4';
 

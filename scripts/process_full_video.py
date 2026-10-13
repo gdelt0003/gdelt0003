@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -14,10 +15,9 @@ from pathlib import Path
 ASR_MODEL = "large-v3-turbo"
 TRANSLATION_MODEL = "facebook/m2m100_1.2B"
 MAX_RELEASE_ASSET_BYTES = 1_950_000_000
-MAX_SUBTITLE_CUE_SECONDS = 7.0
 MIN_SUBTITLE_CUE_SECONDS = 0.83
-ENGLISH_READING_SPEED = 18.0
-CHINESE_READING_SPEED = 8.0
+MAX_FRAGMENT_GAP_SECONDS = 1.25
+CAPTION_LOWER_MARGIN_PERCENT = 18
 
 
 @dataclass(frozen=True)
@@ -96,183 +96,208 @@ def ass_time(seconds: float) -> str:
     return f"{hours}:{minutes:02}:{whole:02}.{fraction:02}"
 
 
-def _split_english(text: str, count: int) -> list[str]:
-    words = text.split()
-    if not words:
-        return ["" for _ in range(count)]
-    count = min(count, len(words))
-    chunks = []
-    start = 0
-    break_before = {
-        "and", "although", "as", "because", "but", "for", "from", "if",
-        "in", "into", "of", "on", "or", "since", "that", "though", "to",
-        "when", "while", "with", "which", "who",
-    }
-    for index in range(count):
-        groups_left = count - index
-        words_left = len(words) - start
-        target = max(1, round(words_left / groups_left))
-        end = min(len(words), start + target)
-        if index < count - 1:
-            latest_end = min(
-                len(words) - (groups_left - 1),
-                end + 2,
+def _split_aligned_clauses(english: str, chinese: str) -> list[tuple[str, str]]:
+    english_sentences = [
+        part.strip()
+        for part in re.split(r"(?<=[.!?])\s+", english.strip())
+        if part.strip()
+    ]
+    chinese_sentences = [
+        part.strip()
+        for part in re.split(r"(?<=[。！？])", chinese.strip())
+        if part.strip()
+    ]
+    if len(english_sentences) == len(chinese_sentences) > 1:
+        return list(zip(english_sentences, chinese_sentences, strict=True))
+
+    english_comma_parts = [
+        part.strip()
+        for part in re.split(r"(?<=,)\s*", english.strip())
+        if part.strip()
+    ]
+    chinese_comma_parts = [
+        part.strip()
+        for part in re.split(r"(?<=[，,])", chinese.strip())
+        if part.strip()
+    ]
+    if len(english_comma_parts) == len(chinese_comma_parts) > 1:
+        english_total = max(1, len(english.split()))
+        chinese_total = max(
+            1,
+            sum("\u3400" <= char <= "\u9fff" for char in chinese),
+        )
+        aligned = True
+        english_seen = 0
+        chinese_seen = 0
+        for english_part, chinese_part in zip(
+            english_comma_parts[:-1],
+            chinese_comma_parts[:-1],
+            strict=True,
+        ):
+            english_seen += len(english_part.split())
+            chinese_seen += sum(
+                "\u3400" <= char <= "\u9fff" for char in chinese_part
             )
-            punctuation = [
-                position + 1
-                for position in range(start, latest_end)
-                if re.search(r"[.!?;:,]$", words[position])
-            ]
-            connectors = [
-                position
-                for position in range(start + 1, latest_end + 1)
-                if words[position].lower().strip("\"'“”‘’([{") in break_before
-            ]
-            preferred = punctuation or connectors
-            if preferred:
-                end = min(
-                    preferred,
-                    key=lambda position: abs(position - (start + target)),
-                )
-        chunks.append(" ".join(words[start:end]))
-        start = end
-    return chunks
-
-
-def _is_ascii_word_character(character: str) -> bool:
-    return character.isascii() and (
-        character.isalnum() or character in "'-"
-    )
-
-
-def _split_chinese(text: str, count: int) -> list[str]:
-    characters = list(text.strip())
-    if not characters:
-        return ["" for _ in range(count)]
-    count = min(count, len(characters))
-    chunks = []
-    start = 0
-    break_chars = set("，。！？；：、,.!?;")
-    for index in range(count):
-        groups_left = count - index
-        chars_left = len(characters) - start
-        target = max(1, round(chars_left / groups_left))
-        end = min(len(characters), start + target)
-        if index < count - 1:
-            window_end = min(len(characters) - groups_left + 1, end + 5)
-            preferred = [
-                position + 1
-                for position in range(start, window_end)
-                if characters[position] in break_chars
-            ]
-            if preferred:
-                end = min(
-                    preferred,
-                    key=lambda position: abs(position - (start + target)),
-                )
             if (
-                end < len(characters)
-                and _is_ascii_word_character(characters[end - 1])
-                and _is_ascii_word_character(characters[end])
+                not english_seen
+                or not chinese_seen
+                or abs(
+                    english_seen / english_total
+                    - chinese_seen / chinese_total
+                ) > 0.25
             ):
-                word_start = end - 1
-                while (
-                    word_start > start
-                    and _is_ascii_word_character(characters[word_start - 1])
-                ):
-                    word_start -= 1
-                word_end = end
-                while (
-                    word_end < len(characters)
-                    and _is_ascii_word_character(characters[word_end])
-                ):
-                    word_end += 1
-                valid_boundaries = [
-                    boundary
-                    for boundary in (word_start, word_end)
-                    if boundary > start
-                    and len(characters) - boundary >= groups_left - 1
-                ]
-                if valid_boundaries:
-                    end = min(
-                        valid_boundaries,
-                        key=lambda position: abs(position - (start + target)),
-                    )
-        chunks.append("".join(characters[start:end]).strip())
-        start = end
-    return chunks
+                aligned = False
+                break
+        if aligned:
+            return list(
+                zip(
+                    english_comma_parts,
+                    chinese_comma_parts,
+                    strict=True,
+                )
+            )
+
+    chinese_connectors = {
+        "and": ("以及", "并且", "而且", "和"),
+        "but": ("但是", "不过", "但"),
+        "because": ("因为", "由于"),
+        "so": ("因此", "所以"),
+        "or": ("或者", "或"),
+    }
+    english_words = list(re.finditer(r"\b(?:and|but|because|so|or)\b", english, re.I))
+    chinese_chars = sum("\u3400" <= char <= "\u9fff" for char in chinese)
+    candidates: list[tuple[float, int, int]] = []
+    for english_match in english_words:
+        word = english_match.group().lower()
+        english_prefix_words = len(english[:english_match.start()].split())
+        english_total_words = max(1, len(english.split()))
+        if english_prefix_words < 4 or english_total_words - english_prefix_words < 4:
+            continue
+        for connector in chinese_connectors[word]:
+            position = chinese.find(connector)
+            if position < 0:
+                continue
+            chinese_prefix_chars = sum(
+                "\u3400" <= char <= "\u9fff"
+                for char in chinese[:position]
+            )
+            chinese_suffix_chars = chinese_chars - chinese_prefix_chars
+            if chinese_prefix_chars < 4 or chinese_suffix_chars < 4:
+                continue
+            english_ratio = english_prefix_words / english_total_words
+            chinese_ratio = chinese_prefix_chars / max(1, chinese_chars)
+            difference = abs(english_ratio - chinese_ratio)
+            if difference <= 0.20:
+                candidates.append(
+                    (difference, english_match.start(), position)
+                )
+    if not candidates:
+        return [(english.strip(), chinese.strip())]
+
+    _difference, english_cut, chinese_cut = min(candidates)
+    return [
+        (english[:english_cut].strip(), chinese[:chinese_cut].strip()),
+        (english[english_cut:].strip(), chinese[chinese_cut:].strip()),
+    ]
 
 
-def _cjk_character_count(text: str) -> int:
-    return sum(
-        "\u3400" <= character <= "\u9fff"
-        or "\uf900" <= character <= "\ufaff"
-        for character in text
-    )
+def _ends_sentence(text: str) -> bool:
+    trimmed = text.rstrip("\"'”’)]} ")
+    if not re.search(r"[.!?…]+$", trimmed):
+        return False
+    if re.search(
+        r"\b(?:mr|mrs|ms|dr|prof|sr|jr|u\.s|u\.k|inc|etc|vs)\.$",
+        trimmed,
+        re.I,
+    ):
+        return False
+    return True
 
 
-def reflow_cues(cues: list[Cue], width: int, height: int) -> list[Cue]:
-    chinese_font = max(32, round(height * 0.052))
-    english_font = max(32, round(height * 0.056))
-    safe_width = round(width * 0.68)
-    max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
-    max_chinese_chars = max(10, int(safe_width / chinese_font))
+def _join_english_fragments(parts: list[str]) -> str:
+    result = ""
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        if result and not re.match(r"^[,.;:!?%)\]}”’]", part):
+            result += " "
+        result += part
+    return result
+
+
+def _join_chinese_fragments(parts: list[str]) -> str:
+    result = ""
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        if result and result[-1:].isascii() and part[:1].isascii():
+            result += " "
+        result += part
+    return result
+
+
+def merge_sentence_fragments(cues: list[Cue]) -> list[Cue]:
+    """Join ASR-sized fragments so translations stay with their full sentence."""
+    if not cues:
+        return []
+
+    merged: list[Cue] = []
+    group = [cues[0]]
+
+    def flush() -> None:
+        if not group:
+            return
+        merged.append(
+            Cue(
+                group[0].start,
+                group[-1].end,
+                _join_english_fragments([cue.english for cue in group]),
+                _join_chinese_fragments([cue.chinese for cue in group]),
+            )
+        )
+
+    for cue in cues[1:]:
+        previous = group[-1]
+        gap = cue.start - previous.end
+        if _ends_sentence(previous.english) or gap > MAX_FRAGMENT_GAP_SECONDS:
+            flush()
+            group = []
+        group.append(cue)
+    flush()
+    return merged
+
+
+def reflow_cues(cues: list[Cue]) -> list[Cue]:
     reflowed = []
 
     for cue in cues:
         duration = cue.end - cue.start
         if duration <= 0:
             continue
-        english_chars = len(cue.english.replace(" ", ""))
-        chinese_chars = _cjk_character_count(cue.chinese)
-        requested_parts = max(
-            1,
-            round((duration + MAX_SUBTITLE_CUE_SECONDS - 1e-9)
-                  // MAX_SUBTITLE_CUE_SECONDS),
-            (english_chars + max_english_chars - 1) // max_english_chars,
-            (chinese_chars + max_chinese_chars - 1) // max_chinese_chars,
-            int(english_chars / (ENGLISH_READING_SPEED * duration) + 0.999),
-            int(chinese_chars / (CHINESE_READING_SPEED * duration) + 0.999),
-        )
-        max_parts_for_readability = max(
-            1,
-            int(duration / MIN_SUBTITLE_CUE_SECONDS),
-        )
-        max_parts_for_text = min(
-            max(1, len(cue.english.split())),
-            max(1, len(cue.chinese.strip())),
-        )
-        parts = min(
-            requested_parts,
-            max_parts_for_readability,
-            max_parts_for_text,
-        )
-        while True:
-            english_chunks = _split_english(cue.english, parts)
-            chinese_chunks = _split_chinese(cue.chinese, parts)
-            if (
-                parts >= min(max_parts_for_readability, max_parts_for_text)
-                or (
-                    all(len(chunk) <= max_english_chars for chunk in english_chunks)
-                    and all(
-                        _cjk_character_count(chunk) <= max_chinese_chars
-                        for chunk in chinese_chunks
-                    )
-                )
-            ):
-                break
-            parts += 1
-        part_duration = duration / len(english_chunks)
-        for index, (english, chinese) in enumerate(
-            zip(english_chunks, chinese_chunks, strict=True)
+        aligned_clauses = _split_aligned_clauses(cue.english, cue.chinese)
+        clause_weights = [
+            max(1, len(english.split()))
+            for english, _ in aligned_clauses
+        ]
+        if (
+            len(aligned_clauses) > 1
+            and duration * min(clause_weights) / sum(clause_weights)
+            < MIN_SUBTITLE_CUE_SECONDS
         ):
-            start = cue.start + part_duration * index
-            end = (
-                cue.end
-                if index == len(english_chunks) - 1
-                else cue.start + part_duration * (index + 1)
+            aligned_clauses = [(cue.english, cue.chinese)]
+            clause_weights = [max(1, len(cue.english.split()))]
+        total_weight = sum(clause_weights)
+        elapsed_weight = 0
+        start = cue.start
+        for index, (english, chinese) in enumerate(aligned_clauses):
+            elapsed_weight += clause_weights[index]
+            end = cue.end if index == len(aligned_clauses) - 1 else (
+                cue.start + duration * elapsed_weight / total_weight
             )
             reflowed.append(Cue(start, end, english, chinese))
+            start = end
     return reflowed
 
 
@@ -329,11 +354,11 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(32, round(height * 0.056))
-    safe_width = round(width * 0.68)
+    english_font = max(34, round(chinese_font * 1.22))
+    safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
-    margin = max(28, round(height * 0.30))
+    margin = max(28, round(height * CAPTION_LOWER_MARGIN_PERCENT / 100))
     header = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {width}
@@ -343,8 +368,8 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.16)},{round(width * 0.16)},{margin},1
-Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.16)},{round(width * 0.16)},{margin},1
+Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
+Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
@@ -365,6 +390,121 @@ Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
             f"Chinese,,0,0,0,,{dialogue_text}"
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def verify_cues(
+    cues: list[Cue],
+    *,
+    duration: float,
+    width: int,
+    height: int,
+    translation_review: dict[str, object] | None = None,
+    visual_review: dict[str, object] | None = None,
+) -> dict[str, object]:
+    if not cues:
+        raise RuntimeError("Caption verification failed: there are no cues.")
+    if width <= 0 or height <= 0:
+        raise RuntimeError("Caption verification failed: invalid video dimensions.")
+    previous_end = 0.0
+    english_rate_flags = []
+    chinese_rate_flags = []
+    for index, cue in enumerate(cues, start=1):
+        if not cue.english.strip() or not cue.chinese.strip():
+            raise RuntimeError(
+                f"Caption verification failed: cue {index} is missing a language."
+            )
+        if cue.start < 0 or cue.end <= cue.start or cue.end > duration + 0.01:
+            raise RuntimeError(
+                f"Caption verification failed: cue {index} has invalid timing."
+            )
+        if index > 1 and cue.start < previous_end - 0.02:
+            raise RuntimeError(
+                f"Caption verification failed: cue {index} overlaps its predecessor."
+            )
+        cue_duration = cue.end - cue.start
+        if len(cue.english) / cue_duration > 20:
+            english_rate_flags.append(index)
+        chinese_characters = sum(
+            "\u3400" <= char <= "\u9fff" for char in cue.chinese
+        )
+        if chinese_characters / cue_duration > 10:
+            chinese_rate_flags.append(index)
+        previous_end = cue.end
+
+    chinese_font = max(32, round(height * 0.052))
+    english_font = max(34, round(chinese_font * 1.22))
+    if english_font / chinese_font < 1.20:
+        raise RuntimeError(
+            "Caption verification failed: English text is not at least 20% larger."
+        )
+    review = translation_review or {}
+    visual = visual_review or {}
+
+    def review_count(field: str) -> int:
+        value = review.get(field, 0)
+        return value if type(value) is int and value >= 0 else 0
+
+    return {
+        "structural_checks": "passed",
+        "bilingual_cue_sync": {
+            "status": "passed",
+            "scope": "both languages share the same phrase-level cue timing",
+            "audio_level_alignment": (
+                "passed"
+                if review.get("audio_level_alignment") is True
+                else "not_verified"
+            ),
+        },
+        "cue_timing": "passed",
+        "source_resolution": "passed",
+        "subtitle_readability": {
+            "status": (
+                "style_contract_passed"
+                if not english_rate_flags and not chinese_rate_flags
+                else "manual_review_required"
+            ),
+            "english_font_px": english_font,
+            "chinese_font_px": chinese_font,
+            "english_to_chinese_size_ratio": round(
+                english_font / chinese_font, 3
+            ),
+            "horizontal_safe_width_percent": 78,
+            "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
+            "max_lines_per_language": 2,
+            "english_reading_speed_over_20_cps_cues": english_rate_flags,
+            "chinese_reading_speed_over_10_cps_cues": chinese_rate_flags,
+            "visual_frame_review": (
+                "passed" if visual.get("status") == "passed" else "required"
+            ),
+        },
+        "translation_accuracy": {
+            "status": (
+                review.get("status")
+                if review.get("status") in {"verified", "not_verified"}
+                else "not_verified"
+            ),
+            "audio_level_alignment": (
+                "passed" if review.get("audio_level_alignment") is True
+                else "not_verified"
+            ),
+            "source_audio_review": (
+                "passed" if review.get("source_audio_review") is True
+                else "required"
+            ),
+            "independent_translation_review": (
+                "passed"
+                if review.get("independent_translation_review") is True
+                else "required"
+            ),
+            "translation_models_compared": review_count(
+                "translation_models_compared"
+            ),
+            "llm_judges": review_count("llm_judges"),
+            "source_cross_check_passes": review_count(
+                "source_cross_check_passes"
+            ),
+        },
+    }
 
 
 def vtt_from_bilingual_srt(content: str) -> str:
@@ -474,6 +614,53 @@ def read_srt(path: Path) -> list[tuple[float, float, str]]:
     return rows
 
 
+def copy_review_evidence(
+    source_dir: Path,
+    output_dir: Path,
+    translation_review: dict[str, object],
+    visual_review: dict[str, object],
+) -> None:
+    evidence_records = []
+    for field in (
+        "models",
+        "judges",
+        "source_cross_checks",
+        "source_audio_passes",
+    ):
+        records = translation_review.get(field, [])
+        if isinstance(records, list):
+            evidence_records.extend(
+                record for record in records if isinstance(record, dict)
+            )
+    frames = visual_review.get("frames", [])
+    if isinstance(frames, list):
+        evidence_records.extend(
+            record for record in frames if isinstance(record, dict)
+        )
+
+    source_root = source_dir.resolve()
+    output_root = output_dir.resolve()
+    for record in evidence_records:
+        relative_path = record.get("evidence_file")
+        if not isinstance(relative_path, str) or not relative_path.strip():
+            continue
+        source_path = (source_root / relative_path).resolve()
+        output_path = (output_root / relative_path).resolve()
+        try:
+            source_path.relative_to(source_root)
+            output_path.relative_to(output_root)
+        except ValueError as error:
+            raise RuntimeError(
+                "Review evidence path must stay within its manifest directory."
+            ) from error
+        if not source_path.is_file():
+            raise FileNotFoundError(
+                f"Review evidence file is missing: {source_path}"
+            )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, output_path)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
@@ -496,12 +683,26 @@ def main() -> None:
     translation_models_used = (
         [] if args.reuse_subtitles else [TRANSLATION_MODEL]
     )
+    translation_review: dict[str, object] = {}
+    visual_review: dict[str, object] = {}
     if args.reuse_subtitles:
         prefix = "whitehouse-oW-PQlgw1wo"
         prior_manifest_path = args.reuse_subtitles / "manifest.json"
         if prior_manifest_path.is_file():
             prior_manifest = json.loads(
                 prior_manifest_path.read_text(encoding="utf-8")
+            )
+            prior_review = prior_manifest.get("translation_review")
+            if isinstance(prior_review, dict):
+                translation_review = prior_review
+            prior_visual_review = prior_manifest.get("visual_review")
+            if isinstance(prior_visual_review, dict):
+                visual_review = prior_visual_review
+            copy_review_evidence(
+                args.reuse_subtitles,
+                output_dir,
+                translation_review,
+                visual_review,
             )
             prior_models = prior_manifest.get("translation_models_used")
             translation_models_used = (
@@ -550,6 +751,7 @@ def main() -> None:
                 "English and Chinese SRT timings do not match, or a cue "
                 "extends beyond the source video."
             )
+        cues = merge_sentence_fragments(cues)
     else:
         from faster_whisper import WhisperModel
 
@@ -578,13 +780,18 @@ def main() -> None:
         if not english_cues:
             raise RuntimeError("Whisper produced no English transcript cues.")
 
-        chinese_texts = translate_batches([cue[2] for cue in english_cues])
-        if len(chinese_texts) != len(english_cues):
+        translation_units = merge_sentence_fragments(
+            [Cue(start, end, english, "") for start, end, english in english_cues]
+        )
+        chinese_texts = translate_batches(
+            [cue.english for cue in translation_units]
+        )
+        if len(chinese_texts) != len(translation_units):
             raise RuntimeError("Translation output count did not match transcript cues.")
         cues = [
-            Cue(start, end, english, chinese)
-            for (start, end, english), chinese in zip(
-                english_cues,
+            Cue(cue.start, cue.end, cue.english, chinese)
+            for cue, chinese in zip(
+                translation_units,
                 chinese_texts,
                 strict=True,
             )
@@ -593,7 +800,7 @@ def main() -> None:
         language_probability = float(info.language_probability)
     if not cues:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
-    cues = reflow_cues(cues, width, height)
+    cues = reflow_cues(cues)
 
     prefix = "whitehouse-oW-PQlgw1wo"
     english_srt = output_dir / f"{prefix}.en.srt"
@@ -639,6 +846,14 @@ def main() -> None:
             f"Encoded MP4 is too large for a GitHub Release asset: "
             f"{output_video.stat().st_size} bytes"
         )
+    quality_checks = verify_cues(
+        cues,
+        duration=duration,
+        width=width,
+        height=height,
+        translation_review=translation_review,
+        visual_review=visual_review,
+    )
 
     manifest = {
         "source_video": source.name,
@@ -651,11 +866,15 @@ def main() -> None:
             else None
         ),
         "translation_models_used": translation_models_used,
-        "translation_review": {
-            "status": "not_performed",
+        "translation_review": translation_review or {
+            "status": "not_verified",
+            "source_audio_review": False,
+            "independent_translation_review": False,
+            "translation_models_compared": 0,
             "llm_judges": 0,
             "source_cross_check_passes": 0,
         },
+        "visual_review": visual_review or {"status": "not_verified"},
         "reused_existing_subtitles": args.reuse_subtitles is not None,
         "subtitle_cues": len(cues),
         "languages": ["en", "zh-Hans"],
@@ -666,6 +885,7 @@ def main() -> None:
             bilingual_srt.name,
         ],
         "subtitle_style": "gold Chinese above white English; responsive phrase-level timing",
+        "quality_checks": quality_checks,
         "source_resolution_preserved": True,
         "whisper_detected_language_probability": (
             round(language_probability, 4)

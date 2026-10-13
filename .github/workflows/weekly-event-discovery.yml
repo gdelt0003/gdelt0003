@@ -1,0 +1,184 @@
+name: Refresh multi-source event discovery leads
+
+on:
+  schedule:
+    - cron: "15 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  discover-and-publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install discovery and workbook tools
+        run: |
+          python -m pip install --upgrade yt-dlp openpyxl
+          yt-dlp --version
+
+      - name: Import the editable source directory
+        run: |
+          python scripts/import_event_source_registry.py \
+            --workbook outputs/event-source-review.xlsx \
+            --seed config/event-discovery-sources.json \
+            --output "$RUNNER_TEMP/event-discovery-sources.json"
+
+      - name: Check whether the registered collector is enabled
+        id: source_enabled
+        run: |
+          python - "$RUNNER_TEMP/event-discovery-sources.json" "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import sys
+          registry = json.load(open(sys.argv[1], encoding="utf-8"))
+          matches = [source for source in registry["sources"] if source["source_id"] == "white-house-youtube"]
+          if len(matches) != 1:
+              raise SystemExit("Expected exactly one White House YouTube source registration.")
+          with open(sys.argv[2], "a", encoding="utf-8") as output:
+              output.write(f"enabled={'true' if matches[0].get('enabled') is True else 'false'}\n")
+          PY
+
+      - name: Check whether the GDELT collector is enabled
+        id: gdelt_enabled
+        run: |
+          python - "$RUNNER_TEMP/event-discovery-sources.json" "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import sys
+          registry = json.load(open(sys.argv[1], encoding="utf-8"))
+          matches = [source for source in registry["sources"] if source["source_id"] == "gdelt-trump-articles"]
+          if len(matches) != 1:
+              raise SystemExit("Expected exactly one GDELT source registration.")
+          with open(sys.argv[2], "a", encoding="utf-8") as output:
+              output.write(f"enabled={'true' if matches[0].get('enabled') is True else 'false'}\n")
+          PY
+
+      - name: Collect recent official-channel uploads as unassigned leads
+        id: collect
+        if: steps.source_enabled.outputs.enabled == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/discover_whitehouse_events.py \
+            --limit 20 \
+            --output outputs/whitehouse-discovery.json
+
+      - name: Collect GDELT article metadata as unassigned leads
+        id: collect_gdelt
+        if: steps.gdelt_enabled.outputs.enabled == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/discover_gdelt_articles.py \
+            --query "trump" \
+            --max-records 250 \
+            --timespan 1w \
+            --output outputs/gdelt-discovery.json
+
+      - name: Record White House source attempt
+        if: always()
+        env:
+          COLLECTION_OUTCOME: ${{ steps.collect.outcome }}
+        run: |
+          if [ "$COLLECTION_OUTCOME" = "success" ]; then
+            result=success
+            echo "White House channel collection succeeded; entries remain metadata-only leads." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$COLLECTION_OUTCOME" = "skipped" ]; then
+            result=skipped
+            echo "White House channel collection was skipped because the source is disabled in the Source Directory." >> "$GITHUB_STEP_SUMMARY"
+          else
+            result=failure
+            echo "Warning: White House channel collection failed; the last saved lead snapshot will be retained and the failure linked in the source registry." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          python scripts/record_event_source_attempt.py \
+            --registry "$RUNNER_TEMP/event-discovery-sources.json" \
+            --source-id white-house-youtube \
+            --result "$result" \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Record GDELT source attempt
+        if: always()
+        env:
+          COLLECTION_OUTCOME: ${{ steps.collect_gdelt.outcome }}
+        run: |
+          if [ "$COLLECTION_OUTCOME" = "success" ]; then
+            result=success
+            echo "GDELT article metadata collection succeeded; articles remain unassigned leads." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$COLLECTION_OUTCOME" = "skipped" ]; then
+            result=skipped
+            echo "GDELT collection was skipped because the source is disabled in the Source Directory." >> "$GITHUB_STEP_SUMMARY"
+          else
+            result=failure
+            echo "Warning: GDELT collection failed; the last saved article snapshot will be retained and the failure linked in the source registry." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          python scripts/record_event_source_attempt.py \
+            --registry "$RUNNER_TEMP/event-discovery-sources.json" \
+            --source-id gdelt-trump-articles \
+            --result "$result" \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Build evidence workbook
+        run: |
+          args=(
+            --catalog outputs/event-catalog.json
+            --source-registry "$RUNNER_TEMP/event-discovery-sources.json"
+            --output outputs/event-source-review.xlsx
+          )
+          if [ -f outputs/whitehouse-discovery.json ]; then
+            args+=(--discovery outputs/whitehouse-discovery.json)
+          fi
+          if [ -f outputs/gdelt-discovery.json ]; then
+            args+=(--gdelt-discovery outputs/gdelt-discovery.json)
+          fi
+          python scripts/build_event_workbook.py \
+            "${args[@]}"
+
+      - name: Persist source registry, discovery snapshot, and workbook
+        run: |
+          cp "$RUNNER_TEMP/event-discovery-sources.json" outputs/event-discovery-sources.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/event-source-review.xlsx outputs/event-discovery-sources.json
+          if [ -f outputs/whitehouse-discovery.json ]; then
+            git add outputs/whitehouse-discovery.json
+          fi
+          if [ -f outputs/gdelt-discovery.json ]; then
+            git add outputs/gdelt-discovery.json
+          fi
+          if git diff --cached --quiet; then
+            echo "No source-register or discovery changes to commit."
+          else
+            git commit -m "chore: refresh event discovery registry" \
+              -m "Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy source leads and workbook
+        id: deployment
+        uses: actions/deploy-pages@v4
