@@ -54,8 +54,8 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(r"{\rChinese}中文\N{\rEnglish}Text \{one\}", content)
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
-        self.assertIn("Style: English,Noto Sans CJK SC,50,&H00FFFFFF", content)
-        self.assertIn(",216,1\n", content)
+        self.assertIn("Style: English,Noto Sans CJK SC,60,&H00FFFFFF", content)
+        self.assertIn(",324,1\n", content)
         self.assertIn("WrapStyle: 0", content)
 
     def test_reflows_long_bilingual_cues_without_changing_total_timing(self):
