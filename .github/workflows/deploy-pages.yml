@@ -227,14 +227,28 @@ jobs:
           ffmpeg -version
 
       - name: Run the exact full-video command on the same video
+        id: download
         run: |
           mkdir -p "$RUNNER_TEMP/whitehouse-full-video"
           cd "$RUNNER_TEMP/whitehouse-full-video"
-          yt-dlp --concurrent-fragments 50 --js-runtimes node --merge-output-format mp4 "https://www.youtube.com/watch?v=oW-PQlgw1wo"
+          yt-dlp --version > runner-info.txt
+          node --version >> runner-info.txt
+          python -m pip show yt-dlp yt-dlp-ejs >> runner-info.txt
+          set +e
+          yt-dlp --concurrent-fragments 50 --js-runtimes node --merge-output-format mp4 "https://www.youtube.com/watch?v=oW-PQlgw1wo" 2>&1 | tee yt-dlp.log
+          download_status=${PIPESTATUS[0]}
+          set -e
+          echo "exit_code=$download_status" >> "$GITHUB_OUTPUT"
+          exit 0
+        shell: bash
+
+      - name: Extract a frame from the downloaded video
+        if: steps.download.outputs.exit_code == '0'
+        run: |
           shopt -s nullglob
-          files=( *.mp4 )
+          files=( "$RUNNER_TEMP"/whitehouse-full-video/*.mp4 )
           if (( ${#files[@]} == 0 )); then
-            echo "yt-dlp completed without producing an MP4 file" >&2
+            echo "yt-dlp exited successfully but produced no MP4 file" >&2
             exit 1
           fi
           for file in "${files[@]}"; do
@@ -242,17 +256,23 @@ jobs:
               -of default=noprint_wrappers=1 "$file"
             ffprobe -v error -select_streams v:0 -show_entries stream=width,height \
               -of csv=s=x:p=0 "$file"
-            sha256sum "$file"
+            ffmpeg -y -ss 1 -i "$file" -frames:v 1 -q:v 2 "${file%.mp4}-frame.jpg"
+            sha256sum "$file" "${file%.mp4}-frame.jpg"
           done
         shell: bash
 
-      - name: Upload runner test video
+      - name: Upload runner logs, video, and extracted frame
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: whitehouse-oW-PQlgw1wo-full-video-runner-test
-          path: ${{ runner.temp }}/whitehouse-full-video/*.mp4
+          path: ${{ runner.temp }}/whitehouse-full-video/
           if-no-files-found: error
           retention-days: 3
+
+      - name: Fail if YouTube blocked the download
+        if: always() && steps.download.outputs.exit_code != '0'
+        run: exit 1
 
   deploy:
     needs: [build, download-source, download-same-clip, download-same-full-video]
