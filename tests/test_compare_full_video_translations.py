@@ -133,6 +133,7 @@ class TranslationComparisonTests(unittest.TestCase):
             {},
             io.BytesIO(b"temporary provider error"),
         )
+        self.addCleanup(error.close)
         with patch(
             "scripts.compare_full_video_translations.urllib.request.urlopen",
             side_effect=error,
