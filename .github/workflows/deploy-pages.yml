@@ -30,6 +30,21 @@ on:
         type: boolean
         required: false
         default: false
+      restyle_full_video:
+        description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
+        type: boolean
+        required: false
+        default: false
+      compare_full_video_translations:
+        description: Translate all subtitles with ten AI models and blind-score a sample with three separate AI judges
+        type: boolean
+        required: false
+        default: false
+      translation_review_budget_usd:
+        description: Maximum authorized API spend in USD for the ten-model translation and judge run
+        type: number
+        required: false
+        default: 26
 
 permissions:
   contents: write
@@ -339,9 +354,121 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  restyle-full-video:
+    if: github.event_name == 'workflow_dispatch' && inputs.restyle_full_video && !inputs.process_full_video
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg and CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          ffmpeg -version
+
+      - name: Download the uploaded source video
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/full-video-input"
+          gh release download white-house-source-oW-PQlgw1wo \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "President.Trump.Delivers.Remarks.Oct.6.2026.oW-PQlgw1wo.mp4" \
+            --dir "$RUNNER_TEMP/full-video-input"
+          mv \
+            "$RUNNER_TEMP/full-video-input/President.Trump.Delivers.Remarks.Oct.6.2026.oW-PQlgw1wo.mp4" \
+            "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
+          test -s "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
+        shell: bash
+
+      - name: Reflow existing SRT captions and burn them into the original-resolution video
+        run: |
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4" \
+            --output-dir "$RUNNER_TEMP/full-video-output" \
+            --reuse-subtitles generated/full-video
+        shell: bash
+
+      - name: Publish the restyled video and SRT files to the source release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload white-house-source-oW-PQlgw1wo \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en.srt" \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt" \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
+
+      - name: Upload Pages subtitle files
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: |
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.vtt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+  compare-full-video-translations:
+    if: github.event_name == 'workflow_dispatch' && inputs.compare_full_video_translations
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Compare ten translation models and three blind LLM judges
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          REVIEW_BUDGET_USD: ${{ inputs.translation_review_budget_usd }}
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "Repository Actions secret OPENROUTER_API_KEY is required." >&2
+            exit 1
+          fi
+          if [ -z "$REVIEW_BUDGET_USD" ]; then
+            echo "Set translation_review_budget_usd to an explicit positive USD limit." >&2
+            exit 1
+          fi
+          python scripts/compare_full_video_translations.py \
+            --input-dir generated/full-video \
+            --output-dir "$RUNNER_TEMP/translation-review" \
+            --max-cost-usd "$REVIEW_BUDGET_USD" \
+            --sample-size 120
+        shell: bash
+
+      - name: Preserve model outputs and blind-review report
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-ten-model-translation-review
+          path: ${{ runner.temp }}/translation-review
+          if-no-files-found: error
+          retention-days: 30
+
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video]
-    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.process-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled' && needs.process-full-video.result != 'cancelled'
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video]
+    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.process-full-video.result != 'failure' && needs.restyle-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled' && needs.process-full-video.result != 'cancelled' && needs.restyle-full-video.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -351,7 +478,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download generated full-video subtitle files
-        if: needs.process-full-video.result == 'success'
+        if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: full-video-pages-subtitles

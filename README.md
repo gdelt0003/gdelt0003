@@ -41,4 +41,27 @@ The Pages workflow can process the complete source video without fetching it fro
 1. Upload the original source MP4 to the GitHub Release `white-house-source-oW-PQlgw1wo`.
 2. Run **Publish stored White House clips to Pages** with `process_full_video` enabled.
 
-The runner uses Whisper `large-v3-turbo` for English transcription and Meta's M2M100 1.2B model for Simplified Chinese translation, then burns both subtitle lines into the full-resolution MP4. The subtitled MP4 and three SRT files are attached to the same Release; the Pages site embeds the video and serves its VTT/SRT subtitle files. Model output is machine-generated and should be reviewed before citation or republication.
+The existing processing route uses Whisper `large-v3-turbo` for English transcription and only Meta's M2M100 1.2B model for Simplified Chinese translation. It does not perform the requested ten-model comparison, web-source cross-check, or multi-LLM scoring, so its translation must not be described as independently verified. A style-only re-render with `restyle_full_video` reuses those same translations; it places gold Chinese above larger white English, lifts captions above the common lower-third area, and preserves the source resolution and aspect ratio. The subtitled MP4 and three SRT files are attached to the same Release; the Pages site embeds the video and serves its VTT/SRT subtitle files.
+
+To run the requested comparison, add an OpenRouter API key as the repository Actions secret `OPENROUTER_API_KEY`, then run **Publish stored White House clips to Pages** with `compare_full_video_translations` enabled and `translation_review_budget_usd` set to at least `$26` (the current live-catalog estimate is `$25.12` for all 971 cues and a 120-cue blind review). This job stores ten full-model SRT outputs and the three-judge report as a 30-day Actions artifact only; it does not deploy or replace the published subtitles. Review the source-fetch statuses and flagged cues against the official recording, then explicitly run the processing workflow to publish any approved translation. The model scores rank only the blind sample and are not a substitute for human review.
+
+### Translation benchmark evidence (13 October 2026)
+
+WMT25 published a matched English-to-Simplified-Chinese evaluation. These are the paper's cross-domain mean human scores, sorted by score; its significance-tested rank intervals overlap, so adjacent rows are not necessarily statistically distinguishable. Scores are not percentages and are not evaluations of this video's translation.
+
+| System | WMT25 human score | Rank interval |
+| --- | ---: | ---: |
+| Algharb | 88.4 | 1–1 |
+| Shy-hunyuan-MT | 88.2 | 2–4 |
+| Claude-4 | 86.9 | 2–5 |
+| Wenyiil | 86.3 | 2–5 |
+| DeepSeek-V3 | 85.0 | 3–6 |
+| GemTrans | 84.4 | 5–10 |
+| Qwen3-235B | 84.0 | 6–11 |
+| GPT-4.1 | 84.0 | 5–10 |
+| Gemini-2.5-Pro | 83.8 | 6–11 |
+| UvA-MT | 83.4 | 5–10 |
+
+For the WMT25 speech domain specifically, the top ten reported human scores are Gemini-2.5-Pro (83.7), Wenyiil (82.0), Algharb (81.9), GPT-4.1 (80.2), Shy-hunyuan-MT (80.1), DeepSeek-V3 (80.1), Claude-4 (79.7), Mistral-Medium (79.7), CommandA-WMT (75.0), and UvA-MT (74.4). This measures speech-translation content, not subtitle timing or readability. See the [WMT25 cross-domain table](https://aclanthology.org/2025.wmt-1.22.pdf#page=22), its [speech-domain table](https://aclanthology.org/2025.wmt-1.22.pdf#page=51), and the [official system-output repository](https://github.com/wmt-conference/wmt25-general-mt).
+
+These benchmark results can guide a candidate shortlist but cannot select the best translation of this particular recording. The current SRTs remain single-model M2M100 output; multi-system translations, web/source comparison, and independent LLM judging must be run on the recording before replacing the published captions. News coverage may corroborate event facts, but exact wording must be checked against the audio/video; the available YouTube captions are ASR, not a verified transcript.
