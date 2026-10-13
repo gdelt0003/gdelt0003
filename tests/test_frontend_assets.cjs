@@ -91,6 +91,10 @@ async function main() {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
   assert.doesNotMatch(html, /<track\b/i, 'do not overlay duplicate, unverified captions');
+  assert.match(html, /全长视频保持原始横屏比例/);
+  assert.match(html, /原始画面 1920 × 1080（16:9）/);
+  assert.match(html, /竖屏 9:16/);
+  assert.doesNotMatch(html, /全长视频.{0,40}1080 × 1920/);
   assert.match(css, /\.clip-player\s*\{[^}]*aspect-ratio:\s*9\s*\/\s*16/s);
   assert.match(css, /\.full-video-player\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
 }
