@@ -175,7 +175,11 @@ jobs:
               "event_date": None,
               "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
               "video_formats_with_known_size": len(videos),
-              "runner_available_bytes_at_preflight": runner_available_bytes,
+              "runner_disk_space": {
+                  "runner_image": "ubuntu-latest; documented standard runner SSD is 14 GB",
+                  "available_bytes_at_preflight": runner_available_bytes,
+                  "measurement": "df measured after dependency installation; working estimate reserves twice the reported source bytes",
+              },
               "preflight_reference_observation": {
                   "video_id": "noI4BbQ2wZQ",
                   "title": "President Trump Hosts a Columbus Day Celebration",
@@ -468,6 +472,11 @@ jobs:
               "title": "President Trump Hosts a Columbus Day Celebration",
               "event_date": None,
               "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
+              "runner_disk_space": {
+                  "runner_image": "ubuntu-latest; documented standard runner SSD is 14 GB",
+                  "available_bytes_at_preflight": None,
+                  "measurement": "preflight did not reach the disk-space measurement",
+              },
               "download_status": "not_downloaded",
               "failure_reason": reason,
               "source_resolution": None,
