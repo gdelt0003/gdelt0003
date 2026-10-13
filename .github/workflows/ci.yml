@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run Python tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Check frontend JavaScript syntax
+        run: node --check assets/app.js
+
+      - name: Validate JSON data
+        run: |
+          python -c "import json; from pathlib import Path; files = [Path('videos.json'), *Path('generated').rglob('*.json'), *Path('outputs').rglob('*.json')]; [json.loads(path.read_text(encoding='utf-8')) for path in files]; print(f'Validated {len(files)} JSON files')"
