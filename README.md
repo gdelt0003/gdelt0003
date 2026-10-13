@@ -22,6 +22,7 @@ Pull requests and pushes run the read-only CI workflow. It runs the Python unit 
 
 ## Deploy / regeneration caveats
 
+- GitHub Pages deploys on pushes to `main`. A manual run deploys only after `process_full_video` or `restyle_full_video` succeeds; download/regeneration checks and translation comparisons do not deploy.
 - Three short MP4 highlights from the public White House video `oW-PQlgw1wo` are committed to `generated/clips/` and referenced by `generated/default_batch.json` when present.
 - The workflow can be run with `regenerate_clips` to attempt re-cutting from the official source; set `download_full_source` to attach a full-source Release asset when possible.
 - YouTube may challenge automated runners (cookies/auth required). When the runner cannot access formats or subtitles, the workflow fails and leaves the published clips unchanged.
