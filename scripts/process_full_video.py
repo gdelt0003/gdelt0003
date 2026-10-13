@@ -213,7 +213,7 @@ def _cjk_character_count(text: str) -> int:
 
 def reflow_cues(cues: list[Cue], width: int, height: int) -> list[Cue]:
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(28, round(height * 0.046))
+    english_font = max(32, round(height * 0.056))
     safe_width = round(width * 0.68)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
@@ -329,11 +329,11 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(28, round(height * 0.046))
+    english_font = max(32, round(height * 0.056))
     safe_width = round(width * 0.68)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
-    margin = max(28, round(height * 0.20))
+    margin = max(28, round(height * 0.30))
     header = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {width}

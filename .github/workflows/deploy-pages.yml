@@ -403,6 +403,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release upload white-house-source-oW-PQlgw1wo \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo-bilingual.mp4" \
             "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en.srt" \
             "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt" \
             "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt" \
