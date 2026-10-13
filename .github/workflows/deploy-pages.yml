@@ -469,7 +469,31 @@ jobs:
 
   deploy:
     needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video]
-    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.process-full-video.result != 'failure' && needs.restyle-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled' && needs.process-full-video.result != 'cancelled' && needs.restyle-full-video.result != 'cancelled'
+    if: >-
+      always() &&
+      (
+        github.event_name == 'push' ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (inputs.process_full_video || inputs.restyle_full_video) &&
+          (
+            needs.process-full-video.result == 'success' ||
+            needs.restyle-full-video.result == 'success'
+          )
+        )
+      ) &&
+      needs.build.result != 'failure' &&
+      needs.download-source.result != 'failure' &&
+      needs.download-same-clip.result != 'failure' &&
+      needs.download-same-full-video.result != 'failure' &&
+      needs.process-full-video.result != 'failure' &&
+      needs.restyle-full-video.result != 'failure' &&
+      needs.build.result != 'cancelled' &&
+      needs.download-source.result != 'cancelled' &&
+      needs.download-same-clip.result != 'cancelled' &&
+      needs.download-same-full-video.result != 'cancelled' &&
+      needs.process-full-video.result != 'cancelled' &&
+      needs.restyle-full-video.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
