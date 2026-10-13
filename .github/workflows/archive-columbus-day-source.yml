@@ -53,14 +53,16 @@ jobs:
             --js-runtimes node \
             "$SOURCE_URL" > "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" \
             2> "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.stderr"
-          python - "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" <<'PY'
+          available_bytes="$(df -B1 --output=avail "$RUNNER_TEMP" | tail -n 1 | tr -d '[:space:]')"
+          python - "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" "$available_bytes" <<'PY'
           import json
           import os
           import re
           import sys
           from pathlib import Path
 
-          metadata_path, package_dir, output_path, summary_path = map(Path, sys.argv[1:])
+          metadata_path, package_dir, output_path, summary_path = map(Path, sys.argv[1:5])
+          runner_available_bytes = int(sys.argv[5])
           metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
           if metadata.get("id") != "noI4BbQ2wZQ":
               raise SystemExit("Extracted video ID does not match the allow-listed White House source.")
@@ -89,8 +91,6 @@ jobs:
               json.dumps(safe_metadata, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
-
-          maximum_source_bytes = 1_500_000_000
 
           def known_size(fmt):
               for key in ("filesize", "filesize_approx"):
@@ -144,17 +144,17 @@ jobs:
                       "estimated_bytes": estimated_bytes,
                   })
 
-          eligible = [
-              candidate for candidate in candidates
-              if candidate["estimated_bytes"] <= maximum_source_bytes
-          ]
+          eligible = []
+          for candidate in candidates:
+              candidate["estimated_working_bytes"] = candidate["estimated_bytes"] * 2
+              if candidate["estimated_working_bytes"] <= runner_available_bytes:
+                  eligible.append(candidate)
           eligible.sort(
               key=lambda candidate: (
-                  candidate["height"],
-                  candidate["width"],
+                  -candidate["height"],
+                  -candidate["width"],
                   candidate["estimated_bytes"],
-              ),
-              reverse=True,
+              )
           )
           selected = eligible[0] if eligible else None
 
@@ -175,7 +175,7 @@ jobs:
               "event_date": None,
               "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
               "video_formats_with_known_size": len(videos),
-              "maximum_source_bytes": maximum_source_bytes,
+              "runner_available_bytes_at_preflight": runner_available_bytes,
               "preflight_reference_observation": {
                   "video_id": "noI4BbQ2wZQ",
                   "title": "President Trump Hosts a Columbus Day Celebration",
@@ -194,9 +194,22 @@ jobs:
               "download_status": "eligible" if selected else "not_downloaded",
               "download_blocker": None if selected else (
                   "No landscape video format at least 1920x1080 with known estimated size "
-                  "within the 1.5 GB source limit was reported."
+                  "fits the runner's currently available working disk space."
               ),
               "artifact_name": f"columbus-day-official-source-{os.environ['GITHUB_RUN_ID']}",
+              "artifact_storage": {
+                  "retention_days": 30,
+                  "compression_level": 0,
+                  "quota_status": (
+                      "Repository/account available artifact storage is unknown; GitHub plan "
+                      "quotas or billing may prevent a large upload. No upload success is "
+                      "claimed until the artifact is present."
+                  ),
+                  "documentation": [
+                      "https://github.com/actions/upload-artifact#limitations",
+                      "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+                  ],
+              },
               "rights_evidence": {
                   "official_event_page": (
                       "https://www.whitehouse.gov/videos/"
@@ -282,7 +295,8 @@ jobs:
                   summary.write(
                       f"Metadata confirms an eligible {selected['width']}x{selected['height']} "
                       f"landscape format, estimated at {selected['estimated_bytes']} bytes. "
-                      "The source will be downloaded without re-encoding.\n"
+                      f"Estimated working space is {selected['estimated_working_bytes']} bytes; "
+                      "the source will be downloaded without re-encoding.\n"
                   )
               else:
                   summary.write(record["download_blocker"] + " Metadata-only artifact will be retained.\n")
@@ -318,10 +332,6 @@ jobs:
           fi
           source_file="${files[0]}"
           source_bytes="$(stat -c '%s' "$source_file")"
-          if (( source_bytes > 1500000000 )); then
-            echo "Downloaded source exceeds the 1.5 GB archive limit." >&2
-            exit 1
-          fi
           ffprobe -v error -select_streams v:0 \
             -show_entries stream=width,height \
             -of json "$source_file" > "$PACKAGE_DIR/source-probe.json"
@@ -440,6 +450,19 @@ jobs:
               "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
               "workflow_commit_sha": os.environ["GITHUB_SHA"],
               "artifact_name": f"columbus-day-official-source-{os.environ['GITHUB_RUN_ID']}",
+              "artifact_storage": {
+                  "retention_days": 30,
+                  "compression_level": 0,
+                  "quota_status": (
+                      "Repository/account available artifact storage is unknown; GitHub plan "
+                      "quotas or billing may prevent a large upload. No upload success is "
+                      "claimed until the artifact is present."
+                  ),
+                  "documentation": [
+                      "https://github.com/actions/upload-artifact#limitations",
+                      "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+                  ],
+              },
               "source_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
               "video_id": "noI4BbQ2wZQ",
               "title": "President Trump Hosts a Columbus Day Celebration",
