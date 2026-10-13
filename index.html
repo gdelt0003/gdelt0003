@@ -44,6 +44,18 @@
         </p>
         <p class="meta">字幕由 Whisper large-v3-turbo 自动转写、M2M100 单模型翻译，尚未经过十模型对比、多大模型评分或逐条新闻/字幕交叉复核；请勿视为已独立核验。视频来自白宫官方频道。</p>
       </section>
+      <section class="panel camera-map-panel" aria-labelledby="camera-map-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">EVENT CAMERA GEOMETRY</p>
+            <h2 id="camera-map-title">活动 3D 机位图</h2>
+          </div>
+          <span id="cameraMapStatus" class="meta" role="status" aria-live="polite">正在读取测绘证据…</span>
+        </div>
+        <div id="cameraMapScene" class="camera-map-scene"></div>
+        <ul id="cameraMapDetails" class="camera-map-details"></ul>
+        <p class="meta">仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。</p>
+      </section>
       <section class="panel highlights-panel" aria-labelledby="highlights-title">
         <div class="highlights-heading">
           <div>
@@ -56,6 +68,7 @@
         <p class="meta">选段时间以原片为准。每支短片均可在线播放、下载 MP4，并下载对应的中英 SRT 字幕。</p>
       </section>
     </main>
+    <script src="assets/camera-map.js?v=camera-map-1"></script>
     <script src="assets/app.js?v=whitehouse-4"></script>
   </body>
 </html>

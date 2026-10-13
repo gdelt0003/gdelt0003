@@ -7,6 +7,7 @@ from scripts.process_full_video import (
     ass_escape,
     ass_time,
     bilingual_srt_text,
+    copy_review_evidence,
     merge_sentence_fragments,
     reflow_cues,
     read_srt,
@@ -228,6 +229,41 @@ class FullVideoSubtitleTests(unittest.TestCase):
             report["subtitle_readability"]["english_to_chinese_size_ratio"],
             1.2,
         )
+
+    def test_copies_review_evidence_for_output_gate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            output = root / "output"
+            evidence = source / "review" / "audio-pass.json"
+            evidence.parent.mkdir(parents=True)
+            evidence.write_text("reviewed audio", encoding="utf-8")
+            review = {
+                "source_audio_passes": [
+                    {"evidence_file": "review/audio-pass.json"}
+                ]
+            }
+            copy_review_evidence(source, output, review, {})
+            self.assertEqual(
+                (output / "review" / "audio-pass.json").read_text(
+                    encoding="utf-8"
+                ),
+                "reviewed audio",
+            )
+
+    def test_rejects_review_evidence_outside_manifest_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            output = root / "output"
+            source.mkdir()
+            with self.assertRaisesRegex(RuntimeError, "must stay within"):
+                copy_review_evidence(
+                    source,
+                    output,
+                    {"models": [{"evidence_file": "../outside.json"}]},
+                    {},
+                )
 
     def test_caption_verification_rejects_overlapping_cues(self):
         with self.assertRaisesRegex(RuntimeError, "overlaps"):

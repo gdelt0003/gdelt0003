@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -612,6 +613,53 @@ def read_srt(path: Path) -> list[tuple[float, float, str]]:
     return rows
 
 
+def copy_review_evidence(
+    source_dir: Path,
+    output_dir: Path,
+    translation_review: dict[str, object],
+    visual_review: dict[str, object],
+) -> None:
+    evidence_records = []
+    for field in (
+        "models",
+        "judges",
+        "source_cross_checks",
+        "source_audio_passes",
+    ):
+        records = translation_review.get(field, [])
+        if isinstance(records, list):
+            evidence_records.extend(
+                record for record in records if isinstance(record, dict)
+            )
+    frames = visual_review.get("frames", [])
+    if isinstance(frames, list):
+        evidence_records.extend(
+            record for record in frames if isinstance(record, dict)
+        )
+
+    source_root = source_dir.resolve()
+    output_root = output_dir.resolve()
+    for record in evidence_records:
+        relative_path = record.get("evidence_file")
+        if not isinstance(relative_path, str) or not relative_path.strip():
+            continue
+        source_path = (source_root / relative_path).resolve()
+        output_path = (output_root / relative_path).resolve()
+        try:
+            source_path.relative_to(source_root)
+            output_path.relative_to(output_root)
+        except ValueError as error:
+            raise RuntimeError(
+                "Review evidence path must stay within its manifest directory."
+            ) from error
+        if not source_path.is_file():
+            raise FileNotFoundError(
+                f"Review evidence file is missing: {source_path}"
+            )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, output_path)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
@@ -649,6 +697,12 @@ def main() -> None:
             prior_visual_review = prior_manifest.get("visual_review")
             if isinstance(prior_visual_review, dict):
                 visual_review = prior_visual_review
+            copy_review_evidence(
+                args.reuse_subtitles,
+                output_dir,
+                translation_review,
+                visual_review,
+            )
             prior_models = prior_manifest.get("translation_models_used")
             translation_models_used = (
                 [model for model in prior_models if isinstance(model, str)]
