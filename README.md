@@ -33,3 +33,12 @@ python scripts/create_shorts.py
 The default sample uses the White House's October 6, 2026 remarks video (58:52; 3,532 seconds) and creates three distinct highlight windows with both an editorial and a punchy variant: 12:03-12:59 (shipyard production/jobs), 20:58-21:44 (Navy systems), and 41:57-42:16 (Russia-Ukraine remarks). Outputs and a source/timing manifest are written to `outputs/whitehouse-oct-06-2026/`. Supply `--url` and `--output-dir` to process a different source. The script requires `yt-dlp`, `ffmpeg`, and `ffprobe` on `PATH`; optional executable overrides are `YT_DLP_BIN`, `FFMPEG_BIN`, and `FFPROBE_BIN`.
 
 English captions are YouTube's auto-generated transcript, with rolling caption fragments deduplicated and obvious context errors corrected. Chinese captions use machine translation with reviewed corrections for the sample's key phrases. Review proper names, numbers, and translations before publication. The source link, upload date, durations, and exact highlight time ranges are recorded in `manifest.json`.
+
+## Process the complete October 6, 2026 video
+
+The Pages workflow can process the complete source video without fetching it from YouTube:
+
+1. Upload the source MP4 as `whitehouse-oW-PQlgw1wo-source.mp4` to the GitHub Release `white-house-source-oW-PQlgw1wo`.
+2. Run **Publish stored White House clips to Pages** with `process_full_video` enabled.
+
+The runner uses Whisper `large-v3-turbo` for English transcription and Meta's M2M100 1.2B model for Simplified Chinese translation, then burns both subtitle lines into the full-resolution MP4. The subtitled MP4 and three SRT files are attached to the same Release; the Pages site embeds the video and serves its VTT/SRT subtitle files. Model output is machine-generated and should be reviewed before citation or republication.

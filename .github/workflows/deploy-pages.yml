@@ -25,6 +25,11 @@ on:
         type: boolean
         required: false
         default: false
+      process_full_video:
+        description: Transcribe, translate, and burn bilingual subtitles into the uploaded full video
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -168,10 +173,11 @@ jobs:
 
       - name: Install yt-dlp and ffmpeg
         run: |
-          python -m pip install --upgrade yt-dlp
+          python -m pip install --upgrade --pre "yt-dlp[default]" yt-dlp-ejs
           sudo apt-get update
           sudo apt-get install --yes ffmpeg
           yt-dlp --version
+          python -m pip show yt-dlp-ejs
           ffmpeg -version
 
       - name: Download the same highlight with the local command
@@ -253,9 +259,87 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
+  process-full-video:
+    if: github.event_name == 'workflow_dispatch' && inputs.process_full_video
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache transcription models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-full-video-models-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Install ffmpeg, CJK fonts, and models
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece
+          ffmpeg -version
+
+      - name: Download the uploaded source video
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/full-video-input"
+          gh release download white-house-source-oW-PQlgw1wo \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "whitehouse-oW-PQlgw1wo-source.mp4" \
+            --dir "$RUNNER_TEMP/full-video-input"
+          test -s "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
+          ffprobe -v error -show_entries format=duration,size \
+            -of default=noprint_wrappers=1 \
+            "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
+        shell: bash
+
+      - name: Generate English and Chinese subtitles and burn into the full video
+        run: |
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4" \
+            --output-dir "$RUNNER_TEMP/full-video-output"
+        shell: bash
+
+      - name: Publish the subtitled video and SRT files to the source release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload white-house-source-oW-PQlgw1wo \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo-bilingual.mp4" \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en.srt" \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt" \
+            "$RUNNER_TEMP/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
+
+      - name: Upload Pages subtitle files
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: |
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.vtt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
+            ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video]
-    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled'
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video]
+    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.process-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled' && needs.process-full-video.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -263,6 +347,13 @@ jobs:
     steps:
       - name: Checkout generated site files
         uses: actions/checkout@v4
+
+      - name: Download generated full-video subtitle files
+        if: needs.process-full-video.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: generated/full-video
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
