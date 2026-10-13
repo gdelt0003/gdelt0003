@@ -3,6 +3,17 @@ name: Publish stored White House clips to Pages
 on:
   push:
     branches: [main]
+    paths:
+      - 'index.html'
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - '*.json'
+      - '.nojekyll'
+      - 'CNAME'
+      - 'assets/**'
+      - 'outputs/**'
+      - 'generated/**'
   workflow_dispatch:
     inputs:
       regenerate_clips:

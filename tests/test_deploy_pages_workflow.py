@@ -22,6 +22,17 @@ def job_body(workflow: str, name: str) -> str:
 
 
 class DeployPagesWorkflowTests(unittest.TestCase):
+    def test_push_deploy_is_limited_to_published_site_content(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]
+
+        self.assertIn("    paths:", push)
+        for path in ("'index.html'", "'assets/**'", "'outputs/**'", "'generated/**'"):
+            with self.subTest(path=path):
+                self.assertIn(f"      - {path}", push)
+        self.assertNotIn("'scripts/**'", push)
+        self.assertNotIn("'docs/**'", push)
+
     def test_push_deploy_is_not_blocked_by_the_post_deploy_quality_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         deploy = job_body(workflow, "deploy")
