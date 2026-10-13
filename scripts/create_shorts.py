@@ -7,6 +7,7 @@ import html
 import json
 import math
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -16,7 +17,21 @@ import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
+from importlib.metadata import version as package_version
 from pathlib import Path
+
+if __package__:
+    from .operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
+else:
+    from operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
 
 
 DEFAULT_URL = "https://www.youtube.com/watch?v=oW-PQlgw1wo"
@@ -343,7 +358,12 @@ def normalize_transcript_text(text: str) -> str:
     )
 
 
-def translate(text: str, cache: dict[str, str]) -> str:
+def translate(
+    text: str,
+    cache: dict[str, str],
+    *,
+    operation_record: dict[str, object] | None = None,
+) -> str:
     reviewed_translations = {
         "arsenal 2 will help us attack production bottlenecks with the footprint to add up to 9 million production hours per year into our submarine supply chain.": "Arsenal 2 将帮助我们突破生产瓶颈，预计每年可为潜艇供应链新增 900 万工时。",
         "we're delivering systems that will hunt threats before the crews can even see them.": "我们正在交付能够在舰员察觉威胁之前就将其锁定的系统。",
@@ -374,13 +394,33 @@ def translate(text: str, cache: dict[str, str]) -> str:
     }
     reviewed = reviewed_translations.get(text.casefold())
     if reviewed:
+        if operation_record is not None:
+            operation_record.update(
+                tool="reviewed translation table",
+                version=current_pipeline_version(),
+            )
         cache[text] = reviewed
         return reviewed
     if text in cache:
+        if operation_record is not None:
+            operation_record.update(
+                tool="translation cache",
+                version="existing cached translation",
+            )
         return cache[text]
     if not text.strip():
+        if operation_record is not None:
+            operation_record.update(
+                tool="empty input",
+                version="not applicable",
+            )
         return ""
 
+    if operation_record is not None:
+        operation_record.update(
+            tool="MyMemory HTTP API",
+            version="en|zh-CN; maximum 3 attempts",
+        )
     query = urllib.parse.urlencode({"q": text, "langpair": "en|zh-CN"})
     request = urllib.request.Request(
         f"https://api.mymemory.translated.net/get?{query}",
@@ -388,6 +428,8 @@ def translate(text: str, cache: dict[str, str]) -> str:
     )
     error: Exception | None = None
     for attempt in range(3):
+        if operation_record is not None:
+            operation_record["retry_count"] = attempt
         try:
             with urllib.request.urlopen(request, timeout=30) as response:
                 result = json.load(response)
@@ -437,7 +479,15 @@ def ass_escape(text: str) -> str:
     return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
 
 
-def subtitle_text(cues: list[Cue], start: float, end: float, cache: dict[str, str]):
+def subtitle_text(
+    cues: list[Cue],
+    start: float,
+    end: float,
+    cache: dict[str, str],
+    *,
+    audit: OperationAudit | None = None,
+    asset_id: str = "unassigned",
+):
     fragments = []
     spans = []
     for cue in cues:
@@ -478,7 +528,26 @@ def subtitle_text(cues: list[Cue], start: float, end: float, cache: dict[str, st
         cue_end = max(span[1] for span in sentence_spans)
         if cue_end - cue_start < 0.5:
             continue
-        chinese = translate(english, cache)
+        if audit is None:
+            chinese = translate(english, cache)
+        else:
+            with audit.record(
+                "translation",
+                asset_id=asset_id,
+                tool="MyMemory HTTP API",
+                version="en|zh-CN; maximum 3 attempts",
+                details={
+                    "cue_interval_seconds": [
+                        round(cue_start, 3),
+                        round(cue_end, 3),
+                    ],
+                },
+            ) as operation_record:
+                chinese = translate(
+                    english,
+                    cache,
+                    operation_record=operation_record,
+                )
         selected.append(
             {
                 "start": cue_start,
@@ -826,10 +895,25 @@ def main() -> int:
         parser.error(f"ffprobe executable not found: {args.ffprobe}")
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    audit = OperationAudit(
+        args.output_dir / "operation-audit.json",
+        task_id=current_task_id(),
+        pipeline_version=current_pipeline_version(),
+    )
+    ytdlp_version = run([args.yt_dlp, "--version"], capture=True).strip()
+    ffmpeg_version = run([args.ffmpeg, "-version"], capture=True).splitlines()[0]
     source_dir = args.output_dir / "source"
     source_dir.mkdir(exist_ok=True)
     metadata_path = source_dir / "metadata.json"
-    metadata = json.loads(run([args.yt_dlp, "-J", "--no-warnings", args.url], capture=True))
+    with audit.record(
+        "source_metadata",
+        asset_id=args.url,
+        tool="yt-dlp",
+        version=ytdlp_version,
+    ):
+        metadata = json.loads(
+            run([args.yt_dlp, "-J", "--no-warnings", args.url], capture=True)
+        )
     if metadata.get("duration", 0) <= 1800:
         raise RuntimeError("Source video must be longer than 30 minutes.")
     source_resolution = validate_source_formats(metadata)
@@ -888,35 +972,62 @@ def main() -> int:
     )
 
     captions_path = source_dir / f"{metadata['id']}.en.vtt"
-    run(
-        [
-            args.yt_dlp,
-            "--skip-download",
-            "--write-subs",
-            "--write-auto-subs",
-            "--sub-langs",
-            "en",
-            "--sub-format",
-            "vtt",
-            "--sleep-subtitles",
-            "2",
-            "--output",
-            str(source_dir / "%(id)s.%(ext)s"),
-            args.url,
-        ]
-    )
+    with audit.record(
+        "caption_acquisition",
+        asset_id=metadata["id"],
+        tool="yt-dlp",
+        version=ytdlp_version,
+        details={"caption_language": "en", "format": "vtt"},
+    ):
+        run(
+            [
+                args.yt_dlp,
+                "--skip-download",
+                "--write-subs",
+                "--write-auto-subs",
+                "--sub-langs",
+                "en",
+                "--sub-format",
+                "vtt",
+                "--sleep-subtitles",
+                "2",
+                "--output",
+                str(source_dir / "%(id)s.%(ext)s"),
+                args.url,
+            ]
+        )
     if captions_path.is_file():
         caption_source = "YouTube English caption track (automatic or publisher-provided)"
-        cues = remove_rolling_overlap(parse_vtt(captions_path))
+        with audit.record(
+            "caption_parse",
+            asset_id=captions_path.name,
+            tool="create_shorts.py",
+            version=current_pipeline_version(),
+        ):
+            cues = remove_rolling_overlap(parse_vtt(captions_path))
+            if not cues:
+                raise RuntimeError(
+                    "Downloaded caption track did not contain readable cues."
+                )
     elif source_file is not None:
         print(
             "No English caption file was available; transcribing source with "
             "local Whisper large-v3-turbo on the cloud runner.",
             flush=True,
         )
-        cues = transcribe_with_whisper(
-            source_file, source_dir / f"{metadata['id']}.en.vtt"
-        )
+        with audit.record(
+            "asr",
+            asset_id=source_file.name,
+            tool="faster-whisper",
+            version="model=large-v3-turbo",
+        ) as operation:
+            operation["version"] = (
+                "model=large-v3-turbo; faster-whisper="
+                f"{package_version('faster-whisper')}"
+            )
+            cues = transcribe_with_whisper(
+                source_file, source_dir / f"{metadata['id']}.en.vtt"
+            )
         caption_source = "Whisper large-v3-turbo English ASR; human review required"
     else:
         raise RuntimeError(
@@ -932,28 +1043,47 @@ def main() -> int:
     )
     transcript_files = []
     english_transcript_path = args.output_dir / "full.en.srt"
-    write_srt(
-        english_transcript_path,
-        [
-            {"start": cue.start, "end": cue.end, "text": cue.text}
-            for cue in cues
-        ],
-        bilingual=False,
-    )
+    with audit.record(
+        "subtitle_export",
+        asset_id=english_transcript_path.name,
+        tool="Python",
+        version=platform.python_version(),
+        details={"cue_count": len(cues), "language": "en"},
+    ):
+        write_srt(
+            english_transcript_path,
+            [
+                {"start": cue.start, "end": cue.end, "text": cue.text}
+                for cue in cues
+            ],
+            bilingual=False,
+        )
     transcript_files.append(english_transcript_path.name)
     bilingual_transcript_path = None
     if args.translate_full_transcript:
         full_bilingual_cues = subtitle_text(
-            cues, 0, metadata["duration"], translation_cache
+            cues,
+            0,
+            metadata["duration"],
+            translation_cache,
+            audit=audit,
+            asset_id=f"{metadata['id']}:full-transcript",
         )
         if not full_bilingual_cues:
             raise RuntimeError("Full transcript translation produced no cues.")
         bilingual_transcript_path = args.output_dir / "full.en-zh.srt"
-        write_srt(
-            bilingual_transcript_path,
-            full_bilingual_cues,
-            bilingual=True,
-        )
+        with audit.record(
+            "subtitle_export",
+            asset_id=bilingual_transcript_path.name,
+            tool="Python",
+            version=platform.python_version(),
+            details={"cue_count": len(full_bilingual_cues), "languages": ["en", "zh-CN"]},
+        ):
+            write_srt(
+                bilingual_transcript_path,
+                full_bilingual_cues,
+                bilingual=True,
+            )
         transcript_files.append(bilingual_transcript_path.name)
         translation_cache_path.write_text(
             json.dumps(translation_cache, ensure_ascii=False, indent=2) + "\n",
@@ -979,6 +1109,8 @@ def main() -> int:
             ),
         },
         "output": {"width": 1080, "height": 1920, "fps": 30},
+        "operation_audit_file": "operation-audit.json",
+        "processing_operations": audit.records,
         "highlights": [],
         "editing_notes": (
             "Multiple styles are rendered for each reviewed interval. "
@@ -991,59 +1123,74 @@ def main() -> int:
             raise RuntimeError(f"Highlight exceeds source duration: {highlight['id']}")
         clip_id = highlight["id"]
         source_clip = source_dir / f"{clip_id}.mp4"
-        if source_file is not None:
-            run(
-                [
-                    args.ffmpeg,
-                    "-y",
-                    "-ss",
-                    str(highlight["start"]),
-                    "-i",
-                    str(source_file),
-                    "-t",
-                    str(highlight["end"] - highlight["start"]),
-                    "-map",
-                    "0:v:0",
-                    "-map",
-                    "0:a:0?",
-                    "-c",
-                    "copy",
-                    "-avoid_negative_ts",
-                    "make_zero",
-                    str(source_clip),
-                ]
+        with audit.record(
+            "clip_extract",
+            asset_id=clip_id,
+            tool="ffmpeg" if source_file is not None else "yt-dlp",
+            version=ffmpeg_version if source_file is not None else ytdlp_version,
+            details={
+                "source_start_seconds": highlight["start"],
+                "source_end_seconds": highlight["end"],
+            },
+        ):
+            if source_file is not None:
+                run(
+                    [
+                        args.ffmpeg,
+                        "-y",
+                        "-ss",
+                        str(highlight["start"]),
+                        "-i",
+                        str(source_file),
+                        "-t",
+                        str(highlight["end"] - highlight["start"]),
+                        "-map",
+                        "0:v:0",
+                        "-map",
+                        "0:a:0?",
+                        "-c",
+                        "copy",
+                        "-avoid_negative_ts",
+                        "make_zero",
+                        str(source_clip),
+                    ]
+                )
+            else:
+                run(
+                    [
+                        args.yt_dlp,
+                        "--no-warnings",
+                        "--download-sections",
+                        f"*{highlight['start']}-{highlight['end']}",
+                        "--force-keyframes-at-cuts",
+                        "--merge-output-format",
+                        "mp4",
+                        "-f",
+                        VIDEO_FILTER,
+                        "-o",
+                        str(source_clip),
+                        args.url,
+                    ]
+                )
+            if not source_clip.is_file():
+                raise RuntimeError(f"Source clip was not created: {source_clip}")
+            downloaded_width, downloaded_height = video_dimensions(
+                args.ffprobe, source_clip
             )
-        else:
-            run(
-                [
-                    args.yt_dlp,
-                    "--no-warnings",
-                    "--download-sections",
-                    f"*{highlight['start']}-{highlight['end']}",
-                    "--force-keyframes-at-cuts",
-                    "--merge-output-format",
-                    "mp4",
-                    "-f",
-                    VIDEO_FILTER,
-                    "-o",
-                    str(source_clip),
-                    args.url,
-                ]
-            )
-        if not source_clip.is_file():
-            raise RuntimeError(f"Source clip was not created: {source_clip}")
-        downloaded_width, downloaded_height = video_dimensions(
-            args.ffprobe, source_clip
-        )
-        if downloaded_width < 1920 or downloaded_height < 1080:
-            raise RuntimeError(
-                f"Downloaded source interval {clip_id} is "
-                f"{downloaded_width}x{downloaded_height}; refusing to upscale "
-                "below 1920x1080."
-            )
+            if downloaded_width < 1920 or downloaded_height < 1080:
+                raise RuntimeError(
+                    f"Downloaded source interval {clip_id} is "
+                    f"{downloaded_width}x{downloaded_height}; refusing to upscale "
+                    "below 1920x1080."
+                )
 
         clip_cues = subtitle_text(
-            cues, highlight["start"], highlight["end"], translation_cache
+            cues,
+            highlight["start"],
+            highlight["end"],
+            translation_cache,
+            audit=audit,
+            asset_id=clip_id,
         )
         if not clip_cues:
             raise RuntimeError(f"No English caption cues found for {clip_id}")
@@ -1058,62 +1205,87 @@ def main() -> int:
             "subtitles": f"{clip_id}.en-zh.srt",
             "variants": [],
         }
-        write_srt(
-            args.output_dir / f"{clip_id}.en-zh.srt",
-            clip_cues,
-            bilingual=True,
-        )
-        translation_cache_path.write_text(
-            json.dumps(translation_cache, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        with audit.record(
+            "subtitle_export",
+            asset_id=f"{clip_id}.en-zh.srt",
+            tool="Python",
+            version=platform.python_version(),
+            details={"cue_count": len(clip_cues), "languages": ["en", "zh-CN"]},
+        ):
+            write_srt(
+                args.output_dir / f"{clip_id}.en-zh.srt",
+                clip_cues,
+                bilingual=True,
+            )
+            translation_cache_path.write_text(
+                json.dumps(translation_cache, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
 
         for style in styles:
             ass_path = source_dir / f"{clip_id}.{style}.ass"
-            write_ass(ass_path, clip_cues, style, highlight["title"])
+            with audit.record(
+                "subtitle_export",
+                asset_id=ass_path.name,
+                tool="Python",
+                version=platform.python_version(),
+                details={"cue_count": len(clip_cues), "style": style},
+            ):
+                write_ass(ass_path, clip_cues, style, highlight["title"])
             output_path = args.output_dir / f"{clip_id}-{style}.mp4"
-            run(
-                [
-                    args.ffmpeg,
-                    "-y",
-                    "-i",
-                    str(source_clip),
-                    "-vf",
-                    filter_for(style, ass_path),
-                    "-af",
-                    "loudnorm=I=-16:TP=-1.5:LRA=11",
-                    "-r",
-                    "30",
-                    "-c:v",
-                    "libx264",
-                    "-preset",
-                    "veryfast",
-                    "-crf",
-                    "18",
-                    "-pix_fmt",
-                    "yuv420p",
-                    "-c:a",
-                    "aac",
-                    "-b:a",
-                    "192k",
-                    "-movflags",
-                    "+faststart",
-                    str(output_path),
-                ]
-            )
-            actual_duration = video_duration(args.ffprobe, output_path)
-            width, height = video_dimensions(args.ffprobe, output_path)
-            expected_duration = highlight["end"] - highlight["start"]
-            if (width, height) != (1080, 1920):
-                raise RuntimeError(
-                    f"Unexpected output resolution for {output_path.name}: "
-                    f"{width}x{height}"
+            with audit.record(
+                "subtitle_burn",
+                asset_id=output_path.name,
+                tool="ffmpeg",
+                version=ffmpeg_version,
+                details={
+                    "source_asset": source_clip.name,
+                    "style": style,
+                    "resolution": "1080x1920",
+                },
+            ):
+                run(
+                    [
+                        args.ffmpeg,
+                        "-y",
+                        "-i",
+                        str(source_clip),
+                        "-vf",
+                        filter_for(style, ass_path),
+                        "-af",
+                        "loudnorm=I=-16:TP=-1.5:LRA=11",
+                        "-r",
+                        "30",
+                        "-c:v",
+                        "libx264",
+                        "-preset",
+                        "veryfast",
+                        "-crf",
+                        "18",
+                        "-pix_fmt",
+                        "yuv420p",
+                        "-c:a",
+                        "aac",
+                        "-b:a",
+                        "192k",
+                        "-movflags",
+                        "+faststart",
+                        str(output_path),
+                    ]
                 )
-            if abs(actual_duration - expected_duration) > 3:
-                raise RuntimeError(
-                    f"Unexpected duration for {output_path.name}: "
-                    f"{actual_duration:.1f}s (expected {expected_duration:.1f}s)"
-                )
+                actual_duration = video_duration(args.ffprobe, output_path)
+                width, height = video_dimensions(args.ffprobe, output_path)
+                expected_duration = highlight["end"] - highlight["start"]
+                if (width, height) != (1080, 1920):
+                    raise RuntimeError(
+                        f"Unexpected output resolution for {output_path.name}: "
+                        f"{width}x{height}"
+                    )
+                if abs(actual_duration - expected_duration) > 3:
+                    raise RuntimeError(
+                        f"Unexpected duration for {output_path.name}: "
+                        f"{actual_duration:.1f}s (expected {expected_duration:.1f}s)"
+                    )
             clip_manifest["variants"].append(
                 {
                     "style": style,

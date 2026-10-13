@@ -14,6 +14,7 @@ Use this checklist for every subtitle correction or replacement source. Do not m
 - For each event, inspect source-embedded banners, tickers, logos, QR codes and lower-thirds separately from player controls; record location, coverage, timestamps and obstruction. Do not erase source graphics; do not call a source clean if relevant material is obscured.
 - Give every event a 3D camera-position map only from evidenced measurements: WGS84 coordinates displayed to five decimal places with an independent horizontal uncertainty estimate, camera/stage distance, true-north azimuth, relative angle to stage orientation, lens height above ground, vertical viewing angle and source evidence. Mark unavailable/estimated geometry explicitly; never invent coordinates or expose private/security camera positions.
 - Run downloads, frame extraction, probing, rendering and deployment on GitHub-hosted cloud runners only. Do not use local video files or local video processing.
+- Persist each ASR, translation batch/request, subtitle-export and subtitle-burn operation separately in `operation-audit.json`, with UTC start/end timestamps, task and asset IDs, model/tool and pipeline versions, status, retries and failure details. Translation pipeline summaries link to child timings and are inclusive (do not sum parent and child durations). Validate the audit before publishing; preserve it as a runner artifact even if processing fails.
 
 ## Implemented in the repository
 
@@ -24,7 +25,7 @@ Use this checklist for every subtitle correction or replacement source. Do not m
 - [x] Add automated checks for missing-language cues, invalid/out-of-range timing, cue overlap, video resolution/duration preservation, minimum font-size ratio, and English/Chinese reading-speed outliers.
 - [x] Record unresolved checks explicitly in `manifest.json`; cue-level pairing is not mislabeled as word-level audio alignment or translation accuracy.
 - [x] Add a candidate fail-closed release verifier requiring both status checks and evidence records/files with SHA-256 for ten model outputs, three judges, three independent source checks, three full-span source-audio passes, and opening/middle/ending frames.
-- [x] Candidate branch routes main-push, process, and restyle release decisions through that verifier; manual deploy is limited to successful selected full-video jobs. The candidate is not merged, so this is not yet the active main-branch protection.
+- [x] Pages deployments run before the full-video evidence gate; the gate then checks the published commit or freshly rendered manifest and fails the workflow when required evidence is missing. Manual evidence-only validation remains available without deploying.
 - [x] Add reusable skills for credible footage research (including source-overlay classification and evidenced 3D camera geometry) and bilingual subtitle verification.
 - [x] Add a data contract and an event page placeholder for a 3D camera map. The White House event camera coordinates remain unverified; the UI must say so and never plot invented positions.
 

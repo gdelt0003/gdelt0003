@@ -3,6 +3,17 @@ name: Publish stored White House clips to Pages
 on:
   push:
     branches: [main]
+    paths:
+      - 'index.html'
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - '*.json'
+      - '.nojekyll'
+      - 'CNAME'
+      - 'assets/**'
+      - 'outputs/**'
+      - 'generated/**'
   workflow_dispatch:
     inputs:
       regenerate_clips:
@@ -338,11 +349,21 @@ jobs:
             --output-dir "$RUNNER_TEMP/full-video-output"
         shell: bash
 
-      - name: Verify caption structure and visual-style contract
+      - name: Validate full-video operation audit
         run: >-
-          python scripts/verify_full_video_release.py
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
           --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
         shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
 
       - name: Publish the subtitled video and SRT files to the source release
         env:
@@ -366,6 +387,7 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -414,11 +436,21 @@ jobs:
             --reuse-subtitles generated/full-video
         shell: bash
 
-      - name: Verify caption structure and visual-style contract
+      - name: Validate full-video operation audit
         run: >-
-          python scripts/verify_full_video_release.py
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
           --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
         shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
 
       - name: Publish the restyled video and SRT files to the source release
         env:
@@ -442,6 +474,7 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -490,9 +523,28 @@ jobs:
           retention-days: 30
 
   main_pages_quality_gate:
+    needs: [deploy, process-full-video, restyle-full-video]
     if: >-
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && inputs.validate_release_evidence)
+      always() &&
+      (
+        (
+          github.event_name == 'push' &&
+          needs.deploy.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.validate_release_evidence
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (
+            inputs.deploy_site_only ||
+            inputs.process_full_video ||
+            inputs.restyle_full_video
+          ) &&
+          needs.deploy.result == 'success'
+        )
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -505,19 +557,25 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Download the manifest for the newly rendered video
+        if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: generated/full-video
+
       - name: Verify committed full-video release evidence
         run: >-
           python scripts/verify_full_video_release.py
           --manifest generated/full-video/manifest.json
 
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, main_pages_quality_gate]
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video]
     if: >-
       always() &&
       (
         (
-          github.event_name == 'push' &&
-          needs.main_pages_quality_gate.result == 'success'
+          github.event_name == 'push'
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&

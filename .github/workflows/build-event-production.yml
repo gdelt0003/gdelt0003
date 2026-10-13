@@ -194,6 +194,22 @@ jobs:
           PY
         shell: bash
 
+      - name: Validate media operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/event-production/operation-audit.json"
+          --manifest "$RUNNER_TEMP/event-production/manifest.json"
+        shell: bash
+
+      - name: Preserve media operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: event-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/event-production/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
+
       - name: Package source and rendered files for human review
         run: |
           mkdir -p "$RUNNER_TEMP/event-package/production"
@@ -202,9 +218,11 @@ jobs:
           cp "$RUNNER_TEMP/event-production/"*.mp4 "$RUNNER_TEMP/event-package/production/"
           cp "$RUNNER_TEMP/event-production/"*.srt "$RUNNER_TEMP/event-package/production/"
           cp "$RUNNER_TEMP/event-production/manifest.json" "$RUNNER_TEMP/event-package/production/"
+          cp "$RUNNER_TEMP/event-production/operation-audit.json" "$RUNNER_TEMP/event-package/production/"
           sha256sum "$RUNNER_TEMP/event-package/source.mp4" \
             "$RUNNER_TEMP/event-package/production/"*.mp4 \
             "$RUNNER_TEMP/event-package/production/"*.srt \
+            "$RUNNER_TEMP/event-package/production/operation-audit.json" \
             > "$RUNNER_TEMP/event-package/SHA256SUMS"
 
       - name: Upload source and render package for review

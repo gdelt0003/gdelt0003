@@ -5,11 +5,26 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import platform
 import re
 import shutil
 import subprocess
 from dataclasses import dataclass
+from importlib.metadata import version as package_version
 from pathlib import Path
+
+if __package__:
+    from .operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
+else:
+    from operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
 
 
 ASR_MODEL = "large-v3-turbo"
@@ -515,40 +530,92 @@ def vtt_from_bilingual_srt(content: str) -> str:
     return "WEBVTT\n\n" + timing.sub(r"\1.\2\3.\4", content)
 
 
-def translate_batches(texts: list[str], *, batch_size: int = 8) -> list[str]:
+def translate_batches(
+    texts: list[str],
+    *,
+    batch_size: int = 8,
+    audit: OperationAudit | None = None,
+    asset_id: str = "unassigned",
+    parent_operation_id: str | None = None,
+) -> list[str]:
     import torch
     from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
     model_id = TRANSLATION_MODEL
-    tokenizer = M2M100Tokenizer.from_pretrained(model_id, src_lang="en")
-    model = M2M100ForConditionalGeneration.from_pretrained(model_id)
-    model.eval()
+
+    def load_model():
+        tokenizer = M2M100Tokenizer.from_pretrained(model_id, src_lang="en")
+        model = M2M100ForConditionalGeneration.from_pretrained(model_id)
+        model.eval()
+        return tokenizer, model
+
+    transformers_version = "unrecorded"
+    if audit is None:
+        tokenizer, model = load_model()
+    else:
+        with audit.record(
+            "translation_model_load",
+            asset_id=asset_id,
+            tool="Hugging Face Transformers",
+            version=f"model={model_id}",
+            details={"parent_operation_id": parent_operation_id},
+        ) as operation:
+            transformers_version = package_version("transformers")
+            operation["version"] = (
+                f"model={model_id}; transformers={transformers_version}"
+            )
+            tokenizer, model = load_model()
     target_language = tokenizer.get_lang_id("zh")
     translated: list[str] = []
 
     with torch.inference_mode():
-        for offset in range(0, len(texts), batch_size):
+        for batch_index, offset in enumerate(
+            range(0, len(texts), batch_size),
+            start=1,
+        ):
             batch = texts[offset:offset + batch_size]
-            encoded = tokenizer(
-                batch,
-                return_tensors="pt",
-                padding=True,
-                truncation=True,
-                max_length=512,
-            )
-            generated = model.generate(
-                **encoded,
-                forced_bos_token_id=target_language,
-                num_beams=4,
-                max_new_tokens=256,
-            )
-            translated.extend(
-                value.strip()
-                for value in tokenizer.batch_decode(
-                    generated,
-                    skip_special_tokens=True,
+            def translate_batch() -> list[str]:
+                encoded = tokenizer(
+                    batch,
+                    return_tensors="pt",
+                    padding=True,
+                    truncation=True,
+                    max_length=512,
                 )
-            )
+                generated = model.generate(
+                    **encoded,
+                    forced_bos_token_id=target_language,
+                    num_beams=4,
+                    max_new_tokens=256,
+                )
+                return [
+                    value.strip()
+                    for value in tokenizer.batch_decode(
+                        generated,
+                        skip_special_tokens=True,
+                    )
+                ]
+
+            if audit is None:
+                batch_translations = translate_batch()
+            else:
+                with audit.record(
+                    "translation_batch",
+                    asset_id=asset_id,
+                    tool="Hugging Face Transformers",
+                    version=(
+                        f"model={model_id}; transformers="
+                        f"{transformers_version}"
+                    ),
+                    details={
+                        "parent_operation_id": parent_operation_id,
+                        "batch_index": batch_index,
+                        "first_cue_index": offset,
+                        "cue_count": len(batch),
+                    },
+                ):
+                    batch_translations = translate_batch()
+            translated.extend(batch_translations)
             print(
                 f"Translated {min(offset + len(batch), len(texts))}"
                 f"/{len(texts)} subtitle cues",
@@ -677,6 +744,11 @@ def main() -> None:
     if not source.is_file() or source.stat().st_size == 0:
         raise FileNotFoundError(f"Input video is missing or empty: {source}")
     output_dir.mkdir(parents=True, exist_ok=True)
+    audit = OperationAudit(
+        output_dir / "operation-audit.json",
+        task_id=current_task_id(),
+        pipeline_version=current_pipeline_version(),
+    )
 
     duration, width, height = probe_video(source)
     language_probability = None
@@ -753,41 +825,70 @@ def main() -> None:
             )
         cues = merge_sentence_fragments(cues)
     else:
-        from faster_whisper import WhisperModel
+        with audit.record(
+            "asr",
+            asset_id=source.name,
+            tool="faster-whisper",
+            version=f"model={ASR_MODEL}",
+        ) as operation:
+            operation["version"] = (
+                f"model={ASR_MODEL}; "
+                f"faster-whisper={package_version('faster-whisper')}"
+            )
+            from faster_whisper import WhisperModel
 
-        model = WhisperModel(
-            ASR_MODEL,
-            device="cpu",
-            compute_type="int8",
-            cpu_threads=max(1, os.cpu_count() or 1),
-            num_workers=1,
-        )
-        segments, info = model.transcribe(
-            str(source),
-            language="en",
-            task="transcribe",
-            beam_size=5,
-            vad_filter=True,
-            condition_on_previous_text=False,
-        )
-        english_cues = [
-            (max(0.0, float(segment.start)), min(duration, float(segment.end)),
-             " ".join(segment.text.split()))
-            for segment in segments
-            if segment.end > segment.start and segment.text.strip()
-        ]
-        del model
-        if not english_cues:
-            raise RuntimeError("Whisper produced no English transcript cues.")
+            model = WhisperModel(
+                ASR_MODEL,
+                device="cpu",
+                compute_type="int8",
+                cpu_threads=max(1, os.cpu_count() or 1),
+                num_workers=1,
+            )
+            segments, info = model.transcribe(
+                str(source),
+                language="en",
+                task="transcribe",
+                beam_size=5,
+                vad_filter=True,
+                condition_on_previous_text=False,
+            )
+            english_cues = [
+                (max(0.0, float(segment.start)), min(duration, float(segment.end)),
+                 " ".join(segment.text.split()))
+                for segment in segments
+                if segment.end > segment.start and segment.text.strip()
+            ]
+            del model
+            if not english_cues:
+                raise RuntimeError("Whisper produced no English transcript cues.")
 
         translation_units = merge_sentence_fragments(
             [Cue(start, end, english, "") for start, end, english in english_cues]
         )
-        chinese_texts = translate_batches(
-            [cue.english for cue in translation_units]
-        )
-        if len(chinese_texts) != len(translation_units):
-            raise RuntimeError("Translation output count did not match transcript cues.")
+        with audit.record(
+            "translation_pipeline",
+            asset_id=source.name,
+            tool="Hugging Face Transformers",
+            version=f"model={TRANSLATION_MODEL}",
+            details={
+                "input_cues": len(translation_units),
+                "includes_child_timings": True,
+            },
+        ) as operation:
+            operation["version"] = (
+                f"model={TRANSLATION_MODEL}; "
+                f"transformers={package_version('transformers')}"
+            )
+            chinese_texts = translate_batches(
+                [cue.english for cue in translation_units],
+                audit=audit,
+                asset_id=source.name,
+                parent_operation_id=str(operation["operation_id"]),
+            )
+            if len(chinese_texts) != len(translation_units):
+                raise RuntimeError(
+                    "Translation output count did not match transcript cues."
+                )
         cues = [
             Cue(cue.start, cue.end, cue.english, chinese)
             for cue, chinese in zip(
@@ -808,44 +909,59 @@ def main() -> None:
     bilingual_srt = output_dir / f"{prefix}.en-zh.srt"
     bilingual_vtt = output_dir / f"{prefix}.en-zh.vtt"
     ass_path = output_dir / f"{prefix}.en-zh.ass"
-    english_srt.write_text(srt_text(cues, "en"), encoding="utf-8")
-    chinese_srt.write_text(srt_text(cues, "zh"), encoding="utf-8")
-    combined_srt = bilingual_srt_text(cues)
-    bilingual_srt.write_text(combined_srt, encoding="utf-8")
-    bilingual_vtt.write_text(
-        vtt_from_bilingual_srt(combined_srt),
-        encoding="utf-8",
-    )
-    write_ass(ass_path, cues, width, height)
+    with audit.record(
+        "subtitle_export",
+        asset_id=source.name,
+        tool="Python",
+        version=platform.python_version(),
+        details={"cue_count": len(cues)},
+    ):
+        english_srt.write_text(srt_text(cues, "en"), encoding="utf-8")
+        chinese_srt.write_text(srt_text(cues, "zh"), encoding="utf-8")
+        combined_srt = bilingual_srt_text(cues)
+        bilingual_srt.write_text(combined_srt, encoding="utf-8")
+        bilingual_vtt.write_text(
+            vtt_from_bilingual_srt(combined_srt),
+            encoding="utf-8",
+        )
+        write_ass(ass_path, cues, width, height)
 
     output_video = output_dir / f"{prefix}-bilingual.mp4"
-    run([
-        "ffmpeg", "-y", "-i", str(source),
-        "-map", "0:v:0", "-map", "0:a:0?",
-        "-vf", f"subtitles={ass_path}",
-        "-c:v", "libx264", "-preset", "veryfast",
-        "-crf", "22", "-maxrate", "4000k", "-bufsize", "8000k",
-        "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "128k",
-        "-movflags", "+faststart",
-        str(output_video),
-    ])
-    output_duration, output_width, output_height = probe_video(output_video)
-    if abs(output_duration - duration) > 3:
-        raise RuntimeError(
-            f"Output duration changed unexpectedly: {duration:.2f}s -> "
-            f"{output_duration:.2f}s"
-        )
-    if (output_width, output_height) != (width, height):
-        raise RuntimeError(
-            f"Output resolution changed unexpectedly: "
-            f"{width}x{height} -> {output_width}x{output_height}"
-        )
-    if output_video.stat().st_size > MAX_RELEASE_ASSET_BYTES:
-        raise RuntimeError(
-            f"Encoded MP4 is too large for a GitHub Release asset: "
-            f"{output_video.stat().st_size} bytes"
-        )
+    ffmpeg_version = run(["ffmpeg", "-version"], capture=True).splitlines()[0]
+    with audit.record(
+        "subtitle_burn",
+        asset_id=output_video.name,
+        tool="ffmpeg",
+        version=ffmpeg_version,
+        details={"source_asset": source.name, "resolution": f"{width}x{height}"},
+    ):
+        run([
+            "ffmpeg", "-y", "-i", str(source),
+            "-map", "0:v:0", "-map", "0:a:0?",
+            "-vf", f"subtitles={ass_path}",
+            "-c:v", "libx264", "-preset", "veryfast",
+            "-crf", "22", "-maxrate", "4000k", "-bufsize", "8000k",
+            "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k",
+            "-movflags", "+faststart",
+            str(output_video),
+        ])
+        output_duration, output_width, output_height = probe_video(output_video)
+        if abs(output_duration - duration) > 3:
+            raise RuntimeError(
+                f"Output duration changed unexpectedly: {duration:.2f}s -> "
+                f"{output_duration:.2f}s"
+            )
+        if (output_width, output_height) != (width, height):
+            raise RuntimeError(
+                f"Output resolution changed unexpectedly: "
+                f"{width}x{height} -> {output_width}x{output_height}"
+            )
+        if output_video.stat().st_size > MAX_RELEASE_ASSET_BYTES:
+            raise RuntimeError(
+                f"Encoded MP4 is too large for a GitHub Release asset: "
+                f"{output_video.stat().st_size} bytes"
+            )
     quality_checks = verify_cues(
         cues,
         duration=duration,
@@ -887,6 +1003,8 @@ def main() -> None:
         "subtitle_style": "gold Chinese above white English; responsive phrase-level timing",
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
+        "operation_audit_file": "operation-audit.json",
+        "processing_operations": audit.records,
         "whisper_detected_language_probability": (
             round(language_probability, 4)
             if language_probability is not None

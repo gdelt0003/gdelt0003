@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
+from scripts.operation_audit import OperationAudit
 from scripts.create_shorts import (
     AVAILABLE_STYLES,
     Cue,
@@ -88,6 +89,38 @@ The Navy will build more ships for the fleet.
         )
         self.assertEqual(subtitles[0]["start"], 0.0)
         self.assertEqual(subtitles[0]["end"], 8.0)
+
+    def test_audits_reviewed_translation_with_asset_and_tool_details(self):
+        with tempfile.TemporaryDirectory() as directory:
+            audit = OperationAudit(
+                Path(directory) / "operation-audit.json",
+                task_id="run-123.1",
+                pipeline_version="abc123",
+            )
+            subtitle_text(
+                [
+                    Cue(
+                        0.0,
+                        10.0,
+                        "Arsenal 2 will help us attack production bottlenecks "
+                        "with the footprint to add up to 9 million production "
+                        "hours per year into our submarine supply chain.",
+                    )
+                ],
+                0.0,
+                10.0,
+                {},
+                audit=audit,
+                asset_id="arsenal-production",
+            )
+            operation = audit.records[0]
+
+        self.assertEqual(operation["operation"], "translation")
+        self.assertEqual(operation["asset_id"], "arsenal-production")
+        self.assertEqual(operation["tool"], "reviewed translation table")
+        self.assertEqual(operation["status"], "succeeded")
+        self.assertIsNotNone(operation["started_at"])
+        self.assertIsNotNone(operation["ended_at"])
 
     def test_requires_real_1080p_source_format(self):
         with self.assertRaisesRegex(RuntimeError, "refusing to upscale"):
