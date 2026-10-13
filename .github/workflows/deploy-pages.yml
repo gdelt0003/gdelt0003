@@ -45,6 +45,11 @@ on:
         type: number
         required: false
         default: 26
+      validate_release_evidence:
+        description: Validate the committed release evidence without processing media or deploying Pages
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -480,7 +485,9 @@ jobs:
           retention-days: 30
 
   main_pages_quality_gate:
-    if: github.event_name == 'push'
+    if: >-
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.validate_release_evidence)
     runs-on: ubuntu-latest
     permissions:
       contents: read
