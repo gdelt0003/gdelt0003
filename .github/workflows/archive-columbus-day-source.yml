@@ -51,7 +51,8 @@ jobs:
             --skip-download \
             --no-warnings \
             --js-runtimes node \
-            "$SOURCE_URL" > "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json"
+            "$SOURCE_URL" > "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" \
+            2> "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.stderr"
           python - "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" <<'PY'
           import json
           import os
@@ -195,6 +196,7 @@ jobs:
                   "No landscape video format at least 1920x1080 with known estimated size "
                   "within the 1.5 GB source limit was reported."
               ),
+              "artifact_name": f"columbus-day-official-source-{os.environ['GITHUB_RUN_ID']}",
               "rights_evidence": {
                   "official_event_page": (
                       "https://www.whitehouse.gov/videos/"
@@ -244,6 +246,28 @@ jobs:
                       "follow_up": "Revisit only if a later event-editing task requires additional sources or variants.",
                   },
               ],
+              "shortcomings_for_follow_up": [
+                  "Event-date/source identity linkage remains incomplete; event_date is null and must not be inferred from upload time.",
+                  "Actual downloadable stream properties require runner preflight and post-download probe; full-video graphics and third-party content are not reviewed here.",
+                  "The source URL, workflow run, artifact name, byte count, and SHA-256 should remain linked for end-to-end artifact traceability.",
+                  "This workflow pins the exact video ID/title to avoid accidentally running another workflow's hard-coded source ID.",
+                  "Runner availability, download success, actual file size, ffprobe results, and SHA-256 must all be checked before calling an archive successful.",
+                  "GitHub-hosted anonymous yt-dlp can be blocked by YouTube bot verification; only a supported public official source or user-provided media permitted for processing can unblock acquisition.",
+              ],
+              "next_phase_shortfalls": [
+                  {
+                      "id": "source-to-edit-audit",
+                      "title": "Original source to edited-media provenance and review remains incomplete",
+                      "risk": "Event-date linkage, complete source-frame review, edit/caption review, and end-to-end source-to-output verification are not established.",
+                      "follow_up": "Design and test a separate audited editing workflow after source acquisition is available.",
+                  },
+                  {
+                      "id": "source-acquisition-method",
+                      "title": "No reliable supported download/ingest method is available for the current YouTube source",
+                      "risk": "GitHub-hosted anonymous yt-dlp was blocked by YouTube bot verification; the White House page provides no direct media file.",
+                      "follow_up": "Use a public official direct media URL or a user-provided original file via a permitted, runner-accessible transfer path; never bypass bot verification.",
+                  },
+              ],
           }
           (package_dir / "source-record.json").write_text(
               json.dumps(record, ensure_ascii=False, indent=2) + "\n",
@@ -266,6 +290,7 @@ jobs:
         shell: bash
 
       - name: Download the allow-listed source without re-encoding
+        id: download
         if: steps.metadata.outputs.download_allowed == 'true'
         env:
           SOURCE_URL: https://www.youtube.com/watch?v=noI4BbQ2wZQ
@@ -283,7 +308,8 @@ jobs:
             --format "$FORMAT_SELECTOR" \
             --merge-output-format mkv \
             --output "$download_dir/source.%(ext)s" \
-            "$SOURCE_URL"
+            "$SOURCE_URL" \
+            2> "$RUNNER_TEMP/columbus-day-yt-dlp-download.stderr"
           shopt -s nullglob
           files=("$download_dir"/source.*)
           if (( ${#files[@]} != 1 )); then
@@ -334,6 +360,135 @@ jobs:
               sums.write(f"{digest.hexdigest()}  {archived_file.name}\n")
           PY
           cat "$PACKAGE_DIR/source-record.json" >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      - name: Preserve a diagnostic record when preflight or download fails
+        if: always()
+        env:
+          METADATA_OUTCOME: ${{ steps.metadata.outcome }}
+          DOWNLOAD_OUTCOME: ${{ steps.download.outcome }}
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          python - "$PACKAGE_DIR" "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.stderr" "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          package_dir, stderr_path, summary_path = map(Path, sys.argv[1:])
+          package_dir.mkdir(parents=True, exist_ok=True)
+          record_path = package_dir / "source-record.json"
+          download_stderr_path = stderr_path.with_name("columbus-day-yt-dlp-download.stderr")
+          stderr_parts = []
+          for diagnostic_path in (stderr_path, download_stderr_path):
+              if diagnostic_path.exists():
+                  stderr_parts.append(diagnostic_path.read_text(encoding="utf-8", errors="replace"))
+          stderr = "\n".join(stderr_parts)
+          known_failures = (
+              ("Sign in to confirm", "YouTube required an interactive bot verification."),
+              ("HTTP Error 429", "The source host returned HTTP 429."),
+              ("Video unavailable", "The source was reported unavailable."),
+              ("This video is private", "The source was reported private."),
+              ("Extracted video ID does not match", "The extracted video ID did not match the allow-listed source."),
+              ("Extracted title does not match", "The extracted title did not match the official event page."),
+          )
+          reason = next((message for needle, message in known_failures if needle in stderr), None)
+          if record_path.exists():
+              record = json.loads(record_path.read_text(encoding="utf-8"))
+              if os.environ.get("DOWNLOAD_OUTCOME") == "failure":
+                  if reason is None:
+                      reason = "Source download or integrity verification failed; inspect the linked Actions log. No successful archive is claimed."
+                  else:
+                      reason += " No verified source artifact was produced."
+                  record["download_status"] = "download_failed_or_unverified"
+                  record["failure_reason"] = reason
+                  record["sha256"] = None
+                  record["next_action"] = (
+                      "Use a publicly accessible official direct media URL or a user-provided original file "
+                      "that the user has the right to provide and the platform permits processing. Do not "
+                      "bypass bot verification or claim a download."
+                  )
+                  record_path.write_text(
+                      json.dumps(record, ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8",
+                  )
+                  with summary_path.open("a", encoding="utf-8") as summary:
+                      summary.write(f"Diagnostic record preserved: {reason}\n")
+                  print(f"Diagnostic record preserved: {reason}")
+              raise SystemExit(0)
+
+          if reason is None:
+              if os.environ.get("METADATA_OUTCOME") == "failure":
+                  reason = "Metadata preflight failed; inspect the linked Actions log for details. No media was downloaded."
+              elif os.environ.get("DOWNLOAD_OUTCOME") == "failure":
+                  reason = "Source download or integrity verification failed; inspect the linked Actions log. No successful archive is claimed."
+              else:
+                  reason = "The workflow did not produce a verified source record; inspect the linked Actions log."
+          elif os.environ.get("METADATA_OUTCOME") == "failure":
+              reason += " No media download was attempted."
+
+          record = {
+              "workflow_run_url": (
+                  f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+                  f"/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+              ),
+              "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "workflow_commit_sha": os.environ["GITHUB_SHA"],
+              "artifact_name": f"columbus-day-official-source-{os.environ['GITHUB_RUN_ID']}",
+              "source_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
+              "video_id": "noI4BbQ2wZQ",
+              "title": "President Trump Hosts a Columbus Day Celebration",
+              "event_date": None,
+              "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
+              "download_status": "not_downloaded",
+              "failure_reason": reason,
+              "source_resolution": None,
+              "sha256": None,
+              "known_in_picture_graphics": (
+                  "Prior sampled frames show a White House emblem, POTUS text banner, and QR code; "
+                  "these remain in the source. Full-video frame review is incomplete."
+              ),
+              "shortcomings_for_follow_up": [
+                  "Event-date/source identity linkage remains incomplete; event_date is null and must not be inferred from upload time.",
+                  "Actual downloadable stream properties require runner preflight and post-download probe; full-video graphics and third-party content are not reviewed here.",
+                  "The source URL, workflow run, artifact name, byte count, and SHA-256 should remain linked for end-to-end artifact traceability.",
+                  "A fixed source ID/title guard is required to prevent accidentally archiving a different workflow's hard-coded video.",
+                  "Runner availability, download success, actual file size, ffprobe results, and SHA-256 must all be checked before calling an archive successful.",
+                  "Anonymous GitHub-hosted yt-dlp metadata extraction can be blocked by YouTube bot verification.",
+                  "The official White House event page embeds YouTube and exposes no direct MP4, HLS, or DASH source URL.",
+                  "The failed preflight did not establish current stream resolution or source-file integrity.",
+                  "Full-video graphics and third-party-content review remains incomplete.",
+              ],
+              "next_phase_shortfalls": [
+                  {
+                      "id": "source-to-edit-audit",
+                      "title": "Original source to edited-media provenance and review remains incomplete",
+                      "risk": "Event-date linkage, complete source-frame review, edit/caption review, and end-to-end source-to-output verification are not established.",
+                      "follow_up": "Design and test a separate audited editing workflow after source acquisition is available.",
+                  },
+                  {
+                      "id": "source-acquisition-method",
+                      "title": "No reliable supported download/ingest method is available for the current YouTube source",
+                      "risk": "GitHub-hosted anonymous yt-dlp was blocked by YouTube bot verification; the White House page provides no direct media file.",
+                      "follow_up": "Use a public official direct media URL or a user-provided original file via a permitted, runner-accessible transfer path; never bypass bot verification.",
+                  },
+              ],
+              "next_action": (
+                  "Use a publicly accessible official direct media URL or a user-provided original file "
+                  "that the user has the right to provide and the platform permits processing. Do not "
+                  "bypass bot verification or claim a download."
+              ),
+          }
+          record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          with summary_path.open("a", encoding="utf-8") as summary:
+              summary.write(f"Diagnostic record preserved: {reason}\n")
+          print(f"Diagnostic record preserved: {reason}")
+          PY
         shell: bash
 
       - name: Upload source and evidence as a time-limited artifact
