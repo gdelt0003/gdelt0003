@@ -4,6 +4,14 @@
   "resolution": "1920x1080",
   "asr_model": "large-v3-turbo",
   "translation_model": "facebook/m2m100_1.2B",
+  "translation_models_used": [
+    "facebook/m2m100_1.2B"
+  ],
+  "translation_review": {
+    "status": "not_performed",
+    "llm_judges": 0,
+    "source_cross_check_passes": 0
+  },
   "subtitle_cues": 971,
   "languages": [
     "en",
