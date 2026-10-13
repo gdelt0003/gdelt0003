@@ -58,8 +58,9 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
         self.assertIn("Style: English,Noto Sans CJK SC,68,&H00FFFFFF", content)
-        self.assertIn(",211,211,324,1", content)
-        self.assertIn(",324,1\n", content)
+        self.assertIn("&H70000000,1,0,0,0,100,100,0,0,3,6,0,2", content)
+        self.assertIn(",211,211,194,1", content)
+        self.assertIn(",194,1\n", content)
         self.assertIn("WrapStyle: 0", content)
 
     def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
@@ -228,6 +229,10 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertGreaterEqual(
             report["subtitle_readability"]["english_to_chinese_size_ratio"],
             1.2,
+        )
+        self.assertEqual(
+            report["subtitle_readability"]["lower_margin_percent"],
+            18,
         )
 
     def test_copies_review_evidence_for_output_gate(self):

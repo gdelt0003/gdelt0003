@@ -1,0 +1,204 @@
+name: Publish reviewed event video variants
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Run ID of a successful Build cloud event video variants workflow
+        type: string
+        required: true
+      artifact_name:
+        description: Exact artifact name, for example event-production-evt-20261009-...
+        type: string
+        required: true
+      reuse_rights_confirmed:
+        description: I reviewed the source terms/evidence and confirm public reuse rights; this is my authorization
+        type: boolean
+        required: true
+        default: false
+      source_frames_clean:
+        description: I watched the source and all selected moments; no embedded banner/logo/ticker/QR obscures the image
+        type: boolean
+        required: true
+        default: false
+      same_event_match_confirmed:
+        description: I confirmed the selected source and each rendered interval belong to the event recorded in the event ID
+        type: boolean
+        required: true
+        default: false
+      captions_reviewed:
+        description: I reviewed English ASR against the actual source audio
+        type: boolean
+        required: true
+        default: false
+      translation_reviewed:
+        description: I reviewed Chinese translations for meaning, names, numbers, negation and subtitle fit
+        type: boolean
+        required: true
+        default: false
+      review_evidence_urls:
+        description: At least five distinct HTTPS evidence URLs for rights, event/source match, clean-frame review, ASR review, and translation review
+        type: string
+        required: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Require all post-build review attestations
+        env:
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          FRAMES_CLEAN: ${{ inputs.source_frames_clean }}
+          SAME_EVENT_MATCH_CONFIRMED: ${{ inputs.same_event_match_confirmed }}
+          CAPTIONS_REVIEWED: ${{ inputs.captions_reviewed }}
+          TRANSLATION_REVIEWED: ${{ inputs.translation_reviewed }}
+          REVIEW_EVIDENCE_URLS: ${{ inputs.review_evidence_urls }}
+        run: |
+          for value in "$RIGHTS_CONFIRMED" "$FRAMES_CLEAN" \
+            "$SAME_EVENT_MATCH_CONFIRMED" "$CAPTIONS_REVIEWED" \
+            "$TRANSLATION_REVIEWED"; do
+            if [ "$value" != "true" ]; then
+              echo "All review attestations must be true before public release." >&2
+              exit 1
+            fi
+          done
+          python - "$REVIEW_EVIDENCE_URLS" <<'PY'
+          import sys
+          from urllib.parse import urlparse
+
+          urls = [part.strip() for part in sys.argv[1].splitlines() if part.strip()]
+          if len(set(urls)) < 5 or any(urlparse(url).scheme != "https" or not urlparse(url).netloc for url in urls):
+              raise SystemExit("Provide at least five distinct HTTPS review-evidence URLs.")
+          PY
+        shell: bash
+
+      - name: Checkout Pages repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download reviewed production artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/event-package
+
+      - name: Verify artifact manifest and prepare release record
+        env:
+          REVIEW_EVIDENCE_URLS: ${{ inputs.review_evidence_urls }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          FRAMES_CLEAN: ${{ inputs.source_frames_clean }}
+          SAME_EVENT_MATCH_CONFIRMED: ${{ inputs.same_event_match_confirmed }}
+          CAPTIONS_REVIEWED: ${{ inputs.captions_reviewed }}
+          TRANSLATION_REVIEWED: ${{ inputs.translation_reviewed }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+        run: |
+          test -s "$RUNNER_TEMP/event-package/event-metadata.json"
+          test -s "$RUNNER_TEMP/event-package/production/manifest.json"
+          python - "$RUNNER_TEMP/event-package" "$RUNNER_TEMP/publication-review.json" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          package = Path(sys.argv[1])
+          manifest = json.loads((package / "production" / "manifest.json").read_text(encoding="utf-8"))
+          metadata = json.loads((package / "event-metadata.json").read_text(encoding="utf-8"))
+          if manifest.get("event_id") != metadata.get("event_id"):
+              raise SystemExit("The run artifact's event ID does not match its identity evidence.")
+          if manifest.get("event_identity") != metadata.get("identity"):
+              raise SystemExit("The manifest event identity does not match the identity record.")
+          if manifest.get("source_url") != metadata.get("source_url"):
+              raise SystemExit("The rendered source does not match the source recorded in the identity record.")
+          if manifest.get("same_event_match_confirmed") is not True or metadata.get("same_event_match_confirmed") is not True:
+              raise SystemExit("The build artifact lacks an affirmative same-event match attestation.")
+          if not (package / "source.mp4").is_file():
+              raise SystemExit("The original cloud-runner source artifact is missing.")
+          review = {
+              "source_frames_clean": os.environ["FRAMES_CLEAN"] == "true",
+              "same_event_match_confirmed": os.environ["SAME_EVENT_MATCH_CONFIRMED"] == "true",
+              "captions_reviewed": os.environ["CAPTIONS_REVIEWED"] == "true",
+              "translation_reviewed": os.environ["TRANSLATION_REVIEWED"] == "true",
+              "reuse_rights_confirmed": os.environ["RIGHTS_CONFIRMED"] == "true",
+              "evidence_urls": [item.strip() for item in os.environ["REVIEW_EVIDENCE_URLS"].splitlines() if item.strip()],
+              "reviewed_after_build_run_id": os.environ["BUILD_RUN_ID"],
+          }
+          Path(sys.argv[2]).write_text(json.dumps(review, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+          sha256sum "$RUNNER_TEMP/event-package/source.mp4" \
+            "$RUNNER_TEMP/event-package/production/"*.mp4 \
+            "$RUNNER_TEMP/event-package/production/"*.srt \
+            > "$RUNNER_TEMP/event-package/SHA256SUMS"
+        shell: bash
+
+      - name: Create a versioned public release for reviewed clips
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          event_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["event_id"])' "$RUNNER_TEMP/event-package/event-metadata.json")"
+          tag="${event_id}-${GITHUB_RUN_ID}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          gh release create "$tag" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Reviewed event clips ${event_id}" \
+            --notes "Reviewed bilingual event clip variants. The original source was retained as a time-limited Actions artifact, not re-hosted as a public release asset."
+          gh release upload "$tag" \
+            "$RUNNER_TEMP/event-package/production/"*.mp4 \
+            "$RUNNER_TEMP/event-package/production/"*.srt \
+            "$RUNNER_TEMP/event-package/production/manifest.json" \
+            "$RUNNER_TEMP/event-package/event-metadata.json" \
+            --repo "$GITHUB_REPOSITORY"
+        shell: bash
+
+      - name: Register publication and preserve the reviewed source artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ steps.release.outputs.tag }}"
+          python scripts/register_event_release.py \
+            --metadata "$RUNNER_TEMP/event-package/event-metadata.json" \
+            --manifest "$RUNNER_TEMP/event-package/production/manifest.json" \
+            --review "$RUNNER_TEMP/publication-review.json" \
+            --tag "$tag" \
+            --release-url "https://github.com/${GITHUB_REPOSITORY}/releases" \
+            --repository "$GITHUB_REPOSITORY" \
+            --registry outputs/published-events.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/published-events.json
+          git commit -m "chore: register reviewed event video release" \
+            -m "Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>"
+          git push origin HEAD:main
+        shell: bash
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy reviewed event clips
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -17,6 +17,7 @@ TRANSLATION_MODEL = "facebook/m2m100_1.2B"
 MAX_RELEASE_ASSET_BYTES = 1_950_000_000
 MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
+CAPTION_LOWER_MARGIN_PERCENT = 18
 
 
 @dataclass(frozen=True)
@@ -357,7 +358,7 @@ def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
-    margin = max(28, round(height * 0.30))
+    margin = max(28, round(height * CAPTION_LOWER_MARGIN_PERCENT / 100))
     header = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {width}
@@ -367,8 +368,8 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
-Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
+Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
+Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
@@ -468,7 +469,7 @@ def verify_cues(
                 english_font / chinese_font, 3
             ),
             "horizontal_safe_width_percent": 78,
-            "lower_margin_percent": 30,
+            "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
             "max_lines_per_language": 2,
             "english_reading_speed_over_20_cps_cues": english_rate_flags,
             "chinese_reading_speed_over_10_cps_cues": chinese_rate_flags,
