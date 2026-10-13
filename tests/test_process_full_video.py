@@ -58,7 +58,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(",324,1\n", content)
         self.assertIn("WrapStyle: 0", content)
 
-    def test_reflows_long_bilingual_cues_without_changing_total_timing(self):
+    def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
             0,
             42.39,
@@ -66,19 +66,38 @@ class FullVideoSubtitleTests(unittest.TestCase):
             "of the industrial base that constructs and sustains those systems.",
             "我们生产的系统的质量以及构建和维持这些系统的工业基础的强度。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
+        self.assertEqual(
+            [
+                (
+                    cue.english,
+                    cue.chinese,
+                )
+                for cue in reflowed
+            ],
+            [
+                (
+                    "The quality of the systems that we produce",
+                    "我们生产的系统的质量",
+                ),
+                (
+                    "and the strength of the industrial base that constructs "
+                    "and sustains those systems.",
+                    "以及构建和维持这些系统的工业基础的强度。",
+                ),
+            ],
+        )
         self.assertEqual(reflowed[0].start, original.start)
         self.assertEqual(reflowed[-1].end, original.end)
         self.assertTrue(
-            all(
-                cue.end - cue.start <= 7.01
-                for cue in reflowed
-            )
-        )
-        self.assertTrue(
             all(left.end == right.start for left, right in zip(reflowed, reflowed[1:]))
+        )
+        first_clause_words = len(reflowed[0].english.split())
+        total_words = len(original.english.split())
+        self.assertAlmostEqual(
+            reflowed[0].end - reflowed[0].start,
+            42.39 * first_clause_words / total_words,
         )
         self.assertEqual(
             " ".join(cue.english for cue in reflowed),
@@ -89,32 +108,18 @@ class FullVideoSubtitleTests(unittest.TestCase):
             original.chinese,
         )
 
-    def test_reflow_balances_timing_instead_of_overholding_short_chunks(self):
+    def test_reflow_does_not_split_an_unmatched_translation_order(self):
         original = Cue(
             1336.28,
             1362.42,
             "Ladies and gentlemen, the Secretary of War, the Honorable Exeter.",
             "女士们，先生们，战争部长，尊敬的埃克塞特。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
-        self.assertTrue(
-            all(cue.end - cue.start <= 7.01 for cue in reflowed)
-        )
-        self.assertTrue(
-            all(left.end == right.start for left, right in zip(reflowed, reflowed[1:]))
-        )
-        self.assertEqual(
-            " ".join(cue.english for cue in reflowed),
-            original.english,
-        )
-        self.assertIn(
-            "the Secretary of War,",
-            [cue.english for cue in reflowed],
-        )
+        self.assertEqual(reflowed, [original])
 
-    def test_reflow_splits_long_lines_before_wrapping(self):
+    def test_reflow_keeps_a_long_intro_sentence_bilingually_together(self):
         original = Cue(
             0,
             6.2,
@@ -122,28 +127,32 @@ class FullVideoSubtitleTests(unittest.TestCase):
             "of Anduril Industries, Brian Schimpf.",
             "欢迎Anduril Industries联合创始人兼首席执行官Brian Schimpf。",
         )
-        reflowed = reflow_cues([original], 1920, 1080)
+        reflowed = reflow_cues([original])
 
-        self.assertGreater(len(reflowed), 1)
-        self.assertTrue(
-            all(len(cue.english) <= 48 for cue in reflowed)
+        self.assertEqual(reflowed, [original])
+
+    def test_reflow_splits_matching_complete_sentences(self):
+        original = Cue(
+            0,
+            12,
+            "The shipyard opened today. Workers will build submarines.",
+            "造船厂今天开业。工人将建造潜艇。",
         )
-        self.assertTrue(all(cue.chinese for cue in reflowed))
+        reflowed = reflow_cues([original])
+
         self.assertEqual(
-            " ".join(cue.english for cue in reflowed),
-            original.english,
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                ("The shipyard opened today.", "造船厂今天开业。"),
+                ("Workers will build submarines.", "工人将建造潜艇。"),
+            ],
         )
-        self.assertTrue(
-            any("Industries" in cue.chinese for cue in reflowed)
-        )
-        self.assertTrue(any("Schimpf" in cue.chinese for cue in reflowed))
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        self.assertEqual(reflowed[0].end, reflowed[1].start)
 
     def test_reflow_keeps_short_english_chunks_synchronized(self):
-        reflowed = reflow_cues(
-            [Cue(0, 3, "Hello world.", "你好，世界。")],
-            1920,
-            1080,
-        )
+        reflowed = reflow_cues([Cue(0, 3, "Hello world.", "你好，世界。")])
         self.assertEqual(len(reflowed), 1)
         self.assertEqual(reflowed[0].chinese, "你好，世界。")
         self.assertEqual(reflowed[0].english, "Hello world.")

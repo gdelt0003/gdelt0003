@@ -14,10 +14,7 @@ from pathlib import Path
 ASR_MODEL = "large-v3-turbo"
 TRANSLATION_MODEL = "facebook/m2m100_1.2B"
 MAX_RELEASE_ASSET_BYTES = 1_950_000_000
-MAX_SUBTITLE_CUE_SECONDS = 7.0
 MIN_SUBTITLE_CUE_SECONDS = 0.83
-ENGLISH_READING_SPEED = 18.0
-CHINESE_READING_SPEED = 8.0
 
 
 @dataclass(frozen=True)
@@ -96,183 +93,93 @@ def ass_time(seconds: float) -> str:
     return f"{hours}:{minutes:02}:{whole:02}.{fraction:02}"
 
 
-def _split_english(text: str, count: int) -> list[str]:
-    words = text.split()
-    if not words:
-        return ["" for _ in range(count)]
-    count = min(count, len(words))
-    chunks = []
-    start = 0
-    break_before = {
-        "and", "although", "as", "because", "but", "for", "from", "if",
-        "in", "into", "of", "on", "or", "since", "that", "though", "to",
-        "when", "while", "with", "which", "who",
+def _split_aligned_clauses(english: str, chinese: str) -> list[tuple[str, str]]:
+    english_sentences = [
+        part.strip()
+        for part in re.split(r"(?<=[.!?])\s+", english.strip())
+        if part.strip()
+    ]
+    chinese_sentences = [
+        part.strip()
+        for part in re.split(r"(?<=[。！？])", chinese.strip())
+        if part.strip()
+    ]
+    if len(english_sentences) == len(chinese_sentences) > 1:
+        return list(zip(english_sentences, chinese_sentences, strict=True))
+
+    chinese_connectors = {
+        "and": ("以及", "并且", "而且", "和"),
+        "but": ("但是", "不过", "但"),
+        "because": ("因为", "由于"),
+        "so": ("因此", "所以"),
+        "or": ("或者", "或"),
     }
-    for index in range(count):
-        groups_left = count - index
-        words_left = len(words) - start
-        target = max(1, round(words_left / groups_left))
-        end = min(len(words), start + target)
-        if index < count - 1:
-            latest_end = min(
-                len(words) - (groups_left - 1),
-                end + 2,
+    english_words = list(re.finditer(r"\b(?:and|but|because|so|or)\b", english, re.I))
+    chinese_chars = sum("\u3400" <= char <= "\u9fff" for char in chinese)
+    candidates: list[tuple[float, int, int]] = []
+    for english_match in english_words:
+        word = english_match.group().lower()
+        english_prefix_words = len(english[:english_match.start()].split())
+        english_total_words = max(1, len(english.split()))
+        if english_prefix_words < 4 or english_total_words - english_prefix_words < 4:
+            continue
+        for connector in chinese_connectors[word]:
+            position = chinese.find(connector)
+            if position < 0:
+                continue
+            chinese_prefix_chars = sum(
+                "\u3400" <= char <= "\u9fff"
+                for char in chinese[:position]
             )
-            punctuation = [
-                position + 1
-                for position in range(start, latest_end)
-                if re.search(r"[.!?;:,]$", words[position])
-            ]
-            connectors = [
-                position
-                for position in range(start + 1, latest_end + 1)
-                if words[position].lower().strip("\"'“”‘’([{") in break_before
-            ]
-            preferred = punctuation or connectors
-            if preferred:
-                end = min(
-                    preferred,
-                    key=lambda position: abs(position - (start + target)),
+            chinese_suffix_chars = chinese_chars - chinese_prefix_chars
+            if chinese_prefix_chars < 4 or chinese_suffix_chars < 4:
+                continue
+            english_ratio = english_prefix_words / english_total_words
+            chinese_ratio = chinese_prefix_chars / max(1, chinese_chars)
+            difference = abs(english_ratio - chinese_ratio)
+            if difference <= 0.20:
+                candidates.append(
+                    (difference, english_match.start(), position)
                 )
-        chunks.append(" ".join(words[start:end]))
-        start = end
-    return chunks
+    if not candidates:
+        return [(english.strip(), chinese.strip())]
+
+    _difference, english_cut, chinese_cut = min(candidates)
+    return [
+        (english[:english_cut].strip(), chinese[:chinese_cut].strip()),
+        (english[english_cut:].strip(), chinese[chinese_cut:].strip()),
+    ]
 
 
-def _is_ascii_word_character(character: str) -> bool:
-    return character.isascii() and (
-        character.isalnum() or character in "'-"
-    )
-
-
-def _split_chinese(text: str, count: int) -> list[str]:
-    characters = list(text.strip())
-    if not characters:
-        return ["" for _ in range(count)]
-    count = min(count, len(characters))
-    chunks = []
-    start = 0
-    break_chars = set("，。！？；：、,.!?;")
-    for index in range(count):
-        groups_left = count - index
-        chars_left = len(characters) - start
-        target = max(1, round(chars_left / groups_left))
-        end = min(len(characters), start + target)
-        if index < count - 1:
-            window_end = min(len(characters) - groups_left + 1, end + 5)
-            preferred = [
-                position + 1
-                for position in range(start, window_end)
-                if characters[position] in break_chars
-            ]
-            if preferred:
-                end = min(
-                    preferred,
-                    key=lambda position: abs(position - (start + target)),
-                )
-            if (
-                end < len(characters)
-                and _is_ascii_word_character(characters[end - 1])
-                and _is_ascii_word_character(characters[end])
-            ):
-                word_start = end - 1
-                while (
-                    word_start > start
-                    and _is_ascii_word_character(characters[word_start - 1])
-                ):
-                    word_start -= 1
-                word_end = end
-                while (
-                    word_end < len(characters)
-                    and _is_ascii_word_character(characters[word_end])
-                ):
-                    word_end += 1
-                valid_boundaries = [
-                    boundary
-                    for boundary in (word_start, word_end)
-                    if boundary > start
-                    and len(characters) - boundary >= groups_left - 1
-                ]
-                if valid_boundaries:
-                    end = min(
-                        valid_boundaries,
-                        key=lambda position: abs(position - (start + target)),
-                    )
-        chunks.append("".join(characters[start:end]).strip())
-        start = end
-    return chunks
-
-
-def _cjk_character_count(text: str) -> int:
-    return sum(
-        "\u3400" <= character <= "\u9fff"
-        or "\uf900" <= character <= "\ufaff"
-        for character in text
-    )
-
-
-def reflow_cues(cues: list[Cue], width: int, height: int) -> list[Cue]:
-    chinese_font = max(32, round(height * 0.052))
-    english_font = max(32, round(height * 0.056))
-    safe_width = round(width * 0.68)
-    max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
-    max_chinese_chars = max(10, int(safe_width / chinese_font))
+def reflow_cues(cues: list[Cue]) -> list[Cue]:
     reflowed = []
 
     for cue in cues:
         duration = cue.end - cue.start
         if duration <= 0:
             continue
-        english_chars = len(cue.english.replace(" ", ""))
-        chinese_chars = _cjk_character_count(cue.chinese)
-        requested_parts = max(
-            1,
-            round((duration + MAX_SUBTITLE_CUE_SECONDS - 1e-9)
-                  // MAX_SUBTITLE_CUE_SECONDS),
-            (english_chars + max_english_chars - 1) // max_english_chars,
-            (chinese_chars + max_chinese_chars - 1) // max_chinese_chars,
-            int(english_chars / (ENGLISH_READING_SPEED * duration) + 0.999),
-            int(chinese_chars / (CHINESE_READING_SPEED * duration) + 0.999),
-        )
-        max_parts_for_readability = max(
-            1,
-            int(duration / MIN_SUBTITLE_CUE_SECONDS),
-        )
-        max_parts_for_text = min(
-            max(1, len(cue.english.split())),
-            max(1, len(cue.chinese.strip())),
-        )
-        parts = min(
-            requested_parts,
-            max_parts_for_readability,
-            max_parts_for_text,
-        )
-        while True:
-            english_chunks = _split_english(cue.english, parts)
-            chinese_chunks = _split_chinese(cue.chinese, parts)
-            if (
-                parts >= min(max_parts_for_readability, max_parts_for_text)
-                or (
-                    all(len(chunk) <= max_english_chars for chunk in english_chunks)
-                    and all(
-                        _cjk_character_count(chunk) <= max_chinese_chars
-                        for chunk in chinese_chunks
-                    )
-                )
-            ):
-                break
-            parts += 1
-        part_duration = duration / len(english_chunks)
-        for index, (english, chinese) in enumerate(
-            zip(english_chunks, chinese_chunks, strict=True)
+        aligned_clauses = _split_aligned_clauses(cue.english, cue.chinese)
+        clause_weights = [
+            max(1, len(english.split()))
+            for english, _ in aligned_clauses
+        ]
+        if (
+            len(aligned_clauses) > 1
+            and duration * min(clause_weights) / sum(clause_weights)
+            < MIN_SUBTITLE_CUE_SECONDS
         ):
-            start = cue.start + part_duration * index
-            end = (
-                cue.end
-                if index == len(english_chunks) - 1
-                else cue.start + part_duration * (index + 1)
+            aligned_clauses = [(cue.english, cue.chinese)]
+            clause_weights = [max(1, len(cue.english.split()))]
+        total_weight = sum(clause_weights)
+        elapsed_weight = 0
+        start = cue.start
+        for index, (english, chinese) in enumerate(aligned_clauses):
+            elapsed_weight += clause_weights[index]
+            end = cue.end if index == len(aligned_clauses) - 1 else (
+                cue.start + duration * elapsed_weight / total_weight
             )
             reflowed.append(Cue(start, end, english, chinese))
+            start = end
     return reflowed
 
 
@@ -593,7 +500,7 @@ def main() -> None:
         language_probability = float(info.language_probability)
     if not cues:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
-    cues = reflow_cues(cues, width, height)
+    cues = reflow_cues(cues)
 
     prefix = "whitehouse-oW-PQlgw1wo"
     english_srt = output_dir / f"{prefix}.en.srt"
