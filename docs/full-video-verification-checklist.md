@@ -14,6 +14,7 @@ Use this checklist for every subtitle correction or replacement source. Do not m
 - For each event, inspect source-embedded banners, tickers, logos, QR codes and lower-thirds separately from player controls; record location, coverage, timestamps and obstruction. Do not erase source graphics; do not call a source clean if relevant material is obscured.
 - Give every event a 3D camera-position map only from evidenced measurements: WGS84 coordinates displayed to five decimal places with an independent horizontal uncertainty estimate, camera/stage distance, true-north azimuth, relative angle to stage orientation, lens height above ground, vertical viewing angle and source evidence. Mark unavailable/estimated geometry explicitly; never invent coordinates or expose private/security camera positions.
 - Run downloads, frame extraction, probing, rendering and deployment on GitHub-hosted cloud runners only. Do not use local video files or local video processing.
+- Persist each ASR, translation batch/request, subtitle-export and subtitle-burn operation separately in `operation-audit.json`, with UTC start/end timestamps, task and asset IDs, model/tool and pipeline versions, status, retries and failure details. Translation pipeline summaries link to child timings and are inclusive (do not sum parent and child durations). Validate the audit before publishing; preserve it as a runner artifact even if processing fails.
 
 ## Implemented in the repository
 

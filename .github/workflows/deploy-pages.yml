@@ -338,6 +338,22 @@ jobs:
             --output-dir "$RUNNER_TEMP/full-video-output"
         shell: bash
 
+      - name: Validate full-video operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
+        shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
+
       - name: Verify caption structure and visual-style contract
         run: >-
           python scripts/verify_full_video_release.py
@@ -366,6 +382,7 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -414,6 +431,22 @@ jobs:
             --reuse-subtitles generated/full-video
         shell: bash
 
+      - name: Validate full-video operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
+        shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
+
       - name: Verify caption structure and visual-style contract
         run: >-
           python scripts/verify_full_video_release.py
@@ -442,6 +475,7 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30

@@ -116,6 +116,10 @@ jobs:
         run: |
           test -s "$RUNNER_TEMP/event-package/event-metadata.json"
           test -s "$RUNNER_TEMP/event-package/production/manifest.json"
+          test -s "$RUNNER_TEMP/event-package/production/operation-audit.json"
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/event-package/production/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/event-package/production/manifest.json"
           python - "$RUNNER_TEMP/event-package" "$RUNNER_TEMP/publication-review.json" <<'PY'
           import json
           import os
@@ -149,6 +153,7 @@ jobs:
           sha256sum "$RUNNER_TEMP/event-package/source.mp4" \
             "$RUNNER_TEMP/event-package/production/"*.mp4 \
             "$RUNNER_TEMP/event-package/production/"*.srt \
+            "$RUNNER_TEMP/event-package/production/operation-audit.json" \
             > "$RUNNER_TEMP/event-package/SHA256SUMS"
         shell: bash
 
@@ -168,6 +173,7 @@ jobs:
           gh release upload "$tag" \
             "$RUNNER_TEMP/event-package/production/"*.mp4 \
             "$RUNNER_TEMP/event-package/production/"*.srt \
+            "$RUNNER_TEMP/event-package/production/operation-audit.json" \
             "$RUNNER_TEMP/event-package/production/manifest.json" \
             "$RUNNER_TEMP/event-package/event-metadata.json" \
             --repo "$GITHUB_REPOSITORY"
