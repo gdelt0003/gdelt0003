@@ -34,7 +34,9 @@ Use this checklist for every subtitle correction or replacement source. Do not m
 - [ ] Inspect at least ten actual publisher/source pages for event identity, attribution, duration, resolution, visible branding/overlays, camera angle and continuity. De-duplicate syndicated/re-uploaded footage; do not count a text article or search result as a verified video.
 - [ ] For each verified candidate, record its direct URL, publisher, source lineage, recording/upload date, duration, resolution, relevant timestamps, clean-frame evidence and confidence. Use `Not found` for an unverified category.
 - [ ] Confirm the verification manifest contains completed source-audio/model/judge/frame-review evidence and passes the fail-closed workflow gate.
-- [ ] Merge the reviewed PR, run the full render on the highest GitHub-hosted runner available to the repository, deploy Pages, then check live VTT timing/text, MP4 asset update time/size/resolution/duration and all published URLs.
+- [ ] Obtain independent acceptance reports from three separate nested project sessions; resolve every blocking finding before deployment.
+- [ ] After acceptance, have a separate deployment session run the render on the highest GitHub-hosted runner actually available to the repository, deploy Pages, then check live VTT timing/text, MP4 asset update time/size/resolution/duration and all published URLs.
+- [ ] Have separate independent nested sessions review the live deployed page and footage evidence; capture their reports only after deployment, without assuming the code review proves the live result.
 
 ## Current evidence and blockers (13 October 2026)
 
@@ -43,11 +45,15 @@ Use this checklist for every subtitle correction or replacement source. Do not m
   - `00:08:10.737–00:08:16.733`: `afternoon,` / `大家`
   - `00:08:16.733–00:08:22.730`: `everybody.` / `。`
 - [x] The official White House page confirms the 58:52 source and the embedded YouTube video ID `oW-PQlgw1wo`.
+- [x] Commit `ffde6f0` is pushed to PR #4; the updated local unit suite passes (40 tests), Python syntax checks pass, workflow YAML parses, and the staged diff passes `git diff --check`.
+- [x] Three independent nested project sessions have been created for subtitle synchronization, footage-source, and release-gate acceptance.
 - [x] Public-page attempts found the prior Reuters/AP/Baltimore Sun/WUSA9 leads, but access was blocked (401/403); C-SPAN search was blocked, and general search endpoints were rate-limited or returned no usable index results. A search lead is not verified footage.
+- [ ] The three acceptance sessions have not yet returned their reports; no deployment session or post-deployment review sessions have been started.
 - [ ] No independent clean, unobstructed source or distinct camera angle has yet been verified; ten clean video sources have not been established.
 - [ ] No ten-model translation run, three-judge score, three-pass source-audio review, or visual review of a newly rendered cloud output has yet been completed.
 - [ ] PR #4 remains open; the latest synchronization/style/quality-gate changes have not yet been merged, rendered, or published.
 - [ ] The repository has no configured `OPENROUTER_API_KEY` Actions secret. The existing benchmark workflow estimates about US$25.12 for all 971 cues and the 120-cue judge sample; confirm the spending ceiling before any billable run.
+- [ ] The committed source manifest has no `quality_checks`; the release verifier correctly blocks it. Keep deployment blocked until actual review evidence is recorded.
 
 ## Release decision
 
