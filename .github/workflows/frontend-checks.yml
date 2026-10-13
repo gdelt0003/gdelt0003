@@ -1,0 +1,47 @@
+name: Frontend checks
+
+on:
+  push:
+    paths:
+      - '.github/workflows/frontend-checks.yml'
+      - 'assets/app.js'
+      - 'assets/style.css'
+      - 'index.html'
+      - 'outputs/whitehouse-oct-06-2026/manifest.json'
+      - 'outputs/whitehouse-oct-06-2026/*.mp4'
+      - 'tests/test_frontend_assets.cjs'
+  pull_request:
+    paths:
+      - '.github/workflows/frontend-checks.yml'
+      - 'assets/app.js'
+      - 'assets/style.css'
+      - 'index.html'
+      - 'outputs/whitehouse-oct-06-2026/manifest.json'
+      - 'outputs/whitehouse-oct-06-2026/*.mp4'
+      - 'tests/test_frontend_assets.cjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check frontend JavaScript syntax
+        run: node --check assets/app.js
+
+      - name: Verify published clip playback paths and aspect ratios
+        run: node tests/test_frontend_assets.cjs
