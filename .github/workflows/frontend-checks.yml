@@ -7,18 +7,24 @@ on:
       - 'assets/app.js'
       - 'assets/style.css'
       - 'index.html'
+      - 'scripts/**'
       - 'outputs/whitehouse-oct-06-2026/manifest.json'
       - 'outputs/whitehouse-oct-06-2026/*.mp4'
-      - 'tests/test_frontend_assets.cjs'
+      - 'outputs/**/*.json'
+      - 'tests/**'
+      - '.github/workflows/deploy-pages.yml'
   pull_request:
     paths:
       - '.github/workflows/frontend-checks.yml'
       - 'assets/app.js'
       - 'assets/style.css'
       - 'index.html'
+      - 'scripts/**'
       - 'outputs/whitehouse-oct-06-2026/manifest.json'
       - 'outputs/whitehouse-oct-06-2026/*.mp4'
-      - 'tests/test_frontend_assets.cjs'
+      - 'outputs/**/*.json'
+      - 'tests/**'
+      - '.github/workflows/deploy-pages.yml'
 
 permissions:
   contents: read
@@ -39,6 +45,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Python tests
+        run: python -m unittest discover -s tests -v
 
       - name: Check frontend JavaScript syntax
         run: node --check assets/app.js

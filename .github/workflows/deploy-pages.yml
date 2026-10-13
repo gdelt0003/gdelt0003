@@ -50,6 +50,11 @@ on:
         type: boolean
         required: false
         default: false
+      deploy_site_only:
+        description: Deploy the current branch's static site files without processing or replacing video media
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -513,6 +518,10 @@ jobs:
         (
           github.event_name == 'push' &&
           needs.main_pages_quality_gate.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.deploy_site_only
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
