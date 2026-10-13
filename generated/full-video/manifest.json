@@ -1,0 +1,19 @@
+{
+  "source_video": "whitehouse-oW-PQlgw1wo-source.mp4",
+  "duration_seconds": 3532.021,
+  "resolution": "1920x1080",
+  "asr_model": "large-v3-turbo",
+  "translation_model": "facebook/m2m100_1.2B",
+  "subtitle_cues": 971,
+  "languages": [
+    "en",
+    "zh-Hans"
+  ],
+  "video_file": "whitehouse-oW-PQlgw1wo-bilingual.mp4",
+  "subtitle_files": [
+    "whitehouse-oW-PQlgw1wo.en.srt",
+    "whitehouse-oW-PQlgw1wo.zh-Hans.srt",
+    "whitehouse-oW-PQlgw1wo.en-zh.srt"
+  ],
+  "whisper_detected_language_probability": 1.0
+}
