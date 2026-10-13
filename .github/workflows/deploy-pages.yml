@@ -365,12 +365,6 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
 
-      - name: Verify caption structure and visual-style contract
-        run: >-
-          python scripts/verify_full_video_release.py
-          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
-        shell: bash
-
       - name: Publish the subtitled video and SRT files to the source release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -457,12 +451,6 @@ jobs:
           path: ${{ runner.temp }}/full-video-output/operation-audit.json
           if-no-files-found: ignore
           retention-days: 90
-
-      - name: Verify caption structure and visual-style contract
-        run: >-
-          python scripts/verify_full_video_release.py
-          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
-        shell: bash
 
       - name: Publish the restyled video and SRT files to the source release
         env:

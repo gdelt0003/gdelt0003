@@ -45,6 +45,19 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn("needs: [deploy, process-full-video, restyle-full-video]", quality_gate)
         self.assertIn("needs.deploy.result == 'success'", quality_gate)
 
+    def test_full_video_quality_gate_runs_only_after_pages_deployment(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        process = job_body(workflow, "process-full-video")
+        restyle = job_body(workflow, "restyle-full-video")
+        deploy = job_body(workflow, "deploy")
+        quality_gate = job_body(workflow, "main_pages_quality_gate")
+
+        self.assertNotIn("verify_full_video_release.py", process)
+        self.assertNotIn("verify_full_video_release.py", restyle)
+        self.assertIn("needs.process-full-video.result == 'success'", deploy)
+        self.assertIn("needs.deploy.result == 'success'", quality_gate)
+        self.assertIn("verify_full_video_release.py", quality_gate)
+
     def test_post_deploy_gate_checks_the_new_render_manifest(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         quality_gate = job_body(workflow, "main_pages_quality_gate")
