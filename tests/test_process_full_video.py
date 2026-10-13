@@ -7,11 +7,13 @@ from scripts.process_full_video import (
     ass_escape,
     ass_time,
     bilingual_srt_text,
+    merge_sentence_fragments,
     reflow_cues,
     read_srt,
     srt_text,
     timestamp,
     vtt_from_bilingual_srt,
+    verify_cues,
     write_ass,
 )
 
@@ -54,7 +56,8 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(r"{\rChinese}中文\N{\rEnglish}Text \{one\}", content)
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
-        self.assertIn("Style: English,Noto Sans CJK SC,60,&H00FFFFFF", content)
+        self.assertIn("Style: English,Noto Sans CJK SC,68,&H00FFFFFF", content)
+        self.assertIn(",211,211,324,1", content)
         self.assertIn(",324,1\n", content)
         self.assertIn("WrapStyle: 0", content)
 
@@ -156,6 +159,116 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(len(reflowed), 1)
         self.assertEqual(reflowed[0].chinese, "你好，世界。")
         self.assertEqual(reflowed[0].english, "Hello world.")
+
+    def test_merges_asr_fragments_before_rendering_bilingual_captions(self):
+        fragments = [
+            Cue(484.740, 490.737, "Good", "下午好,"),
+            Cue(490.737, 496.733, "afternoon,", "大家"),
+            Cue(496.733, 502.730, "everybody.", "。"),
+            Cue(502.830, 504.870, "Distinguished guests,", "尊敬的嘉宾,"),
+        ]
+
+        merged = merge_sentence_fragments(fragments)
+
+        self.assertEqual(
+            merged,
+            [
+                Cue(
+                    484.740,
+                    502.730,
+                    "Good afternoon, everybody.",
+                    "下午好,大家。",
+                ),
+                Cue(
+                    502.830,
+                    504.870,
+                    "Distinguished guests,",
+                    "尊敬的嘉宾,",
+                ),
+            ],
+        )
+        reflowed = reflow_cues(merged)
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                ("Good afternoon,", "下午好,"),
+                ("everybody.", "大家。"),
+                ("Distinguished guests,", "尊敬的嘉宾,"),
+            ],
+        )
+        self.assertAlmostEqual(reflowed[0].end, fragments[2].start, delta=0.001)
+        self.assertAlmostEqual(reflowed[1].end, fragments[2].end, delta=0.001)
+
+    def test_fragment_merging_preserves_ascii_spaces_inside_names(self):
+        merged = merge_sentence_fragments([
+            Cue(0, 1, "Welcome to New", "欢迎来到New"),
+            Cue(1, 2, "York.", "York。"),
+        ])
+        self.assertEqual(merged[0].english, "Welcome to New York.")
+        self.assertEqual(merged[0].chinese, "欢迎来到New York。")
+
+    def test_caption_verification_records_unverified_translation_and_style(self):
+        report = verify_cues(
+            [Cue(0, 2, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+        )
+        self.assertEqual(report["structural_checks"], "passed")
+        self.assertEqual(report["bilingual_cue_sync"]["status"], "passed")
+        self.assertEqual(
+            report["bilingual_cue_sync"]["audio_level_alignment"],
+            "not_verified",
+        )
+        self.assertEqual(
+            report["translation_accuracy"]["status"],
+            "not_verified",
+        )
+        self.assertGreaterEqual(
+            report["subtitle_readability"]["english_to_chinese_size_ratio"],
+            1.2,
+        )
+
+    def test_caption_verification_rejects_overlapping_cues(self):
+        with self.assertRaisesRegex(RuntimeError, "overlaps"):
+            verify_cues(
+                [
+                    Cue(0, 2, "First.", "第一句。"),
+                    Cue(1.9, 3, "Second.", "第二句。"),
+                ],
+                duration=10,
+                width=1920,
+                height=1080,
+            )
+
+    def test_caption_verification_preserves_completed_accuracy_review(self):
+        report = verify_cues(
+            [Cue(0, 2, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+            translation_review={
+                "status": "verified",
+                "audio_level_alignment": True,
+                "source_audio_review": True,
+                "independent_translation_review": True,
+                "translation_models_compared": 10,
+                "llm_judges": 3,
+                "source_cross_check_passes": 3,
+            },
+        )
+        self.assertEqual(
+            report["translation_accuracy"],
+            {
+                "status": "verified",
+                "audio_level_alignment": "passed",
+                "source_audio_review": "passed",
+                "independent_translation_review": "passed",
+                "translation_models_compared": 10,
+                "llm_judges": 3,
+                "source_cross_check_passes": 3,
+            },
+        )
 
     def test_reads_srt_cue_times_and_multiline_text(self):
         with tempfile.TemporaryDirectory() as directory:

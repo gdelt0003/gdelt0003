@@ -328,6 +328,49 @@ jobs:
             --output-dir "$RUNNER_TEMP/full-video-output"
         shell: bash
 
+      - name: Verify caption structure and visual-style contract
+        run: |
+          python - "$RUNNER_TEMP/full-video-output/manifest.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          checks = manifest["quality_checks"]
+          required = (
+              checks["structural_checks"] == "passed",
+              checks["bilingual_cue_sync"]["status"] == "passed",
+              checks["bilingual_cue_sync"]["audio_level_alignment"] == "passed",
+              checks["cue_timing"] == "passed",
+              checks["source_resolution"] == "passed",
+              checks["subtitle_readability"]["status"] == "style_contract_passed",
+              checks["subtitle_readability"]["english_to_chinese_size_ratio"] >= 1.2,
+              checks["subtitle_readability"]["visual_frame_review"] == "passed",
+              not checks["subtitle_readability"]["english_reading_speed_over_20_cps_cues"],
+              not checks["subtitle_readability"]["chinese_reading_speed_over_10_cps_cues"],
+          )
+          if not all(required):
+              raise SystemExit("Caption structure/style quality gate failed.")
+          print("Structural and style checks passed.")
+          accuracy = checks["translation_accuracy"]
+          if (
+              accuracy["status"] != "verified"
+              or accuracy["translation_models_compared"] < 10
+              or accuracy["llm_judges"] < 3
+              or accuracy["source_cross_check_passes"] < 3
+              or accuracy["audio_level_alignment"] != "passed"
+              or accuracy["source_audio_review"] != "passed"
+              or accuracy["independent_translation_review"] != "passed"
+          ):
+              raise SystemExit(
+                  "Release blocked: translation accuracy needs source-audio "
+                  "review, three source cross-checks, ten translation models, "
+                  "and three independent LLM judges."
+              )
+          print("Translation and source-audio verification passed.")
+          PY
+        shell: bash
+
       - name: Publish the subtitled video and SRT files to the source release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -396,6 +439,49 @@ jobs:
             --input "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4" \
             --output-dir "$RUNNER_TEMP/full-video-output" \
             --reuse-subtitles generated/full-video
+        shell: bash
+
+      - name: Verify caption structure and visual-style contract
+        run: |
+          python - "$RUNNER_TEMP/full-video-output/manifest.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          checks = manifest["quality_checks"]
+          required = (
+              checks["structural_checks"] == "passed",
+              checks["bilingual_cue_sync"]["status"] == "passed",
+              checks["bilingual_cue_sync"]["audio_level_alignment"] == "passed",
+              checks["cue_timing"] == "passed",
+              checks["source_resolution"] == "passed",
+              checks["subtitle_readability"]["status"] == "style_contract_passed",
+              checks["subtitle_readability"]["english_to_chinese_size_ratio"] >= 1.2,
+              checks["subtitle_readability"]["visual_frame_review"] == "passed",
+              not checks["subtitle_readability"]["english_reading_speed_over_20_cps_cues"],
+              not checks["subtitle_readability"]["chinese_reading_speed_over_10_cps_cues"],
+          )
+          if not all(required):
+              raise SystemExit("Caption structure/style quality gate failed.")
+          print("Structural and style checks passed.")
+          accuracy = checks["translation_accuracy"]
+          if (
+              accuracy["status"] != "verified"
+              or accuracy["translation_models_compared"] < 10
+              or accuracy["llm_judges"] < 3
+              or accuracy["source_cross_check_passes"] < 3
+              or accuracy["audio_level_alignment"] != "passed"
+              or accuracy["source_audio_review"] != "passed"
+              or accuracy["independent_translation_review"] != "passed"
+          ):
+              raise SystemExit(
+                  "Release blocked: translation accuracy needs source-audio "
+                  "review, three source cross-checks, ten translation models, "
+                  "and three independent LLM judges."
+              )
+          print("Translation and source-audio verification passed.")
+          PY
         shell: bash
 
       - name: Publish the restyled video and SRT files to the source release
@@ -467,9 +553,49 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  main_pages_quality_gate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout verified Pages inputs
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify committed full-video release evidence
+        run: >-
+          python scripts/verify_full_video_release.py
+          --manifest generated/full-video/manifest.json
+
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video]
-    if: always() && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.process-full-video.result != 'failure' && needs.restyle-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled' && needs.process-full-video.result != 'cancelled' && needs.restyle-full-video.result != 'cancelled'
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, main_pages_quality_gate]
+    if: >-
+      always() &&
+      (
+        (
+          github.event_name == 'push' &&
+          needs.main_pages_quality_gate.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (
+            (inputs.process_full_video || inputs.restyle_full_video) &&
+            (
+              !inputs.process_full_video ||
+              needs.process-full-video.result == 'success'
+            ) &&
+            (
+              !inputs.restyle_full_video ||
+              needs.restyle-full-video.result == 'success'
+            )
+          )
+        )
+      )
     runs-on: ubuntu-latest
     environment:
       name: github-pages
