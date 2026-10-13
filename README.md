@@ -38,7 +38,7 @@ English captions are YouTube's auto-generated transcript, with rolling caption f
 
 The Pages workflow can process the complete source video without fetching it from YouTube:
 
-1. Upload the source MP4 as `whitehouse-oW-PQlgw1wo-source.mp4` to the GitHub Release `white-house-source-oW-PQlgw1wo`.
+1. Upload the original source MP4 to the GitHub Release `white-house-source-oW-PQlgw1wo`.
 2. Run **Publish stored White House clips to Pages** with `process_full_video` enabled.
 
 The runner uses Whisper `large-v3-turbo` for English transcription and Meta's M2M100 1.2B model for Simplified Chinese translation, then burns both subtitle lines into the full-resolution MP4. The subtitled MP4 and three SRT files are attached to the same Release; the Pages site embeds the video and serves its VTT/SRT subtitle files. Model output is machine-generated and should be reviewed before citation or republication.

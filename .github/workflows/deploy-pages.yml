@@ -296,8 +296,11 @@ jobs:
           mkdir -p "$RUNNER_TEMP/full-video-input"
           gh release download white-house-source-oW-PQlgw1wo \
             --repo "$GITHUB_REPOSITORY" \
-            --pattern "whitehouse-oW-PQlgw1wo-source.mp4" \
+            --pattern "President.Trump.Delivers.Remarks.Oct.6.2026.oW-PQlgw1wo.mp4" \
             --dir "$RUNNER_TEMP/full-video-input"
+          mv \
+            "$RUNNER_TEMP/full-video-input/President.Trump.Delivers.Remarks.Oct.6.2026.oW-PQlgw1wo.mp4" \
+            "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
           test -s "$RUNNER_TEMP/full-video-input/whitehouse-oW-PQlgw1wo-source.mp4"
           ffprobe -v error -show_entries format=duration,size \
             -of default=noprint_wrappers=1 \
