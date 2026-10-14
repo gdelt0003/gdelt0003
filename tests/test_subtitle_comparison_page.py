@@ -16,14 +16,27 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         variants = {variant["id"]: variant for variant in manifest["variants"]}
 
         self.assertEqual(set(variants), {"open-source-baseline", "microsoft-copilot-gpt6"})
-        self.assertEqual(variants["open-source-baseline"]["status"], "not_run")
+        self.assertEqual(
+            variants["open-source-baseline"]["status"],
+            "preview_unverified",
+        )
+        self.assertEqual(
+            variants["open-source-baseline"]["quality_checks"]["release_gate"],
+            "blocked",
+        )
+        self.assertEqual(
+            variants["open-source-baseline"]["quality_checks"][
+                "source_audio_and_asr_accuracy"
+            ],
+            "not_verified",
+        )
         self.assertEqual(
             variants["open-source-baseline"]["models"]["asr"],
-            "faster-whisper large-v3-turbo (repository pipeline)",
+            "large-v3-turbo",
         )
         self.assertEqual(
             variants["open-source-baseline"]["models"]["translation"],
-            "facebook/m2m100_1.2B (repository pipeline)",
+            "facebook/m2m100_1.2B",
         )
         self.assertEqual(
             variants["microsoft-copilot-gpt6"]["status"],
@@ -47,10 +60,9 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         self.assertNotIn("<source src=", page)
         self.assertIn("pvXbHQrIvTw", page)
 
-    def test_page_discloses_unverified_draft_and_known_blockers_without_publishing_media(
-        self,
-    ):
+    def test_page_discloses_unverified_draft_and_known_blockers(self):
         page = PAGE.read_text(encoding="utf-8")
+        script = SCRIPT.read_text(encoding="utf-8")
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
         self.assertIn("AI 生成草稿，未经人工核验", page)
@@ -59,14 +71,19 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         self.assertIn("58 条英文字幕", page)
         self.assertIn("6 条中文字幕", page)
         self.assertIn("65 帧中的 5 帧", page)
-        self.assertIn("视频与字幕尚未公开", page)
+        self.assertIn("机器生成、未经人工核验的草稿预览", script)
+        self.assertEqual(
+            manifest["smartsub_preview"]["review_status"]["release_gate"],
+            "blocked",
+        )
+        self.assertTrue(manifest["variants"][0]["video_url"].startswith("https://"))
         self.assertTrue(
             all(
-                variant["video_url"] is None
-                and all(value is None for value in variant["subtitles"].values())
-                for variant in manifest["variants"]
+                value.startswith("https://")
+                for value in manifest["variants"][0]["subtitles"].values()
             )
         )
+        self.assertIsNone(manifest["variants"][1]["video_url"])
 
     def test_event_page_changes_trigger_pages_deploy(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
