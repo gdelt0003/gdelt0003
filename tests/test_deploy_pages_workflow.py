@@ -38,12 +38,18 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         deploy = job_body(workflow, "deploy")
         quality_gate = job_body(workflow, "main_pages_quality_gate")
         deploy_condition = deploy.split("    runs-on:", maxsplit=1)[0]
+        gate_condition = quality_gate.split("    runs-on:", maxsplit=1)[0]
 
         self.assertNotIn("main_pages_quality_gate", deploy.split("    if:", 1)[0])
         self.assertIn("github.event_name == 'push'", deploy_condition)
         self.assertNotIn("needs.main_pages_quality_gate.result", deploy_condition)
         self.assertIn("needs: [deploy, process-full-video, restyle-full-video]", quality_gate)
         self.assertIn("needs.deploy.result == 'success'", quality_gate)
+        self.assertNotIn("github.event_name == 'push'", gate_condition)
+        self.assertNotIn("inputs.deploy_site_only", gate_condition)
+        self.assertIn("inputs.validate_release_evidence", gate_condition)
+        self.assertIn("inputs.process_full_video", gate_condition)
+        self.assertIn("inputs.restyle_full_video", gate_condition)
 
     def test_full_video_quality_gate_runs_only_after_pages_deployment(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
