@@ -91,6 +91,7 @@ async function main() {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
   assert.doesNotMatch(html, /<track\b/i, 'do not overlay duplicate, unverified captions');
+  assert.match(html, /assets\/style\.css\?v=whitehouse-5/);
   assert.match(html, /id="mainVideos"/, 'main videos should render into a catalog');
   assert.match(html, /assets\/main-videos\.js/);
   assert.match(html, /竖屏 9:16/);
