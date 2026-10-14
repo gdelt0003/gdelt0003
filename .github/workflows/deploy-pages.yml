@@ -950,7 +950,7 @@ jobs:
             gh release create "$tag" \
               --repo "$GITHUB_REPOSITORY" \
               --title "pvXbHQrIvTw SmartSub unverified draft preview" \
-              --notes "Machine-generated, unverified draft only. Source audio/ASR, translation, reading speed, and complete visual review remain unverified; release gate is blocked. Exact source asset 639463349 was SHA-256 verified. No Microsoft/GPT-6 model or paid API was used." \
+              --notes "Machine-generated, unverified draft only. Source audio/ASR, translation, reading speed, and complete visual review remain unverified; release gate is blocked. Exact source asset 639463349 was SHA-256 verified. No Microsoft/GPT-6 media-generation model or paid API was used for this render." \
               --prerelease
           fi
           gh release upload "$tag" \

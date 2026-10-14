@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="同一白宫视频的开源字幕基线与指定 Microsoft Copilot 模型方案对照；未运行指标明确标为未验证。" />
+    <meta name="description" content="对照 pvXbHQrIvTw 的多个开源媒体处理候选与 Microsoft/GitHub Copilot coding-agent 工程交付；严格区分媒体产物、工程贡献与未核验状态。" />
     <title>pvXbHQrIvTw · 双语字幕方案对照</title>
     <link rel="stylesheet" href="../../assets/style.css?v=whitehouse-5" />
     <link rel="stylesheet" href="../../assets/comparison.css?v=1" />
@@ -14,8 +14,8 @@
         <a class="site-brand" href="../../">GDELT · 事件视频</a>
         <div class="site-nav-links">
           <a href="../../">返回主页</a>
-          <a href="#variants">两版方案</a>
-          <a href="#comparison">指标对比</a>
+          <a href="#pathways">路线与归属</a>
+          <a href="#comparison">可比性</a>
         </div>
       </nav>
       <header class="hero">
@@ -37,33 +37,27 @@
         </ul>
         <p><strong id="pvX-media-status">发布状态：正在读取预览清单。</strong>本页的任何机器生成预览都不代表成片已获准确性、清晰度或字幕样式验收。</p>
       </section>
-      <section class="comparison-grid" id="variants" aria-label="字幕方案">
-        <article class="panel comparison-variant" id="variant-open-source" aria-labelledby="open-source-title">
-          <p class="eyebrow">OPEN-SOURCE BASELINE</p>
-          <h2 id="open-source-title">开源基线</h2>
-          <div class="variant-content"></div>
-        </article>
-        <article class="panel comparison-variant" id="variant-microsoft" aria-labelledby="microsoft-title">
-          <p class="eyebrow">REQUESTED MICROSOFT MODEL</p>
-          <h2 id="microsoft-title">Microsoft Copilot / GPT-6</h2>
-          <div class="variant-content"></div>
-        </article>
+      <section class="panel pathway-comparison" id="pathways" aria-labelledby="pathways-title">
+        <p class="eyebrow">OPEN SOURCE MEDIA ROUTES × COPILOT ENGINEERING</p>
+        <h2 id="pathways-title">多开源工具与微软/Copilot 路线：归属、结果与证据</h2>
+        <p class="meta">这里比较的是各路线实际承担的任务和可查证交付，不把代码代理与媒体模型混作同类模型，也不依据未运行候选虚构质量胜负。视频由上游开源 SmartSub 渲染；Copilot coding-agent 的成果是本仓库专有的编排、校验、测试和发布集成。</p>
+        <div class="pathway-grid" id="pathwayGrid" aria-live="polite"></div>
       </section>
       <section class="panel comparison-metrics" id="comparison" aria-labelledby="comparison-title">
-        <p class="eyebrow">MEASURED SIDE-BY-SIDE</p>
-        <h2 id="comparison-title">同输入对比指标</h2>
-        <p class="meta">只有同一源文件、相同字幕版式和可复核的人工参考稿齐备后，才计算质量指标。未测项目显示“未测”，不推断准确率或相对提升。</p>
+        <p class="eyebrow">COMPARABILITY CHECK</p>
+        <h2 id="comparison-title">哪些结果可以公平比较</h2>
+        <p class="meta">本次已发布视频的逐项模型选择来自其运行清单；Copilot coding-agent 的工作属于仓库工程交付。角色不同，所以不报告“微软模型胜过开源模型”的质量分数。未来如要做模型质量对比，须同输入、同任务、相同字幕版式，并有可复核的人类参考与盲审。</p>
         <div class="comparison-table-wrap">
           <table>
             <thead>
-              <tr><th scope="col">指标</th><th scope="col">开源基线</th><th scope="col">Microsoft / GPT-6</th><th scope="col">公平比较条件</th></tr>
+              <tr><th scope="col">维度</th><th scope="col">开源媒体路线</th><th scope="col">Microsoft/GitHub Copilot coding-agent 路线</th></tr>
             </thead>
-            <tbody id="comparison-rows"></tbody>
+            <tbody id="comparisonRows"></tbody>
           </table>
         </div>
       </section>
-      <p class="meta comparison-footnote">声音保持源录音；本页面不生成或克隆人物声音。用户已确认此精确素材的公开改编授权；这不代表独立法律审查，也不替代来源、画面与字幕质量复核。任何公开预览均是机器生成、未经人工核验的草稿，不是最终发布版本。</p>
+      <p class="meta comparison-footnote">SmartSub、faster-whisper、M2M100、AutoSubs 和 WhisperX 等开源组件/候选保留各自上游归属；本仓库不 vendoring 或冒领其实现。声音保持源录音；此公开预览未经人工核验，不是最终发布版本。</p>
     </main>
-    <script src="../../assets/comparison.js?v=1"></script>
+    <script src="../../assets/comparison.js?v=pathways-1"></script>
   </body>
 </html>

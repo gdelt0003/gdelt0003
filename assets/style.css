@@ -163,8 +163,21 @@ button {
   text-decoration: none; font-size: .88rem;
 }
 .main-video-links a:hover, .main-video-links a:focus-visible { color: #062c29; background: var(--accent); }
+.main-video-engine { color: var(--muted); font-size: .88rem; }
+.main-video-engine a { color: var(--accent); }
+.copilot-results-panel { margin: 22px 0; border-color: rgba(94,234,212,.28); }
+.copilot-results-intro, .copilot-results-note { max-width: 1100px; line-height: 1.65; }
+.copilot-results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
+.copilot-result-card {
+  padding: 16px; border: 1px solid var(--border); border-radius: 12px;
+  background: rgba(31,41,55,.72);
+}
+.copilot-result-card h3 { margin: 0 0 8px; }
+.copilot-result-card p { color: var(--muted); line-height: 1.55; }
+.copilot-result-card a { display: block; width: fit-content; margin-top: 8px; color: var(--accent); }
+.copilot-results-note { margin: 16px 0 0; }
 .highlights-panel { scroll-margin-top: 84px; }
-.event-research-panel, .camera-map-panel, .event-production-panel, .main-videos-panel { scroll-margin-top: 84px; }
+.event-research-panel, .camera-map-panel, .event-production-panel, .main-videos-panel, .copilot-results-panel { scroll-margin-top: 84px; }
 @media (max-width: 900px) {
   .main-video-grid { grid-template-columns: minmax(0, 1fr); }
 }

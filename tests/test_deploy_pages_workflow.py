@@ -150,7 +150,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn('"not_verified"', job)
         self.assertIn("release gate is blocked", job)
         self.assertIn("validate_release_asset_size", job)
-        self.assertIn("No Microsoft/GPT-6 model", job)
+        self.assertIn("No Microsoft/GPT-6 media-generation model or paid API was used", job)
         self.assertNotIn("pipeline run", job)
 
     def test_smartsub_preview_deploys_a_player_with_disclosed_release_links(self):
@@ -171,7 +171,8 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         script = (WORKFLOW.parents[2] / "assets" / "comparison.js").read_text(
             encoding="utf-8"
         )
-        self.assertIn("preview_unverified", script)
+        self.assertIn("executed_unverified", script)
+        self.assertIn("已运行 · 草稿未通过人工核验", script)
 
     def test_smartsub_publication_is_a_test_without_five_review_evidence_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")

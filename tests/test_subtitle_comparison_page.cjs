@@ -33,24 +33,19 @@ class Element {
   }
 }
 
-test('comparison page renders the public draft with unverified status', async () => {
+test('comparison page separates open-source media routes from Copilot engineering results', async () => {
   const elements = new Map([
-    'comparison-rows',
     'event-title',
     'event-subtitle',
     'source-link',
     'pvX-media-status',
-    'variant-open-source',
-    'variant-microsoft',
+    'pathwayGrid',
+    'comparisonRows',
   ].map((id) => [id, new Element()]));
 
   const document = {
     baseURI: 'https://example.github.io/gdelt0003/events/pvXbHQrIvTw/',
     getElementById: (id) => elements.get(id),
-    querySelector: (selector) => {
-      const match = /^#([^ ]+) \.variant-content$/.exec(selector);
-      return match ? (elements.get(match[1]).content ||= new Element()) : null;
-    },
     createElement: (tagName) => new Element(tagName),
   };
 
@@ -65,13 +60,13 @@ test('comparison page renders the public draft with unverified status', async ()
 
   assert.match(elements.get('event-title').textContent, /Oct\. 13, 2026/);
   assert.equal(elements.get('source-link').href, manifest.event.source_url);
-  assert.match(
-    elements.get('variant-open-source').content.children[0].textContent,
-    /公开机器生成草稿预览，未经人工核验/,
-  );
-  assert.match(elements.get('variant-microsoft').content.children[0].textContent, /未用其他模型冒充/);
-  const video = elements.get('variant-open-source').content.children.find((node) => node.tagName === 'video');
-  assert.ok(video);
-  assert.equal(video.src, manifest.smartsub_preview.video_url);
-  assert.equal(elements.get('comparison-rows').children.length, 10);
+  const pathways = elements.get('pathwayGrid').children;
+  assert.equal(pathways.length, manifest.pathways.length + 1);
+  assert.match(pathways[0].children[2].textContent, /已运行 · 草稿未通过人工核验/);
+  assert.equal(pathways[0].children.some((node) => node.tagName === 'video'), true);
+  assert.equal(pathways[0].children.find((node) => node.tagName === 'video').src, manifest.smartsub_preview.video_url);
+  assert.equal(pathways.at(-1).dataset.kind, 'copilot_engineering');
+  assert.match(pathways.at(-1).children[1].textContent, /Copilot coding-agent/);
+  assert.equal(elements.get('comparisonRows').children.length, 5);
+  assert.match(elements.get('comparisonRows').children.at(-1).children[2].textContent, /不据此否认 agent 可调用 GPT-6/);
 });
