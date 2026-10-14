@@ -15,6 +15,15 @@
     "input_size_bytes": null
   },
   "comparison_status": "not_run",
+  "smartsub_preview": {
+    "status": "not_run",
+    "video_url": null,
+    "subtitles": {
+      "english": null,
+      "chinese": null,
+      "bilingual": null
+    }
+  },
   "variants": [
     {
       "id": "open-source-baseline",

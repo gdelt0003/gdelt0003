@@ -81,6 +81,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
 
         self.assertIn("inputs.process_comparison_video", job)
         self.assertIn("contents: write", job)
+        self.assertIn("actions: read", job)
         self.assertIn("RIGHTS_CONFIRMED", job)
         self.assertIn("SAME_EVENT_CONFIRMED", job)
         self.assertIn("releases/assets/639463349", job)
@@ -91,6 +92,72 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )
         self.assertIn("--asset-prefix pvXbHQrIvTw", job)
         self.assertIn("pvXbHQrIvTw-comparison-review-", job)
+
+    def test_comparison_video_can_restyle_prior_private_subtitles_only(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        job = job_body(workflow, "process-comparison-video")
+
+        self.assertIn("comparison_reuse_artifact_run_id", workflow)
+        self.assertIn("actions/download-artifact@v4", job)
+        self.assertIn("run-id: ${{ inputs.comparison_reuse_artifact_run_id }}", job)
+        self.assertIn("test -s \"$reuse_dir/pvXbHQrIvTw.en.srt\"", job)
+        self.assertIn("test -s \"$reuse_dir/pvXbHQrIvTw.zh-Hans.srt\"", job)
+        self.assertIn("--reuse-subtitles \"$reuse_dir\"", job)
+        self.assertIn('"input_size_bytes": 262338614', job)
+        self.assertIn(
+            '"input_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171"',
+            job,
+        )
+        self.assertIn("pysubs2==1.8.0", workflow)
+        self.assertIn("if [[ -n \"$REUSE_RUN_ID\" ]]; then", job)
+        self.assertIn("python -m pip install pysubs2==1.8.0", job)
+        self.assertIn("authored with pysubs2 ", (
+            WORKFLOW.parents[2] / "scripts" / "process_full_video.py"
+        ).read_text(encoding="utf-8"))
+
+    def test_smartsub_preview_uses_pinned_runner_composition_and_exact_source(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        job = job_body(workflow, "render-smartsub-draft")
+
+        self.assertIn("inputs.process_smartsub_draft", job)
+        self.assertIn("submodules: true", job)
+        self.assertIn("a2b164b3dd86388355c6a4b84e4a49825a0e7f57", job)
+        self.assertIn("pysubs2==1.8.0", job)
+        self.assertIn("SmartSub_Linux_3.9.0_amd64.deb", job)
+        self.assertIn("208f14dec45ea03be649780507707bff3b4dd4fbe0a219928a4a07d10bca5693", job)
+        self.assertIn("releases/assets/639463349", job)
+        self.assertIn("262338614", job)
+        self.assertIn(
+            "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+            job,
+        )
+        self.assertIn("pvXbHQrIvTw-comparison-review-${{ inputs.smartsub_source_artifact_run_id }}", job)
+        self.assertIn("compose run", job)
+        self.assertIn('"outputMode":"hardcode"', job)
+        self.assertIn("source_audio_and_asr_accuracy", job)
+        self.assertIn('"not_verified"', job)
+        self.assertIn("release gate is blocked", job)
+        self.assertIn("validate_release_asset_size", job)
+        self.assertIn("No Microsoft/GPT-6 model", job)
+        self.assertNotIn("pipeline run", job)
+
+    def test_smartsub_preview_deploys_a_player_with_disclosed_release_links(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        deploy = job_body(workflow, "deploy")
+
+        self.assertIn("needs.render-smartsub-draft.result == 'success'", deploy)
+        self.assertIn("pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}", deploy)
+        self.assertIn("scripts/publish_smartsub_preview.py", deploy)
+        self.assertIn("releases/download/pvXbHQrIvTw-smartsub-draft-", deploy)
+        page = (WORKFLOW.parents[2] / "events" / "pvXbHQrIvTw" / "index.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("机器生成", page)
+        self.assertIn("未经人工核验", page)
+        script = (WORKFLOW.parents[2] / "assets" / "comparison.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("preview_unverified", script)
 
     def test_comparison_frame_review_is_cloud_only_and_captures_flagged_cues(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")

@@ -13,6 +13,8 @@
 .comparison-state { padding: 12px; border: 1px solid var(--border); border-radius: 10px; color: var(--muted); line-height: 1.55; }
 .comparison-state[data-state="blocked_model_unavailable"] { border-color: rgba(251,191,36,.5); color: #fde68a; }
 .comparison-state[data-state="complete"] { border-color: rgba(94,234,212,.5); color: var(--accent); }
+.comparison-state[data-state="preview_unverified"] { border-color: #f59e0b; color: #fde68a; font-weight: 700; }
+.preview-media-label { color: #fde68a; font-weight: 700; }
 .comparison-variant dl { display: grid; grid-template-columns: minmax(110px, .65fr) minmax(0, 1.35fr); gap: 8px 14px; }
 .comparison-variant dt { color: var(--muted); }
 .comparison-variant dd { margin: 0; overflow-wrap: anywhere; }

@@ -3,6 +3,7 @@ const $comparisonRows = document.getElementById('comparison-rows');
 const $eventTitle = document.getElementById('event-title');
 const $eventSubtitle = document.getElementById('event-subtitle');
 const $sourceLink = document.getElementById('source-link');
+const $mediaStatus = document.getElementById('pvX-media-status');
 
 function present(value) {
   return value === null || value === undefined || value === '' ? '未测 / 未提供' : String(value);
@@ -57,6 +58,8 @@ function renderVariant(variant, elementId) {
   state.dataset.state = variant.status || 'not_run';
   state.textContent = variant.status === 'blocked_model_unavailable'
     ? '未运行：尚无经确认的 Microsoft Copilot GPT-6 模型 ID、官方端点与授权凭证；未用其他模型冒充。'
+    : variant.status === 'preview_unverified'
+      ? '公开机器生成草稿预览，未经人工核验；源音/ASR、翻译、阅读速度和全片画面检查仍未通过或未验证。'
     : variant.status === 'complete'
       ? '已生成；字幕与画面审校状态见下方记录。'
       : '未运行：等待具备授权的云端处理与复核。';
@@ -64,10 +67,15 @@ function renderVariant(variant, elementId) {
 
   const videoUrl = safeHttpUrl(variant.video_url);
   if (videoUrl) {
+    const warning = document.createElement('p');
+    warning.className = 'preview-media-label';
+    warning.textContent = '机器生成 · 未经人工核验 · 非最终版本';
+    root.append(warning);
     const video = document.createElement('video');
     video.controls = true;
     video.preload = 'metadata';
     video.playsInline = true;
+    video.setAttribute('aria-label', '机器生成、未经人工核验的 pvXbHQrIvTw 双语字幕视频草稿');
     video.src = videoUrl;
     root.append(video);
   }
@@ -101,10 +109,13 @@ function renderVariant(variant, elementId) {
 
   const links = document.createElement('p');
   links.className = 'comparison-links';
+  const draftPrefix = variant.status === 'preview_unverified'
+    ? '机器生成未核验草稿 · '
+    : '';
   links.append(
-    setLink(variant.subtitles?.english, 'English SRT'),
-    setLink(variant.subtitles?.chinese, '中文 SRT'),
-    setLink(variant.subtitles?.bilingual, '中英双语 SRT'),
+    setLink(variant.subtitles?.english, `${draftPrefix}English SRT`),
+    setLink(variant.subtitles?.chinese, `${draftPrefix}中文 SRT`),
+    setLink(variant.subtitles?.bilingual, `${draftPrefix}中英双语 SRT`),
   );
   root.append(links);
   renderAudit(root, variant.audit);
@@ -137,6 +148,10 @@ function renderComparison(manifest) {
   const byId = Object.fromEntries((manifest.variants || []).map((variant) => [variant.id, variant]));
   renderVariant(byId['open-source-baseline'] || {}, 'variant-open-source');
   renderVariant(byId['microsoft-copilot-gpt6'] || {}, 'variant-microsoft');
+  const previewAvailable = manifest.smartsub_preview?.status === 'public_unverified_preview';
+  $mediaStatus.textContent = previewAvailable
+    ? '发布状态：仅公开机器生成、未经人工核验的草稿预览；正式发布门槛仍受阻。'
+    : '发布状态：视频与字幕尚未公开。';
 
   const metrics = [
     ['本机文件大小（元数据）', 'local_file_size_bytes', 'local_file_size_bytes', '云端需核对同一输入的字节数与 SHA-256'],
