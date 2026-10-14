@@ -94,6 +94,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
 
         self.assertIn("inputs.review_comparison_artifact_run_id != ''", review)
+        self.assertIn("contents: read", review)
         self.assertIn("actions: read", review)
         self.assertNotIn("contents: write", review)
         self.assertNotIn("pages: write", review)
