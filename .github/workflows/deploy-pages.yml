@@ -844,10 +844,9 @@ jobs:
           SMARTSUB_DATA_DIR: ${{ runner.temp }}/smartsub-profile
         run: |
           cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
-          test -n "$cli"
-          install -m 755 "$cli" "$RUNNER_TEMP/smartsub-compose"
+          test -n "$cli" && test -x "$cli"
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-started"
-          xvfb-run --auto-servernum "$RUNNER_TEMP/smartsub-compose" compose run \
+          xvfb-run --auto-servernum "$cli" compose run \
             --video-path "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
             --subtitle-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
             --output-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \
