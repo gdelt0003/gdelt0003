@@ -25,6 +25,31 @@
           "url": "generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt"
         }
       ]
+    },
+    {
+      "id": "pvXbHQrIvTw-smartsub-draft-38540536544",
+      "title": "PVX · SmartSub 机器生成双语草稿（未经人工核验）",
+      "event_date": "2026-10-13",
+      "publisher": "GDELT · SmartSub 3.9.0",
+      "resolution": "1920x1080",
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+      "source_url": "https://www.youtube.com/watch?v=pvXbHQrIvTw",
+      "review_status": "机器生成、未经人工核验；源音/ASR、翻译及完整画面/样式均未验证，发布质量 gate 仍阻塞。",
+      "note": "独立草稿预览；来源 SHA-256 33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171。不代表字幕准确、画面干净或已通过发布审查；保留来源音轨与画面。",
+      "subtitles": [
+        {
+          "label": "English SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en.srt"
+        },
+        {
+          "label": "简体中文 SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt"
+        },
+        {
+          "label": "中英双语 SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+        }
+      ]
     }
   ]
 }
