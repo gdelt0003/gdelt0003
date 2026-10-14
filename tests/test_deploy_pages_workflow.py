@@ -22,6 +22,14 @@ def job_body(workflow: str, name: str) -> str:
 
 
 class DeployPagesWorkflowTests(unittest.TestCase):
+    def test_pages_concurrency_serializes_deploy_without_blocking_render_jobs(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        deploy = job_body(workflow, "deploy")
+
+        self.assertNotRegex(workflow, r"(?m)^concurrency:")
+        self.assertIn("    concurrency:\n      group: pages", deploy)
+        self.assertIn("cancel-in-progress: false", deploy)
+
     def test_push_deploy_is_limited_to_published_site_content(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]

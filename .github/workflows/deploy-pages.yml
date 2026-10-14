@@ -133,10 +133,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
   build:
     if: github.event_name == 'workflow_dispatch' && inputs.regenerate_clips
@@ -1215,6 +1211,9 @@ jobs:
 
   deploy:
     needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, render-smartsub-draft]
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     if: >-
       always() &&
       (
