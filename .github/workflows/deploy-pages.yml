@@ -893,19 +893,56 @@ jobs:
         env:
           SMARTSUB_DATA_DIR: ${{ runner.temp }}/smartsub-profile
         run: |
-          cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
-          test -n "$cli" && test -x "$cli"
+          cli=""
+          for p in /usr/bin/smartsub /usr/local/bin/smartsub /opt/SmartSub/resources/automation/smartsub; do
+            if [ -f "$p" ]; then
+              cli="$p"
+              break
+            fi
+          done
+          if [ -z "$cli" ]; then
+            cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
+          fi
+          if [ -z "$cli" ]; then
+            echo "SmartSub binary not found under /usr or /opt." >&2
+            ls -la /opt >&2
+            exit 1
+          fi
+          echo "Using SmartSub cli=$cli"
+          runner_cli="$RUNNER_TEMP/smartsub-bin"
+          cp "$cli" "$runner_cli"
+          if [ ! -x "$runner_cli" ]; then
+            chmod u+x "$runner_cli"
+          fi
+          test -x "$runner_cli"
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-started"
-          xvfb-run --auto-servernum "$cli" compose run \
+          if ! xvfb-run --auto-servernum "$runner_cli" compose run \
             --video-path "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
             --subtitle-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
             --output-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \
             --config '{"outputMode":"hardcode","videoQuality":"high","encoderMode":"cpu","style":{"fontName":"Noto Sans CJK SC","fontSize":56,"primaryColor":"#FFFFFF","outlineColor":"#101010","backColor":"#000000","backOpacity":44,"bold":true,"borderStyle":3,"outline":6,"shadow":0,"alignment":2,"marginL":211,"marginR":211,"marginV":194}}' \
             --wait --json \
-            > "$RUNNER_TEMP/smartsub-output/smartsub-compose.json"
+            > "$RUNNER_TEMP/smartsub-output/smartsub-compose.log" 2>&1; then
+            cat "$RUNNER_TEMP/smartsub-output/smartsub-compose.log" >&2
+            exit 1
+          fi
+          cp "$RUNNER_TEMP/smartsub-output/smartsub-compose.log" \
+            "$RUNNER_TEMP/smartsub-output/smartsub-compose.json"
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-finished"
           test -s "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4"
         shell: bash
+
+      - name: Upload SmartSub compose diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-smartsub-compose-diagnostics-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/smartsub-output/smartsub-compose.log
+            ${{ runner.temp }}/smartsub-output/compose-started
+            ${{ runner.temp }}/smartsub-output/compose-finished
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Verify output and create an honest blocked review report
         env:
