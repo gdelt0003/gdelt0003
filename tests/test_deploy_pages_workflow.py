@@ -69,6 +69,18 @@ class DeployPagesWorkflowTests(unittest.TestCase):
             quality_gate,
         )
 
+    def test_gaggle_baseline_is_manual_runner_artifact_only(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        process = job_body(workflow, "process-gaggle-open-source")
+        deploy = job_body(workflow, "deploy")
+
+        self.assertIn("inputs.process_gaggle_open_source", process)
+        self.assertIn("runs-on: ubuntu-latest", process)
+        self.assertIn("scripts/download_authorized_source.py", process)
+        self.assertIn("actions/upload-artifact@v4", process)
+        self.assertNotIn("actions/deploy-pages", process)
+        self.assertNotIn("inputs.process_gaggle_open_source", deploy)
+
 
 if __name__ == "__main__":
     unittest.main()

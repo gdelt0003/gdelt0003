@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "event": {
+    "event_id": null,
+    "identity_status": "incomplete_unverified",
+    "title": "President Trump Gaggles with Press Upon Departure from the White House",
+    "date_display": "2026-10-13（用户提供文件名元数据，事件日期未独立核实）",
+    "time_local": null,
+    "location": "White House（标题所述；具体地点未核实）",
+    "event_type": "press gaggle",
+    "participants": [
+      "President Trump（标题信息，身份未独立核实）"
+    ],
+    "source_filename": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026 [pvXbHQrIvTw].mp4",
+    "source_file_size_bytes": 262338614,
+    "source_file_size_provenance": "用户提供的 metadata-only 检查；本页实现期间未访问或处理本机视频内容",
+    "official_anchor_url": null,
+    "selected_source_url": null,
+    "source_match_status": "not_verified",
+    "reuse_rights_status": "not_confirmed",
+    "same_event_match_confirmed": false,
+    "source_reuse_rights_confirmed": false,
+    "identity_evidence_url": null,
+    "source_match_evidence_url": null,
+    "rights_evidence_url": null
+  },
+  "comparison_policy": {
+    "same_source_required": true,
+    "same_review_threshold_required": true,
+    "publish_only_after_independent_review": true,
+    "no_public_figure_voice_cloning_or_synthetic_audio": true
+  },
+  "variants": [
+    {
+      "id": "microsoft-copilot-gpt6-request",
+      "name": "A · Microsoft Copilot / GPT-6（请求方案）",
+      "status": "not_configured",
+      "status_label": "未运行：endpoint、真实模型 ID 与授权凭证未配置",
+      "description": "仅为用户请求的对照标签；不代表 Microsoft 已提供或本项目已接入 GPT-6。不得使用其他模型冒充。",
+      "provider": "Microsoft（未连接）",
+      "asr_model": null,
+      "translation_model": null,
+      "model_id": null,
+      "provider_endpoint_configured": false,
+      "credentials_configured": false,
+      "pipeline_version": null,
+      "assets": {
+        "video_url": null,
+        "subtitle_url": null,
+        "audit_url": null
+      },
+      "quality": {
+        "asr_accuracy": null,
+        "translation_fidelity": null,
+        "cue_synchronization": null,
+        "rendered_frame_review": null
+      }
+    },
+    {
+      "id": "open-whisper-m2m100",
+      "name": "B · 可复现开源基线",
+      "status": "not_run",
+      "status_label": "未运行：等待来源授权及 GitHub-hosted runner",
+      "description": "Whisper large-v3-turbo 英文 ASR + facebook/m2m100_1.2B 简体中文翻译；复用仓库字幕刻录管线，不接入 SmartSub 桌面应用。",
+      "provider": "开源模型（GitHub-hosted runner 上处理）",
+      "asr_model": "large-v3-turbo",
+      "translation_model": "facebook/m2m100_1.2B",
+      "pipeline_version": null,
+      "assets": {
+        "video_url": null,
+        "subtitle_url": null,
+        "audit_url": null
+      },
+      "quality": {
+        "asr_accuracy": null,
+        "translation_fidelity": null,
+        "cue_synchronization": null,
+        "rendered_frame_review": null
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "id": "asr_accuracy",
+      "label": "英文 ASR 准确性（源音频人工复核）",
+      "variants": {
+        "copilot": { "display": "未运行 / 未验证", "value": null },
+        "open_source": { "display": "未运行 / 未验证", "value": null }
+      }
+    },
+    {
+      "id": "translation_fidelity",
+      "label": "简体中文翻译忠实度（人工复核）",
+      "variants": {
+        "copilot": { "display": "未运行 / 未验证", "value": null },
+        "open_source": { "display": "未运行 / 未验证", "value": null }
+      }
+    },
+    {
+      "id": "cue_synchronization",
+      "label": "字幕时间同步（音频/实际视频检查）",
+      "variants": {
+        "copilot": { "display": "未运行 / 未验证", "value": null },
+        "open_source": { "display": "未运行 / 未验证", "value": null }
+      }
+    },
+    {
+      "id": "rendered_frame_review",
+      "label": "刻录帧质量（runner 实际帧检查）",
+      "variants": {
+        "copilot": { "display": "未生成 / 未验证", "value": null },
+        "open_source": { "display": "未生成 / 未验证", "value": null }
+      }
+    }
+  ],
+  "release_checks": [
+    { "id": "event_identity", "label": "精确事件身份 / 官方锚点", "status": "未核实", "evidence_url": null },
+    { "id": "source_match", "label": "实际视频与事件匹配", "status": "未核实", "evidence_url": null },
+    { "id": "reuse_rights", "label": "素材复用权利", "status": "未确认", "evidence_url": null },
+    { "id": "source_audio_asr", "label": "英文 ASR 对照原始音频", "status": "待审", "evidence_url": null },
+    { "id": "chinese_translation", "label": "中文翻译审校", "status": "待审", "evidence_url": null },
+    { "id": "rendered_frames", "label": "实际刻录帧与字幕检查", "status": "待审", "evidence_url": null },
+    { "id": "operation_audit", "label": "逐操作处理审计", "status": "尚无运行记录", "evidence_url": null }
+  ],
+  "smartsub_note": "SmartSub 未收录于本仓库；本页仅采用本仓库已有的 Whisper + M2M100 处理能力，不声称集成或实测 SmartSub。"
+}

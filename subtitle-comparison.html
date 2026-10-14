@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双方案字幕对照 | gdelt0003</title>
+    <meta name="description" content="同一事件的 Microsoft Copilot/GPT-6 请求方案与可复现开源基线；展示真实产物和未验证状态。" />
+    <link rel="stylesheet" href="assets/style.css?v=subtitle-comparison-1" />
+  </head>
+  <body>
+    <main class="page comparison-page">
+      <nav class="site-nav" aria-label="主要导航">
+        <a class="site-brand" href="index.html">GDELT · 事件视频</a>
+        <div class="site-nav-links"><a href="index.html">返回事件视频资料</a></div>
+      </nav>
+      <header class="hero">
+        <p class="eyebrow">SAME SOURCE · TWO PIPELINES</p>
+        <h1>双方案字幕对照</h1>
+        <p class="subtitle">同一授权源视频、同一发布审校门槛；不以模型标签代替实测结果。</p>
+        <p class="meta" id="eventIdentity" role="status">正在读取事件记录…</p>
+      </header>
+      <section class="panel comparison-panel" aria-labelledby="variantsTitle">
+        <h2 id="variantsTitle">处理方案</h2>
+        <div id="comparisonVariants" class="comparison-variants" aria-live="polite"></div>
+      </section>
+      <section class="panel comparison-panel" aria-labelledby="metricsTitle">
+        <h2 id="metricsTitle">同指标结果</h2>
+        <p class="meta">空值表示没有可核实测量；未审校的模型输出不会被展示为准确率或质量分数。</p>
+        <div class="comparison-table-wrap">
+          <table class="comparison-table">
+            <thead><tr><th scope="col">指标</th><th scope="col">Copilot / GPT-6 请求方案</th><th scope="col">开源基线</th></tr></thead>
+            <tbody id="comparisonMetrics"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel comparison-panel" aria-labelledby="releaseTitle">
+        <h2 id="releaseTitle">来源、审计与发布状态</h2>
+        <ul id="comparisonReleaseStatus" class="comparison-checks"></ul>
+        <p class="comparison-warning">当前是占位对照页，不含转录、译文、视频或质量分数。GPT-6 的具体模型 ID、Microsoft endpoint 和凭证未配置；不得把其他模型结果标作 GPT-6。只有在授权 GitHub-hosted runner 上完成处理，并以独立 HTTPS 证据复核事件匹配、源音频、中文翻译和实际渲染帧后，才可发布产物。</p>
+      </section>
+    </main>
+    <script src="assets/comparison.js?v=subtitle-comparison-1"></script>
+  </body>
+</html>

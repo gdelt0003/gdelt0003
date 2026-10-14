@@ -13,6 +13,7 @@ from scripts.process_full_video import (
     read_srt,
     srt_text,
     timestamp,
+    validate_output_prefix,
     vtt_from_bilingual_srt,
     verify_cues,
     write_ass,
@@ -20,6 +21,12 @@ from scripts.process_full_video import (
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
+    def test_output_prefix_is_safe_and_filename_compatible(self):
+        self.assertEqual(validate_output_prefix("event-open-source"), "event-open-source")
+        for value in ("../escape", "has space", "", "-starts-with-dash"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                validate_output_prefix(value)
+
     def test_timestamp_formats_hours_and_milliseconds(self):
         self.assertEqual(timestamp(3661.234, decimal=","), "01:01:01,234")
         self.assertEqual(timestamp(3661.234, decimal="."), "01:01:01.234")

@@ -651,6 +651,14 @@ def probe_video(path: Path) -> tuple[float, int, int]:
     )
 
 
+def validate_output_prefix(value: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,99}", value):
+        raise ValueError(
+            "Output prefix must be 1-100 letters, digits, dots, underscores, or hyphens."
+        )
+    return value
+
+
 def _parse_timestamp(value: str) -> float:
     hours, minutes, seconds = value.split(":")
     return int(hours) * 3600 + int(minutes) * 60 + float(seconds)
@@ -732,6 +740,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--output-prefix",
+        type=validate_output_prefix,
+        default="whitehouse-oW-PQlgw1wo",
+        help="Filename prefix for generated video, subtitles, and manifest.",
+    )
+    parser.add_argument("--event-id", help="Verified event key to record in the manifest.")
     parser.add_argument(
         "--reuse-subtitles",
         type=Path,
@@ -903,7 +918,7 @@ def main() -> None:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
     cues = reflow_cues(cues)
 
-    prefix = "whitehouse-oW-PQlgw1wo"
+    prefix = args.output_prefix
     english_srt = output_dir / f"{prefix}.en.srt"
     chinese_srt = output_dir / f"{prefix}.zh-Hans.srt"
     bilingual_srt = output_dir / f"{prefix}.en-zh.srt"
@@ -972,7 +987,9 @@ def main() -> None:
     )
 
     manifest = {
+        "event_id": args.event_id,
         "source_video": source.name,
+        "output_prefix": prefix,
         "duration_seconds": round(duration, 3),
         "resolution": f"{width}x{height}",
         "asr_model": None if args.reuse_subtitles else ASR_MODEL,

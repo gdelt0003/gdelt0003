@@ -66,6 +66,11 @@ on:
         type: boolean
         required: false
         default: false
+      process_gaggle_open_source:
+        description: Process the reviewed gaggle source with Whisper and M2M100 on a GitHub-hosted runner; artifact only, no Pages deployment
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -520,6 +525,72 @@ jobs:
           name: full-video-ten-model-translation-review
           path: ${{ runner.temp }}/translation-review
           if-no-files-found: error
+          retention-days: 30
+
+  process-gaggle-open-source:
+    if: github.event_name == 'workflow_dispatch' && inputs.process_gaggle_open_source
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout reviewed event manifest
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg, CJK fonts, and open-source models
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece
+          ffmpeg -version
+          ffprobe -version
+
+      - name: Download the reviewed source to runner temporary storage
+        run: >-
+          python scripts/download_authorized_source.py
+          --manifest outputs/president-trump-gaggle-oct-13-2026/comparison.json
+          --output "$RUNNER_TEMP/gaggle-input/source.mp4"
+
+      - name: Require at least 1920x1080 source video
+        run: |
+          dimensions="$(ffprobe -v error -select_streams v:0 \
+            -show_entries stream=width,height -of csv=s=x:p=0 \
+            "$RUNNER_TEMP/gaggle-input/source.mp4")"
+          IFS=x read -r width height <<< "$dimensions"
+          if (( width < 1920 || height < 1080 )); then
+            echo "Source must be at least 1920x1080; refusing to upscale." >&2
+            exit 1
+          fi
+
+      - name: Transcribe, translate, and burn the open-source variant
+        run: |
+          event_id="$(python -c "import json; print(json.load(open('outputs/president-trump-gaggle-oct-13-2026/comparison.json', encoding='utf-8'))['event']['event_id'])")"
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/gaggle-input/source.mp4" \
+            --output-dir "$RUNNER_TEMP/gaggle-open-source-output" \
+            --output-prefix "gaggle-open-source" \
+            --event-id "$event_id"
+
+      - name: Validate per-operation processing audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/gaggle-open-source-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/gaggle-open-source-output/manifest.json"
+
+      - name: Preserve generated media, subtitles, manifest, and operation audit as a review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gaggle-open-source-review-${{ github.run_id }}
+          path: ${{ runner.temp }}/gaggle-open-source-output
+          if-no-files-found: ignore
           retention-days: 30
 
   main_pages_quality_gate:
