@@ -892,7 +892,7 @@ jobs:
       - name: Burn the exact-source subtitles with SmartSub
         env:
           SMARTSUB_DATA_DIR: ${{ runner.temp }}/smartsub-profile
-          CHROME_DEVEL_SANDBOX: /opt/SmartSub/chrome-sandbox
+          CHROME_DEVEL_SANDBOX: ${{ runner.temp }}/SmartSub/chrome-sandbox
         run: |
           log="$RUNNER_TEMP/smartsub-output/smartsub-compose.log"
           : > "$log"
@@ -928,6 +928,8 @@ jobs:
             chmod u+x "$runner_cli"
           fi
           test -x "$runner_cli"
+          sudo install --owner=root --group=root --mode=4755 \
+            /opt/SmartSub/chrome-sandbox "$CHROME_DEVEL_SANDBOX"
           sandbox_owner_mode="$(stat -c '%u:%a' "$CHROME_DEVEL_SANDBOX")"
           if [ "$sandbox_owner_mode" != "0:4755" ]; then
             echo "SmartSub Chromium sandbox must be root-owned with mode 4755; got $sandbox_owner_mode." \

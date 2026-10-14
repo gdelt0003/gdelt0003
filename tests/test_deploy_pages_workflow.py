@@ -133,12 +133,18 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )
         self.assertIn("pvXbHQrIvTw-comparison-review-${{ inputs.smartsub_source_artifact_run_id }}", job)
         self.assertIn("compose run", job)
-        self.assertIn("CHROME_DEVEL_SANDBOX: /opt/SmartSub/chrome-sandbox", job)
+        self.assertIn(
+            "CHROME_DEVEL_SANDBOX: ${{ runner.temp }}/SmartSub/chrome-sandbox",
+            job,
+        )
         self.assertIn('cli="$(readlink -f "$cli")"', job)
         self.assertIn('/opt/SmartSub/*) relative_cli="${cli#/opt/SmartSub/}" ;;', job)
         self.assertIn("cp -a /opt/SmartSub \"$runner_root\"", job)
         self.assertIn('runner_cli="$runner_root/$relative_cli"', job)
         self.assertIn(': > "$log"', job)
+        self.assertIn(
+            "sudo install --owner=root --group=root --mode=4755", job
+        )
         self.assertIn("stat -c '%u:%a' \"$CHROME_DEVEL_SANDBOX\"", job)
         self.assertIn('"0:4755"', job)
         self.assertIn('chmod u+x "$runner_cli"', job)
