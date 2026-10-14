@@ -498,7 +498,7 @@ jobs:
             --confirm-same-event-match \
             --rights-evidence-url "$RIGHTS_URL" \
             --output "$RUNNER_TEMP/comparison-event-metadata.json"
-          gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639450274 \
+          gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
             > "$RUNNER_TEMP/comparison-input/asset-metadata.json"
           python - "$RUNNER_TEMP/comparison-input/asset-metadata.json" <<'PY'
           import json
@@ -521,7 +521,7 @@ jobs:
           curl --fail --location \
             --header "Authorization: Bearer $GH_TOKEN" \
             --header "Accept: application/octet-stream" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/639450274" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/639463349" \
             --output "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
           test "$(stat -c %s "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4")" = "262338614"
           echo "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171  $RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" \

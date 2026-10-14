@@ -76,7 +76,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn("inputs.process_comparison_video", job)
         self.assertIn("RIGHTS_CONFIRMED", job)
         self.assertIn("SAME_EVENT_CONFIRMED", job)
-        self.assertIn("releases/assets/639450274", job)
+        self.assertIn("releases/assets/639463349", job)
         self.assertIn("262338614", job)
         self.assertIn(
             "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
