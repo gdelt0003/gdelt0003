@@ -74,6 +74,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         job = job_body(workflow, "process-comparison-video")
 
         self.assertIn("inputs.process_comparison_video", job)
+        self.assertIn("contents: write", job)
         self.assertIn("RIGHTS_CONFIRMED", job)
         self.assertIn("SAME_EVENT_CONFIRMED", job)
         self.assertIn("releases/assets/639463349", job)
