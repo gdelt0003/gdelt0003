@@ -12,12 +12,14 @@ class SmartSubPreviewPublicationTests(unittest.TestCase):
             root = Path(directory)
             manifest_path = root / "manifest.json"
             comparison_path = root / "comparison.json"
+            main_videos_path = root / "main-videos.json"
             manifest_path.write_text(
                 json.dumps(
                     {
                         "input_size_bytes": SOURCE_SIZE,
                         "input_sha256": SOURCE_SHA256,
                         "source_match_status": "operator_attested_exact_event",
+                        "workflow_run_id": 12345,
                         "render": {
                             "application": "SmartSub",
                             "version": "3.9.0",
@@ -33,8 +35,24 @@ class SmartSubPreviewPublicationTests(unittest.TestCase):
             comparison_path.write_text(
                 json.dumps(
                     {
-                        "event": {},
+                        "event": {
+                            "source_url": "https://www.youtube.com/watch?v=pvXbHQrIvTw",
+                        },
                         "variants": [{"id": "open-source-baseline"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            main_videos_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "videos": [
+                            {
+                                "id": "whitehouse-oW-PQlgw1wo",
+                                "video_url": "https://example.test/oW.mp4",
+                            }
+                        ],
                     }
                 ),
                 encoding="utf-8",
@@ -43,6 +61,7 @@ class SmartSubPreviewPublicationTests(unittest.TestCase):
             publish(
                 manifest_path,
                 comparison_path,
+                main_videos_path,
                 "https://github.com/gdelt0003/gdelt0003/releases/download/draft",
             )
 
@@ -66,6 +85,22 @@ class SmartSubPreviewPublicationTests(unittest.TestCase):
                 "SmartSub 3.9.0",
                 comparison["variants"][0]["render"],
             )
+            catalog = json.loads(main_videos_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                [video["id"] for video in catalog["videos"]],
+                ["whitehouse-oW-PQlgw1wo", "pvXbHQrIvTw-smartsub-draft-12345"],
+            )
+            preview_video = catalog["videos"][1]
+            self.assertIn("未经人工核验", preview_video["title"])
+            self.assertEqual(
+                preview_video["video_url"],
+                preview["video_url"],
+            )
+            self.assertEqual(
+                [subtitle["url"] for subtitle in preview_video["subtitles"]],
+                list(preview["subtitles"].values()),
+            )
+            self.assertIn("未验证", preview_video["review_status"])
 
     def test_rejects_a_manifest_for_a_different_source(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -88,7 +123,12 @@ class SmartSubPreviewPublicationTests(unittest.TestCase):
             )
 
             with self.assertRaisesRegex(ValueError, "does not match"):
-                publish(manifest_path, comparison_path, "https://example.com/release")
+                publish(
+                    manifest_path,
+                    comparison_path,
+                    root / "main-videos.json",
+                    "https://example.com/release",
+                )
 
 
 if __name__ == "__main__":
