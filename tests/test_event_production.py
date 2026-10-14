@@ -1,7 +1,14 @@
+import json
+import subprocess
+import sys
+import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.prepare_event_production import prepare_metadata
 from scripts.register_event_release import publication_record
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class PrepareEventProductionTests(unittest.TestCase):
@@ -69,6 +76,41 @@ class PrepareEventProductionTests(unittest.TestCase):
                 source_url=self.identity["official_video_url"],
                 **{**self.evidence, "source_match_evidence_url": "http://example.com"},
             )
+
+    def test_cli_runs_from_repository_root_with_recorded_rights_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            identity_path = Path(directory) / "identity.json"
+            output_path = Path(directory) / "metadata.json"
+            identity_path.write_text(
+                json.dumps(self.identity),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "prepare_event_production.py"),
+                    "--identity-json",
+                    str(identity_path),
+                    "--source-url",
+                    self.identity["official_video_url"],
+                    "--identity-evidence-url",
+                    self.evidence["identity_evidence_url"],
+                    "--source-match-evidence-url",
+                    self.evidence["source_match_evidence_url"],
+                    "--confirm-same-event-match",
+                    "--rights-evidence-url",
+                    "https://example.com/rights",
+                    "--output",
+                    str(output_path),
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(output_path.is_file())
 
 
 class RegisterEventReleaseTests(unittest.TestCase):

@@ -10,7 +10,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 from typing import Any
 
-from scripts.event_identity import build_event_id
+if __package__:
+    from .event_identity import build_event_id
+else:
+    from event_identity import build_event_id
 
 
 def https_url(value: Any, label: str) -> str:
