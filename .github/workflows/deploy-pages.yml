@@ -22,6 +22,11 @@ on:
         type: boolean
         required: false
         default: false
+      diarize_speakers:
+        description: Use pinned AutoSubs/Sortformer to color generated captions by speaker on the hosted runner
+        type: boolean
+        required: false
+        default: false
       download_full_source:
         description: Download the full source video and attach it to a GitHub Release
         type: boolean
@@ -144,7 +149,9 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' && inputs.regenerate_clips
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.regenerate_clips || inputs.diarize_speakers)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -166,7 +173,32 @@ jobs:
       - name: Install ffmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install --yes ffmpeg
+          packages=(ffmpeg)
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            packages+=(xvfb)
+          fi
+          sudo apt-get install --yes "${packages[@]}"
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+
+      - name: Install and verify pinned AutoSubs CLI
+        if: inputs.diarize_speakers
+        run: |
+          curl --fail --location \
+            "https://github.com/tmoroney/auto-subs/releases/download/v3.11.0/AutoSubs-linux-x86_64.deb" \
+            --output "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          echo "372135c9169f36af23f67588f841d447a35d1f354c5fdc915ba818d9a867d9f4  $RUNNER_TEMP/AutoSubs-linux-x86_64.deb" \
+            | sha256sum --check
+          sudo apt-get install --yes "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          test -x /usr/bin/autosubs
+          /usr/bin/autosubs --help
+
+      - name: Cache pinned AutoSubs Sortformer model
+        if: inputs.diarize_speakers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/com.autosubs/models
+          key: ${{ runner.os }}-autosubs-v3.11.0-sortformer-4d2a8bc71f5c896ec40faa59732e6716295edaf2
 
       - name: Verify ffmpeg
         run: |
@@ -174,7 +206,25 @@ jobs:
           ffprobe -version
 
       - name: Download and cut White House highlight clips
-        run: python scripts/generate_default_video_batch.py
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+        run: |
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            xvfb-run --auto-servernum \
+              python scripts/generate_default_video_batch.py --diarize
+          else
+            python scripts/generate_default_video_batch.py
+          fi
+
+      - name: Preserve generated clips for this run's Pages deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: |
+            generated/default_batch.json
+            generated/clips/*
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Save generated clips and manifest to the repository
         run: |
@@ -1267,6 +1317,13 @@ jobs:
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
+          (
+            (inputs.regenerate_clips || inputs.diarize_speakers) &&
+            needs.build.result == 'success'
+          )
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
           inputs.process_smartsub_draft &&
           inputs.publish_smartsub_draft &&
           needs.render-smartsub-draft.result == 'success'
@@ -1298,6 +1355,13 @@ jobs:
     steps:
       - name: Checkout generated site files
         uses: actions/checkout@v4
+
+      - name: Download generated clips for this run's Pages deployment
+        if: github.event_name == 'workflow_dispatch' && (inputs.regenerate_clips || inputs.diarize_speakers) && needs.build.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: generated
 
       - name: Download generated full-video subtitle files
         if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
