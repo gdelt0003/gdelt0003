@@ -102,36 +102,11 @@ on:
         type: string
         required: false
         default: https://www.youtube.com/watch?v=pvXbHQrIvTw
-      comparison_clean_frames_confirmed:
-        description: I reviewed the built draft against source frames and confirmed its frame/graphics disclosure
-        type: boolean
-        required: false
-        default: false
-      comparison_clean_frames_evidence_url:
-        description: HTTPS evidence for clean-frame and embedded-graphics review
+      comparison_review_evidence_json:
+        description: Public-only JSON review record with clean_frames, english_asr, chinese_translation objects containing confirmed and HTTPS url
         type: string
         required: false
-        default: ''
-      comparison_english_asr_confirmed:
-        description: I reviewed the built draft's English captions against the exact source audio
-        type: boolean
-        required: false
-        default: false
-      comparison_english_asr_evidence_url:
-        description: HTTPS evidence for English ASR review against source audio
-        type: string
-        required: false
-        default: ''
-      comparison_chinese_translation_confirmed:
-        description: I reviewed the built draft's Chinese translation against verified English and source context
-        type: boolean
-        required: false
-        default: false
-      comparison_chinese_translation_evidence_url:
-        description: HTTPS evidence for Chinese translation review
-        type: string
-        required: false
-        default: ''
+        default: '{}'
       restyle_full_video:
         description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
         type: boolean
@@ -733,12 +708,7 @@ jobs:
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
           PUBLISH_PUBLICLY: ${{ inputs.publish_smartsub_draft }}
-          CLEAN_FRAMES_CONFIRMED: ${{ inputs.comparison_clean_frames_confirmed }}
-          CLEAN_FRAMES_URL: ${{ inputs.comparison_clean_frames_evidence_url }}
-          ENGLISH_ASR_CONFIRMED: ${{ inputs.comparison_english_asr_confirmed }}
-          ENGLISH_ASR_URL: ${{ inputs.comparison_english_asr_evidence_url }}
-          CHINESE_TRANSLATION_CONFIRMED: ${{ inputs.comparison_chinese_translation_confirmed }}
-          CHINESE_TRANSLATION_URL: ${{ inputs.comparison_chinese_translation_evidence_url }}
+          COMPARISON_REVIEW_EVIDENCE_JSON: ${{ inputs.comparison_review_evidence_json }}
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$RIGHTS_CONFIRMED" != "true" ] || [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
@@ -746,29 +716,44 @@ jobs:
             exit 1
           fi
           python - <<'PY'
+          import json
           import os
           from urllib.parse import urlparse
 
           evidence_names = ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL")
+          try:
+              review = json.loads(os.environ.get("COMPARISON_REVIEW_EVIDENCE_JSON") or "{}")
+          except json.JSONDecodeError as error:
+              raise SystemExit("Review evidence must be valid JSON.") from error
+          if not isinstance(review, dict):
+              raise SystemExit("Review evidence must be a JSON object.")
+          review_sections = {
+              name: review.get(name)
+              for name in ("clean_frames", "english_asr", "chinese_translation")
+          }
           if os.environ["PUBLISH_PUBLICLY"] == "true":
-              confirmations = (
-                  "CLEAN_FRAMES_CONFIRMED",
-                  "ENGLISH_ASR_CONFIRMED",
-                  "CHINESE_TRANSLATION_CONFIRMED",
-              )
-              if any(os.environ[name] != "true" for name in confirmations):
+              if any(not isinstance(item, dict) for item in review_sections.values()):
+                  raise SystemExit("Each review evidence entry must be a JSON object.")
+              confirmations = {
+                  "CLEAN_FRAMES_CONFIRMED": review_sections["clean_frames"].get("confirmed") is True,
+                  "ENGLISH_ASR_CONFIRMED": review_sections["english_asr"].get("confirmed") is True,
+                  "CHINESE_TRANSLATION_CONFIRMED": review_sections["chinese_translation"].get("confirmed") is True,
+              }
+              if not all(confirmations.values()):
                   raise SystemExit("All five evidence reviews must be explicitly confirmed before public release.")
-              evidence_names += (
-                  "CLEAN_FRAMES_URL",
-                  "ENGLISH_ASR_URL",
-                  "CHINESE_TRANSLATION_URL",
+              evidence_names += tuple(
+                  review_sections[name].get("url", "")
+                  for name in ("clean_frames", "english_asr", "chinese_translation")
               )
+          evidence_urls = [os.environ[name] for name in ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL")]
+          if os.environ["PUBLISH_PUBLICLY"] == "true":
+              evidence_urls.extend(evidence_names[3:])
           parsed_urls = []
-          for name in evidence_names:
-              parsed = urlparse(os.environ[name])
+          for url in evidence_urls:
+              parsed = urlparse(url)
               if parsed.scheme != "https" or not parsed.netloc:
-                  raise SystemExit(f"{name} must be an HTTPS URL.")
-              parsed_urls.append(os.environ[name])
+                  raise SystemExit("Every evidence URL must use HTTPS and include a host.")
+              parsed_urls.append(url)
           if os.environ["PUBLISH_PUBLICLY"] == "true" and len(set(parsed_urls)) != 5:
               raise SystemExit("Public release requires five distinct HTTPS evidence URLs.")
           PY
@@ -879,9 +864,7 @@ jobs:
           RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
-          CLEAN_FRAMES_URL: ${{ inputs.comparison_clean_frames_evidence_url }}
-          ENGLISH_ASR_URL: ${{ inputs.comparison_english_asr_evidence_url }}
-          CHINESE_TRANSLATION_URL: ${{ inputs.comparison_chinese_translation_evidence_url }}
+          COMPARISON_REVIEW_EVIDENCE_JSON: ${{ inputs.comparison_review_evidence_json }}
         run: |
           set -euo pipefail
           source="$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
@@ -925,6 +908,10 @@ jobs:
               raise SystemExit("Exact source SHA-256 mismatch after render.")
           reuse = json.loads((output_dir.parent / "smartsub-reuse/comparison-output/manifest.json").read_text())
           style_report = json.loads((output_dir / "style-report.json").read_text())
+          review_evidence = json.loads(os.environ.get("COMPARISON_REVIEW_EVIDENCE_JSON") or "{}")
+          def evidence_url(name):
+              item = review_evidence.get(name, {})
+              return item.get("url") if isinstance(item, dict) and item.get("url") else None
           started = int((output_dir / "compose-started").read_text())
           finished = int((output_dir / "compose-finished").read_text())
           if finished < started:
@@ -941,9 +928,9 @@ jobs:
               "source_event_evidence": os.environ["IDENTITY_URL"],
               "source_match_evidence": os.environ["SOURCE_MATCH_URL"],
               "rights_evidence": os.environ["RIGHTS_URL"],
-              "clean_frame_review_evidence": os.environ["CLEAN_FRAMES_URL"] or None,
-              "english_asr_review_evidence": os.environ["ENGLISH_ASR_URL"] or None,
-              "chinese_translation_review_evidence": os.environ["CHINESE_TRANSLATION_URL"] or None,
+              "clean_frame_review_evidence": evidence_url("clean_frames"),
+              "english_asr_review_evidence": evidence_url("english_asr"),
+              "chinese_translation_review_evidence": evidence_url("chinese_translation"),
               "subtitle_source_run_id": source_run_id,
               "source_manifest_checks": reuse["quality_checks"],
               "prior_subtitle_models": {
