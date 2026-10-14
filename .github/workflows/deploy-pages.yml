@@ -909,8 +909,18 @@ jobs:
             exit 1
           fi
           echo "Using SmartSub cli=$cli"
-          runner_cli="$RUNNER_TEMP/smartsub-bin"
-          cp "$cli" "$runner_cli"
+          case "$cli" in
+            */resources/automation/smartsub)
+              smartsub_root="${cli%/resources/automation/smartsub}"
+              ;;
+            *)
+              echo "Unexpected SmartSub installation path: $cli" >&2
+              exit 1
+              ;;
+          esac
+          runner_root="$RUNNER_TEMP/SmartSub"
+          cp -a "$smartsub_root" "$runner_root"
+          runner_cli="$runner_root/resources/automation/smartsub"
           if [ ! -x "$runner_cli" ]; then
             chmod u+x "$runner_cli"
           fi
