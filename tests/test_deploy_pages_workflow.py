@@ -114,6 +114,9 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn('"source_audio_and_asr_accuracy"', review_script)
         self.assertIn('"translation_accuracy"', review_script)
         self.assertIn('"readability_and_visual_style"', review_script)
+        self.assertIn("--sampled-review-json", review_script)
+        self.assertIn("review_comparison_sampled_review_json", workflow)
+        self.assertIn("--sampled-review-json", review)
         self.assertIn("pvXbHQrIvTw-frame-review-", review)
         self.assertNotIn("needs.review-comparison-artifact", job_body(workflow, "deploy"))
         upload = review.split("- name: Upload frame-only visual review artifact", 1)[1]

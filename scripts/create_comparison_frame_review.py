@@ -225,7 +225,78 @@ def extract_frames(
     return frames
 
 
-def write_review_html(path: Path, source_run_id: str, frames: list[dict]) -> None:
+def load_sampled_review(
+    path: Path | None, frames: list[dict]
+) -> dict:
+    if path is None:
+        return {
+            "status": "not_started",
+            "checked_frames": [],
+            "findings": [],
+        }
+
+    review = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(review, dict):
+        raise ValueError("Sample review JSON must be an object.")
+    if set(review) != {"reviewer", "frames", "findings"}:
+        raise ValueError(
+            "Sample review JSON must contain only reviewer, frames, and findings."
+        )
+    reviewer = review["reviewer"]
+    frame_names = review["frames"]
+    findings = review["findings"]
+    if not isinstance(reviewer, str) or not reviewer.strip():
+        raise ValueError("Sample review reviewer must be a non-empty string.")
+    if (
+        not isinstance(frame_names, list)
+        or not frame_names
+        or any(not isinstance(name, str) for name in frame_names)
+        or len(frame_names) != len(set(frame_names))
+    ):
+        raise ValueError("Sample review frames must be a non-empty unique string list.")
+    if (
+        not isinstance(findings, list)
+        or not findings
+        or any(not isinstance(item, str) or not item.strip() for item in findings)
+    ):
+        raise ValueError("Sample review findings must be a non-empty string list.")
+
+    frames_by_name = {frame["file"]: frame for frame in frames}
+    missing = set(frame_names) - set(frames_by_name)
+    if missing:
+        raise ValueError(
+            f"Sample review refers to frames absent from this artifact: {sorted(missing)}"
+        )
+    checked_frames = []
+    for name in frame_names:
+        frame = frames_by_name[name]
+        frame["review_status"] = "sampled_reviewed"
+        checked_frames.append(
+            {
+                "file": name,
+                "timestamp_seconds": frame["timestamp_seconds"],
+                "cue_index": frame["cue_index"],
+            }
+        )
+    return {
+        "status": "partial",
+        "reviewer": reviewer.strip(),
+        "checked_frames": checked_frames,
+        "findings": [item.strip() for item in findings],
+        "limitations": [
+            "Only the listed frames were manually inspected.",
+            "No full-video lower-third or scene-occlusion review was completed.",
+            "This sample does not verify source-audio transcription or translation accuracy.",
+        ],
+    }
+
+
+def write_review_html(
+    path: Path,
+    source_run_id: str,
+    frames: list[dict],
+    sampled_review: dict,
+) -> None:
     rows = "\n".join(
         (
             f"<figure><img src=\"frames/{html.escape(frame['file'])}\" "
@@ -245,6 +316,21 @@ def write_review_html(path: Path, source_run_id: str, frames: list[dict]) -> Non
         )
         for frame in frames
     )
+    sampled_html = ""
+    if sampled_review["status"] == "partial":
+        findings = "".join(
+            f"<li>{html.escape(finding)}</li>"
+            for finding in sampled_review["findings"]
+        )
+        checked = ", ".join(
+            html.escape(frame["file"])
+            for frame in sampled_review["checked_frames"]
+        )
+        sampled_html = (
+            "<h2>Limited sampled review</h2>"
+            f"<p>Reviewer: {html.escape(sampled_review['reviewer'])}</p>"
+            f"<p>Frames checked: {checked}</p><ul>{findings}</ul>"
+        )
     path.write_text(
         "<!doctype html><meta charset=\"utf-8\">"
         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
@@ -258,7 +344,7 @@ def write_review_html(path: Path, source_run_id: str, frames: list[dict]) -> Non
         "translation accuracy, and rendered frames still require human review.</p>"
         f"<p>Source run {html.escape(source_run_id)}; {len(frames)} "
         "frames include representative times and every reading-speed-flagged cue.</p>"
-        f"<main>{rows}</main>\n",
+        f"{sampled_html}<main>{rows}</main>\n",
         encoding="utf-8",
     )
 
@@ -269,6 +355,7 @@ def create_review(
     vtt_path: Path,
     output_dir: Path,
     source_run_id: str,
+    sampled_review_path: Path | None = None,
 ) -> dict:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     validate_manifest(manifest)
@@ -282,6 +369,7 @@ def create_review(
         output_dir / "frames",
         duration,
     )
+    sampled_review = load_sampled_review(sampled_review_path, frames)
     report = {
         "release_status": "blocked",
         "blocking_reason": (
@@ -331,8 +419,10 @@ def create_review(
                 "english_over_20_cps_cues": sorted(flags["english_over_20_cps"]),
                 "chinese_over_10_cps_cues": sorted(flags["chinese_over_10_cps"]),
                 "frame_review": "not_verified",
+                "sampled_review_status": sampled_review["status"],
             },
         },
+        "sampled_visual_review": sampled_review,
         "frame_count": len(frames),
         "frames": frames,
     }
@@ -340,7 +430,12 @@ def create_review(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    write_review_html(output_dir / "frame-review.html", source_run_id, frames)
+    write_review_html(
+        output_dir / "frame-review.html",
+        source_run_id,
+        frames,
+        sampled_review,
+    )
     return report
 
 
@@ -353,6 +448,7 @@ def main() -> None:
     parser.add_argument("--vtt", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--source-run-id", required=True)
+    parser.add_argument("--sampled-review-json", type=Path)
     args = parser.parse_args()
     if not args.source_run_id.isdigit():
         parser.error("--source-run-id must be a numeric Actions run ID.")
@@ -363,6 +459,7 @@ def main() -> None:
         args.vtt,
         args.output_dir,
         args.source_run_id,
+        args.sampled_review_json,
     )
 
 

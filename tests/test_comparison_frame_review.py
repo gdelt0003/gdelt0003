@@ -151,6 +151,68 @@ class ComparisonFrameReviewTests(unittest.TestCase):
                 )
         extract.assert_not_called()
 
+    def test_records_limited_sample_review_without_clearing_release_blockers(self):
+        sampled_review_path = self.root / "sampled-review.json"
+        reviewed_frames = [
+            "001-00001.000s-opening.jpg",
+            "002-00006.000s-middle.jpg",
+            "003-00011.000s-ending.jpg",
+            "005-cue-002-00005.000s-representative-cue.jpg",
+        ]
+        sampled_review_path.write_text(
+            json.dumps(
+                {
+                    "reviewer": "agent visual inspection (limited sample)",
+                    "frames": reviewed_frames,
+                    "findings": [
+                        "The sampled captions were legible on yellow/white text with opaque black backgrounds.",
+                        "The ending sample contained no caption text.",
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        with (
+            patch(
+                "scripts.create_comparison_frame_review.subprocess.check_output",
+                side_effect=self.probe_video,
+            ),
+            patch(
+                "scripts.create_comparison_frame_review.subprocess.run",
+                side_effect=self.extract_frame,
+            ),
+        ):
+            report = create_review(
+                self.manifest_path,
+                self.video_path,
+                self.vtt_path,
+                self.output_dir,
+                "38523026469",
+                sampled_review_path,
+            )
+
+        sample = report["sampled_visual_review"]
+        self.assertEqual(sample["status"], "partial")
+        self.assertEqual(
+            [frame["file"] for frame in sample["checked_frames"]],
+            reviewed_frames,
+        )
+        self.assertEqual(report["release_status"], "blocked")
+        self.assertTrue(
+            report["checks"]["readability_and_visual_style"]["blocking"]
+        )
+        reviewed = [
+            frame
+            for frame in report["frames"]
+            if frame["review_status"] == "sampled_reviewed"
+        ]
+        self.assertEqual({frame["file"] for frame in reviewed}, set(reviewed_frames))
+        self.assertIn(
+            "Limited sampled review",
+            (self.output_dir / "frame-review.html").read_text(encoding="utf-8"),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

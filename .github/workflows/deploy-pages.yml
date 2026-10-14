@@ -52,6 +52,11 @@ on:
         type: string
         required: false
         default: ''
+      review_comparison_sampled_review_json:
+        description: Optional limited frame-review notes; never clears the release blockers
+        type: string
+        required: false
+        default: ''
       comparison_reuse_rights_confirmed:
         description: I verified the supplied rights evidence permits processing and public adaptation of this exact source
         type: boolean
@@ -608,14 +613,22 @@ jobs:
       - name: Validate exact source and extract rendered review frames
         env:
           SOURCE_RUN_ID: ${{ inputs.review_comparison_artifact_run_id }}
+          SAMPLED_REVIEW_JSON: ${{ inputs.review_comparison_sampled_review_json }}
         run: |
           [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
-          python scripts/create_comparison_frame_review.py \
+          args=(
             --manifest "$RUNNER_TEMP/comparison-review/comparison-output/manifest.json" \
             --video "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw-bilingual.mp4" \
             --vtt "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw.en-zh.vtt" \
             --output-dir "$RUNNER_TEMP/comparison-review/comparison-output" \
             --source-run-id "$SOURCE_RUN_ID"
+          )
+          if [[ -n "$SAMPLED_REVIEW_JSON" ]]; then
+            printf '%s' "$SAMPLED_REVIEW_JSON" \
+              > "$RUNNER_TEMP/comparison-review/sampled-frame-review.json"
+            args+=(--sampled-review-json "$RUNNER_TEMP/comparison-review/sampled-frame-review.json")
+          fi
+          python scripts/create_comparison_frame_review.py "${args[@]}"
         shell: bash
 
       - name: Upload frame-only visual review artifact
