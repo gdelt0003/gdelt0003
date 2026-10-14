@@ -845,9 +845,9 @@ jobs:
         run: |
           cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
           test -n "$cli"
-          chmod +x "$cli"
+          install -m 755 "$cli" "$RUNNER_TEMP/smartsub-compose"
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-started"
-          xvfb-run --auto-servernum "$cli" compose run \
+          xvfb-run --auto-servernum "$RUNNER_TEMP/smartsub-compose" compose run \
             --video-path "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
             --subtitle-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
             --output-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \

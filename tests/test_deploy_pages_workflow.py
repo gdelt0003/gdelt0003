@@ -133,6 +133,8 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )
         self.assertIn("pvXbHQrIvTw-comparison-review-${{ inputs.smartsub_source_artifact_run_id }}", job)
         self.assertIn("compose run", job)
+        self.assertIn('install -m 755 "$cli" "$RUNNER_TEMP/smartsub-compose"', job)
+        self.assertNotIn("chmod +x \"$cli\"", job)
         self.assertIn('"outputMode":"hardcode"', job)
         self.assertIn("source_audio_and_asr_accuracy", job)
         self.assertIn('"not_verified"', job)
