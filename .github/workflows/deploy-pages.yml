@@ -47,6 +47,11 @@ on:
         type: boolean
         required: false
         default: false
+      review_comparison_artifact_run_id:
+        description: Extract private rendered-frame review evidence from a completed comparison processing run
+        type: string
+        required: false
+        default: ''
       comparison_reuse_rights_confirmed:
         description: I verified the supplied rights evidence permits processing and public adaptation of this exact source
         type: boolean
@@ -572,6 +577,51 @@ jobs:
             ${{ runner.temp }}/comparison-output/
             ${{ runner.temp }}/comparison-event-metadata.json
             ${{ runner.temp }}/comparison-input/asset-metadata.json
+          if-no-files-found: error
+          retention-days: 30
+
+  review-comparison-artifact:
+    if: github.event_name == 'workflow_dispatch' && inputs.review_comparison_artifact_run_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    steps:
+      - name: Download private comparison review artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: ${{ runner.temp }}/comparison-review
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.review_comparison_artifact_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          ffmpeg -version
+
+      - name: Validate exact source and extract rendered review frames
+        env:
+          SOURCE_RUN_ID: ${{ inputs.review_comparison_artifact_run_id }}
+        run: |
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          python scripts/create_comparison_frame_review.py \
+            --manifest "$RUNNER_TEMP/comparison-review/comparison-output/manifest.json" \
+            --video "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw-bilingual.mp4" \
+            --vtt "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw.en-zh.vtt" \
+            --output-dir "$RUNNER_TEMP/comparison-review/comparison-output" \
+            --source-run-id "$SOURCE_RUN_ID"
+        shell: bash
+
+      - name: Upload frame-only visual review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-frame-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: |
+            ${{ runner.temp }}/comparison-review/comparison-output/frames/
+            ${{ runner.temp }}/comparison-review/comparison-output/release-report.json
+            ${{ runner.temp }}/comparison-review/comparison-output/frame-review.html
           if-no-files-found: error
           retention-days: 30
 
