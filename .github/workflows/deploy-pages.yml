@@ -12,6 +12,7 @@ on:
       - '.nojekyll'
       - 'CNAME'
       - 'assets/**'
+      - 'events/**'
       - 'outputs/**'
       - 'generated/**'
   workflow_dispatch:

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="同一白宫视频的开源字幕基线与指定 Microsoft Copilot 模型方案对照；未运行指标明确标为未验证。" />
+    <title>pvXbHQrIvTw · 双语字幕方案对照</title>
+    <link rel="stylesheet" href="../../assets/style.css?v=whitehouse-5" />
+    <link rel="stylesheet" href="../../assets/comparison.css?v=1" />
+  </head>
+  <body>
+    <main class="page comparison-page">
+      <nav class="site-nav" aria-label="主要导航">
+        <a class="site-brand" href="../../">GDELT · 事件视频</a>
+        <div class="site-nav-links">
+          <a href="../../">返回主页</a>
+          <a href="#variants">两版方案</a>
+          <a href="#comparison">指标对比</a>
+        </div>
+      </nav>
+      <header class="hero">
+        <p class="eyebrow">SINGLE-EVENT · BILINGUAL SUBTITLE COMPARISON</p>
+        <h1 id="event-title">双语字幕方案对照</h1>
+        <p id="event-subtitle" class="subtitle">正在读取事件清单…</p>
+        <p class="meta" id="event-notice">页面只呈现真实生成并登记的文件。空白指标不会用估计值填充；模型生成不代表字幕质量已通过人工验收。</p>
+        <p><a id="source-link" href="https://www.youtube.com/watch?v=pvXbHQrIvTw" rel="noreferrer" target="_blank">查看来源视频页面</a></p>
+      </header>
+      <section class="comparison-grid" id="variants" aria-label="字幕方案">
+        <article class="panel comparison-variant" id="variant-open-source" aria-labelledby="open-source-title">
+          <p class="eyebrow">OPEN-SOURCE BASELINE</p>
+          <h2 id="open-source-title">开源基线</h2>
+          <div class="variant-content"></div>
+        </article>
+        <article class="panel comparison-variant" id="variant-microsoft" aria-labelledby="microsoft-title">
+          <p class="eyebrow">REQUESTED MICROSOFT MODEL</p>
+          <h2 id="microsoft-title">Microsoft Copilot / GPT-6</h2>
+          <div class="variant-content"></div>
+        </article>
+      </section>
+      <section class="panel comparison-metrics" id="comparison" aria-labelledby="comparison-title">
+        <p class="eyebrow">MEASURED SIDE-BY-SIDE</p>
+        <h2 id="comparison-title">同输入对比指标</h2>
+        <p class="meta">只有同一源文件、相同字幕版式和可复核的人工参考稿齐备后，才计算质量指标。未测项目显示“未测”，不推断准确率或相对提升。</p>
+        <div class="comparison-table-wrap">
+          <table>
+            <thead>
+              <tr><th scope="col">指标</th><th scope="col">开源基线</th><th scope="col">Microsoft / GPT-6</th><th scope="col">公平比较条件</th></tr>
+            </thead>
+            <tbody id="comparison-rows"></tbody>
+          </table>
+        </div>
+      </section>
+      <p class="meta comparison-footnote">声音保持源录音；本页面不生成或克隆人物声音。第三方源的下载、改编和公开发布权利尚待核实；在权利与人工复核门槛通过前，本事件媒体不公开发布。</p>
+    </main>
+    <script src="../../assets/comparison.js?v=1"></script>
+  </body>
+</html>
