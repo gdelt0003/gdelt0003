@@ -166,6 +166,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         render = job_body(workflow, "render-smartsub-draft")
         deploy = job_body(workflow, "deploy")
 
+        self.assertIn("comparison_review_evidence_json", workflow)
         self.assertIn("publish_smartsub_draft:\n        description:", workflow)
         self.assertIn("default: false", workflow.split("publish_smartsub_draft:", 1)[1].split(
             "smartsub_source_artifact_run_id:", 1
@@ -179,6 +180,15 @@ class DeployPagesWorkflowTests(unittest.TestCase):
             "- name: Upload rendered draft and private runner evidence", 1
         )[1])
         self.assertIn("inputs.process_smartsub_draft && inputs.publish_smartsub_draft", deploy)
+
+    def test_workflow_dispatch_stays_within_github_input_limit(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        dispatch = workflow.split("  workflow_dispatch:", maxsplit=1)[1].split(
+            "\npermissions:", maxsplit=1
+        )[0]
+        inputs = re.findall(r"(?m)^      [A-Za-z0-9_-]+:", dispatch)
+
+        self.assertLessEqual(len(inputs), 25)
 
     def test_comparison_frame_review_is_cloud_only_and_captures_flagged_cues(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
