@@ -165,21 +165,23 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )
         self.assertIn("preview_unverified", script)
 
-    def test_smartsub_can_render_privately_without_bypassing_publication_evidence(self):
+    def test_smartsub_publication_is_a_test_without_five_review_evidence_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         render = job_body(workflow, "render-smartsub-draft")
         deploy = job_body(workflow, "deploy")
 
-        self.assertIn("comparison_review_evidence_json", workflow)
         self.assertIn("publish_smartsub_draft:\n        description:", workflow)
         self.assertIn("default: false", workflow.split("publish_smartsub_draft:", 1)[1].split(
             "smartsub_source_artifact_run_id:", 1
         )[0])
         self.assertIn("if: inputs.publish_smartsub_draft", render)
-        self.assertIn("five distinct HTTPS evidence URLs", render)
-        self.assertIn("CLEAN_FRAMES_CONFIRMED", render)
-        self.assertIn("ENGLISH_ASR_CONFIRMED", render)
-        self.assertIn("CHINESE_TRANSLATION_CONFIRMED", render)
+        self.assertNotIn("comparison_review_evidence_json", workflow)
+        self.assertNotIn("five distinct HTTPS evidence URLs", render)
+        self.assertNotIn("five evidence reviews", render)
+        self.assertIn("comparison_reuse_rights_confirmed", render)
+        self.assertIn("comparison_same_event_source_match_confirmed", render)
+        self.assertIn("source_audio_and_asr_accuracy", render)
+        self.assertIn('"not_verified"', render)
         self.assertIn("pvXbHQrIvTw-smartsub-draft.mp4", render.split(
             "- name: Upload rendered draft and private runner evidence", 1
         )[1])
