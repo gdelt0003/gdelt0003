@@ -16,10 +16,15 @@ class Element {
     this.dataset = {};
     this.textContent = '';
     this.href = '';
+    this.attributes = {};
   }
 
   append(...children) {
     this.children.push(...children);
+  }
+
+  setAttribute(name, value) {
+    this.attributes[name] = value;
   }
 
   replaceChildren(...children) {
@@ -28,7 +33,7 @@ class Element {
   }
 }
 
-test('comparison page renders pending states without claiming generated media', async () => {
+test('comparison page renders the public draft with unverified status', async () => {
   const elements = new Map([
     'comparison-rows',
     'event-title',
@@ -60,8 +65,13 @@ test('comparison page renders pending states without claiming generated media', 
 
   assert.match(elements.get('event-title').textContent, /Oct\. 13, 2026/);
   assert.equal(elements.get('source-link').href, manifest.event.source_url);
-  assert.equal(elements.get('variant-open-source').content.children[0].textContent, '未运行：等待具备授权的云端处理与复核。');
+  assert.match(
+    elements.get('variant-open-source').content.children[0].textContent,
+    /公开机器生成草稿预览，未经人工核验/,
+  );
   assert.match(elements.get('variant-microsoft').content.children[0].textContent, /未用其他模型冒充/);
-  assert.equal(elements.get('variant-open-source').content.children.some((node) => node.tagName === 'video'), false);
+  const video = elements.get('variant-open-source').content.children.find((node) => node.tagName === 'video');
+  assert.ok(video);
+  assert.equal(video.src, manifest.smartsub_preview.video_url);
   assert.equal(elements.get('comparison-rows').children.length, 10);
 });
