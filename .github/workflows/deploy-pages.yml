@@ -914,17 +914,15 @@ jobs:
           cli="$(readlink -f "$cli")"
           echo "Using SmartSub cli=$cli" | tee -a "$log"
           case "$cli" in
-            */resources/automation/smartsub)
-              smartsub_root="${cli%/resources/automation/smartsub}"
-              ;;
+            /opt/SmartSub/*) relative_cli="${cli#/opt/SmartSub/}" ;;
             *)
               echo "Unexpected SmartSub installation path: $cli" | tee -a "$log" >&2
               exit 1
               ;;
           esac
           runner_root="$RUNNER_TEMP/SmartSub"
-          cp -a "$smartsub_root" "$runner_root"
-          runner_cli="$runner_root/resources/automation/smartsub"
+          cp -a /opt/SmartSub "$runner_root"
+          runner_cli="$runner_root/$relative_cli"
           if [ ! -x "$runner_cli" ]; then
             chmod u+x "$runner_cli"
           fi
