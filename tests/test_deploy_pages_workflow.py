@@ -33,6 +33,14 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertNotIn("'scripts/**'", push)
         self.assertNotIn("'docs/**'", push)
 
+    def test_workflow_dispatch_stays_within_github_input_limit(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        dispatch = workflow.split("  workflow_dispatch:\n", maxsplit=1)[1].split(
+            "\njobs:\n", maxsplit=1
+        )[0]
+
+        self.assertLessEqual(len(re.findall(r"(?m)^      [A-Za-z0-9_-]+:$", dispatch)), 25)
+
     def test_push_deploy_is_not_blocked_by_the_post_deploy_quality_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         deploy = job_body(workflow, "deploy")
@@ -172,9 +180,9 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )[0])
         self.assertIn("if: inputs.publish_smartsub_draft", render)
         self.assertIn("five distinct HTTPS evidence URLs", render)
-        self.assertIn("CLEAN_FRAMES_CONFIRMED", render)
-        self.assertIn("ENGLISH_ASR_CONFIRMED", render)
-        self.assertIn("CHINESE_TRANSLATION_CONFIRMED", render)
+        self.assertIn("clean_frames_confirmed", render)
+        self.assertIn("english_asr_confirmed", render)
+        self.assertIn("chinese_translation_confirmed", render)
         self.assertIn("pvXbHQrIvTw-smartsub-draft.mp4", render.split(
             "- name: Upload rendered draft and private runner evidence", 1
         )[1])
