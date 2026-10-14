@@ -25,32 +25,16 @@
         <p class="subtitle">全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态</p>
         <p class="meta">页面现存的历史短片/全长视频不代表通过本轮来源、画面、英文识别和中文翻译验收。Columbus Day 白宫锚实帧可见横幅、Logo 与 QR；AP 有 1080p 同事件候选但保留 AP 水印、机位来源未证，尚无无水印干净素材。新云端生产流程尚未运行。</p>
       </header>
-      <section class="panel featured-video-panel" id="featured-video" aria-labelledby="full-video-title">
-        <div class="watch-layout">
-          <div class="watch-main">
-            <video class="full-video-player" controls preload="none" playsinline>
-              <source src="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4" type="video/mp4" />
-              你的浏览器不支持 HTML 视频。请使用下方下载链接观看。
-            </video>
-            <div class="watch-title">
-              <h2 id="full-video-title">总统造船厂讲话 · 完整视频</h2>
-              <p class="meta">白宫官方频道 · 原始画面 1920 × 1080（16:9）· 2026-10-06 上传（上传日期不代替事件时间）</p>
-            </div>
-            <p class="watch-links">
-              <a href="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4">下载双语 MP4</a>
-              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en.srt">English SRT</a>
-              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt">简体中文 SRT</a>
-              <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt">中英双语 SRT</a>
-            </p>
+      <section class="panel main-videos-panel" id="featured-video" aria-labelledby="main-videos-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">FULL-LENGTH EVENT VIDEOS</p>
+            <h2 id="main-videos-title">主视频</h2>
           </div>
-          <aside class="watch-sidebar" aria-label="视频核验信息">
-            <p class="eyebrow">SOURCE & CAPTIONS</p>
-            <h3>来源与字幕状态</h3>
-            <p>官方白宫视频可作事件锚点，不等同于干净剪辑素材。源画面横幅、标志与 QR 已记录。</p>
-            <p class="review-status">字幕：视频内硬字幕，仍待复核<br />翻译准确性：未独立核实<br />音频逐词对齐：未核实</p>
-            <p class="meta">硬字幕已有错配报告；暂不加载可能重复显示的播放器字幕轨。须在云端重新渲染并通过音频、翻译与画面复审后，才能替换公开版本。</p>
-          </aside>
+          <span id="mainVideosStatus" class="meta" role="status" aria-live="polite">正在读取主视频清单…</span>
         </div>
+        <p class="meta main-videos-notice">每条主视频独立展示，可继续按事件添加；来源、字幕和复核状态跟随各自视频，不会被合并成单一焦点播放器。</p>
+        <div id="mainVideos" class="main-video-grid" aria-live="polite"></div>
       </section>
       <section class="panel highlights-panel" id="highlights" aria-labelledby="highlights-title">
         <div class="highlights-heading">
@@ -110,6 +94,7 @@
       </section>
     </main>
     <script src="assets/events.js?v=event-catalog-2"></script>
+    <script src="assets/main-videos.js?v=main-video-catalog-1"></script>
     <script src="assets/camera-map.js?v=camera-map-1"></script>
     <script src="assets/app.js?v=whitehouse-4"></script>
   </body>

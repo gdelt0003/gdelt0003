@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "videos": [
+    {
+      "id": "whitehouse-oW-PQlgw1wo",
+      "title": "总统造船厂讲话 · 完整视频",
+      "event_date": "2026-10-06",
+      "publisher": "白宫官方频道",
+      "resolution": "1920 × 1080（16:9）",
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4",
+      "source_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+      "review_status": "字幕、翻译与画面仍待复核；该版本不代表通过发布质量验收。",
+      "note": "视频含硬字幕；已报告字幕错配。来源画面中的横幅、标志与 QR 保留，未声称素材干净。",
+      "subtitles": [
+        {
+          "label": "English SRT",
+          "url": "generated/full-video/whitehouse-oW-PQlgw1wo.en.srt"
+        },
+        {
+          "label": "简体中文 SRT",
+          "url": "generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt"
+        },
+        {
+          "label": "中英双语 SRT",
+          "url": "generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt"
+        }
+      ]
+    }
+  ]
+}

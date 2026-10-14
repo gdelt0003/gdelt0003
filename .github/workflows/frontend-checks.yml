@@ -7,6 +7,7 @@ on:
       - 'assets/app.js'
       - 'assets/comparison.css'
       - 'assets/comparison.js'
+      - 'assets/main-videos.js'
       - 'assets/style.css'
       - 'events/**'
       - 'index.html'
@@ -24,6 +25,7 @@ on:
       - 'assets/app.js'
       - 'assets/comparison.css'
       - 'assets/comparison.js'
+      - 'assets/main-videos.js'
       - 'assets/style.css'
       - 'events/**'
       - 'index.html'
@@ -70,9 +72,12 @@ jobs:
       - name: Check frontend JavaScript syntax
         run: |
           node --check assets/app.js
+          node --check assets/main-videos.js
           node --check assets/comparison.js
+          node --check tests/test_main_videos.cjs
 
       - name: Verify published clip playback paths and aspect ratios
         run: |
           node tests/test_frontend_assets.cjs
+          node tests/test_main_videos.cjs
           node --test tests/test_subtitle_comparison_page.cjs
