@@ -149,6 +149,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn("inputs.publish_smartsub_draft", deploy)
         self.assertIn("pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}", deploy)
         self.assertIn("scripts/publish_smartsub_preview.py", deploy)
+        self.assertIn("--main-videos outputs/main-videos.json", deploy)
         self.assertIn("releases/download/pvXbHQrIvTw-smartsub-draft-", deploy)
         page = (WORKFLOW.parents[2] / "events" / "pvXbHQrIvTw" / "index.html").read_text(
             encoding="utf-8"
