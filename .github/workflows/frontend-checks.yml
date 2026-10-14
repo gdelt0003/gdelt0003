@@ -5,7 +5,10 @@ on:
     paths:
       - '.github/workflows/frontend-checks.yml'
       - 'assets/app.js'
+      - 'assets/comparison.css'
+      - 'assets/comparison.js'
       - 'assets/style.css'
+      - 'events/**'
       - 'index.html'
       - 'requirements.txt'
       - 'scripts/**'
@@ -19,7 +22,10 @@ on:
     paths:
       - '.github/workflows/frontend-checks.yml'
       - 'assets/app.js'
+      - 'assets/comparison.css'
+      - 'assets/comparison.js'
       - 'assets/style.css'
+      - 'events/**'
       - 'index.html'
       - 'requirements.txt'
       - 'scripts/**'
@@ -62,7 +68,11 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Check frontend JavaScript syntax
-        run: node --check assets/app.js
+        run: |
+          node --check assets/app.js
+          node --check assets/comparison.js
 
       - name: Verify published clip playback paths and aspect ratios
-        run: node tests/test_frontend_assets.cjs
+        run: |
+          node tests/test_frontend_assets.cjs
+          node --test tests/test_subtitle_comparison_page.cjs

@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "event": {
+    "video_id": "pvXbHQrIvTw",
+    "title": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026",
+    "event_date": "2026-10-13",
+    "event_time_local": null,
+    "location": "The White House",
+    "participant": "President Trump",
+    "source_url": "https://www.youtube.com/watch?v=pvXbHQrIvTw",
+    "source_match_status": "title_match_only",
+    "reuse_rights_status": "not_verified",
+    "local_file_size_bytes": 262338614,
+    "input_sha256": null,
+    "input_size_bytes": null
+  },
+  "comparison_status": "not_run",
+  "variants": [
+    {
+      "id": "open-source-baseline",
+      "label": "开源基线",
+      "description": "本仓库可复现基线；不以降低质量为目的。",
+      "status": "not_run",
+      "models": {
+        "asr": "faster-whisper large-v3-turbo (repository pipeline)",
+        "translation": "facebook/m2m100_1.2B (repository pipeline)"
+      },
+      "render": "ffmpeg bilingual subtitle burn-in; current repository style",
+      "audit": [],
+      "quality_checks": {
+        "transcript_review": "not_run",
+        "translation_review": "not_run",
+        "audio_alignment_review": "not_run",
+        "rendered_frame_review": "not_run"
+      },
+      "video_url": null,
+      "subtitles": {
+        "english": null,
+        "chinese": null,
+        "bilingual": null
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": null,
+        "duration_seconds": null,
+        "resolution": null,
+        "processing_seconds": null,
+        "cost_usd": null,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    },
+    {
+      "id": "microsoft-copilot-gpt6",
+      "label": "Microsoft Copilot / GPT-6（用户指定，未验证）",
+      "description": "只有在官方可用模型端点、模型 ID 和获授权凭证确认后才能运行；不以其他模型冒充。",
+      "status": "blocked_model_unavailable",
+      "models": {
+        "asr": null,
+        "translation": null
+      },
+      "render": "同一双语字幕版式；待官方模型端点与可复现配置确认",
+      "audit": [],
+      "quality_checks": {
+        "transcript_review": "not_run",
+        "translation_review": "not_run",
+        "audio_alignment_review": "not_run",
+        "rendered_frame_review": "not_run"
+      },
+      "video_url": null,
+      "subtitles": {
+        "english": null,
+        "chinese": null,
+        "bilingual": null
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": null,
+        "duration_seconds": null,
+        "resolution": null,
+        "processing_seconds": null,
+        "cost_usd": null,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    }
+  ],
+  "comparison_metrics": {
+    "same_input_verified": false,
+    "same_caption_format_verified": false,
+    "human_reference_available": false,
+    "measured": false
+  }
+}
