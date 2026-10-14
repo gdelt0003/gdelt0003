@@ -42,6 +42,46 @@ on:
         type: boolean
         required: false
         default: false
+      process_comparison_video:
+        description: Process the exact uploaded pvXbHQrIvTw source on a cloud runner and save a review artifact
+        type: boolean
+        required: false
+        default: false
+      review_comparison_artifact_run_id:
+        description: Extract private rendered-frame review evidence from a completed comparison processing run
+        type: string
+        required: false
+        default: ''
+      review_comparison_sampled_review_json:
+        description: Optional limited frame-review notes; never clears the release blockers
+        type: string
+        required: false
+        default: ''
+      comparison_reuse_rights_confirmed:
+        description: I verified the supplied rights evidence permits processing and public adaptation of this exact source
+        type: boolean
+        required: false
+        default: false
+      comparison_same_event_source_match_confirmed:
+        description: I verified this exact uploaded file is the October 13 pvXbHQrIvTw event recording
+        type: boolean
+        required: false
+        default: false
+      comparison_rights_evidence_url:
+        description: HTTPS rights evidence for processing and public adaptation
+        type: string
+        required: false
+        default: https://www.whitehouse.gov/copyright/
+      comparison_identity_evidence_url:
+        description: HTTPS evidence for the October 13 event identity
+        type: string
+        required: false
+        default: https://www.youtube.com/watch?v=pvXbHQrIvTw
+      comparison_source_match_evidence_url:
+        description: HTTPS source evidence matched to this event
+        type: string
+        required: false
+        default: https://www.youtube.com/watch?v=pvXbHQrIvTw
       restyle_full_video:
         description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
         type: boolean
@@ -390,6 +430,215 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
             ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+  process-comparison-video:
+    if: github.event_name == 'workflow_dispatch' && inputs.process_comparison_video
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache transcription models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-full-video-models-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Require source and reuse-rights attestations
+        env:
+          RIGHTS_CONFIRMED: ${{ inputs.comparison_reuse_rights_confirmed }}
+          SAME_EVENT_CONFIRMED: ${{ inputs.comparison_same_event_source_match_confirmed }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+        run: |
+          if [ "$RIGHTS_CONFIRMED" != "true" ]; then
+            echo "Reuse-rights confirmation is required before processing." >&2
+            exit 1
+          fi
+          if [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
+            echo "Exact event/source match confirmation is required before processing." >&2
+            exit 1
+          fi
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          for name in ("RIGHTS_URL", "IDENTITY_URL", "SOURCE_MATCH_URL"):
+              url = urlparse(os.environ[name])
+              if url.scheme != "https" or not url.netloc:
+                  raise SystemExit(f"{name} must be an HTTPS URL.")
+          PY
+
+      - name: Install ffmpeg, CJK fonts, and transcription models
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece
+          ffmpeg -version
+
+      - name: Prepare event metadata and verify the uploaded cloud asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/comparison-input" "$RUNNER_TEMP/comparison-output"
+          printf '%s' \
+            '{"event_date":"2026-10-13","event_time_local":null,"time_precision":"day","timezone":null,"location":"The White House","event_type":"press gaggle upon departure","title":"President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026","participants":["President Trump"],"official_video_url":"https://www.youtube.com/watch?v=pvXbHQrIvTw"}' \
+            > "$RUNNER_TEMP/comparison-identity.json"
+          python scripts/prepare_event_production.py \
+            --identity-json "$RUNNER_TEMP/comparison-identity.json" \
+            --source-url "https://www.youtube.com/watch?v=pvXbHQrIvTw" \
+            --identity-evidence-url "$IDENTITY_URL" \
+            --source-match-evidence-url "$SOURCE_MATCH_URL" \
+            --confirm-same-event-match \
+            --rights-evidence-url "$RIGHTS_URL" \
+            --output "$RUNNER_TEMP/comparison-event-metadata.json"
+          gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
+            > "$RUNNER_TEMP/comparison-input/asset-metadata.json"
+          python - "$RUNNER_TEMP/comparison-input/asset-metadata.json" <<'PY'
+          import json
+          import sys
+
+          asset = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {
+              "name": "pvXbHQrIvTw-source.mp4",
+              "size": 262338614,
+              "digest": "sha256:33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+              "state": "uploaded",
+          }
+          for key, value in expected.items():
+              if asset.get(key) != value:
+                  raise SystemExit(
+                      f"Cloud asset {key} mismatch: expected {value!r}, "
+                      f"got {asset.get(key)!r}"
+                  )
+          PY
+          curl --fail --location \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/octet-stream" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/639463349" \
+            --output "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+          test "$(stat -c %s "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4")" = "262338614"
+          echo "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171  $RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" \
+            | sha256sum --check
+          ffprobe -v error -show_entries format=duration,size \
+            -of default=noprint_wrappers=1 \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height \
+            -of csv=s=x:p=0 \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+        shell: bash
+
+      - name: Transcribe, translate, and render the exact uploaded source
+        run: |
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" \
+            --output-dir "$RUNNER_TEMP/comparison-output" \
+            --asset-prefix pvXbHQrIvTw
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/comparison-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/comparison-output/manifest.json"
+          python - "$RUNNER_TEMP/comparison-output/manifest.json" \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest_path, source_path = map(Path, sys.argv[1:])
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          with source_path.open("rb") as source:
+              source_hash = hashlib.file_digest(source, "sha256").hexdigest()
+          manifest["input_size_bytes"] = source_path.stat().st_size
+          manifest["input_sha256"] = source_hash
+          manifest["source_match_status"] = "operator_attested_exact_event"
+          manifest["reuse_rights_status"] = "operator_attested_for_processing_and_public_adaptation"
+          manifest_path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload private review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/comparison-output/
+            ${{ runner.temp }}/comparison-event-metadata.json
+            ${{ runner.temp }}/comparison-input/asset-metadata.json
+          if-no-files-found: error
+          retention-days: 30
+
+  review-comparison-artifact:
+    if: github.event_name == 'workflow_dispatch' && inputs.review_comparison_artifact_run_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout review tooling
+        uses: actions/checkout@v4
+
+      - name: Download private comparison review artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: ${{ runner.temp }}/comparison-review
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.review_comparison_artifact_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          ffmpeg -version
+
+      - name: Validate exact source and extract rendered review frames
+        env:
+          SOURCE_RUN_ID: ${{ inputs.review_comparison_artifact_run_id }}
+          SAMPLED_REVIEW_JSON: ${{ inputs.review_comparison_sampled_review_json }}
+        run: |
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          args=(
+            --manifest "$RUNNER_TEMP/comparison-review/comparison-output/manifest.json" \
+            --video "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw-bilingual.mp4" \
+            --vtt "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw.en-zh.vtt" \
+            --output-dir "$RUNNER_TEMP/comparison-review/comparison-output" \
+            --source-run-id "$SOURCE_RUN_ID"
+          )
+          if [[ -n "$SAMPLED_REVIEW_JSON" ]]; then
+            printf '%s' "$SAMPLED_REVIEW_JSON" \
+              > "$RUNNER_TEMP/comparison-review/sampled-frame-review.json"
+            args+=(--sampled-review-json "$RUNNER_TEMP/comparison-review/sampled-frame-review.json")
+          fi
+          python scripts/create_comparison_frame_review.py "${args[@]}"
+        shell: bash
+
+      - name: Upload frame-only visual review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-frame-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: |
+            ${{ runner.temp }}/comparison-review/comparison-output/frames/
+            ${{ runner.temp }}/comparison-review/comparison-output/release-report.json
+            ${{ runner.temp }}/comparison-review/comparison-output/frame-review.html
           if-no-files-found: error
           retention-days: 30
 

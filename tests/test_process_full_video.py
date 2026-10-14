@@ -13,6 +13,7 @@ from scripts.process_full_video import (
     read_srt,
     srt_text,
     timestamp,
+    validate_asset_prefix,
     vtt_from_bilingual_srt,
     verify_cues,
     write_ass,
@@ -20,6 +21,16 @@ from scripts.process_full_video import (
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
+    def test_validates_safe_asset_prefix_for_reusable_renderer(self):
+        self.assertEqual(
+            validate_asset_prefix("pvXbHQrIvTw"),
+            "pvXbHQrIvTw",
+        )
+        for unsafe in ("../outside", "folder/name", ""):
+            with self.subTest(unsafe=unsafe):
+                with self.assertRaisesRegex(ValueError, "filename-safe"):
+                    validate_asset_prefix(unsafe)
+
     def test_timestamp_formats_hours_and_milliseconds(self):
         self.assertEqual(timestamp(3661.234, decimal=","), "01:01:01,234")
         self.assertEqual(timestamp(3661.234, decimal="."), "01:01:01.234")

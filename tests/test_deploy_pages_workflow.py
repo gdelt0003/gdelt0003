@@ -69,6 +69,59 @@ class DeployPagesWorkflowTests(unittest.TestCase):
             quality_gate,
         )
 
+    def test_comparison_video_job_checks_exact_uploaded_asset_before_rendering(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        job = job_body(workflow, "process-comparison-video")
+
+        self.assertIn("inputs.process_comparison_video", job)
+        self.assertIn("contents: write", job)
+        self.assertIn("RIGHTS_CONFIRMED", job)
+        self.assertIn("SAME_EVENT_CONFIRMED", job)
+        self.assertIn("releases/assets/639463349", job)
+        self.assertIn("262338614", job)
+        self.assertIn(
+            "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+            job,
+        )
+        self.assertIn("--asset-prefix pvXbHQrIvTw", job)
+        self.assertIn("pvXbHQrIvTw-comparison-review-", job)
+
+    def test_comparison_frame_review_is_cloud_only_and_captures_flagged_cues(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        review = job_body(workflow, "review-comparison-artifact")
+        review_script = (
+            WORKFLOW.parents[2] / "scripts" / "create_comparison_frame_review.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("inputs.review_comparison_artifact_run_id != ''", review)
+        self.assertIn("contents: read", review)
+        self.assertIn("actions: read", review)
+        self.assertNotIn("contents: write", review)
+        self.assertNotIn("pages: write", review)
+        self.assertIn("actions/download-artifact@v4", review)
+        self.assertIn("run-id: ${{ inputs.review_comparison_artifact_run_id }}", review)
+        self.assertIn("scripts/create_comparison_frame_review.py", review)
+        self.assertIn("input_sha256", review_script)
+        self.assertIn(
+            "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+            review_script,
+        )
+        self.assertIn("ffprobe", review_script)
+        self.assertIn("ffmpeg", review_script)
+        self.assertIn("english_reading_speed_over_20_cps_cues", review_script)
+        self.assertIn("chinese_reading_speed_over_10_cps_cues", review_script)
+        self.assertIn('"release_status": "blocked"', review_script)
+        self.assertIn('"source_audio_and_asr_accuracy"', review_script)
+        self.assertIn('"translation_accuracy"', review_script)
+        self.assertIn('"readability_and_visual_style"', review_script)
+        self.assertIn("--sampled-review-json", review_script)
+        self.assertIn("review_comparison_sampled_review_json", workflow)
+        self.assertIn("--sampled-review-json", review)
+        self.assertIn("pvXbHQrIvTw-frame-review-", review)
+        self.assertNotIn("needs.review-comparison-artifact", job_body(workflow, "deploy"))
+        upload = review.split("- name: Upload frame-only visual review artifact", 1)[1]
+        self.assertNotIn("pvXbHQrIvTw-bilingual.mp4", upload)
+
 
 if __name__ == "__main__":
     unittest.main()

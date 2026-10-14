@@ -728,10 +728,21 @@ def copy_review_evidence(
         shutil.copy2(source_path, output_path)
 
 
+def validate_asset_prefix(value: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,99}", value):
+        raise ValueError("Asset prefix must be a plain filename-safe identifier.")
+    return value
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--asset-prefix",
+        default="whitehouse-oW-PQlgw1wo",
+        help="Filename prefix for rendered video and subtitle assets.",
+    )
     parser.add_argument(
         "--reuse-subtitles",
         type=Path,
@@ -739,6 +750,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    asset_prefix = validate_asset_prefix(args.asset_prefix)
     source = args.input.resolve()
     output_dir = args.output_dir.resolve()
     if not source.is_file() or source.stat().st_size == 0:
@@ -758,7 +770,7 @@ def main() -> None:
     translation_review: dict[str, object] = {}
     visual_review: dict[str, object] = {}
     if args.reuse_subtitles:
-        prefix = "whitehouse-oW-PQlgw1wo"
+        prefix = asset_prefix
         prior_manifest_path = args.reuse_subtitles / "manifest.json"
         if prior_manifest_path.is_file():
             prior_manifest = json.loads(
@@ -903,7 +915,7 @@ def main() -> None:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
     cues = reflow_cues(cues)
 
-    prefix = "whitehouse-oW-PQlgw1wo"
+    prefix = asset_prefix
     english_srt = output_dir / f"{prefix}.en.srt"
     chinese_srt = output_dir / f"{prefix}.zh-Hans.srt"
     bilingual_srt = output_dir / f"{prefix}.en-zh.srt"
