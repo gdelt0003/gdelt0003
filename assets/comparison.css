@@ -1,6 +1,10 @@
 .comparison-page { max-width: 1320px; }
 .comparison-page .hero { max-width: 1080px; }
 .comparison-page a { color: var(--accent); }
+.preview-warning { margin: 18px 0; border: 2px solid #f59e0b; background: rgba(120, 53, 15, .2); }
+.preview-warning h2 { margin: 6px 0 12px; color: #fde68a; }
+.preview-warning p, .preview-warning li { line-height: 1.65; }
+.preview-warning li + li { margin-top: 6px; }
 .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
 .comparison-variant h2, .comparison-metrics h2 { margin: 6px 0 16px; }
 .comparison-variant h3 { margin: 22px 0 8px; font-size: 1rem; }

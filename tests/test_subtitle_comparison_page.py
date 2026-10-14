@@ -47,6 +47,27 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         self.assertNotIn("<source src=", page)
         self.assertIn("pvXbHQrIvTw", page)
 
+    def test_page_discloses_unverified_draft_and_known_blockers_without_publishing_media(
+        self,
+    ):
+        page = PAGE.read_text(encoding="utf-8")
+        manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+        self.assertIn("AI 生成草稿，未经人工核验", page)
+        self.assertIn("Hormone Strait", page)
+        self.assertIn("sharing intel with his brain", page)
+        self.assertIn("58 条英文字幕", page)
+        self.assertIn("6 条中文字幕", page)
+        self.assertIn("65 帧中的 5 帧", page)
+        self.assertIn("视频与字幕尚未公开", page)
+        self.assertTrue(
+            all(
+                variant["video_url"] is None
+                and all(value is None for value in variant["subtitles"].values())
+                for variant in manifest["variants"]
+            )
+        )
+
     def test_event_page_changes_trigger_pages_deploy(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]
