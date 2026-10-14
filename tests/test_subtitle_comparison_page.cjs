@@ -34,6 +34,7 @@ test('comparison page renders pending states without claiming generated media', 
     'event-title',
     'event-subtitle',
     'source-link',
+    'pvX-media-status',
     'variant-open-source',
     'variant-microsoft',
   ].map((id) => [id, new Element()]));

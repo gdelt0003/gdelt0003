@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from importlib.metadata import version as package_version
 from pathlib import Path
 
+import pysubs2
+
 if __package__:
     from .operation_audit import (
         OperationAudit,
@@ -33,6 +35,7 @@ MAX_RELEASE_ASSET_BYTES = 1_950_000_000
 MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
 CAPTION_LOWER_MARGIN_PERCENT = 18
+ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
 
 
 @dataclass(frozen=True)
@@ -58,6 +61,14 @@ def run(command: list[str], *, capture: bool = False) -> str:
             + (f"\n{details}" if details else "")
         )
     return result.stdout if capture else ""
+
+
+def validate_release_asset_size(size_bytes: int) -> None:
+    if size_bytes > MAX_RELEASE_ASSET_BYTES:
+        raise RuntimeError(
+            "Encoded MP4 is too large for a GitHub Release asset: "
+            f"{size_bytes} bytes"
+        )
 
 
 def timestamp(seconds: float, *, decimal: str) -> str:
@@ -369,42 +380,75 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(34, round(chinese_font * 1.22))
+    english_font = max(
+        34,
+        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+    )
     safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
     margin = max(28, round(height * CAPTION_LOWER_MARGIN_PERCENT / 100))
-    header = f"""[Script Info]
-ScriptType: v4.00+
-PlayResX: {width}
-PlayResY: {height}
-WrapStyle: 0
-ScaledBorderAndShadow: yes
-
-[V4+ Styles]
-Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
-Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H70000000,1,0,0,0,100,100,0,0,3,6,0,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
-
-[Events]
-Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
-"""
-    lines = [header]
+    subtitles = pysubs2.SSAFile()
+    subtitles.info.update(
+        {
+            "ScriptType": "v4.00+",
+            "PlayResX": str(width),
+            "PlayResY": str(height),
+            "WrapStyle": "0",
+            "ScaledBorderAndShadow": "yes",
+        }
+    )
+    common_style = {
+        "fontname": "Noto Sans CJK SC",
+        "secondarycolor": pysubs2.Color(255, 0, 0),
+        "outlinecolor": pysubs2.Color(16, 16, 16),
+        "backcolor": pysubs2.Color(0, 0, 0, 0x70),
+        "bold": True,
+        "borderstyle": 3,
+        "outline": 6,
+        "shadow": 0,
+        "alignment": pysubs2.Alignment.BOTTOM_CENTER,
+        "marginl": round(width * 0.11),
+        "marginr": round(width * 0.11),
+        "marginv": margin,
+        "encoding": 1,
+    }
+    subtitles.styles["Chinese"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=chinese_font,
+        primarycolor=pysubs2.Color(255, 216, 77),
+    )
+    subtitles.styles["English"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=english_font,
+        primarycolor=pysubs2.Color(255, 255, 255),
+    )
     for cue in cues:
         chinese_lines = _wrap_chinese(cue.chinese, max_chinese_chars)
         english_lines = _wrap_english(cue.english, max_english_chars)
         dialogue_lines = [
-            *(f"{{\\rChinese}}{ass_escape(line)}" for line in chinese_lines),
-            *(f"{{\\rEnglish}}{ass_escape(line)}" for line in english_lines),
+            *(
+                f"{{\\rChinese\\fs{chinese_font}\\1c&H004DD8FF&}}"
+                f"{ass_escape(line)}"
+                for line in chinese_lines
+            ),
+            *(
+                f"{{\\rEnglish\\fs{english_font}\\1c&H00FFFFFF&}}"
+                f"{ass_escape(line)}"
+                for line in english_lines
+            ),
         ]
         if not dialogue_lines:
             continue
-        dialogue_text = r"\N".join(dialogue_lines)
-        lines.append(
-            f"Dialogue: 0,{ass_time(cue.start)},{ass_time(cue.end)},"
-            f"Chinese,,0,0,0,,{dialogue_text}"
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                start=round(cue.start * 1000),
+                end=round(cue.end * 1000),
+                style="Chinese",
+                text=r"\N".join(dialogue_lines),
+            )
         )
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    subtitles.save(str(path), format_="ass", encoding="utf-8")
 
 
 def verify_cues(
@@ -447,7 +491,10 @@ def verify_cues(
         previous_end = cue.end
 
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(34, round(chinese_font * 1.22))
+    english_font = max(
+        34,
+        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+    )
     if english_font / chinese_font < 1.20:
         raise RuntimeError(
             "Caption verification failed: English text is not at least 20% larger."
@@ -969,11 +1016,7 @@ def main() -> None:
                 f"Output resolution changed unexpectedly: "
                 f"{width}x{height} -> {output_width}x{output_height}"
             )
-        if output_video.stat().st_size > MAX_RELEASE_ASSET_BYTES:
-            raise RuntimeError(
-                f"Encoded MP4 is too large for a GitHub Release asset: "
-                f"{output_video.stat().st_size} bytes"
-            )
+        validate_release_asset_size(output_video.stat().st_size)
     quality_checks = verify_cues(
         cues,
         duration=duration,
@@ -1012,7 +1055,12 @@ def main() -> None:
             chinese_srt.name,
             bilingual_srt.name,
         ],
-        "subtitle_style": "gold Chinese above white English; responsive phrase-level timing",
+        "subtitle_style": (
+            "gold Chinese above white English; English nominal font size is "
+            "1.50x Chinese; authored with pysubs2 "
+            f"{package_version('pysubs2')} and burned with FFmpeg libass; "
+            "responsive phrase-level timing"
+        ),
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
         "operation_audit_file": "operation-audit.json",

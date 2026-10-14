@@ -2,6 +2,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pysubs2
+
 from scripts.process_full_video import (
     Cue,
     ass_escape,
@@ -14,6 +16,7 @@ from scripts.process_full_video import (
     srt_text,
     timestamp,
     validate_asset_prefix,
+    validate_release_asset_size,
     vtt_from_bilingual_srt,
     verify_cues,
     write_ass,
@@ -21,6 +24,11 @@ from scripts.process_full_video import (
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
+    def test_release_asset_size_guard_accepts_limit_and_rejects_oversize(self):
+        validate_release_asset_size(1_950_000_000)
+        with self.assertRaisesRegex(RuntimeError, "too large for a GitHub Release asset"):
+            validate_release_asset_size(1_950_000_001)
+
     def test_validates_safe_asset_prefix_for_reusable_renderer(self):
         self.assertEqual(
             validate_asset_prefix("pvXbHQrIvTw"),
@@ -65,14 +73,23 @@ class FullVideoSubtitleTests(unittest.TestCase):
                 1080,
             )
             content = path.read_text(encoding="utf-8")
-        self.assertIn(r"{\rChinese}中文\N{\rEnglish}Text \{one\}", content)
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+        self.assertIn(
+            r"{\rChinese\fs56\1c&H004DD8FF&}中文"
+            r"\N{\rEnglish\fs84\1c&H00FFFFFF&}Text \{one\}",
+            content,
+        )
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
-        self.assertIn("Style: English,Noto Sans CJK SC,68,&H00FFFFFF", content)
-        self.assertIn("&H70000000,1,0,0,0,100,100,0,0,3,6,0,2", content)
+        self.assertIn("Style: English,Noto Sans CJK SC,84,&H00FFFFFF", content)
+        self.assertIn("&H70000000,-1,0,0,0,100,100,0,0,3,6,0,2", content)
         self.assertIn(",211,211,194,1", content)
         self.assertIn(",194,1\n", content)
         self.assertIn("WrapStyle: 0", content)
+        self.assertEqual(rendered.styles["English"].fontsize, 84)
+        self.assertEqual(rendered.styles["Chinese"].fontsize, 56)
+        self.assertEqual(len(rendered.events), 1)
+        self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
 
     def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
@@ -237,9 +254,9 @@ class FullVideoSubtitleTests(unittest.TestCase):
             report["translation_accuracy"]["status"],
             "not_verified",
         )
-        self.assertGreaterEqual(
+        self.assertAlmostEqual(
             report["subtitle_readability"]["english_to_chinese_size_ratio"],
-            1.2,
+            1.5,
         )
         self.assertEqual(
             report["subtitle_readability"]["lower_margin_percent"],
