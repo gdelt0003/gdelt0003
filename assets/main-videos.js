@@ -59,6 +59,18 @@ function renderMainVideos(payload) {
       'main-video-meta',
       [item.event_date, item.publisher, item.resolution].filter(Boolean).join(' · '),
     );
+    if (item.render_engine) {
+      const engine = addText(content, 'p', 'main-video-engine', `渲染工具：${item.render_engine}`);
+      const engineUrl = safeVideoUrl(item.render_engine_url);
+      if (engineUrl) {
+        const attribution = document.createElement('a');
+        attribution.href = engineUrl;
+        attribution.textContent = '上游项目与来源';
+        attribution.target = '_blank';
+        attribution.rel = 'noreferrer';
+        engine.append(' ', attribution);
+      }
+    }
     addText(content, 'p', 'main-video-review-status', item.review_status || '复核状态未登记');
     addText(content, 'p', 'main-video-note meta', item.note || '');
 

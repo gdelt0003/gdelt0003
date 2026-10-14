@@ -38,6 +38,8 @@ async function main() {
         id: 'first',
         title: 'First event',
         video_url: 'https://cdn.example.test/first.mp4',
+        render_engine: 'Open-source renderer v1',
+        render_engine_url: 'https://source.example.test/renderer',
         source_url: 'https://source.example.test/first',
         subtitles: [{ label: 'English SRT', url: 'captions/first.srt' }],
       },
@@ -71,6 +73,14 @@ async function main() {
   assert.equal(status.textContent, '2 条主视频', 'count only playable catalog entries');
   assert.equal(videos.children[0].children[1].children[0].textContent, 'First event');
   assert.equal(videos.children[1].children[1].children[0].textContent, 'Second event');
+  assert.match(
+    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').textContent,
+    /Open-source renderer v1/,
+  );
+  assert.equal(
+    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').children.find((node) => node.tagName === 'a').href,
+    'https://source.example.test/renderer',
+  );
   assert.equal(
     videos.children[0].children[0].children[0].src,
     'https://cdn.example.test/first.mp4',

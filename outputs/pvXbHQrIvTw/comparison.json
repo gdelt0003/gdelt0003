@@ -15,6 +15,67 @@
     "input_size_bytes": 262338614
   },
   "comparison_status": "not_run",
+  "pathways": [
+    {
+      "id": "smartsub-render",
+      "kind": "open_source_media",
+      "label": "buxuku/SmartSub 3.9.0",
+      "status": "executed_unverified",
+      "summary": "已在 GitHub-hosted runner 执行硬字幕渲染，产出 1920x1080 草稿。SmartSub 是上游开源渲染器；本仓库以固定版本依赖并明确归属，不把它的源码或模型结果称为 Copilot/GPT-6 产出。",
+      "repository_url": "https://github.com/buxuku/SmartSub",
+      "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544",
+      "workflow_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544"
+    },
+    {
+      "id": "caption-models",
+      "kind": "open_source_media",
+      "label": "faster-whisper large-v3-turbo + M2M100 1.2B",
+      "status": "caption_artifacts_reused_unverified",
+      "summary": "该 run 复用了既有的英/中字幕文件，没有在 SmartSub 渲染 run 中重新运行 ASR 或翻译。源音准确性、专名/数字/否定和翻译质量仍未核验，因此不报告比较分数。",
+      "repository_url": "https://github.com/SYSTRAN/faster-whisper",
+      "translation_source_url": "https://huggingface.co/facebook/m2m100_1.2B",
+      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544"
+    },
+    {
+      "id": "autosubs",
+      "kind": "open_source_media",
+      "label": "AutoSubs 说话人分色候选",
+      "status": "proposed_not_runner_validated",
+      "summary": "独立分支上的可选云端集成提案；PR 尚未合并，未在 hosted runner 完成真实模型/媒体验证，也没有与 SmartSub 的同输入质量对比。",
+      "repository_url": "https://github.com/tmoroney/auto-subs",
+      "evidence_url": "https://github.com/gdelt0003/gdelt0003/pull/24"
+    },
+    {
+      "id": "whisperx",
+      "kind": "open_source_media",
+      "label": "WhisperX 对齐候选",
+      "status": "research_only_not_run",
+      "summary": "候选开源对齐工具；本仓库当前没有可验证的 WhisperX 输出或同源运行记录，不作为已完成结果。",
+      "repository_url": "https://github.com/m-bain/whisperX"
+    }
+  ],
+  "copilot_engineering": {
+    "label": "Microsoft / GitHub Copilot coding-agent 协作路线",
+    "status": "implemented_and_deployed",
+    "summary": "Copilot coding-agent 会话在本仓库实现并交付 SmartSub runner 路径修复、仅串行化 Pages 部署的并发策略、预览元数据及站点发布测试。该项是工程实现与自动化成果，不等同于视频由 GPT-6 生成；agent 会话具体模型未记入此次媒体产物 provenance。",
+    "deliverables": [
+      {
+        "label": "SmartSub launcher 固定路径修复",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/21"
+      },
+      {
+        "label": "Pages 仅在 deploy job 串行化",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/23"
+      },
+      {
+        "label": "草稿预览登记与 Pages 展示",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/25"
+      }
+    ],
+    "deployment_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659"
+  },
   "smartsub_preview": {
     "status": "public_unverified_preview",
     "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
@@ -122,8 +183,8 @@
   "variants": [
     {
       "id": "open-source-baseline",
-      "label": "开源基线",
-      "description": "本仓库可复现基线；不以降低质量为目的。",
+      "label": "SmartSub 3.9.0 · 开源渲染路线",
+      "description": "基于独立上游开源 SmartSub 项目固定版本执行；仓库只记录自有 runner 编排和发布集成，不复制或冒领上游实现。",
       "status": "preview_unverified",
       "models": {
         "asr": "large-v3-turbo",
@@ -153,44 +214,6 @@
         "resolution": "1920x1080",
         "processing_seconds": 738,
         "cost_usd": 0,
-        "wer": null,
-        "translation_score": null,
-        "cue_sync_error_ms": null
-      }
-    },
-    {
-      "id": "microsoft-copilot-gpt6",
-      "label": "Microsoft Copilot / GPT-6（用户指定，未验证）",
-      "description": "只有在官方可用模型端点、模型 ID 和获授权凭证确认后才能运行；不以其他模型冒充。",
-      "status": "blocked_model_unavailable",
-      "models": {
-        "asr": null,
-        "translation": null
-      },
-      "render": "同一双语字幕版式；待官方模型端点与可复现配置确认",
-      "audit": [],
-      "quality_checks": {
-        "transcript_review": "not_run",
-        "translation_review": "not_run",
-        "audio_alignment_review": "not_run",
-        "rendered_frame_review": "not_run"
-      },
-      "video_url": null,
-      "subtitles": {
-        "english": null,
-        "chinese": null,
-        "bilingual": null
-      },
-      "transcript": {
-        "english": null,
-        "chinese": null
-      },
-      "metrics": {
-        "processed_input_size_bytes": null,
-        "duration_seconds": null,
-        "resolution": null,
-        "processing_seconds": null,
-        "cost_usd": null,
         "wer": null,
         "translation_score": null,
         "cue_sync_error_ms": null
