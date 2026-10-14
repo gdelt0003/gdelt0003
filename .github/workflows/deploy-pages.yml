@@ -778,17 +778,12 @@ jobs:
       always() &&
       (
         (
-          github.event_name == 'push' &&
-          needs.deploy.result == 'success'
-        ) ||
-        (
           github.event_name == 'workflow_dispatch' &&
           inputs.validate_release_evidence
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
           (
-            inputs.deploy_site_only ||
             inputs.process_full_video ||
             inputs.restyle_full_video
           ) &&
