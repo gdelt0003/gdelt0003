@@ -69,6 +69,22 @@ class DeployPagesWorkflowTests(unittest.TestCase):
             quality_gate,
         )
 
+    def test_comparison_video_job_checks_exact_uploaded_asset_before_rendering(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        job = job_body(workflow, "process-comparison-video")
+
+        self.assertIn("inputs.process_comparison_video", job)
+        self.assertIn("RIGHTS_CONFIRMED", job)
+        self.assertIn("SAME_EVENT_CONFIRMED", job)
+        self.assertIn("releases/assets/639450274", job)
+        self.assertIn("262338614", job)
+        self.assertIn(
+            "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+            job,
+        )
+        self.assertIn("--asset-prefix pvXbHQrIvTw", job)
+        self.assertIn("pvXbHQrIvTw-comparison-review-", job)
+
 
 if __name__ == "__main__":
     unittest.main()
