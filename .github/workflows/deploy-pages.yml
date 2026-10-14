@@ -48,7 +48,12 @@ on:
         required: false
         default: false
       process_smartsub_draft:
-        description: Render and publish a clearly labeled, unverified pvXbHQrIvTw SmartSub draft preview on a GitHub-hosted runner
+        description: Render a clearly labeled pvXbHQrIvTw SmartSub draft on a GitHub-hosted runner
+        type: boolean
+        required: false
+        default: false
+      publish_smartsub_draft:
+        description: Publish the rendered draft publicly only after all five evidence reviews are confirmed
         type: boolean
         required: false
         default: false
@@ -97,6 +102,36 @@ on:
         type: string
         required: false
         default: https://www.youtube.com/watch?v=pvXbHQrIvTw
+      comparison_clean_frames_confirmed:
+        description: I reviewed the built draft against source frames and confirmed its frame/graphics disclosure
+        type: boolean
+        required: false
+        default: false
+      comparison_clean_frames_evidence_url:
+        description: HTTPS evidence for clean-frame and embedded-graphics review
+        type: string
+        required: false
+        default: ''
+      comparison_english_asr_confirmed:
+        description: I reviewed the built draft's English captions against the exact source audio
+        type: boolean
+        required: false
+        default: false
+      comparison_english_asr_evidence_url:
+        description: HTTPS evidence for English ASR review against source audio
+        type: string
+        required: false
+        default: ''
+      comparison_chinese_translation_confirmed:
+        description: I reviewed the built draft's Chinese translation against verified English and source context
+        type: boolean
+        required: false
+        default: false
+      comparison_chinese_translation_evidence_url:
+        description: HTTPS evidence for Chinese translation review
+        type: string
+        required: false
+        default: ''
       restyle_full_video:
         description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
         type: boolean
@@ -697,6 +732,13 @@ jobs:
           RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+          PUBLISH_PUBLICLY: ${{ inputs.publish_smartsub_draft }}
+          CLEAN_FRAMES_CONFIRMED: ${{ inputs.comparison_clean_frames_confirmed }}
+          CLEAN_FRAMES_URL: ${{ inputs.comparison_clean_frames_evidence_url }}
+          ENGLISH_ASR_CONFIRMED: ${{ inputs.comparison_english_asr_confirmed }}
+          ENGLISH_ASR_URL: ${{ inputs.comparison_english_asr_evidence_url }}
+          CHINESE_TRANSLATION_CONFIRMED: ${{ inputs.comparison_chinese_translation_confirmed }}
+          CHINESE_TRANSLATION_URL: ${{ inputs.comparison_chinese_translation_evidence_url }}
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$RIGHTS_CONFIRMED" != "true" ] || [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
@@ -707,10 +749,28 @@ jobs:
           import os
           from urllib.parse import urlparse
 
-          for name in ("RIGHTS_URL", "IDENTITY_URL", "SOURCE_MATCH_URL"):
+          evidence_names = ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL")
+          if os.environ["PUBLISH_PUBLICLY"] == "true":
+              confirmations = (
+                  "CLEAN_FRAMES_CONFIRMED",
+                  "ENGLISH_ASR_CONFIRMED",
+                  "CHINESE_TRANSLATION_CONFIRMED",
+              )
+              if any(os.environ[name] != "true" for name in confirmations):
+                  raise SystemExit("All five evidence reviews must be explicitly confirmed before public release.")
+              evidence_names += (
+                  "CLEAN_FRAMES_URL",
+                  "ENGLISH_ASR_URL",
+                  "CHINESE_TRANSLATION_URL",
+              )
+          parsed_urls = []
+          for name in evidence_names:
               parsed = urlparse(os.environ[name])
               if parsed.scheme != "https" or not parsed.netloc:
                   raise SystemExit(f"{name} must be an HTTPS URL.")
+              parsed_urls.append(os.environ[name])
+          if os.environ["PUBLISH_PUBLICLY"] == "true" and len(set(parsed_urls)) != 5:
+              raise SystemExit("Public release requires five distinct HTTPS evidence URLs.")
           PY
           mkdir -p "$RUNNER_TEMP/smartsub-input" "$RUNNER_TEMP/smartsub-output"
           gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
@@ -819,6 +879,9 @@ jobs:
           RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+          CLEAN_FRAMES_URL: ${{ inputs.comparison_clean_frames_evidence_url }}
+          ENGLISH_ASR_URL: ${{ inputs.comparison_english_asr_evidence_url }}
+          CHINESE_TRANSLATION_URL: ${{ inputs.comparison_chinese_translation_evidence_url }}
         run: |
           set -euo pipefail
           source="$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
@@ -878,6 +941,9 @@ jobs:
               "source_event_evidence": os.environ["IDENTITY_URL"],
               "source_match_evidence": os.environ["SOURCE_MATCH_URL"],
               "rights_evidence": os.environ["RIGHTS_URL"],
+              "clean_frame_review_evidence": os.environ["CLEAN_FRAMES_URL"] or None,
+              "english_asr_review_evidence": os.environ["ENGLISH_ASR_URL"] or None,
+              "chinese_translation_review_evidence": os.environ["CHINESE_TRANSLATION_URL"] or None,
               "subtitle_source_run_id": source_run_id,
               "source_manifest_checks": reuse["quality_checks"],
               "prior_subtitle_models": {
@@ -937,6 +1003,7 @@ jobs:
         shell: bash
 
       - name: Publish the preview as a separate prerelease
+        if: inputs.publish_smartsub_draft
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -959,11 +1026,15 @@ jobs:
             --clobber
         shell: bash
 
-      - name: Upload private runner evidence for Pages deployment
+      - name: Upload rendered draft and private runner evidence
         uses: actions/upload-artifact@v4
         with:
           name: pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}
           path: |
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.en.srt
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.en-zh.srt
             ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft-manifest.json
             ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft-review.json
             ${{ runner.temp }}/smartsub-output/style-report.json
@@ -1211,6 +1282,7 @@ jobs:
         (
           github.event_name == 'workflow_dispatch' &&
           inputs.process_smartsub_draft &&
+          inputs.publish_smartsub_draft &&
           needs.render-smartsub-draft.result == 'success'
         ) ||
         (
@@ -1249,14 +1321,14 @@ jobs:
           path: generated/full-video
 
       - name: Download SmartSub preview manifest
-        if: inputs.process_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}
           path: ${{ runner.temp }}/smartsub-preview
 
       - name: Add published SmartSub preview URLs to Pages data
-        if: inputs.process_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
@@ -1267,7 +1339,7 @@ jobs:
             --release-url "https://github.com/${GITHUB_REPOSITORY}/releases/download/pvXbHQrIvTw-smartsub-draft-${GITHUB_RUN_ID}"
 
       - name: Persist the published preview URLs
-        if: inputs.process_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

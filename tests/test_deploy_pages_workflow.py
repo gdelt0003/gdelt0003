@@ -146,6 +146,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         deploy = job_body(workflow, "deploy")
 
         self.assertIn("needs.render-smartsub-draft.result == 'success'", deploy)
+        self.assertIn("inputs.publish_smartsub_draft", deploy)
         self.assertIn("pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}", deploy)
         self.assertIn("scripts/publish_smartsub_preview.py", deploy)
         self.assertIn("releases/download/pvXbHQrIvTw-smartsub-draft-", deploy)
@@ -158,6 +159,25 @@ class DeployPagesWorkflowTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("preview_unverified", script)
+
+    def test_smartsub_can_render_privately_without_bypassing_publication_evidence(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        render = job_body(workflow, "render-smartsub-draft")
+        deploy = job_body(workflow, "deploy")
+
+        self.assertIn("publish_smartsub_draft:\n        description:", workflow)
+        self.assertIn("default: false", workflow.split("publish_smartsub_draft:", 1)[1].split(
+            "smartsub_source_artifact_run_id:", 1
+        )[0])
+        self.assertIn("if: inputs.publish_smartsub_draft", render)
+        self.assertIn("five distinct HTTPS evidence URLs", render)
+        self.assertIn("CLEAN_FRAMES_CONFIRMED", render)
+        self.assertIn("ENGLISH_ASR_CONFIRMED", render)
+        self.assertIn("CHINESE_TRANSLATION_CONFIRMED", render)
+        self.assertIn("pvXbHQrIvTw-smartsub-draft.mp4", render.split(
+            "- name: Upload rendered draft and private runner evidence", 1
+        )[1])
+        self.assertIn("inputs.process_smartsub_draft && inputs.publish_smartsub_draft", deploy)
 
     def test_comparison_frame_review_is_cloud_only_and_captures_flagged_cues(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
