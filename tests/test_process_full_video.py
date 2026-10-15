@@ -153,20 +153,22 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(r"\p1", rendered.events[0].text)
         self.assertIn(r"\1a&H00&", rendered.events[0].text)
         self.assertEqual(rendered.events[0].text, rendered.events[3].text)
-        self.assertIn(r"\pos(106,827)", rendered.events[0].text)
-        self.assertIn("l 1709 0 l 1709 221", rendered.events[0].text)
+        self.assertIn(r"\pos(0,859)", rendered.events[0].text)
+        self.assertIn("l 1920 0 l 1920 221", rendered.events[0].text)
         self.assertIn(r"\an8\pos(960,", rendered.events[1].text)
         self.assertIn(r"\an2\pos(960,", rendered.events[2].text)
         self.assertIn("完整的中文句子。", rendered.events[1].text)
         self.assertIn("A complete English sentence.", rendered.events[2].text)
-        self.assertIn(r"\pos(960,1035)", rendered.events[2].text)
-        self.assertIn(r"\pos(960,1035)", rendered.events[5].text)
+        self.assertIn(r"\pos(960,1067)", rendered.events[2].text)
+        self.assertIn(r"\pos(960,1067)", rendered.events[5].text)
         self.assertNotIn(r"\N", rendered.events[2].text)
         self.assertIn(r"\N", rendered.events[5].text)
         self.assertGreaterEqual(
-            rendered.styles["English"].fontsize,
-            round(rendered.styles["Chinese"].fontsize * 1.20),
+            rendered.styles["Chinese"].fontsize,
+            round(rendered.styles["English"].fontsize * 1.20),
         )
+        self.assertEqual(rendered.styles["Chinese"].fontsize, 28)
+        self.assertEqual(rendered.styles["English"].fontsize, 22)
 
     def test_katie_fixed_layout_preserves_panel_while_highlighting_words(self):
         cue = Cue(0, 2.5, "A complete English sentence.", "完整的中文句子。")
@@ -193,7 +195,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
 
         self.assertTrue(highlighting_applied)
         self.assertEqual(len(rendered.events), 3)
-        self.assertIn(r"\pos(960,1035)", english_event.text)
+        self.assertIn(r"\pos(960,1067)", english_event.text)
         self.assertIn(r"\t(10,11,\fscy108)", english_event.text)
         self.assertTrue(
             all(
@@ -228,7 +230,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
             english_event = rendered.events[2]
 
         self.assertFalse(highlighting_applied)
-        self.assertIn(r"\pos(960,1035)", english_event.text)
+        self.assertIn(r"\pos(960,1067)", english_event.text)
         self.assertNotIn(r"\fscy108", english_event.text)
         self.assertIn("A complete English sentence.", english_event.text)
     def test_katie_wrapping_preserves_text_and_rejects_overflow(self):
@@ -442,14 +444,15 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(readability["visual_frame_review"], "not_verified")
         self.assertEqual(readability["line_order"], ["zh-Hans", "en"])
         self.assertGreaterEqual(
-            readability["english_to_chinese_size_ratio"],
+            readability["chinese_to_english_size_ratio"],
             1.20,
         )
         self.assertAlmostEqual(
-            readability["english_to_chinese_size_ratio"],
-            1.26,
+            readability["chinese_to_english_size_ratio"],
+            1.27,
             places=2,
         )
+        self.assertEqual(readability["lower_margin_percent"], 0)
 
     def test_copies_review_evidence_for_output_gate(self):
         with tempfile.TemporaryDirectory() as directory:
