@@ -12,7 +12,7 @@
       <nav class="site-nav" aria-label="主要导航">
         <a class="site-brand" href="#top">GDELT · 事件视频</a>
         <div class="site-nav-links">
-          <a href="#copilot-results">Copilot 成果</a>
+          <a href="copilot-results.html">Copilot 成果</a>
           <a href="#featured-video">主视频</a>
           <a href="#highlights">短片</a>
           <a href="#event-research">事件与来源</a>
@@ -26,36 +26,6 @@
         <p class="subtitle">全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态</p>
         <p class="meta">本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。</p>
       </header>
-      <section class="panel copilot-results-panel" id="copilot-results" aria-labelledby="copilot-results-title">
-        <div class="highlights-heading">
-          <div>
-            <p class="eyebrow">MICROSOFT / GITHUB COPILOT CODING AGENT</p>
-            <h2 id="copilot-results-title">Copilot 协作开发成果</h2>
-          </div>
-          <span class="meta">已合并 · 已部署</span>
-        </div>
-        <p class="meta copilot-results-intro">这里展示 Copilot coding-agent 在 gdelt0003/gdelt0003 实现的工程交付，不把开源媒体工具的代码或生成结果冒领为微软成果。SmartSub 保持独立上游依赖与来源归属；本仓库贡献集中在 runner 编排、路径修复、证据登记和 Pages 发布。</p>
-        <div class="copilot-results-grid">
-          <article class="copilot-result-card">
-            <h3>云端渲染链路</h3>
-            <p>修复固定版本 SmartSub 在 GitHub-hosted runner 上的启动路径，校验来源指纹并保存可追溯的运行清单。</p>
-            <a href="https://github.com/gdelt0003/gdelt0003/pull/21">PR #21 · launcher 路径修复</a>
-            <a href="https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544">Run #38540536544 · 云端生成的未核验草稿</a>
-          </article>
-          <article class="copilot-result-card">
-            <h3>部署可靠性</h3>
-            <p>把 Pages 并发锁收窄到部署 job，避免慢速渲染占住站点发布队列。</p>
-            <a href="https://github.com/gdelt0003/gdelt0003/pull/23">PR #23 · Pages 并发修复</a>
-          </article>
-          <article class="copilot-result-card">
-            <h3>结果进入首页与事件页</h3>
-            <p>登记预览、字幕和审查状态；Pages 成功部署。媒体仍标为未经核验，不代表最终发布质量通过。</p>
-            <a href="https://github.com/gdelt0003/gdelt0003/pull/25">PR #25 · 预览登记与页面展示</a>
-            <a href="https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659">Pages run #38544067659 · 部署成功</a>
-          </article>
-        </div>
-        <p class="meta copilot-results-note">此次视频渲染的媒体工具是 SmartSub 3.9.0；Copilot coding-agent 的会话模型未记录在该视频 provenance 中，因此不把视频标作 GPT-6 生成。开源工具及其许可证/署名继续按上游保留。</p>
-      </section>
       <section class="panel main-videos-panel" id="featured-video" aria-labelledby="main-videos-title">
         <div class="highlights-heading">
           <div>
