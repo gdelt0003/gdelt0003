@@ -28,7 +28,14 @@ class EventWorkbookTests(unittest.TestCase):
 
         self.assertEqual(
             workbook.sheetnames,
-            ["Events", "Sources", "Source Directory", "Read me", "User Instructions"],
+            [
+                "Events",
+                "Sources",
+                "Source Directory",
+                "Candidate Review",
+                "Read me",
+                "User Instructions",
+            ],
         )
         events = list(workbook["Events"].values)
         headers = events[0]
@@ -63,6 +70,43 @@ class EventWorkbookTests(unittest.TestCase):
         self.assertEqual(ap[source_headers.index("Video resolution")], "1920x1080 (HD1080 player decode)")
         self.assertEqual(ap[source_headers.index("Clean-source status")], "failed")
         self.assertIn("not watermark-free", ap[source_headers.index("Evidence and limitations")])
+
+        candidate_rows = list(workbook["Candidate Review"].values)
+        candidate_headers = candidate_rows[0]
+        columbus_candidates = [
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Event title")]
+            == "President Trump Hosts a Columbus Day Celebration"
+        ]
+        self.assertLessEqual(len(columbus_candidates), 10)
+        white_house_anchor = next(
+            row
+            for row in columbus_candidates
+            if row[candidate_headers.index("Publisher")] == "The White House"
+        )
+        self.assertIn(
+            "embedded graphics reported, not a clean editing source",
+            white_house_anchor[candidate_headers.index("Current source path")],
+        )
+        self.assertEqual(
+            white_house_anchor[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            white_house_anchor[
+                candidate_headers.index("Difference from official runtime (seconds)")
+            ],
+            0,
+        )
+        self.assertIn(
+            "not a trust score",
+            candidate_headers[candidate_headers.index("Queue rank (not a trust score)")],
+        )
         for row in source_rows[1:]:
             local_time = row[source_headers.index("Page-published local display (not event time)")]
             timestamp = row[source_headers.index("Published metadata (UTC; not event time)")]
@@ -156,6 +200,80 @@ class EventWorkbookTests(unittest.TestCase):
         self.assertIsNone(lead[headers.index("Event ID")])
         self.assertEqual(lead[headers.index("Evidence status")], "article_metadata_only")
         self.assertIn("not verify event occurrence", lead[headers.index("Source/search limitations")])
+        workbook.close()
+
+    def test_candidate_review_selects_only_a_verified_same_moment_alternate(self):
+        catalog = {
+            "events": [
+                {
+                    "event_id": "evt-example",
+                    "identity": {"title": "Example event"},
+                    "official_reference": {
+                        "duration_seconds": 100,
+                        "video_url": "https://www.youtube.com/watch?v=official",
+                    },
+                    "sources": [
+                        {
+                            "publisher": "The White House",
+                            "source_role": "official_event_anchor",
+                            "url": "https://www.youtube.com/watch?v=official",
+                            "match_status": "verified_event_anchor",
+                            "clean_source_status": "failed",
+                            "video_resolution": "1280x720",
+                            "duration_seconds": 100,
+                            "evidence": "Embedded graphics visible.",
+                        },
+                        {
+                            "publisher": "Example News",
+                            "source_role": "same_event_source_lead",
+                            "url": "https://www.youtube.com/watch?v=alternate",
+                            "match_status": "same_speech_moment_observed",
+                            "clean_source_status": "passed",
+                            "video_resolution": "1920x1080",
+                            "duration_seconds": 105,
+                            "independence_status": "independent_publisher",
+                            "evidence": "Same speech moment directly matched.",
+                        },
+                        {
+                            "publisher": "Unverified Lead",
+                            "source_role": "same_event_search_lead",
+                            "url": "https://www.youtube.com/watch?v=lead",
+                            "match_status": "unverified",
+                            "clean_source_status": "unverified",
+                            "video_resolution": "unknown",
+                            "duration_seconds": 100,
+                        },
+                    ],
+                }
+            ],
+            "matching_rule": "event evidence",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "candidate-review.xlsx"
+            build_workbook(catalog, output)
+            workbook = load_workbook(output, read_only=False, data_only=True)
+
+        rows = list(workbook["Candidate Review"].values)
+        headers = rows[0]
+        alternate = next(
+            row
+            for row in rows[1:]
+            if row[headers.index("Publisher")] == "Example News"
+        )
+        anchor = next(
+            row
+            for row in rows[1:]
+            if row[headers.index("Publisher")] == "The White House"
+        )
+        self.assertEqual(alternate[headers.index("Queue rank (not a trust score)")], 1)
+        self.assertIn(
+            "Preferred alternate",
+            alternate[headers.index("Current source path")],
+        )
+        self.assertIn(
+            "Another candidate meets",
+            anchor[headers.index("Current source path")],
+        )
         workbook.close()
 
 

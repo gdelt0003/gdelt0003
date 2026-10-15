@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -79,6 +81,204 @@ SOURCE_DIRECTORY_HEADERS = [
     "User-provided URL (verbatim)",
     "User annotation on this source (verbatim)",
 ]
+VIDEO_CANDIDATE_HEADERS = [
+    "Event ID",
+    "Event title",
+    "Queue rank (not a trust score)",
+    "Current source path",
+    "Publisher",
+    "Candidate title",
+    "Source URL",
+    "Same-event evidence",
+    "Clean-source status",
+    "Observed stream resolution (not thumbnail/source-master resolution)",
+    "Duration (seconds)",
+    "Difference from official runtime (seconds)",
+    "Source provenance / lineage (reported)",
+    "Evidence and limitations",
+]
+
+_MATCH_EVIDENCE_ORDER = (
+    "same_speech_moment_observed",
+    "same_event_contiguous_speech_observed",
+    "same_event_scene_verified",
+    "same_event_context_only",
+    "verified_event_anchor",
+)
+_CLEAN_STATUS_ORDER = {"passed": 0, "unverified": 1, "failed": 2}
+
+
+def _video_resolution_pixels(value: Any) -> int | None:
+    if not isinstance(value, str):
+        return None
+    match = re.search(r"(?<!\d)(\d{3,5})\s*[x×]\s*(\d{3,5})(?!\d)", value)
+    if not match:
+        return None
+    width, height = (int(part) for part in match.groups())
+    return width * height if width > 0 and height > 0 else None
+
+
+def _positive_duration(value: Any) -> float | None:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or value <= 0
+    ):
+        return None
+    return float(value)
+
+
+def _candidate_order(
+    source: dict[str, Any], official_duration: float | None
+) -> tuple[Any, ...]:
+    match_status = str(source.get("match_status", "")).casefold()
+    match_rank = next(
+        (
+            rank
+            for rank, evidence in enumerate(_MATCH_EVIDENCE_ORDER)
+            if evidence in match_status
+        ),
+        len(_MATCH_EVIDENCE_ORDER),
+    )
+    clean_rank = _CLEAN_STATUS_ORDER.get(
+        str(source.get("clean_source_status", "unverified")).casefold(), 1
+    )
+    resolution_pixels = _video_resolution_pixels(source.get("video_resolution"))
+    duration = _positive_duration(source.get("duration_seconds"))
+    duration_delta = (
+        abs(duration - official_duration)
+        if duration is not None and official_duration is not None
+        else math.inf
+    )
+    return (
+        match_rank,
+        clean_rank,
+        -(resolution_pixels or 0),
+        duration_delta,
+        str(source.get("publisher", "")).casefold(),
+        str(source.get("url", "")).casefold(),
+    )
+
+
+def _has_observed_embedded_graphics(source: dict[str, Any]) -> bool:
+    graphics = ("banner", "logo", "emblem", "qr code", "lower-third", "watermark", "ticker")
+    observations = ("visible", "present", "observed", "shows", "seen")
+    for clause in re.split(r"[.;]", str(source.get("evidence", "")).casefold()):
+        if re.search(r"\b(?:no|not|never|absent)\b", clause):
+            continue
+        if any(term in clause for term in graphics) and any(
+            term in clause for term in observations
+        ):
+            return True
+    return False
+
+
+def _candidate_path(
+    candidate: dict[str, Any],
+    anchor: dict[str, Any] | None,
+    selected_alternate: dict[str, Any] | None,
+) -> str:
+    if selected_alternate is candidate:
+        return (
+            "Preferred alternate: same speech moment, clean status passed, and "
+            "stream resolution observed; reuse rights and source lineage still "
+            "require review."
+        )
+    if selected_alternate is not None:
+        return (
+            "Another candidate meets the same-moment, clean-status, and observed-"
+            "resolution checks; this row is a comparator."
+        )
+    if anchor is None:
+        return "No official video anchor recorded; manual review required."
+    if candidate is anchor:
+        if _has_observed_embedded_graphics(anchor):
+            return (
+                "Use White House YouTube event anchor for identity; embedded "
+                "graphics reported, not a clean editing source."
+            )
+        if str(anchor.get("clean_source_status", "")).casefold() == "failed":
+            return (
+                "Use White House YouTube event anchor for identity; it failed "
+                "the clean-source check and is not a clean editing source."
+            )
+        return (
+            "Use White House YouTube event anchor for identity; cleanliness is "
+            "unverified, do not call it clean."
+        )
+    return "No suitable alternate verified; this row remains a review lead."
+
+
+def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
+    rows = []
+    for event in catalog["events"]:
+        identity = event.get("identity") or {}
+        event_title = identity.get("title", "")
+        event_id = event.get("event_id") or ""
+        official_reference = event.get("official_reference") or {}
+        official_duration = _positive_duration(
+            official_reference.get("duration_seconds")
+        )
+        sources = [
+            source
+            for source in event.get("sources") or []
+            if isinstance(source, dict)
+            and isinstance(source.get("url"), str)
+            and source.get("url")
+            and (
+                source.get("source_role") == "official_event_anchor"
+                or str(source.get("source_role", "")).startswith("same_event_")
+            )
+        ]
+        anchor = next(
+            (source for source in sources if source.get("source_role") == "official_event_anchor"),
+            None,
+        )
+        ordered = sorted(
+            sources,
+            key=lambda source: _candidate_order(source, official_duration),
+        )
+        selected_alternate = next(
+            (
+                source
+                for source in ordered
+                if source is not anchor
+                and source.get("match_status") == "same_speech_moment_observed"
+                and source.get("clean_source_status") == "passed"
+                and _video_resolution_pixels(source.get("video_resolution"))
+                is not None
+            ),
+            None,
+        )
+        for rank, source in enumerate(ordered[:10], start=1):
+            duration = _positive_duration(source.get("duration_seconds"))
+            duration_delta = (
+                round(abs(duration - official_duration), 3)
+                if duration is not None and official_duration is not None
+                else ""
+            )
+            rows.append(
+                [
+                    event_id,
+                    event_title,
+                    rank,
+                    _candidate_path(source, anchor, selected_alternate),
+                    source.get("publisher", ""),
+                    source.get("title", ""),
+                    source.get("url", ""),
+                    source.get("match_status", "unverified"),
+                    source.get("clean_source_status", "unverified"),
+                    source.get("video_resolution", "unknown"),
+                    source.get("duration_seconds")
+                    if source.get("duration_seconds") is not None
+                    else "",
+                    duration_delta,
+                    source.get("independence_status", "unverified"),
+                    source.get("evidence", ""),
+                ]
+            )
+    return rows
 
 
 def published_at_utc(timestamp: Any) -> str | None:
@@ -157,6 +357,8 @@ def build_workbook(
     sources_sheet.append(SOURCE_HEADERS)
     source_directory_sheet = workbook.create_sheet("Source Directory")
     source_directory_sheet.append(SOURCE_DIRECTORY_HEADERS)
+    candidate_review_sheet = workbook.create_sheet("Candidate Review")
+    candidate_review_sheet.append(VIDEO_CANDIDATE_HEADERS)
     notes_sheet = workbook.create_sheet("Read me")
     instructions_sheet = workbook.create_sheet("User Instructions")
     instructions_sheet.append(["Item", "User-provided text (verbatim)"])
@@ -347,6 +549,25 @@ def build_workbook(
             "rehosting or publishing any video."
         ]
     )
+    notes_sheet.append(
+        [
+            "Candidate Review contains up to ten existing video-source rows per "
+            "event. Queue order is same-event evidence, clean status, observed "
+            "stream resolution, duration closeness to the official runtime, then "
+            "publisher/URL for stable ties. It is not a trust score; unknown "
+            "resolution is not inferred from thumbnails, and rows are never "
+            "invented to fill the limit. An alternate is selected only when the "
+            "same speech moment, clean status, and observed stream resolution are "
+            "all explicitly recorded. Otherwise the White House YouTube anchor "
+            "remains the identity reference and is not called clean."
+        ]
+    )
+    for row in _candidate_review_rows(catalog):
+        candidate_review_sheet.append(row)
+        link_cell = candidate_review_sheet.cell(candidate_review_sheet.max_row, 7)
+        if link_cell.value:
+            link_cell.hyperlink = link_cell.value
+            link_cell.style = "Hyperlink"
     if discovery is not None:
         discovery_sheet = workbook.create_sheet("New White House leads")
         discovery_sheet.append(
@@ -457,6 +678,10 @@ def build_workbook(
     style_sheet(
         source_directory_sheet,
         [28, 24, 42, 74, 14, 24, 18, 28, 24, 30, 18, 84, 74, 74, 82],
+    )
+    style_sheet(
+        candidate_review_sheet,
+        [28, 46, 24, 68, 28, 64, 70, 44, 22, 52, 20, 38, 42, 100],
     )
     style_sheet(instructions_sheet, [40, 150])
     notes_sheet["A1"].font = Font(bold=True, color="FFFFFF")
