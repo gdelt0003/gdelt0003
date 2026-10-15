@@ -1,0 +1,343 @@
+name: Publish Katie Zacharia unverified full-video preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_test_preview:
+        description: Publish a machine-generated test preview and deploy it to Pages
+        type: boolean
+        required: true
+        default: false
+      same_event_source_confirmed:
+        description: I confirmed the official White House listing identifies this exact source
+        type: boolean
+        required: true
+        default: false
+      reuse_rights_confirmed:
+        description: I confirmed this source may be processed and shared as an unverified test preview
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish-preview:
+    if: github.ref == 'refs/heads/main' && inputs.publish_test_preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the published site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache local ASR and translation models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-katie-full-video-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Require exact-event and reuse-rights confirmations
+        env:
+          PUBLISH_PREVIEW: ${{ inputs.publish_test_preview }}
+          SAME_EVENT_CONFIRMED: ${{ inputs.same_event_source_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+        run: |
+          set -euo pipefail
+          if [[ "$PUBLISH_PREVIEW" != "true" ]]; then
+            echo "Explicit test-preview publication confirmation is required." >&2
+            exit 1
+          fi
+          if [[ "$SAME_EVENT_CONFIRMED" != "true" ]]; then
+            echo "Exact-event source confirmation is required before processing." >&2
+            exit 1
+          fi
+          if [[ "$RIGHTS_CONFIRMED" != "true" ]]; then
+            echo "Reuse-rights confirmation is required before processing." >&2
+            exit 1
+          fi
+          python - <<'PY'
+          from urllib.parse import urlparse
+
+          urls = (
+              "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
+              "https://www.whitehouse.gov/copyright/",
+          )
+          for value in urls:
+              parsed = urlparse(value)
+              if parsed.scheme != "https" or not parsed.netloc:
+                  raise SystemExit(f"Evidence URL must use HTTPS: {value}")
+          PY
+        shell: bash
+
+      - name: Install FFmpeg, CJK fonts, and local inference dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+          ffmpeg -version
+          ffprobe -version
+        shell: bash
+
+      - name: Verify and download the exact draft-release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source_tag="g7we6gecwnc-source-intake-20261015"
+          source_asset_id="642103215"
+          source_asset_name="katie-zacharia-g7we6gecwnc-source.mp4"
+          source_size="313019832"
+          source_sha256="97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7"
+          mkdir -p "$RUNNER_TEMP/katie-source" "$RUNNER_TEMP/katie-output"
+
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$source_tag" \
+            > "$RUNNER_TEMP/katie-source/release.json"
+          gh api "repos/$GITHUB_REPOSITORY/releases/assets/$source_asset_id" \
+            > "$RUNNER_TEMP/katie-source/asset.json"
+          python - "$RUNNER_TEMP/katie-source/release.json" \
+            "$RUNNER_TEMP/katie-source/asset.json" <<'PY'
+          import json
+          import sys
+
+          release_path, asset_path = sys.argv[1:]
+          release = json.load(open(release_path, encoding="utf-8"))
+          asset = json.load(open(asset_path, encoding="utf-8"))
+          if release.get("tag_name") != "g7we6gecwnc-source-intake-20261015":
+              raise SystemExit("Source release tag mismatch.")
+          if release.get("draft") is not True:
+              raise SystemExit("Source intake release must remain a draft.")
+          expected = {
+              "id": 642103215,
+              "name": "katie-zacharia-g7we6gecwnc-source.mp4",
+              "size": 313019832,
+              "digest": "sha256:97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7",
+              "state": "uploaded",
+          }
+          for key, value in expected.items():
+              if asset.get(key) != value:
+                  raise SystemExit(
+                      f"Source asset {key} mismatch: expected {value!r}, "
+                      f"got {asset.get(key)!r}"
+                  )
+          if not any(item.get("id") == expected["id"] for item in release.get("assets", [])):
+              raise SystemExit("Pinned source asset is not attached to the draft release.")
+          PY
+
+          download_started_at="$(python -c 'from datetime import datetime, timezone; print(datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"))')"
+          curl --fail --location --retry 3 \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/octet-stream" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/${source_asset_id}" \
+            --output "$RUNNER_TEMP/katie-source/$source_asset_name"
+          test "$(stat -c %s "$RUNNER_TEMP/katie-source/$source_asset_name")" = "$source_size"
+          echo "$source_sha256  $RUNNER_TEMP/katie-source/$source_asset_name" \
+            | sha256sum --check
+          ffprobe -v error -show_entries format=duration,size \
+            -show_entries stream=codec_type,width,height \
+            -of json "$RUNNER_TEMP/katie-source/$source_asset_name" \
+            > "$RUNNER_TEMP/katie-source/source-probe.json"
+          python - "$RUNNER_TEMP/katie-source/source-probe.json" \
+            "$RUNNER_TEMP/katie-source/source-verification.json" \
+            "$download_started_at" "$source_size" "$source_sha256" <<'PY'
+          import json
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          probe_path, verification_path, started_at, size, digest = sys.argv[1:]
+          probe = json.loads(Path(probe_path).read_text(encoding="utf-8"))
+          video = next(
+              (stream for stream in probe.get("streams", [])
+               if stream.get("codec_type") == "video"),
+              None,
+          )
+          if video is None:
+              raise SystemExit("Downloaded source has no video stream.")
+          width, height = int(video["width"]), int(video["height"])
+          if width < 1920 or height < 1080:
+              raise SystemExit(
+                  f"Source is below 1920x1080 ({width}x{height}); refusing to upscale."
+              )
+          duration = float(probe["format"]["duration"])
+          if abs(duration - 866) > 3:
+              raise SystemExit(
+                  f"Source duration {duration:.3f}s differs from official listing "
+                  "duration 866s by more than 3s."
+              )
+          now = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace(
+              "+00:00", "Z"
+          )
+          record = {
+              "release_tag": "g7we6gecwnc-source-intake-20261015",
+              "release_is_draft": True,
+              "asset_id": "642103215",
+              "asset_name": "katie-zacharia-g7we6gecwnc-source.mp4",
+              "size_bytes": int(size),
+              "sha256": digest,
+              "verified_download_started_at": started_at,
+              "verified_at": now,
+              "duration_seconds": duration,
+              "width": width,
+              "height": height,
+              "source_url": "https://www.youtube.com/watch?v=g7we6gecwnc",
+              "event_identity_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
+              "source_match_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
+              "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
+              "same_event_source_match_confirmed": True,
+              "reuse_rights_confirmed": True,
+              "reuse_rights_status": (
+                  "user_requested_public_test_preview; White House copyright policy "
+                  "consulted; third-party or transferred-rights exceptions not "
+                  "independently checked"
+              ),
+          }
+          Path(verification_path).write_text(
+              json.dumps(record, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(
+              f"Verified {width}x{height}, {duration:.3f}s source; "
+              f"SHA-256 {digest}."
+          )
+          PY
+        shell: bash
+
+      - name: Transcribe, translate, burn captions, and record provenance
+        run: |
+          set -euo pipefail
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/katie-source/katie-zacharia-g7we6gecwnc-source.mp4" \
+            --output-dir "$RUNNER_TEMP/katie-output" \
+            --asset-prefix katie-zacharia-g7we6gecwnc
+          python scripts/publish_full_video_preview.py \
+            --manifest "$RUNNER_TEMP/katie-output/manifest.json" \
+            --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \
+            --source-verification "$RUNNER_TEMP/katie-source/source-verification.json" \
+            --workflow-run-id "$GITHUB_RUN_ID"
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/katie-output/manifest.json"
+        shell: bash
+
+      - name: Preserve runner provenance and generated subtitles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: katie-zacharia-full-video-preview-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/katie-source/source-verification.json
+            ${{ runner.temp }}/katie-source/source-probe.json
+            ${{ runner.temp }}/katie-output/manifest.json
+            ${{ runner.temp }}/katie-output/operation-audit.json
+            ${{ runner.temp }}/katie-output/*.srt
+            ${{ runner.temp }}/katie-output/*.vtt
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - name: Create the public unverified-preview prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="katie-zacharia-g7we6gecwnc-bilingual-preview-${GITHUB_RUN_ID}"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          **UNVERIFIED MACHINE-GENERATED TEST PREVIEW — NOT APPROVED FOR FINAL RELEASE**
+
+          Source: [official White House event page](https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/) and [official YouTube recording](https://www.youtube.com/watch?v=g7we6gecwnc).
+
+          Source asset ID `642103215` was downloaded from the private intake draft and checked against its pinned size and SHA-256. The render used the repository's `scripts/process_full_video.py` pipeline on a GitHub-hosted CPU runner: faster-whisper `large-v3-turbo`, Hugging Face Transformers `facebook/m2m100_1.2B`, and FFmpeg. No paid model API, voice cloning, or synthesized speech was used.
+
+          English ASR accuracy, Chinese translation accuracy, exact source audio/frame match, readability, and complete visual review are **not verified**. The release gate remains blocked. Original source audio and frame are retained; no claim is made that source graphics are absent. The White House copyright page states that government-produced materials are generally not copyright protected but notes transferred/third-party exceptions; those exceptions were not independently checked.
+          NOTES
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "Katie Zacharia Oct. 13 briefing · UNVERIFIED bilingual test preview" \
+              --notes-file "$RUNNER_TEMP/release-notes.md" \
+              --prerelease
+          fi
+          gh release upload "$tag" \
+            "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc-bilingual.mp4" \
+            "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc.en.srt" \
+            "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc.zh-Hans.srt" \
+            "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc.en-zh.srt" \
+            "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc.en-zh.vtt" \
+            "$RUNNER_TEMP/katie-output/manifest.json" \
+            "$RUNNER_TEMP/katie-output/operation-audit.json" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
+
+      - name: Add the preview and subtitle links to the Pages catalog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="katie-zacharia-g7we6gecwnc-bilingual-preview-${GITHUB_RUN_ID}"
+          release_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}"
+          python scripts/publish_full_video_preview.py \
+            --manifest "$RUNNER_TEMP/katie-output/manifest.json" \
+            --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \
+            --main-videos outputs/main-videos.json \
+            --release-url "$release_url" \
+            --workflow-run-id "$GITHUB_RUN_ID"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/main-videos.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: record Katie Zacharia unverified video preview"
+            git push
+          fi
+
+      - name: Upload the static Pages site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy the preview to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify deployed Pages and public video assets
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          tag="katie-zacharia-g7we6gecwnc-bilingual-preview-${GITHUB_RUN_ID}"
+          urls=(
+            "${PAGE_URL%/}/"
+            "${PAGE_URL%/}/outputs/main-videos.json"
+            "https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}/katie-zacharia-g7we6gecwnc-bilingual.mp4"
+            "https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}/katie-zacharia-g7we6gecwnc.en-zh.vtt"
+          )
+          for url in "${urls[@]}"; do
+            status="$(curl --location --silent --show-error --output /dev/null \
+              --write-out '%{http_code}' "$url")"
+            echo "$status $url"
+            if [[ ! "$status" =~ ^2[0-9][0-9]$ ]]; then
+              echo "Published preview URL did not return a successful HTTP status." >&2
+              exit 1
+            fi
+          done
+        shell: bash
