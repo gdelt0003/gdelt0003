@@ -74,7 +74,7 @@
       .map(({ source }) => source);
   }
 
-  function groupByCategory(sources, maxPerCategory = 10) {
+  function groupByCategory(sources) {
     const ranked = rank(sources);
     const groups = new Map();
     for (const source of ranked) {
@@ -93,7 +93,7 @@
         label: category === 'video' ? '视频' : category === 'news' ? '新闻/媒体' : category === 'social' ? '社交/平台' : '其他',
         total: items.length,
         confirmedCount: items.filter((source) => String(source.classification || '').toLowerCase() === 'confirmed').length,
-        sources: items.slice(0, maxPerCategory),
+        sources: items,
       });
     }
     for (const [category, items] of groups.entries()) {
@@ -103,7 +103,7 @@
           label: '其他',
           total: items.length,
           confirmedCount: items.filter((source) => String(source.classification || '').toLowerCase() === 'confirmed').length,
-          sources: items.slice(0, maxPerCategory),
+          sources: items,
         });
       }
     }

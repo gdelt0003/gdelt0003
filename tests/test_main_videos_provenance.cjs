@@ -153,9 +153,10 @@ async function main() {
   assert.ok(
     cards[0].children.some((child) => (
       child.className === 'main-video-source-trust-note'
-      && child.textContent.includes('未评分（评分口径未提供）')
+      && child.textContent.includes('来源可信度: 未评分（来源可信度口径未提供）')
+      && !child.textContent.includes('证据覆盖分')
     )),
-    'source trust remains unrated rather than fabricated',
+    'source trust stays separately labeled as unrated, not confused with evidence coverage',
   );
   assert.ok(
     cards[0].children.some((child) => (
@@ -201,13 +202,23 @@ async function main() {
     { id: 'n1', category: 'news', title: 'News A', url: 'https://example.test/news-a', max_resolution: '1280x720', duration_seconds: 120, publish_date: '2026-10-13', overlay_status: 'unassessed' },
     { id: 's1', category: 'social', title: 'Social A', url: 'https://x.com/example', max_resolution: '720x480', duration_seconds: 30 },
     { id: 'o1', category: 'other', title: 'Other A', url: 'https://example.test/other-a' },
-  ], 10);
+  ]);
   assert.equal(grouping.length, 4, 'group the ranked sources by video, news, social, and other when present');
   assert.equal(grouping[0].category, 'video');
   assert.equal(grouping[1].category, 'news');
   assert.equal(grouping[2].category, 'social');
   assert.equal(grouping[3].category, 'other');
   assert.ok(grouping.every((group) => group.sources.length > 0), 'each category with sources should render its own section');
+
+  const manyVideoSources = Array.from({ length: 25 }, (_, index) => ({
+    id: `video-${index}`,
+    category: 'video',
+    title: `Video ${index}`,
+    url: `https://example.test/video-${index}`,
+  }));
+  const unboundedGroups = context.MainVideoRanking.groupByCategory(manyVideoSources);
+  assert.equal(unboundedGroups[0].total, 25, 'category count includes every source without a top-ten cap');
+  assert.equal(unboundedGroups[0].sources.length, 25, 'render every source in a category, including more than ten');
 
   const unknownReview = context.MainVideoRanking.evidenceScore({
     url: 'https://example.test/unknown-review',

@@ -87,7 +87,7 @@ function renderSourceDetails(payload) {
     .join(' · ');
   renderArtifactDetails(video);
 
-  const categories = MainVideoRanking.groupByCategory(video.provenance.sources, 10);
+  const categories = MainVideoRanking.groupByCategory(video.provenance.sources);
   const totalSources = categories.reduce((sum, section) => sum + section.total, 0);
   const visibleSources = categories.flatMap((section) => section.sources);
   $sourceStatus.textContent = `显示 ${visibleSources.length} 条候选来源（${totalSources} 条总计，按类别分组显示）`;
@@ -232,11 +232,10 @@ function renderSourceDetails(payload) {
         card,
         'p',
         'main-video-source-trust-note',
-        `来源证据分：${MainVideoRanking.scoreDisplayLabel(source)}。${
-          source.source_trust_note
-            || (Number.isFinite(source.source_trust_score)
-              ? `记录的分值 ${source.source_trust_score}（评分口径未提供）`
-              : '未评分（评分口径未提供）')
+        `来源可信度: ${
+          Number.isFinite(source.source_trust_score)
+            ? `记录值 ${source.source_trust_score}（原记录评分口径未提供；与证据覆盖分不同）`
+            : '未评分（来源可信度口径未提供）'
         }`,
       );
 
