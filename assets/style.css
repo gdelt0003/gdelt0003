@@ -234,7 +234,18 @@ button {
 .main-video-artifact-links a { color: var(--accent); overflow-wrap: anywhere; }
 .main-video-source-details { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); align-items: start; }
 .main-video-source-details .main-video-source-ranking-method,
-.main-video-source-details .main-video-source-search-method { grid-column: 1 / -1; margin: 0; color: var(--muted); line-height: 1.55; }
+.main-video-source-details .main-video-source-search-method,
+.main-video-source-details .main-video-source-score-rubric { grid-column: 1 / -1; margin: 0; color: var(--muted); line-height: 1.55; }
+.main-video-source-category { grid-column: 1 / -1; display: grid; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: rgba(11, 19, 34, 0.52); }
+.main-video-source-category-title { margin: 0; font-size: 1.05rem; }
+.main-video-source-category-list { display: grid; gap: 10px; }
+.main-video-source-category-empty { margin: 0; color: var(--muted); }
+.main-video-source-evidence-score,
+.main-video-source-evidence-basis,
+.main-video-source-user-score,
+.main-video-source-trust-note,
+.main-video-source-captions-provenance,
+.main-video-source-rights { color: var(--muted); font-size: .82rem; line-height: 1.5; }
 .main-video-source-detail-note { margin: 16px 0 0; color: var(--muted); line-height: 1.6; }
 
 @media (max-width: 600px) {
