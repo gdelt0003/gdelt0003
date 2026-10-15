@@ -26,7 +26,7 @@ on:
         required: false
         default: false
       download_vimeo:
-        description: Test downloading Vimeo video 1236025473 from an Ubuntu runner
+        description: Test downloading the supplied signed Vimeo HLS playlist on an Ubuntu runner
         type: boolean
         required: false
         default: false
@@ -297,18 +297,19 @@ jobs:
       - name: Download Vimeo video
         id: download
         env:
-          VIDEO_URL: https://vimeo.com/1236025473
+          VIDEO_URL: ${{ secrets.VIMEO_HLS_URL_ONESHOT_20261015 }}
         run: |
           mkdir -p "$RUNNER_TEMP/vimeo-download"
           cd "$RUNNER_TEMP/vimeo-download"
           yt-dlp --version > runner-info.txt
           python --version >> runner-info.txt 2>&1
           set +e
-          yt-dlp --no-warnings --no-playlist \
+          yt-dlp --quiet --no-progress --no-warnings --no-playlist \
             --output "$RUNNER_TEMP/vimeo-download/%(id)s.%(ext)s" \
-            "$VIDEO_URL" > yt-dlp.log 2>&1
+            "$VIDEO_URL" > yt-dlp.raw.log 2>&1
           download_status=$?
           set -e
+          python -c 'import pathlib,re; p=pathlib.Path("yt-dlp.raw.log"); s=p.read_text(encoding="utf-8",errors="replace"); pathlib.Path("yt-dlp.log").write_text(re.sub(r"https?://\S+", "[redacted URL]", s),encoding="utf-8"); p.unlink()'
           echo "exit_code=$download_status" >> "$GITHUB_OUTPUT"
           cat yt-dlp.log
           exit 0
