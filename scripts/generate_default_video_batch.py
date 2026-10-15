@@ -1,6 +1,10 @@
+import argparse
 import html
 import json
+import math
+import os
 import re
+import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
@@ -18,6 +22,16 @@ MAX_CLIPS = 5
 MAX_CLIP_DURATION = 55
 HOOK_LEAD_SECONDS = 12
 KEYWORDS = re.compile(r"\b(china|chinese|xi(?:\s+jinping)?|jinping)\b|中国|习近平", re.I)
+SPEAKER_COLORS = (
+    "#40C4FF",
+    "#FFB74D",
+    "#69F0AE",
+    "#FF80AB",
+    "#B388FF",
+    "#FF8A65",
+    "#80DEEA",
+    "#FFD54F",
+)
 
 
 @dataclass
@@ -25,6 +39,13 @@ class Cue:
     start: float
     end: float
     text: str
+
+
+@dataclass
+class SpeakerTurn:
+    start: float
+    end: float
+    speaker_id: str
 
 
 @dataclass
@@ -149,6 +170,73 @@ def merge_bilingual_cues(clip, english, chinese):
     return rows
 
 
+def read_autosubs_speakers(path):
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"AutoSubs JSON must be an object: {path}")
+    segments = payload.get("segments")
+    if not isinstance(segments, list):
+        raise RuntimeError(f"AutoSubs JSON has no segments list: {path}")
+
+    turns = []
+    for index, segment in enumerate(segments):
+        if not isinstance(segment, dict):
+            raise RuntimeError(f"Invalid AutoSubs segment at index {index}")
+        speaker_id = segment.get("speaker_id")
+        if speaker_id is None or str(speaker_id).strip() in {"", "?"}:
+            continue
+        try:
+            start = float(segment["start"])
+            end = float(segment["end"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise RuntimeError(
+                f"Invalid timestamps in AutoSubs segment {index}"
+            ) from error
+        if not math.isfinite(start) or not math.isfinite(end) or end <= start:
+            raise RuntimeError(f"Invalid interval in AutoSubs segment {index}")
+        turns.append(SpeakerTurn(start, end, str(speaker_id)))
+    return turns
+
+
+def require_cloud_diarization(enabled):
+    if enabled and os.environ.get("GITHUB_ACTIONS") != "true":
+        raise RuntimeError(
+            "Speaker diarization is restricted to the authorized "
+            "GitHub-hosted workflow runner."
+        )
+
+
+def assign_speakers(rows, turns):
+    assigned = []
+    for start, end, text in rows:
+        overlap_by_speaker = {}
+        for turn in turns:
+            overlap = max(0.0, min(end, turn.end) - max(start, turn.start))
+            if overlap:
+                overlap_by_speaker[turn.speaker_id] = (
+                    overlap_by_speaker.get(turn.speaker_id, 0.0) + overlap
+                )
+        speaker_id = None
+        if overlap_by_speaker:
+            ranked = sorted(
+                overlap_by_speaker.items(),
+                key=lambda item: (-item[1], item[0]),
+            )
+            if len(ranked) == 1 or ranked[0][1] > ranked[1][1] + 1e-6:
+                speaker_id = ranked[0][0]
+        assigned.append((start, end, text, speaker_id))
+    return assigned
+
+
+def ass_color(hex_color):
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", hex_color):
+        raise ValueError(f"Invalid speaker color: {hex_color}")
+    red, green, blue = (
+        hex_color[index:index + 2] for index in (1, 3, 5)
+    )
+    return f"&H00{blue.upper()}{green.upper()}{red.upper()}&"
+
+
 def ass_timestamp(seconds):
     hours = int(seconds // 3600)
     minutes = int((seconds % 3600) // 60)
@@ -198,11 +286,25 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             f"{ass_escape(clip.title)}"
         ),
     ]
-    for start, end, text in rows:
+    for row in rows:
+        start, end, text = row[:3]
+        speaker_id = row[3] if len(row) > 3 else None
+        speaker_tag = ""
+        if speaker_id is not None:
+            try:
+                color = SPEAKER_COLORS[
+                    (int(speaker_id) - 1) % len(SPEAKER_COLORS)
+                ]
+            except ValueError:
+                color = SPEAKER_COLORS[
+                    sum(speaker_id.encode("utf-8")) % len(SPEAKER_COLORS)
+                ]
+            speaker_tag = f"{{\\c{ass_color(color)}}}"
         lines.append(
             "Dialogue: 0,"
             f"{ass_timestamp(start)},"
-            f"{ass_timestamp(end)},Dual,,0,0,0,,{ass_escape(text)}"
+            f"{ass_timestamp(end)},Dual,,0,0,0,,"
+            f"{speaker_tag}{ass_escape(text)}"
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -227,6 +329,39 @@ def probe_video(path):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Generate vertical bilingual highlights from the White House source."
+    )
+    parser.add_argument(
+        "--diarize",
+        action="store_true",
+        help="Use the installed AutoSubs CLI to color captions by speaker.",
+    )
+    parser.add_argument(
+        "--autosubs-bin",
+        default=os.environ.get("AUTOSUBS_BIN", "autosubs"),
+        help="AutoSubs CLI path (default: AUTOSUBS_BIN or autosubs).",
+    )
+    parser.add_argument(
+        "--max-speakers",
+        type=int,
+        help="Optional upper bound passed to AutoSubs diarization.",
+    )
+    args = parser.parse_args()
+    if args.max_speakers is not None and args.max_speakers < 1:
+        parser.error("--max-speakers must be at least 1")
+    try:
+        require_cloud_diarization(args.diarize)
+    except RuntimeError as error:
+        parser.error(str(error))
+    if args.diarize and not (
+        shutil.which(args.autosubs_bin) or Path(args.autosubs_bin).is_file()
+    ):
+        parser.error(
+            f"AutoSubs CLI not found: {args.autosubs_bin}. "
+            "Install AutoSubs or set AUTOSUBS_BIN."
+        )
+
     CLIP_OUTPUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="whitehouse-highlights-") as temporary:
         work = Path(temporary)
@@ -293,13 +428,36 @@ def main():
             if not raw_candidates:
                 raise RuntimeError(f"yt-dlp did not create input for {clip_id}")
             raw_clip = raw_candidates[0]
+            rows = merge_bilingual_cues(clip, english, chinese)
+            if args.diarize:
+                transcript_path = work / f"{clip_id}.transcript.json"
+                diarize_command = [
+                    args.autosubs_bin,
+                    str(raw_clip),
+                    "--diarize",
+                    "--lang",
+                    "en",
+                    "-f",
+                    "json",
+                    "-o",
+                    str(transcript_path),
+                ]
+                if args.max_speakers is not None:
+                    diarize_command.extend([
+                        "--max-speakers",
+                        str(args.max_speakers),
+                    ])
+                run(diarize_command)
+                rows = assign_speakers(
+                    rows,
+                    read_autosubs_speakers(transcript_path),
+                )
             source_width, source_height = probe_video(raw_clip)
             output_width = source_height + source_height % 2
             output_height = round(output_width * 16 / 9)
             output_height += output_height % 2
             source_resolution = f"{source_width}x{source_height}"
 
-            rows = merge_bilingual_cues(clip, english, chinese)
             subtitle_path = CLIP_OUTPUT / f"{clip_id}.ass"
             write_ass(
                 subtitle_path,
@@ -358,7 +516,8 @@ def main():
 
             srt_path = CLIP_OUTPUT / f"{clip_id}.srt"
             srt_lines = []
-            for index, (start, end, text) in enumerate(rows, start=1):
+            for index, row in enumerate(rows, start=1):
+                start, end, text = row[:3]
                 plain_text = text.replace("\\N", "\n")
                 srt_lines.append(
                     f"{index}\n{srt_timestamp(start)} --> "
@@ -381,8 +540,12 @@ def main():
                 "source_resolution": source_resolution,
                 "output_resolution": f"{output_width}x{output_height}",
                 "subtitle_languages": ["en", "zh-Hans"],
+                "speaker_diarization": args.diarize,
                 "file_size_bytes": clip_path.stat().st_size,
-                "note": "按 China/Xi 字幕命中截取；竖屏短视频，烧录中英双语字幕。",
+                "note": (
+                    "按 China/Xi 字幕命中截取；竖屏短视频，烧录中英双语字幕；"
+                    + ("已按说话人着色。" if args.diarize else "未启用说话人着色。")
+                ),
             })
 
         current_outputs = {
@@ -407,8 +570,19 @@ def main():
             "source_duration_sec": VIDEO_DURATION,
             "video_format": "vertical_9x16",
             "subtitle_languages": ["en", "zh-Hans"],
+            "speaker_diarization": args.diarize,
             "batch": manifest_clips,
         }
+        if args.diarize:
+            manifest["speaker_diarization_details"] = {
+                "tool": "AutoSubs",
+                "version": "3.11.0",
+                "model": "Sortformer",
+                "model_revision": "4d2a8bc71f5c896ec40faa59732e6716295edaf2",
+                "cue_assignment": (
+                    "maximum-overlap; ties and unmatched cues remain uncolored"
+                ),
+            }
         (OUTPUT / "default_batch.json").write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",

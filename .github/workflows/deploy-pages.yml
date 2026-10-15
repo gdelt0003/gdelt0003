@@ -22,6 +22,11 @@ on:
         type: boolean
         required: false
         default: false
+      diarize_speakers:
+        description: Use pinned AutoSubs/Sortformer to color generated captions by speaker on the hosted runner
+        type: boolean
+        required: false
+        default: false
       download_full_source:
         description: Download the full source video and attach it to a GitHub Release
         type: boolean
@@ -135,7 +140,9 @@ permissions:
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' && inputs.regenerate_clips
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.regenerate_clips || inputs.diarize_speakers)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -157,7 +164,32 @@ jobs:
       - name: Install ffmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install --yes ffmpeg
+          packages=(ffmpeg)
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            packages+=(xvfb)
+          fi
+          sudo apt-get install --yes "${packages[@]}"
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+
+      - name: Install and verify pinned AutoSubs CLI
+        if: inputs.diarize_speakers
+        run: |
+          curl --fail --location \
+            "https://github.com/tmoroney/auto-subs/releases/download/v3.11.0/AutoSubs-linux-x86_64.deb" \
+            --output "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          echo "372135c9169f36af23f67588f841d447a35d1f354c5fdc915ba818d9a867d9f4  $RUNNER_TEMP/AutoSubs-linux-x86_64.deb" \
+            | sha256sum --check
+          sudo apt-get install --yes "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          test -x /usr/bin/autosubs
+          /usr/bin/autosubs --help
+
+      - name: Cache pinned AutoSubs Sortformer model
+        if: inputs.diarize_speakers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/com.autosubs/models
+          key: ${{ runner.os }}-autosubs-v3.11.0-sortformer-4d2a8bc71f5c896ec40faa59732e6716295edaf2
 
       - name: Verify ffmpeg
         run: |
@@ -165,7 +197,25 @@ jobs:
           ffprobe -version
 
       - name: Download and cut White House highlight clips
-        run: python scripts/generate_default_video_batch.py
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+        run: |
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            xvfb-run --auto-servernum \
+              python scripts/generate_default_video_batch.py --diarize
+          else
+            python scripts/generate_default_video_batch.py
+          fi
+
+      - name: Preserve generated clips for this run's Pages deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: |
+            generated/default_batch.json
+            generated/clips/*
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Save generated clips and manifest to the repository
         run: |
@@ -799,20 +849,76 @@ jobs:
       - name: Burn the exact-source subtitles with SmartSub
         env:
           SMARTSUB_DATA_DIR: ${{ runner.temp }}/smartsub-profile
+          CHROME_DEVEL_SANDBOX: ${{ runner.temp }}/SmartSub/chrome-sandbox
         run: |
-          cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
-          test -n "$cli" && test -x "$cli"
+          log="$RUNNER_TEMP/smartsub-output/smartsub-compose.log"
+          : > "$log"
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-started"
-          xvfb-run --auto-servernum "$cli" compose run \
+          cli=""
+          for p in /usr/bin/smartsub /usr/local/bin/smartsub /opt/SmartSub/resources/automation/smartsub; do
+            if [ -f "$p" ]; then
+              cli="$p"
+              break
+            fi
+          done
+          if [ -z "$cli" ]; then
+            cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
+          fi
+          if [ -z "$cli" ]; then
+            echo "SmartSub binary not found under /usr or /opt." | tee -a "$log" >&2
+            ls -la /opt >&2
+            exit 1
+          fi
+          cli="$(readlink -f "$cli")"
+          echo "Using SmartSub cli=$cli" | tee -a "$log"
+          case "$cli" in
+            /opt/SmartSub/*) relative_cli="${cli#/opt/SmartSub/}" ;;
+            *)
+              echo "Unexpected SmartSub installation path: $cli" | tee -a "$log" >&2
+              exit 1
+              ;;
+          esac
+          runner_root="$RUNNER_TEMP/SmartSub"
+          cp -a /opt/SmartSub "$runner_root"
+          runner_cli="$runner_root/$relative_cli"
+          if [ ! -x "$runner_cli" ]; then
+            chmod u+x "$runner_cli"
+          fi
+          test -x "$runner_cli"
+          sudo install --owner=root --group=root --mode=4755 \
+            /opt/SmartSub/chrome-sandbox "$CHROME_DEVEL_SANDBOX"
+          sandbox_owner_mode="$(stat -c '%u:%a' "$CHROME_DEVEL_SANDBOX")"
+          if [ "$sandbox_owner_mode" != "0:4755" ]; then
+            echo "SmartSub Chromium sandbox must be root-owned with mode 4755; got $sandbox_owner_mode." \
+              | tee -a "$log" >&2
+            exit 1
+          fi
+          echo "Using root-owned SmartSub sandbox helper: $CHROME_DEVEL_SANDBOX" | tee -a "$log"
+          if ! xvfb-run --auto-servernum "$runner_cli" compose run \
             --video-path "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
             --subtitle-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
             --output-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \
             --config '{"outputMode":"hardcode","videoQuality":"high","encoderMode":"cpu","style":{"fontName":"Noto Sans CJK SC","fontSize":56,"primaryColor":"#FFFFFF","outlineColor":"#101010","backColor":"#000000","backOpacity":44,"bold":true,"borderStyle":3,"outline":6,"shadow":0,"alignment":2,"marginL":211,"marginR":211,"marginV":194}}' \
             --wait --json \
-            > "$RUNNER_TEMP/smartsub-output/smartsub-compose.json"
+            >> "$log" 2>&1; then
+            cat "$log" >&2
+            exit 1
+          fi
           date +%s > "$RUNNER_TEMP/smartsub-output/compose-finished"
           test -s "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4"
         shell: bash
+
+      - name: Upload SmartSub compose diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-smartsub-compose-diagnostics-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/smartsub-output/smartsub-compose.log
+            ${{ runner.temp }}/smartsub-output/compose-started
+            ${{ runner.temp }}/smartsub-output/compose-finished
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Verify output and create an honest blocked review report
         env:
@@ -1222,6 +1328,13 @@ jobs:
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
+          (
+            (inputs.regenerate_clips || inputs.diarize_speakers) &&
+            needs.build.result == 'success'
+          )
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
           inputs.process_smartsub_draft &&
           inputs.publish_smartsub_draft &&
           needs.render-smartsub-draft.result == 'success'
@@ -1253,6 +1366,13 @@ jobs:
     steps:
       - name: Checkout generated site files
         uses: actions/checkout@v4
+
+      - name: Download generated clips for this run's Pages deployment
+        if: github.event_name == 'workflow_dispatch' && (inputs.regenerate_clips || inputs.diarize_speakers) && needs.build.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: generated
 
       - name: Download generated full-video subtitle files
         if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'

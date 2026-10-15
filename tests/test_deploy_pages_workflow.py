@@ -141,10 +141,28 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         )
         self.assertIn("pvXbHQrIvTw-comparison-review-${{ inputs.smartsub_source_artifact_run_id }}", job)
         self.assertIn("compose run", job)
-        self.assertIn('test -n "$cli" && test -x "$cli"', job)
-        self.assertIn('xvfb-run --auto-servernum "$cli" compose run', job)
-        self.assertNotIn("chmod +x", job)
-        self.assertNotIn('install -m 755 "$cli"', job)
+        self.assertIn(
+            "CHROME_DEVEL_SANDBOX: ${{ runner.temp }}/SmartSub/chrome-sandbox",
+            job,
+        )
+        self.assertIn('cli="$(readlink -f "$cli")"', job)
+        self.assertIn('/opt/SmartSub/*) relative_cli="${cli#/opt/SmartSub/}" ;;', job)
+        self.assertIn("cp -a /opt/SmartSub \"$runner_root\"", job)
+        self.assertIn('runner_cli="$runner_root/$relative_cli"', job)
+        self.assertIn(': > "$log"', job)
+        self.assertIn(
+            "sudo install --owner=root --group=root --mode=4755", job
+        )
+        self.assertIn("stat -c '%u:%a' \"$CHROME_DEVEL_SANDBOX\"", job)
+        self.assertIn('"0:4755"', job)
+        self.assertIn('chmod u+x "$runner_cli"', job)
+        self.assertNotIn('chmod +x "$cli"', job)
+        self.assertIn('xvfb-run --auto-servernum "$runner_cli" compose run', job)
+        self.assertIn('>> "$log" 2>&1; then', job)
+        self.assertIn('cat "$log" >&2', job)
+        self.assertNotIn("|| true", job)
+        self.assertIn("Upload SmartSub compose diagnostics", job)
+        self.assertIn("if: always()", job.split("Upload SmartSub compose diagnostics", 1)[1])
         self.assertIn('"outputMode":"hardcode"', job)
         self.assertIn("source_audio_and_asr_accuracy", job)
         self.assertIn('"not_verified"', job)
@@ -204,6 +222,33 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         inputs = re.findall(r"(?m)^      [A-Za-z0-9_-]+:", dispatch)
 
         self.assertLessEqual(len(inputs), 25)
+
+    def test_speaker_diarization_is_opt_in_and_runs_only_on_the_hosted_build_job(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        build = job_body(workflow, "build")
+        deploy = job_body(workflow, "deploy")
+        generator = (
+            WORKFLOW.parents[2] / "scripts" / "generate_default_video_batch.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("diarize_speakers:", workflow)
+        self.assertIn("inputs.regenerate_clips || inputs.diarize_speakers", build)
+        self.assertIn("actions/cache@v4", build)
+        self.assertIn("autosubs-v3.11.0-sortformer-", build)
+        self.assertIn("4d2a8bc71f5c896ec40faa59732e6716295edaf2", build)
+        self.assertIn(
+            "372135c9169f36af23f67588f841d447a35d1f354c5fdc915ba818d9a867d9f4",
+            build,
+        )
+        self.assertIn("xvfb-run --auto-servernum", build)
+        self.assertIn("generate_default_video_batch.py --diarize", build)
+        self.assertIn("Preserve generated clips for this run's Pages deployment", build)
+        self.assertIn("inputs.regenerate_clips || inputs.diarize_speakers", deploy)
+        self.assertIn("needs.build.result == 'success'", deploy)
+        self.assertIn("whitehouse-generated-clips-${{ github.run_id }}", deploy)
+        self.assertIn('os.environ.get("GITHUB_ACTIONS") != "true"', generator)
+        self.assertNotIn("AutoSubs", deploy)
+        self.assertNotIn("generate_default_video_batch.py", deploy)
 
     def test_comparison_frame_review_is_cloud_only_and_captures_flagged_cues(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
