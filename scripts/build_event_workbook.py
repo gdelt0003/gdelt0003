@@ -115,6 +115,10 @@ VIDEO_CANDIDATE_HEADERS = [
     "Camera uncertainty/error",
     "Camera confidence",
     "Camera verification status",
+    "Repeated/static-scene review",
+    "Source credibility review",
+    "Independent camera review",
+    "Cross-lead angle/lineage comparison",
     "Evidence and limitations",
 ]
 
@@ -300,7 +304,8 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                         source.get("frame_review_status", "pending_direct_frame_review"),
                     ),
                     source.get("reuse_rights_status", "pending_rights_review"),
-                    source.get("user_claims_verbatim", ""),
+                    source.get("user_claims_verbatim")
+                    or source.get("user_observations_verbatim", ""),
                     source.get("user_rating", ""),
                     source.get("user_angle_opinion_verbatim", ""),
                     "",
@@ -319,6 +324,13 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                     "",
                     "",
                     "",
+                    source.get("repeat_or_static_scene_review", "pending_direct_frame_review"),
+                    source.get("credibility_review", "pending_source_review"),
+                    source.get("camera_independence_status", "pending_source_lineage_review"),
+                    source.get(
+                        "comparison_with_other_user_leads",
+                        "pending_exact_event_angle_and_lineage_confirmation",
+                    ),
                     source.get("evidence", ""),
                 ]
             )
@@ -352,7 +364,8 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                     "graphics_occlusion_status", "pending_direct_frame_review"
                 ),
                 lead.get("reuse_rights_status", "pending_rights_review"),
-                lead.get("user_claims_verbatim", ""),
+                lead.get("user_claims_verbatim")
+                or lead.get("user_observations_verbatim", ""),
                 lead.get("user_rating", ""),
                 lead.get("user_angle_opinion_verbatim", ""),
                 camera.get("event_time_match_status", "pending_exact_event_and_time_match"),
@@ -370,6 +383,13 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                 camera.get("uncertainty_or_error", "unknown"),
                 camera.get("confidence", "unknown"),
                 camera.get("verification_status", "pending"),
+                lead.get("repeat_or_static_scene_review", "pending_direct_frame_review"),
+                lead.get("credibility_review", "pending_source_review"),
+                lead.get("camera_independence_status", "pending_source_lineage_review"),
+                lead.get(
+                    "comparison_with_other_user_leads",
+                    "pending_exact_event_angle_and_lineage_confirmation",
+                ),
                 lead.get("evidence", "Evidence not yet reviewed."),
             ]
         )
@@ -668,6 +688,17 @@ def build_workbook(
             "private identities or mix an unassigned lead into a named event."
         ]
     )
+    notes_sheet.append(
+        [
+            "Do not rank a source as superior based on runtime alone. Assess "
+            "repeated/static scenes, embedded logos/banners, actual stream "
+            "resolution, exact event/time match, source credibility, independent "
+            "camera status, and source lineage separately. Comparing two "
+            "user-submitted links requires first confirming the same event/time "
+            "and then checking angle and lineage; neither same-event nor "
+            "different-angle status is assumed."
+        ]
+    )
     for row in _candidate_review_rows(catalog):
         candidate_review_sheet.append(row)
         link_cell = candidate_review_sheet.cell(candidate_review_sheet.max_row, 7)
@@ -790,7 +821,7 @@ def build_workbook(
         [
             28, 46, 24, 72, 28, 64, 70, 40, 22, 48, 20, 38, 42, 36, 28, 58,
             32, 58, 40, 42, 28, 24, 24, 24, 24, 30, 30, 38, 34, 70, 28, 34,
-            24, 30, 100,
+            24, 30, 38, 30, 30, 44, 100,
         ],
     )
     style_sheet(instructions_sheet, [40, 150])

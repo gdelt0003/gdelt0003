@@ -176,6 +176,64 @@ class EventWorkbookTests(unittest.TestCase):
             ],
             "pending",
         )
+        second_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=UgIivPOerNc"
+        )
+        self.assertIsNone(second_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            second_user_lead[candidate_headers.index("Queue rank (not a trust score)")],
+            "pending",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            50,
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Repeated/static-scene review")
+            ],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Source credibility review")
+            ],
+            "pending_source_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Independent camera review")
+            ],
+            "pending_source_lineage_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Cross-lead angle/lineage comparison")
+            ],
+            "pending_exact_event_angle_and_lineage_confirmation",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("User-provided characterization (claim; unverified)")
+            ],
+            "此链接50 分 虽然长 但是台标信号凑数 不变风景凑 还有logo 还有横幅遮挡",
+        )
+        self.assertEqual(
+            second_user_lead[candidate_headers.index("Duration (seconds)")], None
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
         for row in source_rows[1:]:
             local_time = row[source_headers.index("Page-published local display (not event time)")]
             timestamp = row[source_headers.index("Published metadata (UTC; not event time)")]

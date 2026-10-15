@@ -49,6 +49,29 @@
         "verification_status": "pending"
       },
       "evidence": "URL and characterization supplied by the user. Event match, runtime, actual video-stream resolution, embedded graphics/occlusion, provenance/independence, and reuse rights have not been checked. The characterization is not verified evidence."
+    },
+    {
+      "lead_id": "user-youtube-lead-UgIivPOerNc",
+      "publisher": "not reviewed",
+      "title": "User-provided YouTube source lead (title not reviewed)",
+      "url": "https://www.youtube.com/watch?v=UgIivPOerNc",
+      "source_role": "unassigned_video_source_lead",
+      "event_id": null,
+      "event_match_status": "pending_exact_event_and_time_match",
+      "duration_seconds": null,
+      "video_resolution": "unknown",
+      "clean_source_status": "unverified",
+      "graphics_occlusion_status": "pending_direct_frame_review",
+      "repeat_or_static_scene_review": "pending_direct_frame_review",
+      "credibility_review": "pending_source_review",
+      "camera_independence_status": "pending_source_lineage_review",
+      "comparison_with_other_user_leads": "pending_exact_event_angle_and_lineage_confirmation",
+      "provenance_independence_status": "pending_source_provenance_review",
+      "reuse_rights_status": "pending_rights_review",
+      "user_rating": 50,
+      "user_rating_status": "user_subjective_rating_not_independent_score",
+      "user_observations_verbatim": "此链接50 分 虽然长 但是台标信号凑数 不变风景凑 还有logo 还有横幅遮挡",
+      "evidence": "User reports a long runtime may include station/signal idents or repeated static scenes, with a logo and banner obscuring the picture. These observations are not independently verified. Assess runtime and repetition separately; do not rank by duration alone. Confirm exact event and time before comparing with rQlpuY2tj-4; do not assume the same event or a different camera angle. Actual stream resolution, source credibility, independent camera status, lineage, graphics, and reuse rights remain unverified."
     }
   ],
   "events": [

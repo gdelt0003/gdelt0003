@@ -44,6 +44,8 @@ The other listed Roll Call, Truth Social, prediction-market, pool (including the
 
 The user-submitted video `https://www.youtube.com/watch?v=rQlpuY2tj-4` is recorded in `Candidate Review` as an **unassigned lead**, not associated with Columbus Day or the October 13 Katie event. Its user-provided “longer/clean/HD/trusted” characterization, 90-point rating, and favorable angle opinion are preserved as subjective claims only. Event/time match, runtime, actual stream resolution, graphics/occlusion, provenance, reuse rights, and camera-position fields (location, coordinates, azimuth, height, pitch, equipment, department/crew and media-seat annotation) remain pending/unknown until evidence is supplied and independently reviewed; no private identities or unsupported camera measurements are inferred.
 
+The user-submitted video `https://www.youtube.com/watch?v=UgIivPOerNc` is likewise unassigned and has a user-given 50-point rating, not an independent score. The reported long duration, station/signal idents or repeated static scenes, logo, and banner obstruction remain unverified user observations. Runtime is not a ranking shortcut: repetition, embedded graphics, stream resolution, exact event/time, credibility, independent camera, and source lineage are separate review fields. Compare this lead with `rQlpuY2tj-4` only after exact-event/time match and source-angle/lineage review; do not assume they show the same event or different camera angles.
+
 ## Process the complete October 6, 2026 video
 
 The Pages workflow can process the complete source video without fetching it from YouTube:
