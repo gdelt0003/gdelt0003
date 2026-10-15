@@ -38,10 +38,10 @@
 
 - 至少十个可信视频来源尚未逐一打开并检查实际视频帧；无横幅/Logo遮挡、持续时长、分辨率、同/异机位等结论均需逐源证据。
 - 白宫活动的舞台坐标、正面方位和公开媒体机位的坐标/误差、距离、高度、拍摄角度尚无可信测量证据；不得猜测或填造。
-- 发布页面的 VTT 仍出现用户指出的 8:14 中英错配；独立审阅也确认最新 live VTT 仍有此错配。
-- 三遍源音审核、十模型翻译比较、三位盲审 judge、独立来源交叉检查、画面帧视觉审查均未完成。
-- PR #4 仍未合并；新门禁仍需独立验收并强化证据记录校验；未获 API 密钥和明确费用授权时不运行计费模型。
-- 用户要求的云端最高性能 runner、经过门禁的部署、部署后不同 nested session 独立网页验收均未完成。
+- 发布页面的 VTT 曾出现用户指出的 8:14 中英错配；后续 run `38408560804` 已将英文短碎片合并为一个 cue，但中文省略 “Good afternoon” 的问候，翻译准确性仍未验证。
+- 三遍源音审核、十模型翻译比较、三位盲审 judge、独立来源交叉检查、画面帧视觉审查均未完成；run `38408560804` 的部署后门禁失败，详见后附 V0.03 状态。
+- PR #4 已于 2026-10-13 合入 main；之后的 PR #8 曾关闭且未合并。未获 API 密钥和明确费用授权时不运行计费模型。
+- run `38408560804` 的 Pages 部署成功但质量 gate 失败；部署后不同 nested session 独立网页验收仍未完成。
 - 新增的多源选题、长视频生成/翻译、同一事件或话题的批量多版本仍是未实现产品需求。“99%以上原声克隆”在客观度量、声音权利/同意和防冒充规则未明确前不可宣称或执行；“爆款”不能作保证。
 - 短片重制需求尚未交付：已改进生成器，但没有新 >30 分钟候选经过实帧检查、分辨率实测、ASR/翻译审核或云端渲染；不能复用已知带横幅/Logo的素材冒称干净。
 - Event A (shipyard) 与 Event B (Columbus Day) 目前分组独立；Event B 的长时长/上传日期不构成 Event A 的候选。Event A 未找到经核实、同一事件且匹配讲话时刻的合格干净替代源。
@@ -104,3 +104,24 @@
 - 当前只有 White House YouTube 频道接入每日 metadata-only 自动 collector。Roll Call、Truth Social、GDELT Explorer、Polymarket、Kalshi、Forth、C-SPAN、X 与 stats 来源仅登记为待人工核验；没有声称已接入抓取、访问成功或许可审查。
 - `Events` 和 `New White House leads` 工作表预留事件日期/时间/地点、总统实际出席分钟数、演讲词数及语言/统计方法、来源支持的话题、发现/核验时间、来源数量、置信度和用户注解等列。没有来源支撑的字段为空或标未核实。不能从上传日期、页面标题、预测市场活动或视频时长推定实际出席/发言数据。
 - 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。此次只完成本地代码和数据结构的实现/验证，没有运行在线抓取、周期 workflow 或 Pages 部署。
+
+## V0.03 单例发布范围与验收状态（2026-10-14）
+
+### 用户逐字原话
+
+> “长期还没实现的宏观规划 可以放到下一期做,当前完成V0.03版本,可以跑通一个个例”
+
+### 操作化归纳（非逐字）
+
+V0.03 要求单个 `oW-PQlgw1wo` 实例完成云端 ASR/翻译/刻录、逐操作审计校验与留存、Release/Pages 发布及部署后实际质量复核。多事件发现、周期覆盖、通用批处理以及十发布方/异机位全网调研，可在明确范围假设下列入下一期，仍记为未完成；若单例需要备用来源/机位，则重新列为 V0.03 blocker。原音、双语同步、翻译、可读性、画面、十模型/三评审/三来源及 live asset 对应验证不能以“宏观工作延期”为由降级。无明确 API/预算授权时不运行计费模型，保留 `not_verified`。
+
+### 状态与证据
+
+- run `38408560804`（main SHA `496ad85`）：云端处理/刻录、operation audit 校验与留存、Release 上传、Pages artifact 上传、Pages deploy 均成功；post-deploy quality gate 于 2026-10-13 15:41:55Z 失败，run 于 15:41:58Z 以 failure 结束。
+- gate blockers 包括：音频级对齐、可读性和视觉审查未通过；英/中文字幕阅读速度 flags；准确性未验证；翻译模型少于 10、独立 judge 少于 3、来源交叉核验少于 3；缺少原音审查与独立翻译审查、十份模型输出、三份 judge report、三独立 source domain、三轮完整原音 pass 及开场/中段/结尾视觉证据。
+- 部署后的 live manifest/VTT 返回 HTTP 200，Last-Modified 为 15:41:32Z / 15:41:33Z。manifest 记录 `large-v3-turbo`、M2M100、725 cues、1920x1080、3532.021 秒及 task `38408560804.1`；翻译 review counts 为 0，source/independent review 未通过，readability 为 `manual_review_required`，visual review 为 `required`，英文/中文 reading-speed flags 为 112/7。8:14 旧碎片错配已合并为完整英文 cue，但译文遗漏 “Good afternoon” 中的问候，且准确性未经核验。Release MP4 资产已上传；Pages `.mp4` 路径返回 404，因为视频资产放在 Release。
+- post-deploy gate 检查生成的 manifest/evidence artifact，并不自行请求 live Pages URL；独立获取 live manifest 与 VTT 是另一项检查。输出视频的渲染帧审查和部署后视频探测仍未完成。
+- 早先 run `38393870553` 的结构/样式验证于 13:05:29Z 失败，Release/Pages artifact 步骤跳过，deploy 于 13:05:33Z 跳过。
+- 文档 PR #8 曾关闭且未合并；本记录只描述当时状态，不把关闭的 PR 写成已合入。PR #4 已合入，但 V0.03 gate 仍未通过。
+
+V0.03 目前执行路径已跑到部署，但验收未通过。具体逐项清单见 [`full-video-verification-checklist.md`](full-video-verification-checklist.md)；不得把部署成功表述为质量验收通过。
