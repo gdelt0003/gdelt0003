@@ -32,8 +32,187 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  render-preview:
+  fetch-source:
     if: github.ref == 'refs/heads/main' && (inputs.publish_test_preview || inputs.private_review_only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: write
+      contents: write
+    steps:
+      - name: Check out the published site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install FFmpeg for pinned-source verification
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+
+      - name: Require exact-event and reuse-rights confirmations
+        env:
+          PUBLISH_PREVIEW: ${{ inputs.publish_test_preview }}
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
+          SAME_EVENT_CONFIRMED: ${{ inputs.same_event_source_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+        run: |
+          set -euo pipefail
+          if [[ "$PUBLISH_PREVIEW" == "true" && "$PRIVATE_REVIEW_ONLY" == "true" ]]; then
+            echo "Select either private review or public test-preview publication, not both." >&2
+            exit 1
+          fi
+          if [[ "$PUBLISH_PREVIEW" != "true" && "$PRIVATE_REVIEW_ONLY" != "true" ]]; then
+            echo "Select private review or explicitly confirmed public test-preview publication." >&2
+            exit 1
+          fi
+          if [[ "$SAME_EVENT_CONFIRMED" != "true" ]]; then
+            echo "Exact-event source confirmation is required before processing." >&2
+            exit 1
+          fi
+          if [[ "$RIGHTS_CONFIRMED" != "true" ]]; then
+            echo "Reuse-rights confirmation is required before processing." >&2
+            exit 1
+          fi
+        shell: bash
+
+      - name: Verify and download the exact draft-release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
+        run: |
+          set -euo pipefail
+          source_tag="g7we6gecwnc-source-intake-20261015"
+          source_asset_id="642103215"
+          source_asset_name="katie-zacharia-g7we6gecwnc-source.mp4"
+          source_size="313019832"
+          source_sha256="97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7"
+          mkdir -p "$RUNNER_TEMP/katie-source"
+
+          echo "Fetching release listing with contents:write token."
+          gh api "repos/$GITHUB_REPOSITORY/releases" --paginate \
+            > "$RUNNER_TEMP/katie-source/releases.json"
+          echo "Fetching pinned asset metadata."
+          gh api "repos/$GITHUB_REPOSITORY/releases/assets/$source_asset_id" \
+            > "$RUNNER_TEMP/katie-source/asset.json"
+          python - "$RUNNER_TEMP/katie-source/releases.json" \
+            "$RUNNER_TEMP/katie-source/asset.json" <<'PY'
+          import json
+          import sys
+          from scripts.publish_full_video_preview import validate_source_release
+
+          releases_path, asset_path = sys.argv[1:]
+          releases = json.load(open(releases_path, encoding="utf-8"))
+          asset = json.load(open(asset_path, encoding="utf-8"))
+          release = validate_source_release(releases, asset)
+          print(f"Verified draft release {release['id']} and pinned asset {asset['id']}.")
+          PY
+
+          download_started_at="$(python -c 'from datetime import datetime, timezone; print(datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"))')"
+          echo "Downloading pinned draft-release asset."
+          curl --fail --location --retry 3 \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/octet-stream" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/${source_asset_id}" \
+            --output "$RUNNER_TEMP/katie-source/$source_asset_name"
+          test "$(stat -c %s "$RUNNER_TEMP/katie-source/$source_asset_name")" = "$source_size"
+          echo "$source_sha256  $RUNNER_TEMP/katie-source/$source_asset_name" \
+            | sha256sum --check
+          ffprobe -v error -show_entries format=duration,size \
+            -show_entries stream=codec_type,width,height \
+            -of json "$RUNNER_TEMP/katie-source/$source_asset_name" \
+            > "$RUNNER_TEMP/katie-source/source-probe.json"
+          python - "$RUNNER_TEMP/katie-source/source-probe.json" \
+            "$RUNNER_TEMP/katie-source/source-verification.json" \
+            "$download_started_at" "$source_size" "$source_sha256" <<'PY'
+          import json
+          import os
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          probe_path, verification_path, started_at, size, digest = sys.argv[1:]
+          probe = json.loads(Path(probe_path).read_text(encoding="utf-8"))
+          video = next(
+              (stream for stream in probe.get("streams", [])
+               if stream.get("codec_type") == "video"),
+              None,
+          )
+          if video is None:
+              raise SystemExit("Downloaded source has no video stream.")
+          width, height = int(video["width"]), int(video["height"])
+          if width < 1920 or height < 1080:
+              raise SystemExit(
+                  f"Source is below 1920x1080 ({width}x{height}); refusing to upscale."
+              )
+          duration = float(probe["format"]["duration"])
+          if abs(duration - 866) > 3:
+              raise SystemExit(
+                  f"Source duration {duration:.3f}s differs from official listing "
+                  "duration 866s by more than 3s."
+              )
+          now = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace(
+              "+00:00", "Z"
+          )
+          record = {
+              "release_tag": "g7we6gecwnc-source-intake-20261015",
+              "release_id": 413291052,
+              "release_is_draft": True,
+              "asset_id": "642103215",
+              "asset_name": "katie-zacharia-g7we6gecwnc-source.mp4",
+              "size_bytes": int(size),
+              "sha256": digest,
+              "verified_download_started_at": started_at,
+              "verified_at": now,
+              "duration_seconds": duration,
+              "width": width,
+              "height": height,
+              "source_url": "https://www.youtube.com/watch?v=g7we6gecwnc",
+              "event_identity_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
+              "source_match_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
+              "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
+              "same_event_source_match_confirmed": True,
+              "reuse_rights_confirmed": True,
+              "processing_mode": (
+                  "private_review_only"
+                  if os.environ["PRIVATE_REVIEW_ONLY"] == "true"
+                  else "publish_test_preview"
+              ),
+              "reuse_rights_status": (
+                  "user_confirmed_processing_for_selected_dispatch_mode; "
+                  "White House copyright policy consulted; third-party or "
+                  "transferred-rights exceptions not independently checked"
+              ),
+          }
+          Path(verification_path).write_text(
+              json.dumps(record, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(
+              f"Verified {width}x{height}, {duration:.3f}s source; "
+              f"SHA-256 {digest}."
+          )
+          PY
+        shell: bash
+
+      - name: Upload pinned source for the read-only render job
+        uses: actions/upload-artifact@v4
+        with:
+          name: katie-source-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/katie-source/katie-zacharia-g7we6gecwnc-source.mp4
+            ${{ runner.temp }}/katie-source/source-verification.json
+            ${{ runner.temp }}/katie-source/source-probe.json
+          if-no-files-found: error
+          retention-days: 1
+
+  render-preview:
+    needs: fetch-source
+    if: needs.fetch-source.result == 'success' && github.ref == 'refs/heads/main' && (inputs.publish_test_preview || inputs.private_review_only)
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
@@ -109,122 +288,11 @@ jobs:
           ffprobe -version
         shell: bash
 
-      - name: Verify and download the exact draft-release asset
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
-        run: |
-          set -euo pipefail
-          source_tag="g7we6gecwnc-source-intake-20261015"
-          source_asset_id="642103215"
-          source_asset_name="katie-zacharia-g7we6gecwnc-source.mp4"
-          source_size="313019832"
-          source_sha256="97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7"
-          mkdir -p "$RUNNER_TEMP/katie-source" "$RUNNER_TEMP/katie-output"
-
-          gh api "repos/$GITHUB_REPOSITORY/releases" --paginate \
-            > "$RUNNER_TEMP/katie-source/releases.json"
-          gh api "repos/$GITHUB_REPOSITORY/releases/assets/$source_asset_id" \
-            > "$RUNNER_TEMP/katie-source/asset.json"
-          python - "$RUNNER_TEMP/katie-source/releases.json" \
-            "$RUNNER_TEMP/katie-source/asset.json" <<'PY'
-          import json
-          import sys
-          from scripts.publish_full_video_preview import validate_source_release
-
-          releases_path, asset_path = sys.argv[1:]
-          releases = json.load(open(releases_path, encoding="utf-8"))
-          asset = json.load(open(asset_path, encoding="utf-8"))
-          release = validate_source_release(releases, asset)
-          print(f"Verified draft release {release['id']} and pinned asset {asset['id']}.")
-          PY
-
-          download_started_at="$(python -c 'from datetime import datetime, timezone; print(datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"))')"
-          curl --fail --location --retry 3 \
-            --header "Authorization: Bearer $GH_TOKEN" \
-            --header "Accept: application/octet-stream" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/${source_asset_id}" \
-            --output "$RUNNER_TEMP/katie-source/$source_asset_name"
-          test "$(stat -c %s "$RUNNER_TEMP/katie-source/$source_asset_name")" = "$source_size"
-          echo "$source_sha256  $RUNNER_TEMP/katie-source/$source_asset_name" \
-            | sha256sum --check
-          ffprobe -v error -show_entries format=duration,size \
-            -show_entries stream=codec_type,width,height \
-            -of json "$RUNNER_TEMP/katie-source/$source_asset_name" \
-            > "$RUNNER_TEMP/katie-source/source-probe.json"
-          python - "$RUNNER_TEMP/katie-source/source-probe.json" \
-            "$RUNNER_TEMP/katie-source/source-verification.json" \
-            "$download_started_at" "$source_size" "$source_sha256" <<'PY'
-          import json
-          import os
-          import sys
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          probe_path, verification_path, started_at, size, digest = sys.argv[1:]
-          probe = json.loads(Path(probe_path).read_text(encoding="utf-8"))
-          video = next(
-              (stream for stream in probe.get("streams", [])
-               if stream.get("codec_type") == "video"),
-              None,
-          )
-          if video is None:
-              raise SystemExit("Downloaded source has no video stream.")
-          width, height = int(video["width"]), int(video["height"])
-          if width < 1920 or height < 1080:
-              raise SystemExit(
-                  f"Source is below 1920x1080 ({width}x{height}); refusing to upscale."
-              )
-          duration = float(probe["format"]["duration"])
-          if abs(duration - 866) > 3:
-              raise SystemExit(
-                  f"Source duration {duration:.3f}s differs from official listing "
-                  "duration 866s by more than 3s."
-              )
-          now = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace(
-              "+00:00", "Z"
-          )
-          record = {
-              "release_tag": "g7we6gecwnc-source-intake-20261015",
-              "release_id": 413291052,
-              "release_is_draft": True,
-              "asset_id": "642103215",
-              "asset_name": "katie-zacharia-g7we6gecwnc-source.mp4",
-              "size_bytes": int(size),
-              "sha256": digest,
-              "verified_download_started_at": started_at,
-              "verified_at": now,
-              "duration_seconds": duration,
-              "width": width,
-              "height": height,
-              "source_url": "https://www.youtube.com/watch?v=g7we6gecwnc",
-              "event_identity_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
-              "source_match_evidence_url": "https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/",
-              "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
-              "same_event_source_match_confirmed": True,
-              "reuse_rights_confirmed": True,
-              "processing_mode": (
-                  "private_review_only"
-                  if os.environ["PRIVATE_REVIEW_ONLY"] == "true"
-                  else "publish_test_preview"
-              ),
-              "reuse_rights_status": (
-                  "user_confirmed_processing_for_selected_dispatch_mode; "
-                  "White House copyright policy "
-                  "consulted; third-party or transferred-rights exceptions not "
-                  "independently checked"
-              ),
-          }
-          Path(verification_path).write_text(
-              json.dumps(record, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8",
-          )
-          print(
-              f"Verified {width}x{height}, {duration:.3f}s source; "
-              f"SHA-256 {digest}."
-          )
-          PY
-        shell: bash
+      - name: Download source package from the isolated fetch job
+        uses: actions/download-artifact@v4
+        with:
+          name: katie-source-${{ github.run_id }}
+          path: ${{ runner.temp }}/katie-source
 
       - name: Download previously reviewed-run subtitle artifact
         if: inputs.private_review_only
