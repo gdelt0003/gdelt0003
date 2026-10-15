@@ -223,6 +223,60 @@ class EventWorkbookTests(unittest.TestCase):
             ],
             "此链接50 分 虽然长 但是台标信号凑数 不变风景凑 还有logo 还有横幅遮挡",
         )
+        third_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=Uya88MLbHV0"
+        )
+        self.assertIsNone(third_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            third_user_lead[candidate_headers.index("Queue rank (not a trust score)")],
+            "pending",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            50,
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index(
+                    "User feature score (not independent; rubric unspecified)"
+                )
+            ],
+            10,
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("User-provided characterization (claim; unverified)")
+            ],
+            "此时长一版 和白宫官方类似 横幅过大 但是特色是由不同角度 整体50分 其中特色分10分",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("Same-event evidence")
+            ],
+            "pending_exact_event_and_time_match",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("Cross-lead angle/lineage comparison")
+            ],
+            "pending_exact_event_match_people_stage_background_audio_continuity_and_source_lineage_review",
+        )
+        self.assertEqual(
+            third_user_lead[candidate_headers.index("Duration (seconds)")], None
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
         self.assertEqual(
             second_user_lead[candidate_headers.index("Duration (seconds)")], None
         )

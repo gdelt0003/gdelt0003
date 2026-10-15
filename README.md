@@ -46,6 +46,8 @@ The user-submitted video `https://www.youtube.com/watch?v=rQlpuY2tj-4` is record
 
 The user-submitted video `https://www.youtube.com/watch?v=UgIivPOerNc` is likewise unassigned and has a user-given 50-point rating, not an independent score. The reported long duration, station/signal idents or repeated static scenes, logo, and banner obstruction remain unverified user observations. Runtime is not a ranking shortcut: repetition, embedded graphics, stream resolution, exact event/time, credibility, independent camera, and source lineage are separate review fields. Compare this lead with `rQlpuY2tj-4` only after exact-event/time match and source-angle/lineage review; do not assume they show the same event or different camera angles.
 
+The user-submitted video `https://www.youtube.com/watch?v=Uya88MLbHV0` is another unassigned lead. The user's overall 50 and feature 10 are recorded separately as subjective scores; the feature-score rubric and remaining components are unspecified. “Similar to White House official,” “banner too large,” and “different angles” are preserved as user commentary, not verified event/source/angle facts. Do not group it with either other lead until exact event/time, people, stage/background, audio continuity, views, and repost/source lineage are compared; independent-camera status is pending.
+
 ## Process the complete October 6, 2026 video
 
 The Pages workflow can process the complete source video without fetching it from YouTube:

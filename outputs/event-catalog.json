@@ -72,6 +72,32 @@
       "user_rating_status": "user_subjective_rating_not_independent_score",
       "user_observations_verbatim": "此链接50 分 虽然长 但是台标信号凑数 不变风景凑 还有logo 还有横幅遮挡",
       "evidence": "User reports a long runtime may include station/signal idents or repeated static scenes, with a logo and banner obscuring the picture. These observations are not independently verified. Assess runtime and repetition separately; do not rank by duration alone. Confirm exact event and time before comparing with rQlpuY2tj-4; do not assume the same event or a different camera angle. Actual stream resolution, source credibility, independent camera status, lineage, graphics, and reuse rights remain unverified."
+    },
+    {
+      "lead_id": "user-youtube-lead-Uya88MLbHV0",
+      "publisher": "not reviewed",
+      "title": "User-provided YouTube source lead (title not reviewed)",
+      "url": "https://www.youtube.com/watch?v=Uya88MLbHV0",
+      "source_role": "unassigned_video_source_lead",
+      "event_id": null,
+      "event_match_status": "pending_exact_event_and_time_match",
+      "duration_seconds": null,
+      "video_resolution": "unknown",
+      "clean_source_status": "unverified",
+      "graphics_occlusion_status": "pending_direct_frame_review",
+      "repeat_or_static_scene_review": "pending_direct_frame_review",
+      "credibility_review": "pending_source_review",
+      "camera_independence_status": "pending_source_lineage_review",
+      "comparison_with_other_user_leads": "pending_exact_event_match_people_stage_background_audio_continuity_and_source_lineage_review",
+      "provenance_independence_status": "pending_source_provenance_review",
+      "reuse_rights_status": "pending_rights_review",
+      "user_rating": 50,
+      "user_rating_status": "user_subjective_rating_not_independent_score",
+      "user_feature_rating": 10,
+      "user_feature_rating_status": "user_subjective_feature_score_not_independent; remaining rubric components and scale unspecified",
+      "user_observations_verbatim": "此时长一版 和白宫官方类似 横幅过大 但是特色是由不同角度 整体50分 其中特色分10分",
+      "user_angle_opinion_verbatim": "用户认为特色是由不同角度；是否为独立摄像机位尚未核实。",
+      "evidence": "User characterizes the source as a long-form version similar to the White House official and reports a large banner and different angles. These are unverified user observations, not established event match, camera independence, or source lineage. Confirm exact event/time, people, stage/background, audio continuity, views, and repost/source lineage before comparing with rQlpuY2tj-4 or UgIivPOerNc. Duration, actual resolution, credibility, graphics, lineage, and reuse rights remain unverified. The user's overall and feature scores are subjective; the remaining rubric components and scale are unspecified."
     }
   ],
   "events": [
