@@ -52,19 +52,9 @@ async function main() {
     fs.readFileSync(path.join(root, 'outputs', 'main-videos.json'), 'utf8'),
   );
   const katie = catalog.videos.find((item) => item.id === sourceDetails.getAttribute('data-video-id'));
-  assert.equal(katie.provenance.sources.length, 10, 'catalog contains ten event-related video candidates');
-  assert.ok(
-    katie.provenance.sources.every((source) => new URL(source.url).hostname === 'www.youtube.com'),
-    'only event-related YouTube video pages are included in the ranked list',
-  );
-  assert.equal(katie.provenance.sources.filter((source) => source.event_anchor).length, 1);
-  assert.equal(katie.provenance.sources.find((source) => source.event_anchor).publisher, 'The White House');
-  assert.ok(
-    katie.provenance.sources.every((source) => !source.url.includes('bullhead-city')),
-    'the unrelated Bullhead City transcript is excluded',
-  );
 
-  const context = {
+  let context = {};
+  context = {
     document,
     URL,
     fetch: async (url) => {
@@ -83,6 +73,29 @@ async function main() {
   );
   await new Promise((resolve) => setImmediate(resolve));
 
+  assert.equal(katie.provenance.sources.length, 17, 'catalog includes ten event-related video candidates plus two news and five social attribution leads');
+  assert.equal(
+    katie.provenance.sources.filter((source) => context.MainVideoRanking.inferCategory(source) === 'video').length,
+    10,
+    'keep ten event-related YouTube video candidates in the ranked list',
+  );
+  assert.equal(
+    katie.provenance.sources.filter((source) => (source.category || context.MainVideoRanking.inferCategory(source)) === 'news').length,
+    2,
+    'include the direct NBC News and Salon article leads',
+  );
+  assert.equal(
+    katie.provenance.sources.filter((source) => (source.category || context.MainVideoRanking.inferCategory(source)) === 'social').length,
+    5,
+    'include the attributable social reaction leads without claiming independent verification',
+  );
+  assert.equal(katie.provenance.sources.filter((source) => source.event_anchor).length, 1);
+  assert.equal(katie.provenance.sources.find((source) => source.event_anchor).publisher, 'The White House');
+  assert.ok(
+    katie.provenance.sources.every((source) => !source.url.includes('bullhead-city')),
+    'the unrelated Bullhead City transcript is excluded',
+  );
+
   assert.equal(title.textContent, katie.title);
   assert.equal(meta.textContent, '2026-10-13 · GDELT · process_full_video.py 机器生成预览 · 1920x1080');
   assert.match(status.textContent, /显示 \d+ 条候选来源/);
@@ -91,16 +104,23 @@ async function main() {
   const categorySections = sourceDetails.children.filter((child) => child.className === 'main-video-source-category');
   assert.equal(categorySections.length, 3, 'show video, news, and social counts even when some categories are empty');
   const videoSection = categorySections.find((section) => section.children[0].textContent.startsWith('视频'));
+  const newsSection = categorySections.find((section) => section.children[0].textContent.startsWith('新闻/媒体'));
+  const socialSection = categorySections.find((section) => section.children[0].textContent.startsWith('社交/平台'));
   const cards = videoSection.children
     .find((child) => child.className === 'main-video-source-category-list')
     .children.filter((child) => child.className === 'main-video-source');
+  const newsCards = newsSection.children
+    .find((child) => child.className === 'main-video-source-category-list')
+    .children.filter((child) => child.className === 'main-video-source');
+  const socialCards = socialSection.children
+    .find((child) => child.className === 'main-video-source-category-list')
+    .children.filter((child) => child.className === 'main-video-source');
   assert.equal(cards.length, 10, 'render all ten event-related video candidates on the detail page');
+  assert.equal(newsCards.length, 2, 'render both direct news article leads');
+  assert.equal(socialCards.length, 5, 'render the direct social reaction attribution leads');
   assert.ok(
-    categorySections.some((section) => (
-      section.children[0].textContent.startsWith('新闻/媒体（0 条候选')
-      && section.children[1].children[0].textContent.includes('未找到已核验的新闻/媒体来源')
-    )),
-    'show the actual zero count and do not fabricate empty-category source rows',
+    newsSection.children[0].textContent.includes('本静态目录当前未收录/本次检索未覆盖'),
+    'describe a zero or missing category as a static-directory gap, not as a global absence claim',
   );
   assert.equal(cards[0].children[0].textContent, '#1');
   assert.equal(cards[0].children[1].textContent, 'Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026');
@@ -274,6 +294,10 @@ async function main() {
   assert.match(page, /来源与版本信心/);
   assert.match(page, /不执行实时检索、夜间复核或自动验证/);
   assert.match(page, /证据覆盖分 0–100/);
+  assert.match(page, /不等同于来源真实性、可信度或质量评估/);
+  assert.match(page, /0.*不代表全网不存在/);
+  assert.match(page, /本静态目录当前未收录\/本次检索未覆盖/);
+  assert.match(page, /本静态快照中未检出更多已核验候选/);
   assert.match(page, /按视频\/新闻\/社交\/其他类别分组/);
   assert.match(page, /main-video-ranking\.js/);
   assert.match(page, /main-video-sources\.js/);
