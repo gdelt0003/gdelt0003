@@ -3,10 +3,27 @@ name: Publish stored White House clips to Pages
 on:
   push:
     branches: [main]
+    paths:
+      - 'index.html'
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - '*.json'
+      - '.nojekyll'
+      - 'CNAME'
+      - 'assets/**'
+      - 'events/**'
+      - 'outputs/**'
+      - 'generated/**'
   workflow_dispatch:
     inputs:
       regenerate_clips:
         description: Attempt to download and recut source clips from YouTube
+        type: boolean
+        required: false
+        default: false
+      diarize_speakers:
+        description: Use pinned AutoSubs/Sortformer to color generated captions by speaker on the hosted runner
         type: boolean
         required: false
         default: false
@@ -30,6 +47,66 @@ on:
         type: boolean
         required: false
         default: false
+      process_comparison_video:
+        description: Process the exact uploaded pvXbHQrIvTw source on a cloud runner and save a review artifact
+        type: boolean
+        required: false
+        default: false
+      process_smartsub_draft:
+        description: Render a clearly labeled pvXbHQrIvTw SmartSub draft on a GitHub-hosted runner
+        type: boolean
+        required: false
+        default: false
+      publish_smartsub_draft:
+        description: Publish the rendered draft publicly only after all five evidence reviews are confirmed
+        type: boolean
+        required: false
+        default: false
+      smartsub_source_artifact_run_id:
+        description: Prior private pvX subtitle run whose English/Chinese SRTs will be reused (no ASR or translation rerun)
+        type: string
+        required: false
+        default: '38523026469'
+      comparison_reuse_artifact_run_id:
+        description: Optional prior private pvX run whose English/Chinese SRTs should be restyled without rerunning ASR or translation
+        type: string
+        required: false
+        default: ''
+      review_comparison_artifact_run_id:
+        description: Extract private rendered-frame review evidence from a completed comparison processing run
+        type: string
+        required: false
+        default: ''
+      review_comparison_sampled_review_json:
+        description: Optional limited frame-review notes; never clears the release blockers
+        type: string
+        required: false
+        default: ''
+      comparison_reuse_rights_confirmed:
+        description: I verified the supplied rights evidence permits processing and public adaptation of this exact source
+        type: boolean
+        required: false
+        default: false
+      comparison_same_event_source_match_confirmed:
+        description: I verified this exact uploaded file is the October 13 pvXbHQrIvTw event recording
+        type: boolean
+        required: false
+        default: false
+      comparison_rights_evidence_url:
+        description: HTTPS rights evidence for processing and public adaptation
+        type: string
+        required: false
+        default: https://www.whitehouse.gov/copyright/
+      comparison_identity_evidence_url:
+        description: HTTPS evidence for the October 13 event identity
+        type: string
+        required: false
+        default: https://www.youtube.com/watch?v=pvXbHQrIvTw
+      comparison_source_match_evidence_url:
+        description: HTTPS source evidence matched to this event
+        type: string
+        required: false
+        default: https://www.youtube.com/watch?v=pvXbHQrIvTw
       restyle_full_video:
         description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
         type: boolean
@@ -45,19 +122,27 @@ on:
         type: number
         required: false
         default: 26
+      validate_release_evidence:
+        description: Validate the committed release evidence without processing media or deploying Pages
+        type: boolean
+        required: false
+        default: false
+      deploy_site_only:
+        description: Deploy the current branch's static site files without processing or replacing video media
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' && inputs.regenerate_clips
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.regenerate_clips || inputs.diarize_speakers)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -79,7 +164,32 @@ jobs:
       - name: Install ffmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install --yes ffmpeg
+          packages=(ffmpeg)
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            packages+=(xvfb)
+          fi
+          sudo apt-get install --yes "${packages[@]}"
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+
+      - name: Install and verify pinned AutoSubs CLI
+        if: inputs.diarize_speakers
+        run: |
+          curl --fail --location \
+            "https://github.com/tmoroney/auto-subs/releases/download/v3.11.0/AutoSubs-linux-x86_64.deb" \
+            --output "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          echo "372135c9169f36af23f67588f841d447a35d1f354c5fdc915ba818d9a867d9f4  $RUNNER_TEMP/AutoSubs-linux-x86_64.deb" \
+            | sha256sum --check
+          sudo apt-get install --yes "$RUNNER_TEMP/AutoSubs-linux-x86_64.deb"
+          test -x /usr/bin/autosubs
+          /usr/bin/autosubs --help
+
+      - name: Cache pinned AutoSubs Sortformer model
+        if: inputs.diarize_speakers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/com.autosubs/models
+          key: ${{ runner.os }}-autosubs-v3.11.0-sortformer-4d2a8bc71f5c896ec40faa59732e6716295edaf2
 
       - name: Verify ffmpeg
         run: |
@@ -87,7 +197,25 @@ jobs:
           ffprobe -version
 
       - name: Download and cut White House highlight clips
-        run: python scripts/generate_default_video_batch.py
+        env:
+          DIARIZE_SPEAKERS: ${{ inputs.diarize_speakers }}
+        run: |
+          if [[ "${DIARIZE_SPEAKERS}" == "true" ]]; then
+            xvfb-run --auto-servernum \
+              python scripts/generate_default_video_batch.py --diarize
+          else
+            python scripts/generate_default_video_batch.py
+          fi
+
+      - name: Preserve generated clips for this run's Pages deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: |
+            generated/default_batch.json
+            generated/clips/*
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Save generated clips and manifest to the repository
         run: |
@@ -300,7 +428,7 @@ jobs:
           sudo apt-get install --yes ffmpeg fonts-noto-cjk
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
-          python -m pip install faster-whisper transformers sentencepiece
+          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
           ffmpeg -version
 
       - name: Download the uploaded source video
@@ -328,48 +456,21 @@ jobs:
             --output-dir "$RUNNER_TEMP/full-video-output"
         shell: bash
 
-      - name: Verify caption structure and visual-style contract
-        run: |
-          python - "$RUNNER_TEMP/full-video-output/manifest.json" <<'PY'
-          import json
-          import sys
-          from pathlib import Path
-
-          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          checks = manifest["quality_checks"]
-          required = (
-              checks["structural_checks"] == "passed",
-              checks["bilingual_cue_sync"]["status"] == "passed",
-              checks["bilingual_cue_sync"]["audio_level_alignment"] == "passed",
-              checks["cue_timing"] == "passed",
-              checks["source_resolution"] == "passed",
-              checks["subtitle_readability"]["status"] == "style_contract_passed",
-              checks["subtitle_readability"]["english_to_chinese_size_ratio"] >= 1.2,
-              checks["subtitle_readability"]["visual_frame_review"] == "passed",
-              not checks["subtitle_readability"]["english_reading_speed_over_20_cps_cues"],
-              not checks["subtitle_readability"]["chinese_reading_speed_over_10_cps_cues"],
-          )
-          if not all(required):
-              raise SystemExit("Caption structure/style quality gate failed.")
-          print("Structural and style checks passed.")
-          accuracy = checks["translation_accuracy"]
-          if (
-              accuracy["status"] != "verified"
-              or accuracy["translation_models_compared"] < 10
-              or accuracy["llm_judges"] < 3
-              or accuracy["source_cross_check_passes"] < 3
-              or accuracy["audio_level_alignment"] != "passed"
-              or accuracy["source_audio_review"] != "passed"
-              or accuracy["independent_translation_review"] != "passed"
-          ):
-              raise SystemExit(
-                  "Release blocked: translation accuracy needs source-audio "
-                  "review, three source cross-checks, ten translation models, "
-                  "and three independent LLM judges."
-              )
-          print("Translation and source-audio verification passed.")
-          PY
+      - name: Validate full-video operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
         shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
 
       - name: Publish the subtitled video and SRT files to the source release
         env:
@@ -393,7 +494,651 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+  process-comparison-video:
+    if: github.event_name == 'workflow_dispatch' && inputs.process_comparison_video
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache transcription models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-full-video-models-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Require source and reuse-rights attestations
+        env:
+          RIGHTS_CONFIRMED: ${{ inputs.comparison_reuse_rights_confirmed }}
+          SAME_EVENT_CONFIRMED: ${{ inputs.comparison_same_event_source_match_confirmed }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+        run: |
+          if [ "$RIGHTS_CONFIRMED" != "true" ]; then
+            echo "Reuse-rights confirmation is required before processing." >&2
+            exit 1
+          fi
+          if [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
+            echo "Exact event/source match confirmation is required before processing." >&2
+            exit 1
+          fi
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          for name in ("RIGHTS_URL", "IDENTITY_URL", "SOURCE_MATCH_URL"):
+              url = urlparse(os.environ[name])
+              if url.scheme != "https" or not url.netloc:
+                  raise SystemExit(f"{name} must be an HTTPS URL.")
+          PY
+
+      - name: Install ffmpeg, CJK fonts, and transcription models
+        env:
+          REUSE_RUN_ID: ${{ inputs.comparison_reuse_artifact_run_id }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          if [[ -n "$REUSE_RUN_ID" ]]; then
+            python -m pip install pysubs2==1.8.0
+          else
+            python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+            python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+          fi
+          ffmpeg -version
+
+      - name: Prepare event metadata and verify the uploaded cloud asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/comparison-input" "$RUNNER_TEMP/comparison-output"
+          printf '%s' \
+            '{"event_date":"2026-10-13","event_time_local":null,"time_precision":"day","timezone":null,"location":"The White House","event_type":"press gaggle upon departure","title":"President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026","participants":["President Trump"],"official_video_url":"https://www.youtube.com/watch?v=pvXbHQrIvTw"}' \
+            > "$RUNNER_TEMP/comparison-identity.json"
+          python scripts/prepare_event_production.py \
+            --identity-json "$RUNNER_TEMP/comparison-identity.json" \
+            --source-url "https://www.youtube.com/watch?v=pvXbHQrIvTw" \
+            --identity-evidence-url "$IDENTITY_URL" \
+            --source-match-evidence-url "$SOURCE_MATCH_URL" \
+            --confirm-same-event-match \
+            --rights-evidence-url "$RIGHTS_URL" \
+            --output "$RUNNER_TEMP/comparison-event-metadata.json"
+          gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
+            > "$RUNNER_TEMP/comparison-input/asset-metadata.json"
+          python - "$RUNNER_TEMP/comparison-input/asset-metadata.json" <<'PY'
+          import json
+          import sys
+
+          asset = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {
+              "name": "pvXbHQrIvTw-source.mp4",
+              "size": 262338614,
+              "digest": "sha256:33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+              "state": "uploaded",
+          }
+          for key, value in expected.items():
+              if asset.get(key) != value:
+                  raise SystemExit(
+                      f"Cloud asset {key} mismatch: expected {value!r}, "
+                      f"got {asset.get(key)!r}"
+                  )
+          PY
+          curl --fail --location \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/octet-stream" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/639463349" \
+            --output "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+          test "$(stat -c %s "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4")" = "262338614"
+          echo "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171  $RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" \
+            | sha256sum --check
+          ffprobe -v error -show_entries format=duration,size \
+            -of default=noprint_wrappers=1 \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height \
+            -of csv=s=x:p=0 \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4"
+        shell: bash
+
+      - name: Validate optional prior private subtitle run ID
+        if: inputs.comparison_reuse_artifact_run_id != ''
+        env:
+          REUSE_RUN_ID: ${{ inputs.comparison_reuse_artifact_run_id }}
+        run: '[[ "$REUSE_RUN_ID" =~ ^[0-9]+$ ]]'
+        shell: bash
+
+      - name: Download prior private subtitles for restyling
+        if: inputs.comparison_reuse_artifact_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ inputs.comparison_reuse_artifact_run_id }}
+          path: ${{ runner.temp }}/comparison-reuse
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.comparison_reuse_artifact_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Render the exact uploaded source with new or reused captions
+        env:
+          REUSE_RUN_ID: ${{ inputs.comparison_reuse_artifact_run_id }}
+        run: |
+          args=(
+            --input "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" \
+            --output-dir "$RUNNER_TEMP/comparison-output" \
+            --asset-prefix pvXbHQrIvTw
+          )
+          if [[ -n "$REUSE_RUN_ID" ]]; then
+            [[ "$REUSE_RUN_ID" =~ ^[0-9]+$ ]]
+            reuse_dir="$RUNNER_TEMP/comparison-reuse/comparison-output"
+            test -s "$reuse_dir/pvXbHQrIvTw.en.srt"
+            test -s "$reuse_dir/pvXbHQrIvTw.zh-Hans.srt"
+            python - "$reuse_dir/manifest.json" <<'PY'
+          import json
+          import sys
+
+          manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {
+              "source_video": "pvXbHQrIvTw-source.mp4",
+              "input_size_bytes": 262338614,
+              "input_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+              "source_match_status": "operator_attested_exact_event",
+          }
+          for key, value in expected.items():
+              if manifest.get(key) != value:
+                  raise SystemExit(
+                      f"Prior subtitle artifact {key} mismatch: "
+                      f"expected {value!r}, got {manifest.get(key)!r}"
+                  )
+          PY
+            args+=(--reuse-subtitles "$reuse_dir")
+          fi
+          python scripts/process_full_video.py "${args[@]}"
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/comparison-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/comparison-output/manifest.json"
+          python - "$RUNNER_TEMP/comparison-output/manifest.json" \
+            "$RUNNER_TEMP/comparison-input/pvXbHQrIvTw-source.mp4" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest_path, source_path = map(Path, sys.argv[1:])
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          with source_path.open("rb") as source:
+              source_hash = hashlib.file_digest(source, "sha256").hexdigest()
+          manifest["input_size_bytes"] = source_path.stat().st_size
+          manifest["input_sha256"] = source_hash
+          manifest["source_match_status"] = "operator_attested_exact_event"
+          manifest["reuse_rights_status"] = "operator_attested_for_processing_and_public_adaptation"
+          manifest_path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload private review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/comparison-output/
+            ${{ runner.temp }}/comparison-event-metadata.json
+            ${{ runner.temp }}/comparison-input/asset-metadata.json
+          if-no-files-found: error
+          retention-days: 30
+
+  render-smartsub-draft:
+    if: github.event_name == 'workflow_dispatch' && inputs.process_smartsub_draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout SmartSub-pinned project
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Verify SmartSub source pin
+        run: |
+          test "$(git -C third_party/SmartSub rev-parse HEAD)" = \
+            "a2b164b3dd86388355c6a4b84e4a49825a0e7f57"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install runner tools and pinned SmartSub 3.9.0
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk xvfb
+          curl --fail --location \
+            "https://github.com/buxuku/SmartSub/releases/download/v3.9.0/SmartSub_Linux_3.9.0_amd64.deb" \
+            --output "$RUNNER_TEMP/SmartSub_Linux_3.9.0_amd64.deb"
+          echo "208f14dec45ea03be649780507707bff3b4dd4fbe0a219928a4a07d10bca5693  $RUNNER_TEMP/SmartSub_Linux_3.9.0_amd64.deb" \
+            | sha256sum --check
+          sudo apt-get install --yes "$RUNNER_TEMP/SmartSub_Linux_3.9.0_amd64.deb"
+          python -m pip install pysubs2==1.8.0
+          ffmpeg -version
+          ffprobe -version
+
+      - name: Require exact-source and rights attestations
+        env:
+          RIGHTS_CONFIRMED: ${{ inputs.comparison_reuse_rights_confirmed }}
+          SAME_EVENT_CONFIRMED: ${{ inputs.comparison_same_event_source_match_confirmed }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$RIGHTS_CONFIRMED" != "true" ] || [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
+            echo "Exact-event and reuse-rights attestations are required." >&2
+            exit 1
+          fi
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          for name in ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL"):
+              url = os.environ[name]
+              parsed = urlparse(url)
+              if parsed.scheme != "https" or not parsed.netloc:
+                  raise SystemExit(f"{name} must use HTTPS and include a host.")
+          PY
+          mkdir -p "$RUNNER_TEMP/smartsub-input" "$RUNNER_TEMP/smartsub-output"
+          gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
+            > "$RUNNER_TEMP/smartsub-input/asset-metadata.json"
+          python - "$RUNNER_TEMP/smartsub-input/asset-metadata.json" <<'PY'
+          import json
+          import sys
+
+          asset = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {
+              "name": "pvXbHQrIvTw-source.mp4",
+              "size": 262338614,
+              "digest": "sha256:33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+              "state": "uploaded",
+          }
+          for key, value in expected.items():
+              if asset.get(key) != value:
+                  raise SystemExit(f"Source asset {key} mismatch.")
+          PY
+          curl --fail --location \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/octet-stream" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/639463349" \
+            --output "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
+          test "$(stat -c %s "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4")" = "262338614"
+          echo "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171  $RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
+            | sha256sum --check
+        shell: bash
+
+      - name: Download the existing private bilingual subtitle artifact
+        env:
+          SOURCE_RUN_ID: ${{ inputs.smartsub_source_artifact_run_id }}
+        run: |
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+        shell: bash
+
+      - name: Download the existing private bilingual subtitle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ inputs.smartsub_source_artifact_run_id }}
+          path: ${{ runner.temp }}/smartsub-reuse
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.smartsub_source_artifact_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Check reused captions against the exact source manifest
+        run: |
+          reuse_dir="$RUNNER_TEMP/smartsub-reuse/comparison-output"
+          test -s "$reuse_dir/pvXbHQrIvTw.en.srt"
+          test -s "$reuse_dir/pvXbHQrIvTw.zh-Hans.srt"
+          test -s "$reuse_dir/pvXbHQrIvTw.en-zh.vtt"
+          python - "$reuse_dir/manifest.json" <<'PY'
+          import json
+          import sys
+
+          manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {
+              "source_video": "pvXbHQrIvTw-source.mp4",
+              "input_size_bytes": 262338614,
+              "input_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+              "source_match_status": "operator_attested_exact_event",
+          }
+          for key, value in expected.items():
+              if manifest.get(key) != value:
+                  raise SystemExit(f"Reused subtitle artifact {key} mismatch.")
+          PY
+
+      - name: Prepare bilingual ASS with explicit per-language styles
+        run: |
+          source="$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
+          reuse_dir="$RUNNER_TEMP/smartsub-reuse/comparison-output"
+          probe="$(ffprobe -v error -show_entries format=duration:stream=width,height -of json "$source")"
+          readarray -t media_info < <(python -c 'import json,sys; d=json.load(sys.stdin); v=next(s for s in d["streams"] if "width" in s); print(v["width"]); print(v["height"]); print(d["format"]["duration"])' <<< "$probe")
+          python scripts/prepare_smartsub_subtitles.py \
+            --english-srt "$reuse_dir/pvXbHQrIvTw.en.srt" \
+            --chinese-srt "$reuse_dir/pvXbHQrIvTw.zh-Hans.srt" \
+            --output-ass "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
+            --report "$RUNNER_TEMP/smartsub-output/style-report.json" \
+            --width "${media_info[0]}" \
+            --height "${media_info[1]}" \
+            --duration "${media_info[2]}"
+        shell: bash
+
+      - name: Burn the exact-source subtitles with SmartSub
+        env:
+          SMARTSUB_DATA_DIR: ${{ runner.temp }}/smartsub-profile
+          CHROME_DEVEL_SANDBOX: ${{ runner.temp }}/SmartSub/chrome-sandbox
+        run: |
+          log="$RUNNER_TEMP/smartsub-output/smartsub-compose.log"
+          : > "$log"
+          date +%s > "$RUNNER_TEMP/smartsub-output/compose-started"
+          cli=""
+          for p in /usr/bin/smartsub /usr/local/bin/smartsub /opt/SmartSub/resources/automation/smartsub; do
+            if [ -f "$p" ]; then
+              cli="$p"
+              break
+            fi
+          done
+          if [ -z "$cli" ]; then
+            cli="$(find /opt -type f -path '*/resources/automation/smartsub' -print -quit)"
+          fi
+          if [ -z "$cli" ]; then
+            echo "SmartSub binary not found under /usr or /opt." | tee -a "$log" >&2
+            ls -la /opt >&2
+            exit 1
+          fi
+          cli="$(readlink -f "$cli")"
+          echo "Using SmartSub cli=$cli" | tee -a "$log"
+          case "$cli" in
+            /opt/SmartSub/*) relative_cli="${cli#/opt/SmartSub/}" ;;
+            *)
+              echo "Unexpected SmartSub installation path: $cli" | tee -a "$log" >&2
+              exit 1
+              ;;
+          esac
+          runner_root="$RUNNER_TEMP/SmartSub"
+          cp -a /opt/SmartSub "$runner_root"
+          runner_cli="$runner_root/$relative_cli"
+          if [ ! -x "$runner_cli" ]; then
+            chmod u+x "$runner_cli"
+          fi
+          test -x "$runner_cli"
+          sudo install --owner=root --group=root --mode=4755 \
+            /opt/SmartSub/chrome-sandbox "$CHROME_DEVEL_SANDBOX"
+          sandbox_owner_mode="$(stat -c '%u:%a' "$CHROME_DEVEL_SANDBOX")"
+          if [ "$sandbox_owner_mode" != "0:4755" ]; then
+            echo "SmartSub Chromium sandbox must be root-owned with mode 4755; got $sandbox_owner_mode." \
+              | tee -a "$log" >&2
+            exit 1
+          fi
+          echo "Using root-owned SmartSub sandbox helper: $CHROME_DEVEL_SANDBOX" | tee -a "$log"
+          if ! xvfb-run --auto-servernum "$runner_cli" compose run \
+            --video-path "$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4" \
+            --subtitle-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.ass" \
+            --output-path "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \
+            --config '{"outputMode":"hardcode","videoQuality":"high","encoderMode":"cpu","style":{"fontName":"Noto Sans CJK SC","fontSize":56,"primaryColor":"#FFFFFF","outlineColor":"#101010","backColor":"#000000","backOpacity":44,"bold":true,"borderStyle":3,"outline":6,"shadow":0,"alignment":2,"marginL":211,"marginR":211,"marginV":194}}' \
+            --wait --json \
+            >> "$log" 2>&1; then
+            cat "$log" >&2
+            exit 1
+          fi
+          date +%s > "$RUNNER_TEMP/smartsub-output/compose-finished"
+          test -s "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4"
+        shell: bash
+
+      - name: Upload SmartSub compose diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-smartsub-compose-diagnostics-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/smartsub-output/smartsub-compose.log
+            ${{ runner.temp }}/smartsub-output/compose-started
+            ${{ runner.temp }}/smartsub-output/compose-finished
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Verify output and create an honest blocked review report
+        env:
+          SOURCE_RUN_ID: ${{ inputs.smartsub_source_artifact_run_id }}
+          RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
+          IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
+          SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
+        run: |
+          set -euo pipefail
+          source="$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
+          reuse_dir="$RUNNER_TEMP/smartsub-reuse/comparison-output"
+          output="$RUNNER_TEMP/smartsub-output"
+          cp "$reuse_dir/pvXbHQrIvTw.en.srt" "$output/pvXbHQrIvTw-smartsub-draft.en.srt"
+          cp "$reuse_dir/pvXbHQrIvTw.zh-Hans.srt" "$output/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt"
+          cp "$reuse_dir/pvXbHQrIvTw.en-zh.srt" "$output/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+          cp "$reuse_dir/pvXbHQrIvTw.en-zh.vtt" "$output/pvXbHQrIvTw-smartsub-draft.en-zh.vtt"
+          ffprobe -v error -show_entries format=duration,size:stream=codec_type,width,height \
+            -of json "$source" > "$output/source-probe.json"
+          ffprobe -v error -show_entries format=duration,size:stream=codec_type,width,height \
+            -of json "$output/pvXbHQrIvTw-smartsub-draft.mp4" > "$output/output-probe.json"
+          python - "$output" "$source" "$SOURCE_RUN_ID" "$GITHUB_RUN_ID" <<'PY'
+          import hashlib
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          output_dir = Path(sys.argv[1])
+          source = Path(sys.argv[2])
+          source_run_id, run_id = sys.argv[3:]
+          source_probe = json.loads((output_dir / "source-probe.json").read_text())
+          output_probe = json.loads((output_dir / "output-probe.json").read_text())
+          source_video = next(s for s in source_probe["streams"] if s["codec_type"] == "video")
+          output_video = next(s for s in output_probe["streams"] if s["codec_type"] == "video")
+          if (source_video["width"], source_video["height"]) != (output_video["width"], output_video["height"]):
+              raise SystemExit("SmartSub output resolution differs from exact source.")
+          if not any(s["codec_type"] == "audio" for s in output_probe["streams"]):
+              raise SystemExit("SmartSub output has no source audio stream.")
+          source_duration = float(source_probe["format"]["duration"])
+          output_duration = float(output_probe["format"]["duration"])
+          if abs(source_duration - output_duration) > 0.5:
+              raise SystemExit("SmartSub output duration differs from source by over 0.5 seconds.")
+          from scripts.process_full_video import validate_release_asset_size
+          validate_release_asset_size(int(output_probe["format"]["size"]))
+          with source.open("rb") as source_file:
+              digest = hashlib.file_digest(source_file, "sha256").hexdigest()
+          if digest != "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171":
+              raise SystemExit("Exact source SHA-256 mismatch after render.")
+          reuse = json.loads((output_dir.parent / "smartsub-reuse/comparison-output/manifest.json").read_text())
+          style_report = json.loads((output_dir / "style-report.json").read_text())
+          started = int((output_dir / "compose-started").read_text())
+          finished = int((output_dir / "compose-finished").read_text())
+          if finished < started:
+              raise SystemExit("Invalid SmartSub processing timestamps.")
+          manifest = {
+              "title": "pvXbHQrIvTw SmartSub machine-generated draft preview",
+              "source_video": "pvXbHQrIvTw-source.mp4",
+              "duration_seconds": round(output_duration, 3),
+              "subtitle_cues": style_report["subtitle_cues"],
+              "input_size_bytes": source.stat().st_size,
+              "input_sha256": digest,
+              "source_match_status": "operator_attested_exact_event",
+              "reuse_rights_status": "operator_attested_for_processing_and_public_adaptation",
+              "source_event_evidence": os.environ["IDENTITY_URL"],
+              "source_match_evidence": os.environ["SOURCE_MATCH_URL"],
+              "rights_evidence": os.environ["RIGHTS_URL"],
+              "clean_frame_review_evidence": None,
+              "english_asr_review_evidence": None,
+              "chinese_translation_review_evidence": None,
+              "subtitle_source_run_id": source_run_id,
+              "source_manifest_checks": reuse["quality_checks"],
+              "prior_subtitle_models": {
+                  "asr": reuse.get("asr_model"),
+                  "translation": reuse.get("translation_model"),
+              },
+              "render": {
+                  "application": "SmartSub",
+                  "version": "3.9.0",
+                  "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
+                  "compose": "hardcode",
+                  "encoder": "CPU, high quality",
+                  "subtitle_authoring": "pysubs2==1.8.0, explicit ASS font/color overrides",
+                  "paid_services_used": False,
+                  "voice_cloning_used": False,
+              },
+              "measurements": {
+                  "duration_seconds": round(output_duration, 3),
+                  "resolution": f"{output_video['width']}x{output_video['height']}",
+                  "output_size_bytes": int(output_probe["format"]["size"]),
+                  "processing_seconds": finished - started,
+                  "subtitle_cues": style_report["subtitle_cues"],
+                  "english_to_chinese_font_ratio": style_report["style"]["english_to_chinese_font_ratio"],
+                  "english_reading_speed_over_20_cps_cues": style_report["style"]["english_reading_speed_over_20_cps_cues"],
+                  "chinese_reading_speed_over_10_cps_cues": style_report["style"]["chinese_reading_speed_over_10_cps_cues"],
+              },
+              "quality_checks": reuse["quality_checks"],
+              "review_status": {
+                  "source_audio_and_asr_accuracy": "not_verified",
+                  "translation_accuracy": "not_verified",
+                  "clean_frame_and_full_style_review": "not_verified",
+                  "release_gate": "blocked",
+              },
+              "known_issues": [
+                  "Prior inspection reported possible ASR errors: 'Hormone Strait' and 'sharing intel with his brain'; neither has been checked against source audio.",
+                  "Subtitle speed flags are carried forward and are not corrected by this compose-only pass.",
+                  "Only extracted frames are available for review; no complete manual visual review has been completed.",
+                  "No Microsoft Copilot or GPT-6 endpoint was available or used.",
+              ],
+              "review_report_file": "pvXbHQrIvTw-smartsub-draft-review.json",
+              "workflow_run_id": run_id,
+          }
+          (output_dir / "pvXbHQrIvTw-smartsub-draft-manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          python scripts/create_comparison_frame_review.py \
+            --manifest "$output/pvXbHQrIvTw-smartsub-draft-manifest.json" \
+            --video "$output/pvXbHQrIvTw-smartsub-draft.mp4" \
+            --vtt "$output/pvXbHQrIvTw-smartsub-draft.en-zh.vtt" \
+            --output-dir "$output/frame-review" \
+            --source-run-id "$GITHUB_RUN_ID"
+          cp "$output/frame-review/release-report.json" \
+            "$output/pvXbHQrIvTw-smartsub-draft-review.json"
+          echo "SmartSub preview generated. Review status remains blocked."
+        shell: bash
+
+      - name: Publish the preview as a separate prerelease
+        if: inputs.publish_smartsub_draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="pvXbHQrIvTw-smartsub-draft-${GITHUB_RUN_ID}"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "pvXbHQrIvTw SmartSub unverified draft preview" \
+              --notes "Machine-generated, unverified draft only. Source audio/ASR, translation, reading speed, and complete visual review remain unverified; release gate is blocked. Exact source asset 639463349 was SHA-256 verified. No Microsoft/GPT-6 media-generation model or paid API was used for this render." \
+              --prerelease
+          fi
+          gh release upload "$tag" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.en.srt" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft.en-zh.srt" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft-manifest.json" \
+            "$RUNNER_TEMP/smartsub-output/pvXbHQrIvTw-smartsub-draft-review.json" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
+
+      - name: Upload rendered draft and private runner evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.mp4
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.en.srt
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft.en-zh.srt
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft-manifest.json
+            ${{ runner.temp }}/smartsub-output/pvXbHQrIvTw-smartsub-draft-review.json
+            ${{ runner.temp }}/smartsub-output/style-report.json
+          if-no-files-found: error
+          retention-days: 30
+
+  review-comparison-artifact:
+    if: github.event_name == 'workflow_dispatch' && inputs.review_comparison_artifact_run_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout review tooling
+        uses: actions/checkout@v4
+
+      - name: Download private comparison review artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-comparison-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: ${{ runner.temp }}/comparison-review
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.review_comparison_artifact_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          ffmpeg -version
+
+      - name: Validate exact source and extract rendered review frames
+        env:
+          SOURCE_RUN_ID: ${{ inputs.review_comparison_artifact_run_id }}
+          SAMPLED_REVIEW_JSON: ${{ inputs.review_comparison_sampled_review_json }}
+        run: |
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          args=(
+            --manifest "$RUNNER_TEMP/comparison-review/comparison-output/manifest.json" \
+            --video "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw-bilingual.mp4" \
+            --vtt "$RUNNER_TEMP/comparison-review/comparison-output/pvXbHQrIvTw.en-zh.vtt" \
+            --output-dir "$RUNNER_TEMP/comparison-review/comparison-output" \
+            --source-run-id "$SOURCE_RUN_ID"
+          )
+          if [[ -n "$SAMPLED_REVIEW_JSON" ]]; then
+            printf '%s' "$SAMPLED_REVIEW_JSON" \
+              > "$RUNNER_TEMP/comparison-review/sampled-frame-review.json"
+            args+=(--sampled-review-json "$RUNNER_TEMP/comparison-review/sampled-frame-review.json")
+          fi
+          python scripts/create_comparison_frame_review.py "${args[@]}"
+        shell: bash
+
+      - name: Upload frame-only visual review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvXbHQrIvTw-frame-review-${{ inputs.review_comparison_artifact_run_id }}
+          path: |
+            ${{ runner.temp }}/comparison-review/comparison-output/frames/
+            ${{ runner.temp }}/comparison-review/comparison-output/release-report.json
+            ${{ runner.temp }}/comparison-review/comparison-output/frame-review.html
           if-no-files-found: error
           retention-days: 30
 
@@ -416,6 +1161,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install pysubs2==1.8.0
           ffmpeg -version
 
       - name: Download the uploaded source video
@@ -441,48 +1187,21 @@ jobs:
             --reuse-subtitles generated/full-video
         shell: bash
 
-      - name: Verify caption structure and visual-style contract
-        run: |
-          python - "$RUNNER_TEMP/full-video-output/manifest.json" <<'PY'
-          import json
-          import sys
-          from pathlib import Path
-
-          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          checks = manifest["quality_checks"]
-          required = (
-              checks["structural_checks"] == "passed",
-              checks["bilingual_cue_sync"]["status"] == "passed",
-              checks["bilingual_cue_sync"]["audio_level_alignment"] == "passed",
-              checks["cue_timing"] == "passed",
-              checks["source_resolution"] == "passed",
-              checks["subtitle_readability"]["status"] == "style_contract_passed",
-              checks["subtitle_readability"]["english_to_chinese_size_ratio"] >= 1.2,
-              checks["subtitle_readability"]["visual_frame_review"] == "passed",
-              not checks["subtitle_readability"]["english_reading_speed_over_20_cps_cues"],
-              not checks["subtitle_readability"]["chinese_reading_speed_over_10_cps_cues"],
-          )
-          if not all(required):
-              raise SystemExit("Caption structure/style quality gate failed.")
-          print("Structural and style checks passed.")
-          accuracy = checks["translation_accuracy"]
-          if (
-              accuracy["status"] != "verified"
-              or accuracy["translation_models_compared"] < 10
-              or accuracy["llm_judges"] < 3
-              or accuracy["source_cross_check_passes"] < 3
-              or accuracy["audio_level_alignment"] != "passed"
-              or accuracy["source_audio_review"] != "passed"
-              or accuracy["independent_translation_review"] != "passed"
-          ):
-              raise SystemExit(
-                  "Release blocked: translation accuracy needs source-audio "
-                  "review, three source cross-checks, ten translation models, "
-                  "and three independent LLM judges."
-              )
-          print("Translation and source-audio verification passed.")
-          PY
+      - name: Validate full-video operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/full-video-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/full-video-output/manifest.json"
         shell: bash
+
+      - name: Preserve full-video operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-video-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/full-video-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
 
       - name: Publish the restyled video and SRT files to the source release
         env:
@@ -506,6 +1225,7 @@ jobs:
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.zh-Hans.srt
             ${{ runner.temp }}/full-video-output/whitehouse-oW-PQlgw1wo.en-zh.srt
+            ${{ runner.temp }}/full-video-output/operation-audit.json
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -554,7 +1274,23 @@ jobs:
           retention-days: 30
 
   main_pages_quality_gate:
-    if: github.event_name == 'push'
+    needs: [deploy, process-full-video, restyle-full-video]
+    if: >-
+      always() &&
+      (
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.validate_release_evidence
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (
+            inputs.process_full_video ||
+            inputs.restyle_full_video
+          ) &&
+          needs.deploy.result == 'success'
+        )
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -567,19 +1303,45 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Download the manifest for the newly rendered video
+        if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: full-video-pages-subtitles
+          path: generated/full-video
+
       - name: Verify committed full-video release evidence
         run: >-
           python scripts/verify_full_video_release.py
           --manifest generated/full-video/manifest.json
 
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, main_pages_quality_gate]
+    needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, render-smartsub-draft]
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     if: >-
       always() &&
       (
         (
-          github.event_name == 'push' &&
-          needs.main_pages_quality_gate.result == 'success'
+          github.event_name == 'push'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          (
+            (inputs.regenerate_clips || inputs.diarize_speakers) &&
+            needs.build.result == 'success'
+          )
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.process_smartsub_draft &&
+          inputs.publish_smartsub_draft &&
+          needs.render-smartsub-draft.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.deploy_site_only
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
@@ -591,6 +1353,7 @@ jobs:
             ) &&
             (
               !inputs.restyle_full_video ||
+              inputs.process_full_video ||
               needs.restyle-full-video.result == 'success'
             )
           )
@@ -604,12 +1367,49 @@ jobs:
       - name: Checkout generated site files
         uses: actions/checkout@v4
 
+      - name: Download generated clips for this run's Pages deployment
+        if: github.event_name == 'workflow_dispatch' && (inputs.regenerate_clips || inputs.diarize_speakers) && needs.build.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: whitehouse-generated-clips-${{ github.run_id }}
+          path: generated
+
       - name: Download generated full-video subtitle files
         if: needs.process-full-video.result == 'success' || needs.restyle-full-video.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: full-video-pages-subtitles
           path: generated/full-video
+
+      - name: Download SmartSub preview manifest
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}
+          path: ${{ runner.temp }}/smartsub-preview
+
+      - name: Add published SmartSub preview URLs to Pages data
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          python scripts/publish_smartsub_preview.py \
+            --manifest "$RUNNER_TEMP/smartsub-preview/pvXbHQrIvTw-smartsub-draft-manifest.json" \
+            --comparison outputs/pvXbHQrIvTw/comparison.json \
+            --main-videos outputs/main-videos.json \
+            --release-url "https://github.com/${GITHUB_REPOSITORY}/releases/download/pvXbHQrIvTw-smartsub-draft-${GITHUB_RUN_ID}"
+
+      - name: Persist the published preview URLs
+        if: inputs.process_smartsub_draft && inputs.publish_smartsub_draft && needs.render-smartsub-draft.result == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outputs/pvXbHQrIvTw/comparison.json outputs/main-videos.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: record pvX SmartSub draft preview URLs"
+            git push
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

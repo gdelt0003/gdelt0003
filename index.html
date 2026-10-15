@@ -3,59 +3,130 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gdelt0003 | 白宫高光片段</title>
-    <meta name="description" content="白宫视频高光片段，播放或下载已剪辑并保存到 GitHub 的 MP4。" />
-    <link rel="stylesheet" href="assets/style.css?v=whitehouse-4" />
+    <title>gdelt0003 | 事件视频资料</title>
+    <meta name="description" content="按事件组织的来源证据、发现线索与经复核的视频作品。" />
+    <link rel="stylesheet" href="assets/style.css?v=whitehouse-5" />
   </head>
   <body>
     <main class="page">
+      <nav class="site-nav" aria-label="主要导航">
+        <a class="site-brand" href="#top">GDELT · 事件视频</a>
+        <div class="site-nav-links">
+          <a href="#copilot-results">Copilot 成果</a>
+          <a href="#featured-video">主视频</a>
+          <a href="#highlights">短片</a>
+          <a href="#event-research">事件与来源</a>
+          <a href="#camera-map">机位证据</a>
+        </div>
+      </nav>
       <header class="hero">
+        <span id="top"></span>
         <p class="eyebrow">GITHUB ACTIONS · PAGES</p>
-        <h1>白宫高光片段</h1>
-        <p class="subtitle">白宫官方长视频精选 · 1080 × 1920 竖屏 · 中英双语字幕</p>
-        <p class="meta">三个不同高亮时段，各含 Editorial 与 Punchy 两种剪辑版本。英文自动转写与机器翻译，请在发布前复核专名和数字。</p>
+        <h1>事件视频资料与高光片段</h1>
+        <p class="subtitle">全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态</p>
+        <p class="meta">本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。</p>
       </header>
-      <section class="panel" aria-labelledby="full-video-title">
+      <section class="panel copilot-results-panel" id="copilot-results" aria-labelledby="copilot-results-title">
         <div class="highlights-heading">
           <div>
-            <p class="eyebrow">WHITE HOUSE · FULL-LENGTH VIDEO</p>
-            <h2 id="full-video-title">完整演讲 · 中英双语字幕</h2>
+            <p class="eyebrow">MICROSOFT / GITHUB COPILOT CODING AGENT</p>
+            <h2 id="copilot-results-title">Copilot 协作开发成果</h2>
           </div>
+          <span class="meta">已合并 · 已部署</span>
         </div>
-        <video controls preload="none" playsinline style="width: 100%; max-height: 75vh; background: #000">
-          <source src="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4" type="video/mp4" />
-          <track
-            kind="captions"
-            label="English + 简体中文"
-            srclang="zh"
-            src="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.vtt"
-            default
-          />
-          你的浏览器不支持 HTML 视频。请使用下方下载链接观看。
-        </video>
-        <p class="meta">
-          <a href="https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4">下载已烧录字幕的完整 MP4</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en.srt">English SRT</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt">简体中文 SRT</a>
-          ·
-          <a href="generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt">中英双语 SRT</a>
-        </p>
-        <p class="meta">字幕由 Whisper large-v3-turbo 自动转写、M2M100 单模型翻译，尚未经过十模型对比、多大模型评分或逐条新闻/字幕交叉复核；请勿视为已独立核验。视频来自白宫官方频道。</p>
+        <p class="meta copilot-results-intro">这里展示 Copilot coding-agent 在 gdelt0003/gdelt0003 实现的工程交付，不把开源媒体工具的代码或生成结果冒领为微软成果。SmartSub 保持独立上游依赖与来源归属；本仓库贡献集中在 runner 编排、路径修复、证据登记和 Pages 发布。</p>
+        <div class="copilot-results-grid">
+          <article class="copilot-result-card">
+            <h3>云端渲染链路</h3>
+            <p>修复固定版本 SmartSub 在 GitHub-hosted runner 上的启动路径，校验来源指纹并保存可追溯的运行清单。</p>
+            <a href="https://github.com/gdelt0003/gdelt0003/pull/21">PR #21 · launcher 路径修复</a>
+            <a href="https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544">Run #38540536544 · 云端生成的未核验草稿</a>
+          </article>
+          <article class="copilot-result-card">
+            <h3>部署可靠性</h3>
+            <p>把 Pages 并发锁收窄到部署 job，避免慢速渲染占住站点发布队列。</p>
+            <a href="https://github.com/gdelt0003/gdelt0003/pull/23">PR #23 · Pages 并发修复</a>
+          </article>
+          <article class="copilot-result-card">
+            <h3>结果进入首页与事件页</h3>
+            <p>登记预览、字幕和审查状态；Pages 成功部署。媒体仍标为未经核验，不代表最终发布质量通过。</p>
+            <a href="https://github.com/gdelt0003/gdelt0003/pull/25">PR #25 · 预览登记与页面展示</a>
+            <a href="https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659">Pages run #38544067659 · 部署成功</a>
+          </article>
+        </div>
+        <p class="meta copilot-results-note">此次视频渲染的媒体工具是 SmartSub 3.9.0；Copilot coding-agent 的会话模型未记录在该视频 provenance 中，因此不把视频标作 GPT-6 生成。开源工具及其许可证/署名继续按上游保留。</p>
       </section>
-      <section class="panel highlights-panel" aria-labelledby="highlights-title">
+      <section class="panel main-videos-panel" id="featured-video" aria-labelledby="main-videos-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">FULL-LENGTH EVENT VIDEOS</p>
+            <h2 id="main-videos-title">主视频</h2>
+          </div>
+          <span id="mainVideosStatus" class="meta" role="status" aria-live="polite">正在读取主视频清单…</span>
+        </div>
+        <p class="meta main-videos-notice">每条主视频独立展示，可继续按事件添加；来源、字幕和复核状态跟随各自视频，不会被合并成单一焦点播放器。</p>
+        <div id="mainVideos" class="main-video-grid" aria-live="polite"></div>
+      </section>
+      <section class="panel highlights-panel" id="highlights" aria-labelledby="highlights-title">
         <div class="highlights-heading">
           <div>
             <p class="eyebrow">WHITE HOUSE · BILINGUAL SHORTS</p>
-            <h2 id="highlights-title">高清双语高光短片</h2>
+            <h2 id="highlights-title">既有短片 · 推荐观看</h2>
           </div>
-          <span id="highlightsStatus" class="meta" role="status">正在读取分段链接…</span>
+          <span id="highlightsStatus" class="meta" role="status">竖屏 9:16 · 正在读取分段链接…</span>
         </div>
         <div id="highlightGrid" class="video-grid"></div>
-        <p class="meta">选段时间以原片为准。每支短片均可在线播放、下载 MP4，并下载对应的中英 SRT 字幕。</p>
+        <p class="meta">保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。</p>
+      </section>
+      <section class="panel highlights-panel" aria-labelledby="subtitle-comparison-title">
+        <p class="eyebrow">DEDICATED PATHWAY COMPARISON</p>
+        <h2 id="subtitle-comparison-title">开源媒体工具 × Copilot 工程路线</h2>
+        <p class="meta">开源工具候选、实际媒体产物与 Copilot coding-agent 的仓库工程交付在专页分栏展示。只对同输入、同任务且有证据的结果作质量比较；未运行或未核验项不会冒充成绩。</p>
+        <p><a href="events/pvXbHQrIvTw/#pathways">打开 pvXbHQrIvTw 专属路线对比页</a></p>
+      </section>
+      <section class="panel event-research-panel" id="event-research" aria-labelledby="event-research-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">EVENTS · SOURCE EVIDENCE</p>
+            <h2 id="event-research-title">按事件整理的来源与候选</h2>
+          </div>
+          <a class="workbook-link" href="outputs/event-source-review.xlsx">下载来源核验 Excel</a>
+        </div>
+        <p class="meta">来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。</p>
+        <div id="eventCatalog" class="event-catalog" aria-live="polite"></div>
+        <div class="discovery-heading">
+          <h3>最新视频与新闻文章发现线索</h3>
+          <span id="eventDiscoveryStatus" class="meta" role="status">等待云端例行检索…</span>
+        </div>
+        <div id="eventDiscovery" class="event-discovery"></div>
+      </section>
+      <section class="panel event-production-panel" aria-labelledby="event-production-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">REVIEWED EVENT PRODUCTIONS</p>
+            <h2 id="event-production-title">已审阅的事件短片</h2>
+          </div>
+          <span id="publishedEventsStatus" class="meta" role="status">正在读取已发布作品…</span>
+        </div>
+        <div id="publishedEvents" class="published-events"></div>
+        <p class="meta">只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。</p>
+      </section>
+      <section class="panel camera-map-panel" id="camera-map" aria-labelledby="camera-map-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">EVENT CAMERA GEOMETRY</p>
+            <h2 id="camera-map-title">活动 3D 机位图</h2>
+          </div>
+          <span id="cameraMapStatus" class="meta" role="status" aria-live="polite">正在读取测绘证据…</span>
+        </div>
+        <div id="cameraMapScene" class="camera-map-scene"></div>
+        <ul id="cameraMapDetails" class="camera-map-details"></ul>
+        <p class="meta">仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。</p>
       </section>
     </main>
+    <script src="assets/events.js?v=event-catalog-2"></script>
+    <script src="assets/main-videos.js?v=main-video-catalog-1"></script>
+    <script src="assets/camera-map.js?v=camera-map-1"></script>
     <script src="assets/app.js?v=whitehouse-4"></script>
   </body>
 </html>

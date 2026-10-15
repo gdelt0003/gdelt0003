@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "event": {
+    "video_id": "pvXbHQrIvTw",
+    "title": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026",
+    "event_date": "2026-10-13",
+    "event_time_local": null,
+    "location": "The White House",
+    "participant": "President Trump",
+    "source_url": "https://www.youtube.com/watch?v=pvXbHQrIvTw",
+    "source_match_status": "operator_attested_exact_event",
+    "reuse_rights_status": "operator_attested_for_processing_and_public_adaptation",
+    "local_file_size_bytes": 262338614,
+    "input_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+    "input_size_bytes": 262338614
+  },
+  "comparison_status": "not_run",
+  "pathways": [
+    {
+      "id": "smartsub-render",
+      "kind": "open_source_media",
+      "label": "buxuku/SmartSub 3.9.0",
+      "status": "executed_unverified",
+      "summary": "已在 GitHub-hosted runner 执行硬字幕渲染，产出 1920x1080 草稿。SmartSub 是上游开源渲染器；本仓库以固定版本依赖并明确归属，不把它的源码或模型结果称为 Copilot/GPT-6 产出。",
+      "repository_url": "https://github.com/buxuku/SmartSub",
+      "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544",
+      "workflow_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544"
+    },
+    {
+      "id": "caption-models",
+      "kind": "open_source_media",
+      "label": "faster-whisper large-v3-turbo + M2M100 1.2B",
+      "status": "caption_artifacts_reused_unverified",
+      "summary": "该 run 复用了既有的英/中字幕文件，没有在 SmartSub 渲染 run 中重新运行 ASR 或翻译。源音准确性、专名/数字/否定和翻译质量仍未核验，因此不报告比较分数。",
+      "repository_url": "https://github.com/SYSTRAN/faster-whisper",
+      "translation_source_url": "https://huggingface.co/facebook/m2m100_1.2B",
+      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544"
+    },
+    {
+      "id": "autosubs",
+      "kind": "open_source_media",
+      "label": "AutoSubs 说话人分色候选",
+      "status": "proposed_not_runner_validated",
+      "summary": "独立分支上的可选云端集成提案；PR 尚未合并，未在 hosted runner 完成真实模型/媒体验证，也没有与 SmartSub 的同输入质量对比。",
+      "repository_url": "https://github.com/tmoroney/auto-subs",
+      "evidence_url": "https://github.com/gdelt0003/gdelt0003/pull/24"
+    },
+    {
+      "id": "whisperx",
+      "kind": "open_source_media",
+      "label": "WhisperX 对齐候选",
+      "status": "research_only_not_run",
+      "summary": "候选开源对齐工具；本仓库当前没有可验证的 WhisperX 输出或同源运行记录，不作为已完成结果。",
+      "repository_url": "https://github.com/m-bain/whisperX"
+    }
+  ],
+  "copilot_engineering": {
+    "label": "Microsoft / GitHub Copilot coding-agent 协作路线",
+    "status": "implemented_and_deployed",
+    "summary": "Copilot coding-agent 会话在本仓库实现并交付 SmartSub runner 路径修复、仅串行化 Pages 部署的并发策略、预览元数据及站点发布测试。该项是工程实现与自动化成果，不等同于视频由 GPT-6 生成；agent 会话具体模型未记入此次媒体产物 provenance。",
+    "deliverables": [
+      {
+        "label": "SmartSub launcher 固定路径修复",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/21"
+      },
+      {
+        "label": "Pages 仅在 deploy job 串行化",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/23"
+      },
+      {
+        "label": "草稿预览登记与 Pages 展示",
+        "url": "https://github.com/gdelt0003/gdelt0003/pull/25"
+      }
+    ],
+    "deployment_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659"
+  },
+  "smartsub_preview": {
+    "status": "public_unverified_preview",
+    "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+    "subtitles": {
+      "english": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en.srt",
+      "chinese": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt",
+      "bilingual": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+    },
+    "manifest_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft-manifest.json",
+    "source_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+    "source_size_bytes": 262338614,
+    "review_status": {
+      "source_audio_and_asr_accuracy": "not_verified",
+      "translation_accuracy": "not_verified",
+      "clean_frame_and_style_review": "not_verified",
+      "release_gate": "blocked"
+    },
+    "render": {
+      "application": "SmartSub",
+      "version": "3.9.0",
+      "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
+      "compose": "hardcode",
+      "encoder": "CPU, high quality",
+      "subtitle_authoring": "pysubs2==1.8.0, explicit ASS font/color overrides",
+      "paid_services_used": false,
+      "voice_cloning_used": false
+    },
+    "measurements": {
+      "duration_seconds": 604.601,
+      "resolution": "1920x1080",
+      "output_size_bytes": 446302257,
+      "processing_seconds": 738,
+      "subtitle_cues": 173,
+      "english_to_chinese_font_ratio": 1.5,
+      "english_reading_speed_over_20_cps_cues": [
+        2,
+        3,
+        4,
+        10,
+        13,
+        15,
+        20,
+        24,
+        25,
+        33,
+        35,
+        42,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        54,
+        56,
+        59,
+        61,
+        63,
+        65,
+        82,
+        83,
+        89,
+        90,
+        92,
+        93,
+        94,
+        97,
+        98,
+        103,
+        105,
+        106,
+        107,
+        112,
+        115,
+        117,
+        118,
+        120,
+        130,
+        134,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        147,
+        153,
+        159,
+        160,
+        161,
+        163,
+        167,
+        168
+      ],
+      "chinese_reading_speed_over_10_cps_cues": [
+        25,
+        42,
+        59,
+        106,
+        140,
+        147
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "open-source-baseline",
+      "label": "SmartSub 3.9.0 · 开源渲染路线",
+      "description": "基于独立上游开源 SmartSub 项目固定版本执行；仓库只记录自有 runner 编排和发布集成，不复制或冒领上游实现。",
+      "status": "preview_unverified",
+      "models": {
+        "asr": "large-v3-turbo",
+        "translation": "facebook/m2m100_1.2B"
+      },
+      "render": "SmartSub 3.9.0 hard-burn via hardcode (CPU, high quality); pysubs2==1.8.0, explicit ASS font/color overrides",
+      "audit": [],
+      "quality_checks": {
+        "source_audio_and_asr_accuracy": "not_verified",
+        "translation_accuracy": "not_verified",
+        "clean_frame_and_style_review": "not_verified",
+        "release_gate": "blocked"
+      },
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+      "subtitles": {
+        "english": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en.srt",
+        "chinese": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt",
+        "bilingual": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": 262338614,
+        "duration_seconds": 604.601,
+        "resolution": "1920x1080",
+        "processing_seconds": 738,
+        "cost_usd": 0,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    }
+  ],
+  "comparison_metrics": {
+    "same_input_verified": false,
+    "same_caption_format_verified": false,
+    "human_reference_available": false,
+    "measured": false
+  }
+}

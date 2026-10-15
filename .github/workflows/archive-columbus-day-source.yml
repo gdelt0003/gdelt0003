@@ -1,0 +1,347 @@
+name: Archive official Columbus Day source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: archive-columbus-day-source-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Set up Node.js for yt-dlp
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install yt-dlp and ffmpeg
+        run: |
+          python -m pip install --upgrade yt-dlp
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          yt-dlp --version
+          ffprobe -version
+
+      - name: Fetch metadata without downloading media
+        id: metadata
+        env:
+          SOURCE_URL: https://www.youtube.com/watch?v=noI4BbQ2wZQ
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$PACKAGE_DIR"
+          yt-dlp \
+            --dump-single-json \
+            --skip-download \
+            --no-warnings \
+            --js-runtimes node \
+            "$SOURCE_URL" > "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json"
+          python - "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          metadata_path, package_dir, output_path, summary_path = map(Path, sys.argv[1:])
+          metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+          if metadata.get("id") != "noI4BbQ2wZQ":
+              raise SystemExit("Extracted video ID does not match the allow-listed White House source.")
+          if metadata.get("title") != "President Trump Hosts a Columbus Day Celebration":
+              raise SystemExit("Extracted title does not match the official White House event page.")
+
+          safe_metadata = {
+              key: metadata.get(key)
+              for key in (
+                  "id", "title", "channel", "channel_id", "channel_url", "uploader",
+                  "uploader_id", "uploader_url", "duration", "availability",
+                  "upload_date", "release_timestamp",
+              )
+          }
+          safe_metadata["formats"] = [
+              {
+                  key: fmt.get(key)
+                  for key in (
+                      "format_id", "ext", "width", "height", "format_note",
+                      "vcodec", "acodec", "filesize", "filesize_approx",
+                  )
+              }
+              for fmt in metadata.get("formats", [])
+          ]
+          (package_dir / "source-metadata.json").write_text(
+              json.dumps(safe_metadata, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          maximum_source_bytes = 1_500_000_000
+
+          def known_size(fmt):
+              for key in ("filesize", "filesize_approx"):
+                  value = fmt.get(key)
+                  if isinstance(value, (int, float)) and value > 0:
+                      return int(value)
+              return None
+
+          formats = metadata.get("formats", [])
+          videos = [
+              fmt for fmt in formats
+              if fmt.get("vcodec") not in (None, "none")
+              and isinstance(fmt.get("width"), int)
+              and isinstance(fmt.get("height"), int)
+              and fmt["width"] >= 1920
+              and fmt["height"] >= 1080
+              and fmt["width"] > fmt["height"]
+              and known_size(fmt) is not None
+          ]
+          audios = [
+              fmt for fmt in formats
+              if fmt.get("acodec") not in (None, "none")
+              and fmt.get("vcodec") == "none"
+              and known_size(fmt) is not None
+          ]
+
+          candidates = []
+          for video in videos:
+              video_id = str(video.get("format_id", ""))
+              if not re.fullmatch(r"[A-Za-z0-9._-]+", video_id):
+                  continue
+              video_size = known_size(video)
+              if video.get("acodec") not in (None, "none"):
+                  candidates.append({
+                      "format_selector": video_id,
+                      "format_ids": [video_id],
+                      "width": video["width"],
+                      "height": video["height"],
+                      "estimated_bytes": video_size,
+                  })
+              for audio in audios:
+                  audio_id = str(audio.get("format_id", ""))
+                  if not re.fullmatch(r"[A-Za-z0-9._-]+", audio_id):
+                      continue
+                  estimated_bytes = video_size + known_size(audio)
+                  candidates.append({
+                      "format_selector": f"{video_id}+{audio_id}",
+                      "format_ids": [video_id, audio_id],
+                      "width": video["width"],
+                      "height": video["height"],
+                      "estimated_bytes": estimated_bytes,
+                  })
+
+          eligible = [
+              candidate for candidate in candidates
+              if candidate["estimated_bytes"] <= maximum_source_bytes
+          ]
+          eligible.sort(
+              key=lambda candidate: (
+                  candidate["height"],
+                  candidate["width"],
+                  candidate["estimated_bytes"],
+              ),
+              reverse=True,
+          )
+          selected = eligible[0] if eligible else None
+
+          record = {
+              "workflow_run_url": (
+                  f"{os.environ['GITHUB_SERVER_URL']}/"
+                  f"{os.environ['GITHUB_REPOSITORY']}/actions/runs/"
+                  f"{os.environ['GITHUB_RUN_ID']}"
+              ),
+              "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "workflow_commit_sha": os.environ["GITHUB_SHA"],
+              "source_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
+              "video_id": metadata["id"],
+              "title": metadata["title"],
+              "publisher_as_reported_by_youtube": metadata.get("channel")
+                  or metadata.get("uploader"),
+              "duration_seconds": metadata.get("duration"),
+              "event_date": None,
+              "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
+              "video_formats_with_known_size": len(videos),
+              "maximum_source_bytes": maximum_source_bytes,
+              "preflight_reference_observation": {
+                  "video_id": "noI4BbQ2wZQ",
+                  "title": "President Trump Hosts a Columbus Day Celebration",
+                  "format_id": "137",
+                  "resolution": "1920x1080",
+                  "fps": 30,
+                  "content_length_bytes": 963613436,
+                  "evidence": (
+                      "A coordinator reported inspecting the public YouTube watch-page "
+                      "adaptiveFormats metadata without requesting media segments. This is "
+                      "a preliminary metadata observation only, not a download or file-integrity "
+                      "check; the workflow independently rechecks current formats before downloading."
+                  ),
+              },
+              "selected_format": selected,
+              "download_status": "eligible" if selected else "not_downloaded",
+              "download_blocker": None if selected else (
+                  "No landscape video format at least 1920x1080 with known estimated size "
+                  "within the 1.5 GB source limit was reported."
+              ),
+              "rights_evidence": {
+                  "official_event_page": (
+                      "https://www.whitehouse.gov/videos/"
+                      "president-trump-hosts-a-columbus-day-celebration/"
+                  ),
+                  "white_house_copyright_policy": "https://www.whitehouse.gov/copyright/",
+                  "basis": (
+                      "The official event page identifies this exact YouTube video and White House "
+                      "publisher. The policy says government-produced materials appearing on the "
+                      "site are not copyright protected, while noting the U.S. Government may hold "
+                      "transferred copyrights. This records the evidence, not a separate legal "
+                      "attestation or a claim about third-party material."
+                  ),
+              },
+              "known_in_picture_graphics": (
+                  "Prior sampled frames show a White House emblem, POTUS text banner, and QR code; "
+                  "these remain in the source. Full-video frame review is incomplete."
+              ),
+              "processing": "Original source download only; no ASR, translation, editing, or re-encoding.",
+              "deferred_checks": [
+                  {
+                      "name": "Verified event date and local time",
+                      "status": "unknown; event_date remains null",
+                      "reason": "Official upload/publish timestamps do not establish when the event occurred.",
+                      "risk": "Do not assign a date-specific event ID or claim event-day metadata.",
+                      "follow_up": "Find a reliable event-date source before event editing or publication.",
+                  },
+                  {
+                      "name": "Full-video frame/rights review",
+                      "status": "incomplete",
+                      "reason": "This workflow only archives the original source; prior samples show White House branding, banner, and QR.",
+                      "risk": "No clean-frame claim; any third-party notice discovered later blocks reuse.",
+                      "follow_up": "Review the full source and any additional content before edited/public release.",
+                  },
+                  {
+                      "name": "Editorial highlights and bilingual caption review",
+                      "status": "not performed",
+                      "reason": "No clipping, ASR, translation, or subtitle work is in scope.",
+                      "risk": "No reviewed excerpts, captions, or translation claims are made.",
+                      "follow_up": "Complete source-backed highlight, ASR, translation, and human review before editing/publishing.",
+                  },
+                  {
+                      "name": "Additional publishers, camera angles, and edit presets",
+                      "status": "deferred",
+                      "reason": "Not needed to archive this single official source.",
+                      "risk": "No independent camera, alternate source, or multi-style coverage is claimed.",
+                      "follow_up": "Revisit only if a later event-editing task requires additional sources or variants.",
+                  },
+              ],
+          }
+          (package_dir / "source-record.json").write_text(
+              json.dumps(record, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          with output_path.open("a", encoding="utf-8") as output:
+              output.write(f"download_allowed={'true' if selected else 'false'}\n")
+              if selected:
+                  output.write(f"format_selector={selected['format_selector']}\n")
+          with summary_path.open("a", encoding="utf-8") as summary:
+              if selected:
+                  summary.write(
+                      f"Metadata confirms an eligible {selected['width']}x{selected['height']} "
+                      f"landscape format, estimated at {selected['estimated_bytes']} bytes. "
+                      "The source will be downloaded without re-encoding.\n"
+                  )
+              else:
+                  summary.write(record["download_blocker"] + " Metadata-only artifact will be retained.\n")
+          PY
+        shell: bash
+
+      - name: Download the allow-listed source without re-encoding
+        if: steps.metadata.outputs.download_allowed == 'true'
+        env:
+          SOURCE_URL: https://www.youtube.com/watch?v=noI4BbQ2wZQ
+          FORMAT_SELECTOR: ${{ steps.metadata.outputs.format_selector }}
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source
+        run: |
+          set -euo pipefail
+          download_dir="$RUNNER_TEMP/columbus-day-source-download"
+          mkdir -p "$download_dir"
+          yt-dlp \
+            --no-warnings \
+            --no-progress \
+            --concurrent-fragments 8 \
+            --js-runtimes node \
+            --format "$FORMAT_SELECTOR" \
+            --merge-output-format mkv \
+            --output "$download_dir/source.%(ext)s" \
+            "$SOURCE_URL"
+          shopt -s nullglob
+          files=("$download_dir"/source.*)
+          if (( ${#files[@]} != 1 )); then
+            echo "Expected exactly one downloaded source file." >&2
+            exit 1
+          fi
+          source_file="${files[0]}"
+          source_bytes="$(stat -c '%s' "$source_file")"
+          if (( source_bytes > 1500000000 )); then
+            echo "Downloaded source exceeds the 1.5 GB archive limit." >&2
+            exit 1
+          fi
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=width,height \
+            -of json "$source_file" > "$PACKAGE_DIR/source-probe.json"
+          python - "$PACKAGE_DIR" "$source_file" "$source_bytes" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          package_dir = Path(sys.argv[1])
+          source_file = Path(sys.argv[2])
+          source_bytes = int(sys.argv[3])
+          record_path = package_dir / "source-record.json"
+          record = json.loads(record_path.read_text(encoding="utf-8"))
+          probe = json.loads((package_dir / "source-probe.json").read_text(encoding="utf-8"))
+          streams = probe.get("streams", [])
+          if not streams:
+              raise SystemExit("Downloaded file has no video stream.")
+          width, height = streams[0].get("width"), streams[0].get("height")
+          if not isinstance(width, int) or not isinstance(height, int) or width < 1920 or height < 1080 or width <= height:
+              raise SystemExit("Downloaded stream failed the landscape 1920x1080 minimum.")
+          digest = hashlib.sha256()
+          with source_file.open("rb") as source:
+              for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                  digest.update(chunk)
+          record["download_status"] = "downloaded_and_probe_verified"
+          record["downloaded_file"] = source_file.name
+          record["downloaded_bytes"] = source_bytes
+          record["verified_video_resolution"] = f"{width}x{height}"
+          record["sha256"] = digest.hexdigest()
+          record["source_frame_review"] = "not reviewed in this download-only workflow"
+          archived_file = package_dir / source_file.name
+          source_file.replace(archived_file)
+          record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          with (package_dir / "SHA256SUMS").open("w", encoding="utf-8") as sums:
+              sums.write(f"{digest.hexdigest()}  {archived_file.name}\n")
+          PY
+          cat "$PACKAGE_DIR/source-record.json" >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      - name: Upload source and evidence as a time-limited artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: columbus-day-official-source-${{ github.run_id }}
+          path: ${{ runner.temp }}/columbus-day-source/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0

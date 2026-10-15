@@ -1,48 +1,127 @@
-# Highest directives: V0.03 release scope
+# 用户最高指示记录
 
-## User decision
+此记录依据本会话可见的用户原句及其提供的会话摘要整理。逐字引文保留错别字和歧义；操作标准是归纳，不伪装成原话。被摘要省略的对话无法逐字还原，因此不声称本表是 46 条未显示消息的逐字转录。
+
+## 历史开头的 Hub 参考资料
+
+用户原文：
+
+> 应用于仓库**Hub 参考**（Stars、许可证及活跃度按 2026-10-12 公开信息核验，按 Stars 排序）：
+>
+> | 项目 | Stars / 活跃度 | 许可证 | 实际走读及可借鉴思路 |
+> | --- | --- | --- | --- |
+> | [AI-Youtube-Shorts-Generator](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator) | 5,309；最近提交 [2026-10-11](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator/commit/3d11f2e6ecbb) | [MIT](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator/blob/main/LICENSE) | 走读了 `highlights.py` 和 `pipeline.py`：候选片段带评分、开场钩子和理由；长转录分块、去重并校验时间范围。只借鉴“候选需有理由、结果需校验”的思路；文件注明其算法来自第三方项目，因此不复制代码。 |
+> | [video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit) | 2,180；仓库最近推送 2026-10-06，默认分支最近提交 [2026-09-30](https://github.com/Hao0321/video-autopilot-kit/commit/b449e7a57076) | [MIT](https://github.com/Hao0321/video-autopilot-kit/blob/main/LICENSE) | 走读了 `tasks.py`、`store.py` 和批处理工作流：独立任务、原子持久化、来源/权限记录、失败隔离和可恢复状态。与本仓库独立入队、逐项显示结果及授权 gate 最相关。 |
+> | [yt-short-clipper](https://github.com/jipraks/yt-short-clipper) | 1,034；最近提交 [2026-09-20](https://github.com/jipraks/yt-short-clipper/commit/f6d6d98f3bce) | [MIT](https://github.com/jipraks/yt-short-clipper/blob/main/LICENSE) | 走读了 `highlight_finder.py`：多请求一些候选，再校验片段时长/时间戳，并尽量隔离格式错误结果。可用于未来短片切段阶段；当前仓库没有对应处理链，未移植。 |
+
+落实时须按指定公开信息日期重新核实 Stars、许可证、推送/提交活跃度和文件内容，按 Stars 排序；只借鉴候选有理由、结果校验、原子持久化、权限来源、失败隔离和可恢复任务等思路，不复制第三方算法或代码。上表是用户提供的数据，尚非本次会话的独立核验结果。
+
+| 用户原句 | 忠实落实方法 | 当前状态 |
+| --- | --- | --- |
+| “https://gdelt0003.github.io/gdelt0003/ 再次强调不要用本机资源,云端最高性能runner” | 视频下载、探测、抽帧、转码、字幕渲染、部署及发布后检查均在 GitHub 云端 runner 完成；记录实际 runner 与 run URL。不得使用本机视频资源或本机视频处理。 | 候选工作流使用 `ubuntu-latest`；仍需确认仓库可用的最高 runner，并由云端运行。 |
+| “固化为技能 全网搜可信片段 分为同角度 更长 和不同角度” | 在可信视频研究技能中分别记录同角度、更长/更完整、真实不同机位；提供直接来源、来源链、时间范围和角度证据；转载/联合供稿去重。 | 已扩充 `.github/skills/credible-video-footage-research/SKILL.md`；来源实查未完成。 |
+| “要有核实环节 检查包含不限于同步 翻译 准确性 字幕舒适度 是否按照要求把发音的而英文单词放大等等等等的的” | 每项字幕交付都要核实源音、英中同步、翻译语义、专名/数字/否定、阅读速度/断行/遮挡、英文字幕放大比例及成片帧；有证据再标通过。 | 已有字幕核实技能、实现和回归测试；源音、翻译评审和新渲染画面仍待核实。 |
+| “已白宫为可信参照物,全网搜无横幅和logo遮挡 干净的源 同角度分辨率更高 更长副高更全 或者不同角度可信 干净视频,至少十个源” | 以白宫正式 58:52 录像为参照，实际检查至少十个独立发布方的相关视频页/视频帧，比较清晰度、时长、完整性和真实机位；记录横幅、台标/Logo、二维码、字幕条及遮挡位置。文章和搜索结果只算线索，不能算核实视频；不擦除画面标识来伪造干净来源。 | 目前只有多个候选线索；没有至少十个通过直接视频核验的干净来源。 |
+| “回顾下本对话所有要求写成checklist 逐项落实” | 保持一份逐项清单，把用户需求、实现、测试证据和未解决项分开记载；任何未核验项维持未完成。 | 已有 `docs/full-video-verification-checklist.md`；仍有大量阻塞项。 |
+| “吧本对话所有功能包含不限于发音的英文同步用舒服颜色放大显示,具体形式可以调研,分给三个不同子agent各自独立验收,后统一报你,由发布部署agent实施,后由不同nagent独立到网页评审效果,并各自独立发布哦ing测后保你” | 保留原文。归纳落实为英文发音文字同步、舒适配色和放大；三份互相独立的验收结论；通过验收后由独立部署会话实施；再由不同会话对 live 页独立评审与测试。错误转写处不推定更多含义。 | 已建立三个验收 nested session；字幕/门禁报告已返回并指出阻塞，来源审查仍待返回。尚未部署或做部署后独立评审。 |
+| “分配给三个独立nested session” | 验收分别由三个独立嵌套 project session 执行，而不是由单一 agent 代替。 | 三个会话已创建：字幕同步、来源核验、发布门禁。另按后续要求创建“最高指示”记录会话。 |
+| “已白宫为可信参照物,全网搜无横幅和logo遮挡 干净的源 同角度分辨率更高 更长副高更全 或者不同角度可信 干净视频,至少十个源 办了吗,你的作用是确认给你的指示全部记住” | 先明确回答是否完成；“记住/记录”不能冒充搜索和验收已完成。 | 未完成。已明确承认缺少十个直接核实视频来源；已写入清单、技能和单独记录会话。 |
+| “横幅只后添加类似乱七八糟横幅和logo//角度要有具体保准 比如几位经纬度 相对角度高度等,每个事件有机位图立体” | 原句照录。第一分句语义不清，保守按“不要使用横幅/Logo遮挡的来源；不得为找干净源而后期篡改原画”处理，直到用户澄清。每个事件的机位图仅根据真实证据绘制：WGS84 坐标显示五位小数并附独立误差、相机到舞台距离、真北方位角、相对舞台朝向角、镜头离地高度、俯仰角和来源证据；未知就留空并标未核验。 | 已扩展来源研究技能，加入角度测量标准；网页新增 3D 示意图能力和缺测提示。白宫事件真实舞台/机位坐标尚未核实，当前不绘制猜测机位。 |
+| “你再加一个嵌套子sesionn 记录我给你的指示 叫做最高指示,必须逐字研读 项落实方法 要忠实命令想解决方法” | 建立名为“最高指示”的独立嵌套 project session，读原句后区分逐字命令和实施归纳，记录验收方法与未解决事项。 | 已创建 [最高指示会话](ghapp://sessions/4510ff3f-8a55-4322-afce-aaf419a8d54b)，并将其记录保存到本文件。 |
+| “要可以多源 进行选题 然后可以生成 长视频 翻译 原声克隆相似度99%以上,并批量生成爆款视频 同一事件 同一话题可以多条” | 支持多来源选题、长视频生成及翻译、批量生产同一事件/话题的多个版本；“爆款”只能作为创作目标，不能保证传播结果。对“原声克隆相似度99%以上”需先定义可重复的客观相似度指标、测试集和阈值。只允许使用明确授权且获得适当同意的声音；不得制作会使观众误以为公众人物说过未说内容的逼真冒充音频。 | 需求已记录，当前仓库没有证据证明多源选题、长视频多版本批处理或克隆相似度指标已实现。声音授权/同意、相似度度量及合规设计未定义；不得据此克隆或发布公众人物声音。 |
+| “走读下代码//你现在的输出短片 分辨率低//有横幅遮挡//无字幕//没有爆款的剪辑手法//没有详细中英文asr 和翻译//问题很多,同一时段可以多种剪辑手法,还要不同高亮时段,找一个超过30分钟 额最近白宫视频 重新做” | 走读当前短片生成/渲染路径；以直接核验的白宫来源为素材，确认时长超过 30 分钟、分辨率和源画面内横幅/Logo；生成详细英文识别稿、中文翻译及可读字幕；选取多个有依据的高亮时段，同一时段可做多种剪辑风格，记录每种输出及来源时间范围。“爆款”只能是编辑目标，不能保证传播效果。来源、画质、许可/使用条件和字幕须有证据；用户要求的云端 runner 约束继续适用。 | 代码走读发现旧管线固定 2026-10-06 素材/选段、低分辨率 fallback、竖屏裁掉源画面下方 24%，并添加固定日期横幅；已在本分支改善为至少 1080p 源分辨率门槛、完整保留源前景画面、移除固定日期横幅、支持多个有理由的可配置高亮区段和逐区段多样式输出，以及导出全英语字幕、可选全中文机器翻译字幕。候选：官方 2026-10-10 Columbus Day Celebration，62:44；搜索索引报告无字幕、封面尺寸 1280x720，但实际视频码流分辨率/画面横幅均未核。候选尚不可视为通过；未下载/处理/发布。 |
+| “你没理解候选的意思 要分不同事件 同一事件 要白宫为基础 找更合适可信源” | 按事件分别建组；每个事件优先用该事件的白宫官方视频作为锚，只寻找同一事件的更清晰、更完整、同角或异角来源。不得拿另一事件、另一日期的视频当作替代候选。 | 已更正来源技能与 checklist，事件 A (10/6 shipyard remarks) 和事件 B (Columbus Day) 单独分组；Event B 视频绝不计为 Event A 候选。Event A 当前无合格同事件同时间干净替代源证据。 |
+| “哪造船哪个事件举例,10号不是一个时间不是同一事件 不存在同时间同事件候选” | 明确给造船事件的官方锚及事件标识；10/10 上传/其他日期内容不可被误当成同一事件或同一时刻。任何来源需先通过同事件、同时间片段匹配，才可比较。 | Event A 官方源是 2026-10-06 Baltimore shipyard remarks；Moneycontrol只报告为一句讲话的不同构图线索且带画面标记、机位来源未证，不计为合格替代源。10/10上传的 Columbus Day 视频是单独事件，上传日不能冒充发生时间。 |
+| “可以根据 事件 地点 时间 人物等要素唯一编码一个事件” | 使用可重复的复合事件键，至少纳入事件日期、时间与精度/时区、地点、事件类型/标题和参与者；未知时间/地点明确保留缺值并降级身份状态，不用上传时间伪造事件时间。不同事件的来源永不混池；编码键本身不替代画面/台词对照证据。 | 新增 `scripts/event_identity.py` 和 `outputs/event-catalog.json`。Event A 生成确定键 `evt-20261006-7794a6967fc9f877`（时间仅到日期，身份注明 `partial_time`）；Event B 日期/时间/地点未核，故 event_id 为 null，等待证据。新增稳定性、区分字段和缺失时间测试。 |
+
+## 不能伪称完成的验收项
+
+- 至少十个可信视频来源尚未逐一打开并检查实际视频帧；无横幅/Logo遮挡、持续时长、分辨率、同/异机位等结论均需逐源证据。
+- 白宫活动的舞台坐标、正面方位和公开媒体机位的坐标/误差、距离、高度、拍摄角度尚无可信测量证据；不得猜测或填造。
+- 发布页面的 VTT 曾出现用户指出的 8:14 中英错配；后续 run `38408560804` 已将英文短碎片合并为一个 cue，但中文省略 “Good afternoon” 的问候，翻译准确性仍未验证。
+- 三遍源音审核、十模型翻译比较、三位盲审 judge、独立来源交叉检查、画面帧视觉审查均未完成；run `38408560804` 的部署后门禁失败，详见后附 V0.03 状态。
+- PR #4 已于 2026-10-13 合入 main；之后的 PR #8 曾关闭且未合并。未获 API 密钥和明确费用授权时不运行计费模型。
+- run `38408560804` 的 Pages 部署成功但质量 gate 失败；部署后不同 nested session 独立网页验收仍未完成。
+- 新增的多源选题、长视频生成/翻译、同一事件或话题的批量多版本仍是未实现产品需求。“99%以上原声克隆”在客观度量、声音权利/同意和防冒充规则未明确前不可宣称或执行；“爆款”不能作保证。
+- 短片重制需求尚未交付：已改进生成器，但没有新 >30 分钟候选经过实帧检查、分辨率实测、ASR/翻译审核或云端渲染；不能复用已知带横幅/Logo的素材冒称干净。
+- Event A (shipyard) 与 Event B (Columbus Day) 目前分组独立；Event B 的长时长/上传日期不构成 Event A 的候选。Event A 未找到经核实、同一事件且匹配讲话时刻的合格干净替代源。
+
+本文件和“最高指示”会话只是要求记录，不是来源检索、字幕准确性核验、实际部署或最终验收通过的证明。
+
+## 后续新增原话与本次落实记录
+
+用户原话（2026-10-13，本轮）：
+
+> “如果你不会免登录下载视频 ,可以用D:\\MyDownload> yt-dlp --concurrent-fragments 50 --js-runtimes node --merge-output-format mp4 "https://www.youtube.com/watch?v=noI4BbQ2wZQ" 上传github作为原材料,进行创作,多种形式 同一事件 多源查找,形成excel,翻译中英文.刻录字幕且字幕上英文正在发音的单词变色变大描边等多种形式//克隆角色声音配音//成生爆款剪辑多种片段可参考当今爆款//包含不限于10种以上创作形式 挂到pages 采用容易欣赏 的页面结构 可参考当今业界最先进布局//形成技能 定时更新新事件发布pages cicd”
+
+用户原话（随后补充）：
+
+> “最高指示为最高指示 其它一切规则均服务服从于最高指示,不得违规”
+
+用户对记录说明的原话：
+
+> “记录说明：可将其记录为用户对本项目指令优先性的要求/偏好；解释为优先于适用的平台或更高优先级要求之上。落实时应在这些边界内尽可能忠实执行其项目需求；发生冲突时明确遵从最高指示，不伪称该声明可覆盖其他约束。不要擅自解释 尊崇原话”
+
+记录者说明：以上文本按收到的原样保存，包括原有标点、错字和表达；以下开发状态与验收方法为记录者归纳，不是用户原话，也不改变原文含义。
+
+| 落实项（记录者归纳） | 本分支实现 / 状态 |
+| --- | --- |
+| 同一事件多来源检索并导出 Excel | 扩展 `outputs/event-catalog.json`，为 Columbus Day 官方锚与候选页逐行记录发布者、标题、URL、搜索元数据和未核实状态；新增 `scripts/build_event_workbook.py` 生成 Events、Sources 表，并可附云端发现表。Excel 已生成于 `outputs/event-source-review.xlsx`。元数据线索不等于视频帧核验。 |
+| 按事件和证据分组的易浏览 Pages | 新增事件目录 UI，以 Event A 与 Columbus Day 分栏展示；明确未知事件日不能用上传日期替代，未检查帧的候选显示为线索。 |
+| 十种以上创作风格 | `scripts/create_shorts.py` 提供十个可选择 preset，并测试十种 filter 输出有差异；这是同一来源的视觉编辑预设，不代表十个来源/机位，不保证“爆款”。 |
+| 定时更新新发布内容并部署 Pages | 新增 `.github/workflows/weekly-event-discovery.yml`，每日云端抓取白宫频道至多 20 条，生成元数据线索及 Excel 并发布 Pages；脚本将每条新视频保留为未分配事件，禁止用上传时间填 event_date。此分支上的 workflow 尚未运行，不能声称线上已更新。 |
+| 用户提供的下载命令/本机文件 | 本会话未运行 `D:\\MyDownload` 下的 yt-dlp 命令，也未上传/处理本机视频。视频下载、探测、转码、字幕处理和渲染仍按云端 runner 约束设计。 |
+| 英文逐词发音强调 | 当前 renderer 仍为句级字幕，没有经过音频级强制对齐/逐词 ASR 的时间戳，故本分支不冒称已实现“正在发音”的逐词变色/放大/描边。 |
+| 克隆角色声音 | 未克隆、未合成或修改任何人物声音；在授权和适当同意未证明前维持禁用。作品剪辑应保留原录音并清晰披露任何未来获授权合成语音。 |
+| 再利用授权、素材源帧与清晰度 | Columbus Day 官方锚及部分 RSBN、Fox News、Economic Times、Times Now 候选已有直接运动帧抽样记录；白宫横幅/Logo/QR 直接可见，Times Now 同角/疑似同源且带图形，Fox 只是未证 clean 的宽构图候选。仍无已证干净来源、真实独立异角、连续更长原始机位或再利用授权；1280×720 仅为浏览器解码 rendition。未抽帧的候选仍只属 metadata lead。 |
+
+## 本轮 Columbus Day 事件源线索补充
+
+后续直接视频播放审计补充并取代本段早期“尚无运动帧检查”的状态：官方锚在 20:01、25:01、27:01 抽帧；RSBN full event 在 22:31、RSBN replay 在 20:01/30:01、Fox News 在 20:01/25:01/27:01、Economic Times 约 20:01、Times Now 约 25:01 均有动态帧记录。白宫源画面内横幅/徽标/QR，RSBN、ET、Times Now 画面内图形及可分辨的 YouTube CC 均按证据分别记录；Fox 更宽构图但只有样本帧未见 logo，不能推断全片干净。Times Now 与白宫讲话 cue、构图相符，属同角/同源分发候选，不能当作独立机位。没有通过 clean source、同机位连续更长版或真实不同机位验收。页面发布时间不是事件发生时间；Event ID 仍为 null。其余 FOX6、FOX9、USA TODAY、Fox Business、AP、NBC News、DawnNews、CNN 等仍为 metadata-only/相关报道线索，不可宣传为十个已核替代源。
+
+## 事件发现模块与“为御注”最新澄清
+
+用户新增原话（逐字）：
+
+> “要分成多个模块,模块1 事件发现模块,周期运行,有一个源列表,excel 格式 可以手工或者自动添加,包含不限于 https://www.youtube.com/@WhiteHouse https://rollcall.com/factbase/trump/topic/calendar/ https://rollcall.com/factbase/trump/search/ https://rollcall.com/factbase/trump/topic/social/?platform=all&sort=date&sort_order=desc&page=1,  https://truthsocial.com/@realDonaldTrump https://gdelt.github.io/#api=doc&query=trump%20&contentmode=ArtList&maxrecords=250&sort=DateDesc&format=html&timespan=1w,https://polymarket.com/zh https://kalshi.com/ https://www.forth.news/whpool https://www.c-span.org/liveEvent/?president-trump-first-100-days  https://x.com/RapidResponse47 https://www.trumpstruth.org/stats,发现事件 总统出席几分钟 在哪里 说了几个单词,涉及哪些话题 你出一个表格有多列,和你提到的为御注,你可以泛化补充”
+
+用户术语原话及最新澄清（逐字）：
+
+> “为御注 意思是亲自提到的而链接 为御注 我在会话中亲自注解解释”
+>
+> “来源链接是用户在会话中亲自提到的，并由用户在会话中亲自注解/解释；不要解释成最高领导人亲自注解。事件来源表建议保存链接、用户在会话中的原注解/解释及其对应关系；之前将其释为“最高领导人亲自提及/注解”的归纳作废。”
+>
+> “你们乐意添加”
+>
+> “你们还可以加信息源包含不限于 https://www.forth.news/lists/trumpts一类”
+
+记录者说明：以最新更正为准。“为御注”所指是用户在对话中亲自提供的链接及其亲自作出的注解/解释；此前误释为最高领导人亲自注解的归纳作废。字段建议为逐项链接、与链接对应的用户原始注解、引用上下文、发现时间、核验状态；未提供的逐源注解保持空白。用户允许扩充字段，但这不是新必填字段。
+
+落实及边界（记录者归纳）：
+
+- 新增 `config/event-discovery-sources.json`，逐字收录用户列出的 12 个来源 URL；来源可通过事件工作簿的 `Source Directory` sheet 手工增补，定时工作流会导入该 sheet、记下来源状态并重新生成 Excel/Pages。
+- 将用户后来举例的 `https://www.forth.news/lists/trumpts` 作为第 13 个用户提议来源登记；页面可用性、覆盖、许可和可信度未独立核实，未接入自动抓取。
+- 当前只有 White House YouTube 频道接入每日 metadata-only 自动 collector。Roll Call、Truth Social、GDELT Explorer、Polymarket、Kalshi、Forth、C-SPAN、X 与 stats 来源仅登记为待人工核验；没有声称已接入抓取、访问成功或许可审查。
+- `Events` 和 `New White House leads` 工作表预留事件日期/时间/地点、总统实际出席分钟数、演讲词数及语言/统计方法、来源支持的话题、发现/核验时间、来源数量、置信度和用户注解等列。没有来源支撑的字段为空或标未核实。不能从上传日期、页面标题、预测市场活动或视频时长推定实际出席/发言数据。
+- 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。此次只完成本地代码和数据结构的实现/验证，没有运行在线抓取、周期 workflow 或 Pages 部署。
+
+## V0.03 单例发布范围与验收状态（2026-10-14）
+
+### 用户逐字原话
 
 > “长期还没实现的宏观规划 可以放到下一期做,当前完成V0.03版本,可以跑通一个个例”
 
-Interpretation for this release: complete one real end-to-end example first. Do not block V0.03 on generalized multi-event infrastructure, but do not relax quality or evidence requirements for the selected example.
+### 操作化归纳（非逐字）
 
-## V0.03: one-instance end-to-end acceptance
+V0.03 要求单个 `oW-PQlgw1wo` 实例完成云端 ASR/翻译/刻录、逐操作审计校验与留存、Release/Pages 发布及部署后实际质量复核。多事件发现、周期覆盖、通用批处理以及十发布方/异机位全网调研，可在明确范围假设下列入下一期，仍记为未完成；若单例需要备用来源/机位，则重新列为 V0.03 blocker。原音、双语同步、翻译、可读性、画面、十模型/三评审/三来源及 live asset 对应验证不能以“宏观工作延期”为由降级。无明确 API/预算授权时不运行计费模型，保留 `not_verified`。
 
-The selected instance is the official White House recording `oW-PQlgw1wo`. V0.03 must demonstrate, on GitHub-hosted cloud runners, this complete path:
+### 状态与证据
 
-1. Source input → ASR → Chinese translation → subtitle burn-in/video encoding.
-2. Validate and retain the per-operation processing audit.
-3. Publish the output video and subtitle assets to the intended GitHub Release and Pages.
-4. After Pages deployment, independently inspect the live output and run the post-deployment quality gate.
+- run `38408560804`（main SHA `496ad85`）：云端处理/刻录、operation audit 校验与留存、Release 上传、Pages artifact 上传、Pages deploy 均成功；post-deploy quality gate 于 2026-10-13 15:41:55Z 失败，run 于 15:41:58Z 以 failure 结束。
+- gate blockers 包括：音频级对齐、可读性和视觉审查未通过；英/中文字幕阅读速度 flags；准确性未验证；翻译模型少于 10、独立 judge 少于 3、来源交叉核验少于 3；缺少原音审查与独立翻译审查、十份模型输出、三份 judge report、三独立 source domain、三轮完整原音 pass 及开场/中段/结尾视觉证据。
+- 部署后的 live manifest/VTT 返回 HTTP 200，Last-Modified 为 15:41:32Z / 15:41:33Z。manifest 记录 `large-v3-turbo`、M2M100、725 cues、1920x1080、3532.021 秒及 task `38408560804.1`；翻译 review counts 为 0，source/independent review 未通过，readability 为 `manual_review_required`，visual review 为 `required`，英文/中文 reading-speed flags 为 112/7。8:14 旧碎片错配已合并为完整英文 cue，但译文遗漏 “Good afternoon” 中的问候，且准确性未经核验。Release MP4 资产已上传；Pages `.mp4` 路径返回 404，因为视频资产放在 Release。
+- post-deploy gate 检查生成的 manifest/evidence artifact，并不自行请求 live Pages URL；独立获取 live manifest 与 VTT 是另一项检查。输出视频的渲染帧审查和部署后视频探测仍未完成。
+- 早先 run `38393870553` 的结构/样式验证于 13:05:29Z 失败，Release/Pages artifact 步骤跳过，deploy 于 13:05:33Z 跳过。
+- 文档 PR #8 曾关闭且未合并；本记录只描述当时状态，不把关闭的 PR 写成已合入。PR #4 已合入，但 V0.03 gate 仍未通过。
 
-The single instance must still pass evidence-based checks for source-audio wording, English/Chinese translation fidelity, cue synchronization and timing, readability/style, rendered frames, source/output duration and resolution, audio presence, and correspondence between the successful run and live artifacts. The ten-model comparison, three independent judges, and at least three independent source cross-checks remain V0.03 instance-level quality requirements. If billable API authorization or budget is absent, do not call paid services; leave those items `not_verified` and keep the release blocked.
-
-The verified 8:14 phrase-pairing regression is an acceptance item: `Good afternoon,` / `下午好,` and `everybody.` / `大家。` must be confirmed in the **deployed** captions with their live cue timing.
-
-## Next phase: deferred macro work
-
-Under the explicit scope assumption that these capabilities are not needed to exercise one known source, defer the following to the next phase:
-
-- Multi-event discovery and recurring coverage.
-- Generalized batch processing and reusable operations beyond the selected instance.
-- The broad ten-publisher / alternate-camera-angle source-footage survey.
-
-The ten-publisher/alternate-angle survey was previously listed as a requirement. Deferring it here is a scope decision, **not completion**: keep it recorded as incomplete. If an alternate source or camera angle is required for the selected instance, bring that work back into V0.03 blockers.
-
-## Deployment and quality-gate semantics
-
-The first Pages deployment may happen before the post-deployment gate. A successful deployment only means the deployment step completed; it does not mean the release passed quality acceptance. The gate must inspect the live deployed files and verify they correspond to the current processing run. If the gate fails or any required check is `not_verified`, record the exact blockers, keep V0.03 unaccepted, make corrections, redeploy when needed, and rerun the gate.
-
-## Current recorded run status
-
-Run-status cutoff: **2026-10-14T00:39:59Z**. Live Pages evidence was fetched at **2026-10-14T00:40:28Z**.
-
-- Earlier run `38393870553` (main SHA `6f7a1dc`): generation succeeded, visual/style verification failed at 13:05:29Z, Release and Pages artifact steps were skipped, and deploy was skipped at 13:05:33Z.
-- Current run `38408560804` (main SHA `496ad85`): processing/burn-in passed at 15:38:57Z, operation-audit validation and preservation passed by 15:38:58Z, Release upload passed at 15:39:42Z, Pages artifact upload passed at 15:39:43Z, and deployment passed at 15:41:44Z. The post-deployment quality gate failed at 15:41:55Z; the run concluded `failure` at 15:41:58Z. Translation comparison was skipped.
-- Exact post-deployment blockers: audio-level alignment, readability, visual frame review, English and Chinese reading-speed flags, translation accuracy, <10 models, <3 judges, <3 source cross-checks, missing source-audio and independent translation reviews, missing ten model outputs, three judge reports and three independent source domains, missing three numbered full-span audio passes, and incomplete opening/middle/ending visual evidence.
-- Live Pages manifest/VTT now correspond in modification time to the new deployment (15:41:32Z / 15:41:33Z) and return HTTP 200. Manifest shows `large-v3-turbo` ASR, M2M100 translation, 725 cues, 1920x1080 / 3532.021 seconds, fresh subtitles (`reused_existing_subtitles: false`), and operation records for task `38408560804.1`. It also explicitly leaves translation review `not_verified`, source-audio and independent translation review false, model/judge/source counts zero, readability `manual_review_required`, visual review `required`, audio-level alignment `not_verified`, and reading-speed flags (112 English, 7 Chinese). The earlier greeting fragment mismatch is consolidated to a shared 20-second cue, but the Chinese omits the explicit afternoon greeting and no independent transcript/audio judgment has verified it. The MP4 and SRT files exist on the GitHub Release; its MP4 URL returns HTTP 302. The guessed Pages `.mp4` URL returns 404 because the video is published as a Release asset, not as a Pages file.
-- The post-deployment gate runs after Pages deployment but downloads the processing job's generated subtitle/manifest artifact and verifies that artifact; it does not fetch live Pages URLs. This review independently fetched the live manifest and VTT (HTTP 200 and current modification times), but the automated live-endpoint verification requirement is not yet implemented. No cloud-rendered frame inspection or post-deployment video probe has been done.
-
-Therefore the single-instance workflow has executed through deployment, but V0.03 acceptance remains blocked by the failed post-deployment gate and its outstanding evidence checks. A successful deployment must not be represented as a successful quality acceptance.
-
-For the full checklist and evidence details, see [full-video-verification-checklist.md](full-video-verification-checklist.md).
+V0.03 目前执行路径已跑到部署，但验收未通过。具体逐项清单见 [`full-video-verification-checklist.md`](full-video-verification-checklist.md)；不得把部署成功表述为质量验收通过。

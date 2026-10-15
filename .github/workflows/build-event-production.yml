@@ -1,0 +1,234 @@
+name: Build cloud event video variants
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_url:
+        description: Official event recording URL; the source must offer a real 1920x1080-or-higher landscape stream
+        type: string
+        required: true
+        default: https://www.youtube.com/watch?v=noI4BbQ2wZQ
+      identity_json:
+        description: JSON object with event_date, event_time_local (or null), time_precision, timezone, location, event_type, title, participants, official_video_url, and optional verified_source_urls for reviewed same-event alternatives
+        type: string
+        required: true
+      identity_evidence_url:
+        description: HTTPS official event page or equivalent evidence for the supplied identity
+        type: string
+        required: true
+      source_match_evidence_url:
+        description: HTTPS frame/audio evidence establishing that the selected source belongs to this exact event
+        type: string
+        required: true
+      same_event_source_match_confirmed:
+        description: I checked that the selected source depicts this exact event; for an alternate, I matched the relevant moment to the evidence
+        type: boolean
+        required: true
+        default: false
+      rights_evidence_url:
+        description: HTTPS evidence for permission to download and reuse the recording
+        type: string
+        required: true
+      reuse_rights_confirmed:
+        description: I have verified the evidence URL permits download and reuse of this source
+        type: boolean
+        required: true
+        default: false
+      highlights_json:
+        description: JSON array of at least two reviewed intervals, each with id/start/end/title/reason
+        type: string
+        required: true
+      styles:
+        description: Comma-separated edit presets; defaults to all ten available styles
+        type: string
+        required: true
+        default: editorial,punchy,documentary,monochrome,warm,cool,cinematic,vivid,minimal,outline
+
+permissions:
+  contents: read
+
+concurrency:
+  group: event-video-build-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ${{ vars.CLOUD_VIDEO_RUNNER }}
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js for yt-dlp
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade yt-dlp openpyxl faster-whisper
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          yt-dlp --version
+          ffmpeg -version
+          ffprobe -version
+
+      - name: Require explicit reuse-rights confirmation and validate event identity
+        id: identity
+        env:
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          SAME_EVENT_MATCH_CONFIRMED: ${{ inputs.same_event_source_match_confirmed }}
+          IDENTITY_JSON: ${{ inputs.identity_json }}
+          SOURCE_URL: ${{ inputs.source_url }}
+          IDENTITY_EVIDENCE_URL: ${{ inputs.identity_evidence_url }}
+          SOURCE_MATCH_EVIDENCE_URL: ${{ inputs.source_match_evidence_url }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+        run: |
+          if [ "$RIGHTS_CONFIRMED" != "true" ]; then
+            echo "Reuse rights are not confirmed; no video will be downloaded." >&2
+            exit 1
+          fi
+          if [ "$SAME_EVENT_MATCH_CONFIRMED" != "true" ]; then
+            echo "The selected source has not been confirmed as this exact event; no video will be downloaded." >&2
+            exit 1
+          fi
+          printf '%s' "$IDENTITY_JSON" > "$RUNNER_TEMP/event-identity.json"
+          python scripts/prepare_event_production.py \
+            --identity-json "$RUNNER_TEMP/event-identity.json" \
+            --source-url "$SOURCE_URL" \
+            --identity-evidence-url "$IDENTITY_EVIDENCE_URL" \
+            --source-match-evidence-url "$SOURCE_MATCH_EVIDENCE_URL" \
+            --confirm-same-event-match \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --output "$RUNNER_TEMP/event-metadata.json"
+          event_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["event_id"])' "$RUNNER_TEMP/event-metadata.json")"
+          echo "event_id=$event_id" >> "$GITHUB_OUTPUT"
+
+      - name: Check metadata before downloading full source
+        env:
+          SOURCE_URL: ${{ inputs.source_url }}
+        run: |
+          yt-dlp \
+            --dump-single-json \
+            --no-warnings \
+            --js-runtimes node \
+            "$SOURCE_URL" > "$RUNNER_TEMP/source-metadata.json"
+          python - "$RUNNER_TEMP/source-metadata.json" <<'PY'
+          import json
+          import sys
+          from scripts.create_shorts import validate_source_formats
+
+          metadata = json.load(open(sys.argv[1], encoding="utf-8"))
+          duration = metadata.get("duration")
+          if not isinstance(duration, (int, float)) or duration <= 1800:
+              raise SystemExit("Source must be longer than 30 minutes.")
+          try:
+              width, height = validate_source_formats(metadata)
+          except RuntimeError as error:
+              raise SystemExit(str(error)) from error
+          print(f"Source metadata: {duration:.1f}s, confirmed format {width}x{height}")
+          PY
+        shell: bash
+
+      - name: Download authorized source on the cloud runner
+        env:
+          SOURCE_URL: ${{ inputs.source_url }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-source"
+          yt-dlp \
+            --concurrent-fragments 50 \
+            --js-runtimes node \
+            --merge-output-format mp4 \
+            -f 'bestvideo[width>=1920][height>=1080]+bestaudio/best[width>=1920][height>=1080]' \
+            --output "$RUNNER_TEMP/event-source/source.%(ext)s" \
+            "$SOURCE_URL"
+          test -s "$RUNNER_TEMP/event-source/source.mp4"
+          ffprobe -v error -show_entries format=duration,size \
+            -of default=noprint_wrappers=1 "$RUNNER_TEMP/event-source/source.mp4"
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height \
+            -of csv=s=x:p=0 "$RUNNER_TEMP/event-source/source.mp4"
+          sha256sum "$RUNNER_TEMP/event-source/source.mp4"
+        shell: bash
+
+      - name: Render reviewed intervals in requested styles
+        env:
+          SOURCE_URL: ${{ inputs.source_url }}
+          STYLES: ${{ inputs.styles }}
+          HIGHLIGHTS_JSON: ${{ inputs.highlights_json }}
+        run: |
+          printf '%s' "$HIGHLIGHTS_JSON" > "$RUNNER_TEMP/highlights.json"
+          python scripts/create_shorts.py \
+            --url "$SOURCE_URL" \
+            --source-file "$RUNNER_TEMP/event-source/source.mp4" \
+            --output-dir "$RUNNER_TEMP/event-production" \
+            --highlights-json "$RUNNER_TEMP/highlights.json" \
+            --styles "$STYLES"
+          python - "$RUNNER_TEMP/event-production/manifest.json" \
+            "$RUNNER_TEMP/event-metadata.json" <<'PY'
+          import json
+          import sys
+          manifest_path, metadata_path = sys.argv[1:]
+          with open(manifest_path, encoding="utf-8") as source:
+              manifest = json.load(source)
+          with open(metadata_path, encoding="utf-8") as source:
+              metadata = json.load(source)
+          manifest["event_id"] = metadata["event_id"]
+          manifest["event_identity"] = metadata["identity"]
+          manifest["source_url"] = metadata["source_url"]
+          manifest["source_match_evidence_url"] = metadata["source_match_evidence_url"]
+          manifest["same_event_match_confirmed"] = metadata["same_event_match_confirmed"]
+          manifest["identity_evidence_url"] = metadata["identity_evidence_url"]
+          manifest["rights_evidence_url"] = metadata["rights_evidence_url"]
+          manifest["source_frame_review"] = "not_reviewed_before_build"
+          manifest["caption_accuracy_review"] = "not_reviewed"
+          manifest["translation_review"] = "machine_translation_not_reviewed"
+          manifest["voice_processing"] = "original source audio; no voice cloning"
+          with open(manifest_path, "w", encoding="utf-8") as destination:
+              json.dump(manifest, destination, ensure_ascii=False, indent=2)
+              destination.write("\n")
+          PY
+        shell: bash
+
+      - name: Validate media operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/event-production/operation-audit.json"
+          --manifest "$RUNNER_TEMP/event-production/manifest.json"
+        shell: bash
+
+      - name: Preserve media operation audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: event-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/event-production/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - name: Package source and rendered files for human review
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-package/production"
+          cp "$RUNNER_TEMP/event-source/source.mp4" "$RUNNER_TEMP/event-package/source.mp4"
+          cp "$RUNNER_TEMP/event-metadata.json" "$RUNNER_TEMP/event-package/event-metadata.json"
+          cp "$RUNNER_TEMP/event-production/"*.mp4 "$RUNNER_TEMP/event-package/production/"
+          cp "$RUNNER_TEMP/event-production/"*.srt "$RUNNER_TEMP/event-package/production/"
+          cp "$RUNNER_TEMP/event-production/manifest.json" "$RUNNER_TEMP/event-package/production/"
+          cp "$RUNNER_TEMP/event-production/operation-audit.json" "$RUNNER_TEMP/event-package/production/"
+          sha256sum "$RUNNER_TEMP/event-package/source.mp4" \
+            "$RUNNER_TEMP/event-package/production/"*.mp4 \
+            "$RUNNER_TEMP/event-package/production/"*.srt \
+            "$RUNNER_TEMP/event-package/production/operation-audit.json" \
+            > "$RUNNER_TEMP/event-package/SHA256SUMS"
+
+      - name: Upload source and render package for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: event-production-${{ steps.identity.outputs.event_id }}
+          path: ${{ runner.temp }}/event-package
+          if-no-files-found: error
+          retention-days: 30

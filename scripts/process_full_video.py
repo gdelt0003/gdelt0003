@@ -5,10 +5,28 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import platform
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
+from importlib.metadata import version as package_version
 from pathlib import Path
+
+import pysubs2
+
+if __package__:
+    from .operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
+else:
+    from operation_audit import (
+        OperationAudit,
+        current_pipeline_version,
+        current_task_id,
+    )
 
 
 ASR_MODEL = "large-v3-turbo"
@@ -16,6 +34,8 @@ TRANSLATION_MODEL = "facebook/m2m100_1.2B"
 MAX_RELEASE_ASSET_BYTES = 1_950_000_000
 MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
+CAPTION_LOWER_MARGIN_PERCENT = 18
+ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
 
 
 @dataclass(frozen=True)
@@ -41,6 +61,14 @@ def run(command: list[str], *, capture: bool = False) -> str:
             + (f"\n{details}" if details else "")
         )
     return result.stdout if capture else ""
+
+
+def validate_release_asset_size(size_bytes: int) -> None:
+    if size_bytes > MAX_RELEASE_ASSET_BYTES:
+        raise RuntimeError(
+            "Encoded MP4 is too large for a GitHub Release asset: "
+            f"{size_bytes} bytes"
+        )
 
 
 def timestamp(seconds: float, *, decimal: str) -> str:
@@ -352,42 +380,75 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(34, round(chinese_font * 1.22))
+    english_font = max(
+        34,
+        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+    )
     safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
-    margin = max(28, round(height * 0.30))
-    header = f"""[Script Info]
-ScriptType: v4.00+
-PlayResX: {width}
-PlayResY: {height}
-WrapStyle: 0
-ScaledBorderAndShadow: yes
-
-[V4+ Styles]
-Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Chinese,Noto Sans CJK SC,{chinese_font},&H004DD8FF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
-Style: English,Noto Sans CJK SC,{english_font},&H00FFFFFF,&H000000FF,&H00101010,&H90000000,1,0,0,0,100,100,0,0,1,3,1,2,{round(width * 0.11)},{round(width * 0.11)},{margin},1
-
-[Events]
-Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
-"""
-    lines = [header]
+    margin = max(28, round(height * CAPTION_LOWER_MARGIN_PERCENT / 100))
+    subtitles = pysubs2.SSAFile()
+    subtitles.info.update(
+        {
+            "ScriptType": "v4.00+",
+            "PlayResX": str(width),
+            "PlayResY": str(height),
+            "WrapStyle": "0",
+            "ScaledBorderAndShadow": "yes",
+        }
+    )
+    common_style = {
+        "fontname": "Noto Sans CJK SC",
+        "secondarycolor": pysubs2.Color(255, 0, 0),
+        "outlinecolor": pysubs2.Color(16, 16, 16),
+        "backcolor": pysubs2.Color(0, 0, 0, 0x70),
+        "bold": True,
+        "borderstyle": 3,
+        "outline": 6,
+        "shadow": 0,
+        "alignment": pysubs2.Alignment.BOTTOM_CENTER,
+        "marginl": round(width * 0.11),
+        "marginr": round(width * 0.11),
+        "marginv": margin,
+        "encoding": 1,
+    }
+    subtitles.styles["Chinese"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=chinese_font,
+        primarycolor=pysubs2.Color(255, 216, 77),
+    )
+    subtitles.styles["English"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=english_font,
+        primarycolor=pysubs2.Color(255, 255, 255),
+    )
     for cue in cues:
         chinese_lines = _wrap_chinese(cue.chinese, max_chinese_chars)
         english_lines = _wrap_english(cue.english, max_english_chars)
         dialogue_lines = [
-            *(f"{{\\rChinese}}{ass_escape(line)}" for line in chinese_lines),
-            *(f"{{\\rEnglish}}{ass_escape(line)}" for line in english_lines),
+            *(
+                f"{{\\rChinese\\fs{chinese_font}\\1c&H004DD8FF&}}"
+                f"{ass_escape(line)}"
+                for line in chinese_lines
+            ),
+            *(
+                f"{{\\rEnglish\\fs{english_font}\\1c&H00FFFFFF&}}"
+                f"{ass_escape(line)}"
+                for line in english_lines
+            ),
         ]
         if not dialogue_lines:
             continue
-        dialogue_text = r"\N".join(dialogue_lines)
-        lines.append(
-            f"Dialogue: 0,{ass_time(cue.start)},{ass_time(cue.end)},"
-            f"Chinese,,0,0,0,,{dialogue_text}"
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                start=round(cue.start * 1000),
+                end=round(cue.end * 1000),
+                style="Chinese",
+                text=r"\N".join(dialogue_lines),
+            )
         )
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    subtitles.save(str(path), format_="ass", encoding="utf-8")
 
 
 def verify_cues(
@@ -430,7 +491,10 @@ def verify_cues(
         previous_end = cue.end
 
     chinese_font = max(32, round(height * 0.052))
-    english_font = max(34, round(chinese_font * 1.22))
+    english_font = max(
+        34,
+        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+    )
     if english_font / chinese_font < 1.20:
         raise RuntimeError(
             "Caption verification failed: English text is not at least 20% larger."
@@ -467,7 +531,7 @@ def verify_cues(
                 english_font / chinese_font, 3
             ),
             "horizontal_safe_width_percent": 78,
-            "lower_margin_percent": 30,
+            "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
             "max_lines_per_language": 2,
             "english_reading_speed_over_20_cps_cues": english_rate_flags,
             "chinese_reading_speed_over_10_cps_cues": chinese_rate_flags,
@@ -513,40 +577,92 @@ def vtt_from_bilingual_srt(content: str) -> str:
     return "WEBVTT\n\n" + timing.sub(r"\1.\2\3.\4", content)
 
 
-def translate_batches(texts: list[str], *, batch_size: int = 8) -> list[str]:
+def translate_batches(
+    texts: list[str],
+    *,
+    batch_size: int = 8,
+    audit: OperationAudit | None = None,
+    asset_id: str = "unassigned",
+    parent_operation_id: str | None = None,
+) -> list[str]:
     import torch
     from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
     model_id = TRANSLATION_MODEL
-    tokenizer = M2M100Tokenizer.from_pretrained(model_id, src_lang="en")
-    model = M2M100ForConditionalGeneration.from_pretrained(model_id)
-    model.eval()
+
+    def load_model():
+        tokenizer = M2M100Tokenizer.from_pretrained(model_id, src_lang="en")
+        model = M2M100ForConditionalGeneration.from_pretrained(model_id)
+        model.eval()
+        return tokenizer, model
+
+    transformers_version = "unrecorded"
+    if audit is None:
+        tokenizer, model = load_model()
+    else:
+        with audit.record(
+            "translation_model_load",
+            asset_id=asset_id,
+            tool="Hugging Face Transformers",
+            version=f"model={model_id}",
+            details={"parent_operation_id": parent_operation_id},
+        ) as operation:
+            transformers_version = package_version("transformers")
+            operation["version"] = (
+                f"model={model_id}; transformers={transformers_version}"
+            )
+            tokenizer, model = load_model()
     target_language = tokenizer.get_lang_id("zh")
     translated: list[str] = []
 
     with torch.inference_mode():
-        for offset in range(0, len(texts), batch_size):
+        for batch_index, offset in enumerate(
+            range(0, len(texts), batch_size),
+            start=1,
+        ):
             batch = texts[offset:offset + batch_size]
-            encoded = tokenizer(
-                batch,
-                return_tensors="pt",
-                padding=True,
-                truncation=True,
-                max_length=512,
-            )
-            generated = model.generate(
-                **encoded,
-                forced_bos_token_id=target_language,
-                num_beams=4,
-                max_new_tokens=256,
-            )
-            translated.extend(
-                value.strip()
-                for value in tokenizer.batch_decode(
-                    generated,
-                    skip_special_tokens=True,
+            def translate_batch() -> list[str]:
+                encoded = tokenizer(
+                    batch,
+                    return_tensors="pt",
+                    padding=True,
+                    truncation=True,
+                    max_length=512,
                 )
-            )
+                generated = model.generate(
+                    **encoded,
+                    forced_bos_token_id=target_language,
+                    num_beams=4,
+                    max_new_tokens=256,
+                )
+                return [
+                    value.strip()
+                    for value in tokenizer.batch_decode(
+                        generated,
+                        skip_special_tokens=True,
+                    )
+                ]
+
+            if audit is None:
+                batch_translations = translate_batch()
+            else:
+                with audit.record(
+                    "translation_batch",
+                    asset_id=asset_id,
+                    tool="Hugging Face Transformers",
+                    version=(
+                        f"model={model_id}; transformers="
+                        f"{transformers_version}"
+                    ),
+                    details={
+                        "parent_operation_id": parent_operation_id,
+                        "batch_index": batch_index,
+                        "first_cue_index": offset,
+                        "cue_count": len(batch),
+                    },
+                ):
+                    batch_translations = translate_batch()
+            translated.extend(batch_translations)
             print(
                 f"Translated {min(offset + len(batch), len(texts))}"
                 f"/{len(texts)} subtitle cues",
@@ -612,10 +728,68 @@ def read_srt(path: Path) -> list[tuple[float, float, str]]:
     return rows
 
 
+def copy_review_evidence(
+    source_dir: Path,
+    output_dir: Path,
+    translation_review: dict[str, object],
+    visual_review: dict[str, object],
+) -> None:
+    evidence_records = []
+    for field in (
+        "models",
+        "judges",
+        "source_cross_checks",
+        "source_audio_passes",
+    ):
+        records = translation_review.get(field, [])
+        if isinstance(records, list):
+            evidence_records.extend(
+                record for record in records if isinstance(record, dict)
+            )
+    frames = visual_review.get("frames", [])
+    if isinstance(frames, list):
+        evidence_records.extend(
+            record for record in frames if isinstance(record, dict)
+        )
+
+    source_root = source_dir.resolve()
+    output_root = output_dir.resolve()
+    for record in evidence_records:
+        relative_path = record.get("evidence_file")
+        if not isinstance(relative_path, str) or not relative_path.strip():
+            continue
+        source_path = (source_root / relative_path).resolve()
+        output_path = (output_root / relative_path).resolve()
+        try:
+            source_path.relative_to(source_root)
+            output_path.relative_to(output_root)
+        except ValueError as error:
+            raise RuntimeError(
+                "Review evidence path must stay within its manifest directory."
+            ) from error
+        if not source_path.is_file():
+            raise FileNotFoundError(
+                f"Review evidence file is missing: {source_path}"
+            )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, output_path)
+
+
+def validate_asset_prefix(value: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,99}", value):
+        raise ValueError("Asset prefix must be a plain filename-safe identifier.")
+    return value
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--asset-prefix",
+        default="whitehouse-oW-PQlgw1wo",
+        help="Filename prefix for rendered video and subtitle assets.",
+    )
     parser.add_argument(
         "--reuse-subtitles",
         type=Path,
@@ -623,11 +797,17 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    asset_prefix = validate_asset_prefix(args.asset_prefix)
     source = args.input.resolve()
     output_dir = args.output_dir.resolve()
     if not source.is_file() or source.stat().st_size == 0:
         raise FileNotFoundError(f"Input video is missing or empty: {source}")
     output_dir.mkdir(parents=True, exist_ok=True)
+    audit = OperationAudit(
+        output_dir / "operation-audit.json",
+        task_id=current_task_id(),
+        pipeline_version=current_pipeline_version(),
+    )
 
     duration, width, height = probe_video(source)
     language_probability = None
@@ -637,7 +817,7 @@ def main() -> None:
     translation_review: dict[str, object] = {}
     visual_review: dict[str, object] = {}
     if args.reuse_subtitles:
-        prefix = "whitehouse-oW-PQlgw1wo"
+        prefix = asset_prefix
         prior_manifest_path = args.reuse_subtitles / "manifest.json"
         if prior_manifest_path.is_file():
             prior_manifest = json.loads(
@@ -649,6 +829,12 @@ def main() -> None:
             prior_visual_review = prior_manifest.get("visual_review")
             if isinstance(prior_visual_review, dict):
                 visual_review = prior_visual_review
+            copy_review_evidence(
+                args.reuse_subtitles,
+                output_dir,
+                translation_review,
+                visual_review,
+            )
             prior_models = prior_manifest.get("translation_models_used")
             translation_models_used = (
                 [model for model in prior_models if isinstance(model, str)]
@@ -698,41 +884,70 @@ def main() -> None:
             )
         cues = merge_sentence_fragments(cues)
     else:
-        from faster_whisper import WhisperModel
+        with audit.record(
+            "asr",
+            asset_id=source.name,
+            tool="faster-whisper",
+            version=f"model={ASR_MODEL}",
+        ) as operation:
+            operation["version"] = (
+                f"model={ASR_MODEL}; "
+                f"faster-whisper={package_version('faster-whisper')}"
+            )
+            from faster_whisper import WhisperModel
 
-        model = WhisperModel(
-            ASR_MODEL,
-            device="cpu",
-            compute_type="int8",
-            cpu_threads=max(1, os.cpu_count() or 1),
-            num_workers=1,
-        )
-        segments, info = model.transcribe(
-            str(source),
-            language="en",
-            task="transcribe",
-            beam_size=5,
-            vad_filter=True,
-            condition_on_previous_text=False,
-        )
-        english_cues = [
-            (max(0.0, float(segment.start)), min(duration, float(segment.end)),
-             " ".join(segment.text.split()))
-            for segment in segments
-            if segment.end > segment.start and segment.text.strip()
-        ]
-        del model
-        if not english_cues:
-            raise RuntimeError("Whisper produced no English transcript cues.")
+            model = WhisperModel(
+                ASR_MODEL,
+                device="cpu",
+                compute_type="int8",
+                cpu_threads=max(1, os.cpu_count() or 1),
+                num_workers=1,
+            )
+            segments, info = model.transcribe(
+                str(source),
+                language="en",
+                task="transcribe",
+                beam_size=5,
+                vad_filter=True,
+                condition_on_previous_text=False,
+            )
+            english_cues = [
+                (max(0.0, float(segment.start)), min(duration, float(segment.end)),
+                 " ".join(segment.text.split()))
+                for segment in segments
+                if segment.end > segment.start and segment.text.strip()
+            ]
+            del model
+            if not english_cues:
+                raise RuntimeError("Whisper produced no English transcript cues.")
 
         translation_units = merge_sentence_fragments(
             [Cue(start, end, english, "") for start, end, english in english_cues]
         )
-        chinese_texts = translate_batches(
-            [cue.english for cue in translation_units]
-        )
-        if len(chinese_texts) != len(translation_units):
-            raise RuntimeError("Translation output count did not match transcript cues.")
+        with audit.record(
+            "translation_pipeline",
+            asset_id=source.name,
+            tool="Hugging Face Transformers",
+            version=f"model={TRANSLATION_MODEL}",
+            details={
+                "input_cues": len(translation_units),
+                "includes_child_timings": True,
+            },
+        ) as operation:
+            operation["version"] = (
+                f"model={TRANSLATION_MODEL}; "
+                f"transformers={package_version('transformers')}"
+            )
+            chinese_texts = translate_batches(
+                [cue.english for cue in translation_units],
+                audit=audit,
+                asset_id=source.name,
+                parent_operation_id=str(operation["operation_id"]),
+            )
+            if len(chinese_texts) != len(translation_units):
+                raise RuntimeError(
+                    "Translation output count did not match transcript cues."
+                )
         cues = [
             Cue(cue.start, cue.end, cue.english, chinese)
             for cue, chinese in zip(
@@ -747,50 +962,61 @@ def main() -> None:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
     cues = reflow_cues(cues)
 
-    prefix = "whitehouse-oW-PQlgw1wo"
+    prefix = asset_prefix
     english_srt = output_dir / f"{prefix}.en.srt"
     chinese_srt = output_dir / f"{prefix}.zh-Hans.srt"
     bilingual_srt = output_dir / f"{prefix}.en-zh.srt"
     bilingual_vtt = output_dir / f"{prefix}.en-zh.vtt"
     ass_path = output_dir / f"{prefix}.en-zh.ass"
-    english_srt.write_text(srt_text(cues, "en"), encoding="utf-8")
-    chinese_srt.write_text(srt_text(cues, "zh"), encoding="utf-8")
-    combined_srt = bilingual_srt_text(cues)
-    bilingual_srt.write_text(combined_srt, encoding="utf-8")
-    bilingual_vtt.write_text(
-        vtt_from_bilingual_srt(combined_srt),
-        encoding="utf-8",
-    )
-    write_ass(ass_path, cues, width, height)
+    with audit.record(
+        "subtitle_export",
+        asset_id=source.name,
+        tool="Python",
+        version=platform.python_version(),
+        details={"cue_count": len(cues)},
+    ):
+        english_srt.write_text(srt_text(cues, "en"), encoding="utf-8")
+        chinese_srt.write_text(srt_text(cues, "zh"), encoding="utf-8")
+        combined_srt = bilingual_srt_text(cues)
+        bilingual_srt.write_text(combined_srt, encoding="utf-8")
+        bilingual_vtt.write_text(
+            vtt_from_bilingual_srt(combined_srt),
+            encoding="utf-8",
+        )
+        write_ass(ass_path, cues, width, height)
 
     output_video = output_dir / f"{prefix}-bilingual.mp4"
-    run([
-        "ffmpeg", "-y", "-i", str(source),
-        "-map", "0:v:0", "-map", "0:a:0?",
-        "-vf", f"subtitles={ass_path}",
-        "-c:v", "libx264", "-preset", "veryfast",
-        "-crf", "22", "-maxrate", "4000k", "-bufsize", "8000k",
-        "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "128k",
-        "-movflags", "+faststart",
-        str(output_video),
-    ])
-    output_duration, output_width, output_height = probe_video(output_video)
-    if abs(output_duration - duration) > 3:
-        raise RuntimeError(
-            f"Output duration changed unexpectedly: {duration:.2f}s -> "
-            f"{output_duration:.2f}s"
-        )
-    if (output_width, output_height) != (width, height):
-        raise RuntimeError(
-            f"Output resolution changed unexpectedly: "
-            f"{width}x{height} -> {output_width}x{output_height}"
-        )
-    if output_video.stat().st_size > MAX_RELEASE_ASSET_BYTES:
-        raise RuntimeError(
-            f"Encoded MP4 is too large for a GitHub Release asset: "
-            f"{output_video.stat().st_size} bytes"
-        )
+    ffmpeg_version = run(["ffmpeg", "-version"], capture=True).splitlines()[0]
+    with audit.record(
+        "subtitle_burn",
+        asset_id=output_video.name,
+        tool="ffmpeg",
+        version=ffmpeg_version,
+        details={"source_asset": source.name, "resolution": f"{width}x{height}"},
+    ):
+        run([
+            "ffmpeg", "-y", "-i", str(source),
+            "-map", "0:v:0", "-map", "0:a:0?",
+            "-vf", f"subtitles={ass_path}",
+            "-c:v", "libx264", "-preset", "veryfast",
+            "-crf", "22", "-maxrate", "4000k", "-bufsize", "8000k",
+            "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k",
+            "-movflags", "+faststart",
+            str(output_video),
+        ])
+        output_duration, output_width, output_height = probe_video(output_video)
+        if abs(output_duration - duration) > 3:
+            raise RuntimeError(
+                f"Output duration changed unexpectedly: {duration:.2f}s -> "
+                f"{output_duration:.2f}s"
+            )
+        if (output_width, output_height) != (width, height):
+            raise RuntimeError(
+                f"Output resolution changed unexpectedly: "
+                f"{width}x{height} -> {output_width}x{output_height}"
+            )
+        validate_release_asset_size(output_video.stat().st_size)
     quality_checks = verify_cues(
         cues,
         duration=duration,
@@ -829,9 +1055,16 @@ def main() -> None:
             chinese_srt.name,
             bilingual_srt.name,
         ],
-        "subtitle_style": "gold Chinese above white English; responsive phrase-level timing",
+        "subtitle_style": (
+            "gold Chinese above white English; English nominal font size is "
+            "1.50x Chinese; authored with pysubs2 "
+            f"{package_version('pysubs2')} and burned with FFmpeg libass; "
+            "responsive phrase-level timing"
+        ),
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
+        "operation_audit_file": "operation-audit.json",
+        "processing_operations": audit.records,
         "whisper_detected_language_probability": (
             round(language_probability, 4)
             if language_probability is not None
