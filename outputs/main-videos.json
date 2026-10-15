@@ -5,6 +5,8 @@
       "id": "katie-zacharia-2026-10-13-preview-38661270142",
       "title": "Katie Zacharia · 未核验的机器生成中英双语完整视频预览",
       "event_date": "2026-10-13",
+      "homepage_status": "机器生成预览 · 未经人工核验",
+      "source_details_url": "events/katie-zacharia-2026-10-13/sources.html",
       "publisher": "GDELT · process_full_video.py 机器生成预览",
       "render_engine": "scripts/process_full_video.py · faster-whisper large-v3-turbo + facebook/m2m100_1.2B + FFmpeg",
       "resolution": "1920x1080",
@@ -46,10 +48,14 @@
       ],
       "provenance": {
         "search_method": "YouTube search (query: 'Press Secretary Katie Zacharia briefing October 13 2026'), filtered: last week, sorted by popularity; inspected pages with Playwright",
+        "ranking_method": "官方事件锚点始终保留并置顶；其余已登记的同一事件候选依次按事件匹配状态、内嵌横幅/标志核验状态、分辨率像素、时长、播放量排序。未知值不补估，同级保持原清单顺序。来源信任评分口径未定义，暂不参与排序；遮挡状态未核验不代表无遮挡。",
         "checked_fields": ["duration_seconds","view_count","upload_date","publish_date","max_resolution","captions","overlay_assessment"],
         "sources": [
           {
             "id": "yt:g7we6gecwnc",
+            "event_anchor": true,
+            "overlay_status": "overlay_present",
+            "occlusion_status": "face_not_obstructed",
             "title": "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026",
             "url": "https://www.youtube.com/watch?v=g7we6gecwnc",
             "publisher": "The White House",
@@ -76,6 +82,8 @@
 
           {
             "id": "yt:AJ6jRxHy9xc",
+            "overlay_status": "overlay_present",
+            "occlusion_status": "unassessed",
             "title": "LIVE: White House press briefing with Katie Zacharia (full)",
             "url": "https://www.youtube.com/watch?v=AJ6jRxHy9xc",
             "publisher": "Associated Press",
@@ -98,6 +106,8 @@
 
           {
             "id": "yt:Uya88MLbHV0",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "White House Press Secretary Katie Zacharia Holds First Briefing",
             "url": "https://www.youtube.com/watch?v=Uya88MLbHV0",
             "publisher": "C-SPAN",
@@ -120,6 +130,8 @@
 
           {
             "id": "yt:rQlpuY2tj-4",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "LIVE: New White House press secretary Katie Zacharia holds first briefing",
             "url": "https://www.youtube.com/watch?v=rQlpuY2tj-4",
             "publisher": "Reuters",
@@ -142,6 +154,8 @@
 
           {
             "id": "yt:UgIivPOerNc",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "LIVE: White House press secretary Katie Zacharia holds first briefing | NBC News",
             "url": "https://www.youtube.com/watch?v=UgIivPOerNc",
             "publisher": "NBC News",
@@ -160,6 +174,8 @@
           },
           {
             "id": "yt:NcBo4MG8MnA",
+            "overlay_status": "overlay_present",
+            "occlusion_status": "unassessed",
             "title": "FULL White House Press Briefing: October 13, 2026",
             "url": "https://www.youtube.com/watch?v=NcBo4MG8MnA",
             "publisher": "FOX 29 Philadelphia",
@@ -178,6 +194,8 @@
           },
           {
             "id": "yt:jWTVCPMk3S4",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26",
             "url": "https://www.youtube.com/watch?v=jWTVCPMk3S4",
             "publisher": "Right Side Broadcasting Network",
@@ -196,6 +214,8 @@
           },
           {
             "id": "yt:c6Omy99Xhsc",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "Katie Zacharia holds first White House press briefing",
             "url": "https://www.youtube.com/watch?v=c6Omy99Xhsc",
             "publisher": "C-SPAN (excerpt)",
@@ -214,6 +234,8 @@
           },
           {
             "id": "yt:h30qlVplAsE",
+            "overlay_status": "possible_overlay",
+            "occlusion_status": "unassessed",
             "title": "LIVE: White House press briefing with Katie Zacharia (CNBC)",
             "url": "https://www.youtube.com/watch?v=h30qlVplAsE",
             "publisher": "CNBC",
@@ -232,6 +254,8 @@
           },
           {
             "id": "yt:rDw_no4Rjk8",
+            "overlay_status": "unassessed",
+            "occlusion_status": "unassessed",
             "title": "FULL White House Press Briefing: Katie Zacharia (ABC 13WHAM)",
             "url": "https://www.youtube.com/watch?v=rDw_no4Rjk8",
             "publisher": "13WHAM (ABC)",
@@ -255,6 +279,7 @@
       "id": "whitehouse-oW-PQlgw1wo",
       "title": "总统造船厂讲话 · 完整视频",
       "event_date": "2026-10-06",
+      "homepage_status": "字幕与翻译待复核",
       "publisher": "白宫官方频道",
       "resolution": "1920 × 1080（16:9）",
       "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4",
@@ -280,6 +305,7 @@
       "id": "pvXbHQrIvTw-smartsub-draft-38540536544",
       "title": "PVX · SmartSub 机器生成双语草稿（未经人工核验）",
       "event_date": "2026-10-13",
+      "homepage_status": "机器生成草稿 · 未经人工核验",
       "publisher": "GDELT · SmartSub 3.9.0",
       "render_engine": "buxuku/SmartSub 3.9.0（上游开源项目，固定版本）",
       "render_engine_url": "https://github.com/buxuku/SmartSub",

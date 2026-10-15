@@ -35,30 +35,31 @@ async function main() {
   const payload = {
     videos: [
       {
-        id: 'first',
-        title: 'First event',
-        video_url: 'https://cdn.example.test/first.mp4',
-        render_engine: 'Open-source renderer v1',
-        render_engine_url: 'https://source.example.test/renderer',
-        source_url: 'https://source.example.test/first',
-        subtitles: [{ label: 'English SRT', url: 'captions/first.srt' }],
-        subtitle_layout_request: {
-          profile: 'katie-fixed-lower-third-zh-first',
-          status: 'configured_not_rendered',
-          contract: 'Chinese above English with a fixed panel.',
-          source_graphics: 'The source banner remains intact.',
-          visual_render_review: 'not_verified',
-        },
+        id: 'older',
+        title: 'Older event',
+        event_date: '2026-10-06',
+        homepage_status: '字幕待复核',
+        video_url: 'https://cdn.example.test/older.mp4',
+        source_details_url: 'events/older/sources.html',
+        source_url: 'https://source.example.test/older',
       },
       {
-        id: 'second',
-        title: 'Second event',
-        video_url: 'https://cdn.example.test/second.mp4',
-        subtitles: [],
+        id: 'newer',
+        title: 'Newer event',
+        event_date: '2026-10-13',
+        publisher: 'White House',
+        resolution: '1920x1080',
+        duration_seconds: 865,
+        homepage_status: '机器生成预览 · 未经人工核验',
+        video_url: 'https://cdn.example.test/newer.mp4',
+        source_details_url: 'events/newer/sources.html',
+        source_url: 'https://source.example.test/newer',
+        provenance: { sources: [{ id: 'hidden-details' }] },
       },
       {
         id: 'unsafe',
         title: 'Unsafe video',
+        event_date: '2026-10-14',
         video_url: 'javascript:alert(1)',
       },
     ],
@@ -78,33 +79,41 @@ async function main() {
 
   assert.equal(videos.children.length, 2, 'render all safe main videos');
   assert.equal(status.textContent, '2 条主视频', 'count only playable catalog entries');
-  assert.equal(videos.children[0].children[1].children[0].textContent, 'First event');
-  assert.equal(videos.children[1].children[1].children[0].textContent, 'Second event');
-  assert.match(
-    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').textContent,
-    /Open-source renderer v1/,
-  );
-  assert.equal(
-    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').children.find((node) => node.tagName === 'a').href,
-    'https://source.example.test/renderer',
-  );
+  assert.equal(videos.children[0].children[1].children[0].textContent, 'Newer event');
+  assert.equal(videos.children[1].children[1].children[0].textContent, 'Older event');
   assert.equal(
     videos.children[0].children[0].children[0].src,
-    'https://cdn.example.test/first.mp4',
+    'https://cdn.example.test/newer.mp4',
+  );
+
+  const newestContent = videos.children[0].children[1];
+  assert.equal(newestContent.children.length, 4, 'homepage cards keep only concise details');
+  assert.equal(newestContent.children[1].textContent, '2026-10-13 · White House · 1920x1080 · 14 分钟');
+  assert.equal(newestContent.children[2].textContent, '机器生成预览 · 未经人工核验');
+  assert.equal(
+    newestContent.children[3].children.map((link) => link.textContent).join(', '),
+    '来源视频, 来源与版本信心详情, 下载 MP4',
+  );
+  assert.ok(
+    !newestContent.children.some((node) => node.className === 'main-video-sources'),
+    'full provenance is not expanded on the homepage',
   );
   assert.equal(
-    videos.children[0].children[1].children.at(-1).children.length,
-    3,
-    'include MP4, subtitle, and source links',
+    newestContent.children[3].children[1].href,
+    'https://example.test/site/events/newer/sources.html',
+    'homepage cards link to event-specific source details',
   );
-  const layoutRequest = videos.children[0].children[1].children.find(
-    (node) => node.className === 'main-video-layout-request',
-  );
-  assert.ok(layoutRequest, 'render the requested burned-in subtitle layout status');
-  assert.equal(
-    layoutRequest.children.find((node) => node.className === 'main-video-layout-status').textContent,
-    '配置：katie-fixed-lower-third-zh-first · configured_not_rendered · 画面复核：not_verified',
-  );
+
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const rankingScript = html.indexOf('assets/main-video-ranking.js');
+  const mainVideosScript = html.indexOf('assets/main-videos.js');
+  assert.ok(rankingScript >= 0 && rankingScript < mainVideosScript, 'load shared ranking before main videos');
+  assert.match(html, /按事件日期由新到旧排列/);
+
+  const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
+  assert.match(css, /\.main-video-grid\s*\{[^}]*repeat\(auto-fit,\s*minmax\(min\(100%,\s*320px\)/s);
+  assert.match(css, /@media\s*\(max-width:\s*680px\)/);
+  assert.match(css, /\.main-video-source-details/);
 
   const catalog = JSON.parse(
     fs.readFileSync(path.join(root, 'outputs', 'main-videos.json'), 'utf8'),
