@@ -2,6 +2,256 @@
   "schema_version": 1,
   "videos": [
     {
+      "id": "katie-zacharia-2026-10-13-preview-38661270142",
+      "title": "Katie Zacharia · 未核验的机器生成中英双语完整视频预览",
+      "event_date": "2026-10-13",
+      "publisher": "GDELT · process_full_video.py 机器生成预览",
+      "render_engine": "scripts/process_full_video.py · faster-whisper large-v3-turbo + facebook/m2m100_1.2B + FFmpeg",
+      "resolution": "1920x1080",
+      "duration_seconds": 865.341,
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc-bilingual.mp4",
+      "preview_release_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142",
+      "manifest_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/manifest.json",
+      "operation_audit_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/operation-audit.json",
+      "source_url": "https://www.youtube.com/watch?v=g7we6gecwnc",
+      "source_sha256": "97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7",
+      "source_asset_id": "642103215",
+      "review_status": "机器生成测试预览，未经人工核验；英语 ASR、中文翻译、源音/画面匹配及完整画面可读性均未验证，发布质量 gate 仍阻塞。",
+      "subtitle_layout_request": {
+        "profile": "katie-fixed-lower-third-zh-first",
+        "status": "configured_not_rendered",
+        "contract": "固定于画面下方的字幕区；中文在上且字号至少为英文的 1.20 倍，英文在下；每种语言最多两行；双语字幕各自固定锚点，字幕块不随单/双行跳动。优先单行；超出安全宽度时不截断，无法在完整词/安全标点边界内排入两行则阻止渲染并要求短语级复核。",
+        "source_graphics": "保留源视频原有横幅；若确认复用权后按此配置渲染，字幕背景区会覆盖/复用下方横幅区域，不代表源画面已清理。",
+        "reuse_rights": "未确认；本次未下载、重渲染或发布视频。",
+        "visual_render_review": "not_verified"
+      },
+      "note": "来源 SHA-256 97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7。保留来源画面与音轨；未完成人工字幕、翻译或完整画面复核，不声称来源画面无内嵌图文。使用本地 runner ASR/翻译模型与 FFmpeg，无付费 API 或声音克隆。",
+      "subtitles": [
+        {
+          "label": "English SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en.srt"
+        },
+        {
+          "label": "简体中文 SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.zh-Hans.srt"
+        },
+        {
+          "label": "中英双语 SRT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en-zh.srt"
+        },
+        {
+          "label": "中英双语 WebVTT · 未核验",
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en-zh.vtt"
+        }
+      ],
+      "provenance": {
+        "search_method": "YouTube search (query: 'Press Secretary Katie Zacharia briefing October 13 2026'), filtered: last week, sorted by popularity; inspected pages with Playwright",
+        "checked_fields": ["duration_seconds","view_count","upload_date","publish_date","max_resolution","captions","overlay_assessment"],
+        "sources": [
+          {
+            "id": "yt:g7we6gecwnc",
+            "title": "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026",
+            "url": "https://www.youtube.com/watch?v=g7we6gecwnc",
+            "publisher": "The White House",
+            "hosting_platform": "YouTube",
+            "view_count": 339870,
+            "duration_seconds": 865,
+            "upload_date": "2026-10-13T07:02:41-07:00",
+            "publish_date": "2026-10-13T07:02:41-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "官方上传可见底部横幅 'TEXT 'TRUTH' TO 45470' 与 White House 标识，约占底部 15-20% 帧高；不遮挡人脸，视为源画面含嵌入横幅（未清除）。",
+            "classification": "confirmed",
+            "notes": "官方 White House upload；YouTube ASR track 标注为“英语 (自动生成)”。底部横幅为源画面内嵌元素；用户要求的新字幕区会覆盖/复用该区域，但当前预览未按新布局重渲染。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {
+              "user_given_reference_score": 60,
+              "user_score_note": "用户给定参考分，非测量/审校分；原 YouTube ASR 标注为 '英语 (自动生成)'。",
+              "verification": "自动成生（asr）/未见算法或人工核验证据"
+            },
+            "checked_with": "Playwright page metadata and accessible player inspection; no render-frame review for this output",
+            "checked_fields": ["duration_seconds","view_count","upload_date","publish_date","max_resolution","captions","overlay_assessment"]
+          },
+
+          {
+            "id": "yt:AJ6jRxHy9xc",
+            "title": "LIVE: White House press briefing with Katie Zacharia (full)",
+            "url": "https://www.youtube.com/watch?v=AJ6jRxHy9xc",
+            "publisher": "Associated Press",
+            "hosting_platform": "YouTube",
+            "view_count": 502081,
+            "duration_seconds": 863,
+            "upload_date": "2026-10-13T07:05:57-07:00",
+            "publish_date": "2026-10-13T07:05:57-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "AP 上传带右下角台标/bug；未见更清洁的画面。",
+            "classification": "lead",
+            "notes": "长时段直播记录；视角与官方匹配但取景略紧，未证实为独立机位。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"自动成生（asr）/未核验"},
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","view_count","upload_date","max_resolution","captions","overlay_assessment"]
+          },
+
+          {
+            "id": "yt:Uya88MLbHV0",
+            "title": "White House Press Secretary Katie Zacharia Holds First Briefing",
+            "url": "https://www.youtube.com/watch?v=Uya88MLbHV0",
+            "publisher": "C-SPAN",
+            "hosting_platform": "YouTube",
+            "view_count": 15560,
+            "duration_seconds": 901,
+            "upload_date": "2026-10-13T07:04:18-07:00",
+            "publish_date": "2026-10-13T07:04:18-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 - CC1","language":"en"},{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "含多轨字幕选择；可能提供额外上下文（+36s），未验证为更长连续源。",
+            "classification": "lead",
+            "notes": "C-SPAN 提供多个字幕轨；页面描述与事件匹配，但连续性未完全核验。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"多轨/CC1 与 asr 并存；核验证据未见"},
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution","captions"]
+          },
+
+          {
+            "id": "yt:rQlpuY2tj-4",
+            "title": "LIVE: New White House press secretary Katie Zacharia holds first briefing",
+            "url": "https://www.youtube.com/watch?v=rQlpuY2tj-4",
+            "publisher": "Reuters",
+            "hosting_platform": "YouTube",
+            "view_count": 56628,
+            "duration_seconds": 2798,
+            "upload_date": "2026-10-13T07:04:21-07:00",
+            "publish_date": "2026-10-13T07:04:21-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "长时直播记录（可能包含前后延伸内容），连续性需进一步核验。",
+            "classification": "lead",
+            "notes": "可能为更长 coverage（直播合并），但未检查全部录像以确认连续性。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"自动成生（asr）/未核验"},
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution","captions"]
+          },
+
+          {
+            "id": "yt:UgIivPOerNc",
+            "title": "LIVE: White House press secretary Katie Zacharia holds first briefing | NBC News",
+            "url": "https://www.youtube.com/watch?v=UgIivPOerNc",
+            "publisher": "NBC News",
+            "hosting_platform": "YouTube",
+            "view_count": 57322,
+            "duration_seconds": 2995,
+            "upload_date": "2026-10-13T07:15:06-07:00",
+            "publish_date": "2026-10-13T07:15:06-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "直播流，含频道 CC1/DTVCC1 字幕轨；未证实为独立机位。",
+            "classification": "lead",
+            "notes": "直播长流，含手动字幕轨（可能更可靠）。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution","captions"]
+          },
+          {
+            "id": "yt:NcBo4MG8MnA",
+            "title": "FULL White House Press Briefing: October 13, 2026",
+            "url": "https://www.youtube.com/watch?v=NcBo4MG8MnA",
+            "publisher": "FOX 29 Philadelphia",
+            "hosting_platform": "YouTube",
+            "view_count": 29006,
+            "duration_seconds": 873,
+            "upload_date": "2026-10-13T07:17:12-07:00",
+            "publish_date": "2026-10-13T07:17:12-07:00",
+            "max_resolution": "1280x720",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "720p，未达到用户偏好 1080p；含频道台标/右下角图标。",
+            "classification": "unverified",
+            "notes": "分发源或重新上传；不满足 >=1080p 要求。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["max_resolution","duration_seconds"]
+          },
+          {
+            "id": "yt:jWTVCPMk3S4",
+            "title": "FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26",
+            "url": "https://www.youtube.com/watch?v=jWTVCPMk3S4",
+            "publisher": "Right Side Broadcasting Network",
+            "hosting_platform": "YouTube",
+            "view_count": 197541,
+            "duration_seconds": 847,
+            "upload_date": "2026-10-13T07:06:03-07:00",
+            "publish_date": "2026-10-13T07:06:03-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "不同上传但 1080p；视角与官方相似，独立机位未证实。",
+            "classification": "unverified",
+            "notes": "高流量 reupload/syndicate candidate。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["view_count","max_resolution","duration_seconds"]
+          },
+          {
+            "id": "yt:c6Omy99Xhsc",
+            "title": "Katie Zacharia holds first White House press briefing",
+            "url": "https://www.youtube.com/watch?v=c6Omy99Xhsc",
+            "publisher": "C-SPAN (excerpt)",
+            "hosting_platform": "YouTube",
+            "view_count": 150604,
+            "duration_seconds": 140,
+            "upload_date": "2026-10-13T08:08:19-07:00",
+            "publish_date": "2026-10-13T08:08:19-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "片段摘录（非完整录制），适合作为快速引用而非完整来源。",
+            "classification": "unverified",
+            "notes": "短片摘录，不计为完整连续记录。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds"]
+          },
+          {
+            "id": "yt:h30qlVplAsE",
+            "title": "LIVE: White House press briefing with Katie Zacharia (CNBC)",
+            "url": "https://www.youtube.com/watch?v=h30qlVplAsE",
+            "publisher": "CNBC",
+            "hosting_platform": "YouTube",
+            "view_count": null,
+            "duration_seconds": 862,
+            "upload_date": "2026-10-13T07:10:00-07:00",
+            "publish_date": "2026-10-13T07:10:00-07:00",
+            "max_resolution": "1280x720",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "720p 流，不符合用户首选 >=1080p；含频道台标/可能有画面烙印。",
+            "classification": "unverified",
+            "notes": "短期直播/回放；分辨率不满足首选要求。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution","captions"]
+          },
+          {
+            "id": "yt:rDw_no4Rjk8",
+            "title": "FULL White House Press Briefing: Katie Zacharia (ABC 13WHAM)",
+            "url": "https://www.youtube.com/watch?v=rDw_no4Rjk8",
+            "publisher": "13WHAM (ABC)",
+            "hosting_platform": "YouTube",
+            "view_count": null,
+            "duration_seconds": 858,
+            "upload_date": "2026-10-13T07:08:00-07:00",
+            "publish_date": "2026-10-13T07:08:00-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "1080p 版本；画面可能为转播或转载，独立机位未证实。",
+            "classification": "unverified",
+            "notes": "本地台/地方新闻转载，需验证是否为独立机位或转播。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution"]
+          }
+        ]
+      }
+    },
+    {
       "id": "whitehouse-oW-PQlgw1wo",
       "title": "总统造船厂讲话 · 完整视频",
       "event_date": "2026-10-06",
@@ -45,47 +295,11 @@
         },
         {
           "label": "简体中文 SRT · 未核验",
-          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt"
+          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt"
         },
         {
           "label": "中英双语 SRT · 未核验",
           "url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
-        }
-      ]
-    },
-    {
-      "id": "katie-zacharia-2026-10-13-preview-38661270142",
-      "title": "Katie Zacharia · 未核验的机器生成中英双语完整视频预览",
-      "event_date": "2026-10-13",
-      "publisher": "GDELT · process_full_video.py 机器生成预览",
-      "render_engine": "scripts/process_full_video.py · faster-whisper large-v3-turbo + facebook/m2m100_1.2B + FFmpeg",
-      "resolution": "1920x1080",
-      "duration_seconds": 865.341,
-      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc-bilingual.mp4",
-      "preview_release_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142",
-      "manifest_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/manifest.json",
-      "operation_audit_url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/operation-audit.json",
-      "source_url": "https://www.youtube.com/watch?v=g7we6gecwnc",
-      "source_sha256": "97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7",
-      "source_asset_id": "642103215",
-      "review_status": "机器生成测试预览，未经人工核验；英语 ASR、中文翻译、源音/画面匹配及完整画面可读性均未验证，发布质量 gate 仍阻塞。",
-      "note": "来源 SHA-256 97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7。保留来源画面与音轨；未完成人工字幕、翻译或完整画面复核，不声称来源画面无内嵌图文。使用本地 runner ASR/翻译模型与 FFmpeg，无付费 API 或声音克隆。",
-      "subtitles": [
-        {
-          "label": "English SRT · 未核验",
-          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en.srt"
-        },
-        {
-          "label": "简体中文 SRT · 未核验",
-          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.zh-Hans.srt"
-        },
-        {
-          "label": "中英双语 SRT · 未核验",
-          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en-zh.srt"
-        },
-        {
-          "label": "中英双语 WebVTT · 未核验",
-          "url": "https://github.com/gdelt0003/gdelt0003/releases/download/katie-zacharia-g7we6gecwnc-bilingual-preview-38661270142/katie-zacharia-g7we6gecwnc.en-zh.vtt"
         }
       ]
     }
