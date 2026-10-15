@@ -114,9 +114,13 @@ function renderSourceDetails(payload) {
     const sectionElement = document.createElement('section');
     sectionElement.className = 'main-video-source-category';
 
+    const zeroDisclaimer = section.total === 0
+      ? '；如某类别显示 0 条：本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在；仅表示本静态快照中未发现更多已核验候选。'
+      : '';
+
     const heading = document.createElement('h4');
     heading.className = 'main-video-source-category-title';
-    heading.textContent = `${section.label}（${section.total} 条候选 · ${section.confirmedCount} 条事件匹配已确认；本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在；仅表示本静态快照未检出更多已核验候选）`;
+    heading.textContent = `${section.label}（${section.total} 条候选 · ${section.confirmedCount} 条事件匹配已确认${zeroDisclaimer}）`;
     sectionElement.append(heading);
 
     const list = document.createElement('div');
@@ -125,7 +129,7 @@ function renderSourceDetails(payload) {
     if (!section.sources.length) {
       const empty = document.createElement('p');
       empty.className = 'main-video-source-category-empty';
-      empty.textContent = `该类别候选 0 条；本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在。仅表示本静态快照中未发现已核验的${section.label}来源；未见可验证证据的条目不会被补造，也不会被评分。`;
+      empty.textContent = `该类别候选 0 条；如某类别显示 0 条：本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在。仅表示本静态快照中未发现已核验的${section.label}来源；未见可验证证据的条目不会被补造，也不会被评分。`;
       list.append(empty);
     }
 

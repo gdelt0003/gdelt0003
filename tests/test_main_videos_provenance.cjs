@@ -125,8 +125,16 @@ async function main() {
   assert.equal(newsCards.length, 2, 'render both direct news article leads');
   assert.equal(socialCards.length, 5, 'render the direct social reaction attribution leads');
   assert.ok(
-    newsSection.children[0].textContent.includes('本静态目录当前未收录/本次检索未覆盖'),
-    'describe a zero or missing category as a static-directory gap, not as a global absence claim',
+    !newsSection.children[0].textContent.includes('如某类别显示 0 条'),
+    'nonzero sections should not append the zero-category disclaimer',
+  );
+  assert.ok(
+    !socialSection.children[0].textContent.includes('如某类别显示 0 条'),
+    'nonzero social sections should not append the zero-category disclaimer',
+  );
+  assert.ok(
+    !sourceDetails.textContent.includes('新闻/社交/其他类别为 0 条'),
+    'the page should not use a blanket zero-category statement when categories are populated',
   );
   assert.equal(cards[0].children[0].textContent, '#1');
   assert.equal(cards[0].children[1].textContent, 'Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026');
