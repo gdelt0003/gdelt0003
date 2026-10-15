@@ -266,6 +266,63 @@ class EventWorkbookTests(unittest.TestCase):
             ],
             "pending_exact_event_match_people_stage_background_audio_continuity_and_source_lineage_review",
         )
+        fourth_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=h30qlVplAsE"
+        )
+        self.assertIsNone(fourth_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Queue rank (not a trust score)")],
+            "pending",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            30,
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User-proposed role (not verified)")
+            ],
+            "user_proposed_background_reference_and_backup_candidate_only; not approved for production",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User-provided characterization (claim; unverified)")
+            ],
+            "此链接比官方还短 还有logo 30分,但是也可以作为背景 参考 剋有看看有没有不同角度 不同花絮,作为备选片子",
+        )
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Same-event evidence")],
+            "pending_exact_event_and_time_match",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("Repeated/static-scene review")
+            ],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Reuse rights review")],
+            "pending_rights_review",
+        )
+        self.assertIn(
+            "genuinely different camera angles",
+            fourth_user_lead[
+                candidate_headers.index("User-requested follow-up (pending)")
+            ],
+        )
         self.assertEqual(
             third_user_lead[candidate_headers.index("Duration (seconds)")], None
         )

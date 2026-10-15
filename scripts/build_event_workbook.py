@@ -100,6 +100,8 @@ VIDEO_CANDIDATE_HEADERS = [
     "User-provided characterization (claim; unverified)",
     "User subjective rating (not independent score)",
     "User feature score (not independent; rubric unspecified)",
+    "User-proposed role (not verified)",
+    "User-requested follow-up (pending)",
     "User angle opinion (not verified)",
     "Camera/event-time match",
     "Camera location",
@@ -309,6 +311,8 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                     or source.get("user_observations_verbatim", ""),
                     source.get("user_rating", ""),
                     source.get("user_feature_rating", ""),
+                    source.get("intended_use", ""),
+                    source.get("user_requested_follow_up", ""),
                     source.get("user_angle_opinion_verbatim", ""),
                     "",
                     "",
@@ -370,6 +374,8 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                 or lead.get("user_observations_verbatim", ""),
                 lead.get("user_rating", ""),
                 lead.get("user_feature_rating", ""),
+                lead.get("intended_use", ""),
+                lead.get("user_requested_follow_up", ""),
                 lead.get("user_angle_opinion_verbatim", ""),
                 camera.get("event_time_match_status", "pending_exact_event_and_time_match"),
                 camera.get("location", "unknown"),
@@ -824,7 +830,7 @@ def build_workbook(
         [
             28, 46, 24, 72, 28, 64, 70, 40, 22, 48, 20, 38, 42, 36, 28, 58,
             32, 24, 58, 40, 42, 28, 24, 24, 24, 24, 30, 30, 38, 34, 70, 28, 34,
-            24, 30, 38, 30, 30, 44, 100,
+            24, 30, 38, 30, 30, 44, 68, 92, 100,
         ],
     )
     style_sheet(instructions_sheet, [40, 150])
