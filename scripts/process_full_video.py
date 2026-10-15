@@ -137,7 +137,47 @@ def ass_time(seconds: float) -> str:
     return f"{hours}:{minutes:02}:{whole:02}.{fraction:02}"
 
 
-def _split_aligned_clauses(english: str, chinese: str) -> list[tuple[str, str]]:
+def _proportional_clause_alignment(
+    english_parts: list[str],
+    chinese_parts: list[str],
+    tolerance: float,
+) -> bool:
+    if len(english_parts) != len(chinese_parts) or len(english_parts) < 2:
+        return False
+
+    english_weights = [len(part.split()) for part in english_parts]
+    chinese_weights = [
+        sum("\u3400" <= char <= "\u9fff" for char in part)
+        for part in chinese_parts
+    ]
+    if any(weight == 0 for weight in english_weights + chinese_weights):
+        return False
+
+    english_total = sum(english_weights)
+    chinese_total = sum(chinese_weights)
+    english_seen = 0
+    chinese_seen = 0
+    for english_weight, chinese_weight in zip(
+        english_weights[:-1],
+        chinese_weights[:-1],
+        strict=True,
+    ):
+        english_seen += english_weight
+        chinese_seen += chinese_weight
+        if abs(
+            english_seen / english_total
+            - chinese_seen / chinese_total
+        ) > tolerance:
+            return False
+    return True
+
+
+def _split_aligned_clauses(
+    english: str,
+    chinese: str,
+    *,
+    align_sentence_to_clause_punctuation: bool = False,
+) -> list[tuple[str, str]]:
     english_sentences = [
         part.strip()
         for part in re.split(r"(?<=[.!?])\s+", english.strip())
@@ -151,6 +191,22 @@ def _split_aligned_clauses(english: str, chinese: str) -> list[tuple[str, str]]:
     if len(english_sentences) == len(chinese_sentences) > 1:
         return list(zip(english_sentences, chinese_sentences, strict=True))
 
+    chinese_clause_parts = [
+        part.strip()
+        for part in re.split(r"(?<=[，。！？；：、,])", chinese.strip())
+        if part.strip()
+    ]
+    if (
+        align_sentence_to_clause_punctuation
+        and len(english_sentences) == len(chinese_clause_parts) > 1
+        and _proportional_clause_alignment(
+            english_sentences,
+            chinese_clause_parts,
+            tolerance=0.20,
+        )
+    ):
+        return list(zip(english_sentences, chinese_clause_parts, strict=True))
+
     english_comma_parts = [
         part.strip()
         for part in re.split(r"(?<=,)\s*", english.strip())
@@ -162,34 +218,11 @@ def _split_aligned_clauses(english: str, chinese: str) -> list[tuple[str, str]]:
         if part.strip()
     ]
     if len(english_comma_parts) == len(chinese_comma_parts) > 1:
-        english_total = max(1, len(english.split()))
-        chinese_total = max(
-            1,
-            sum("\u3400" <= char <= "\u9fff" for char in chinese),
-        )
-        aligned = True
-        english_seen = 0
-        chinese_seen = 0
-        for english_part, chinese_part in zip(
-            english_comma_parts[:-1],
-            chinese_comma_parts[:-1],
-            strict=True,
+        if _proportional_clause_alignment(
+            english_comma_parts,
+            chinese_comma_parts,
+            tolerance=0.25,
         ):
-            english_seen += len(english_part.split())
-            chinese_seen += sum(
-                "\u3400" <= char <= "\u9fff" for char in chinese_part
-            )
-            if (
-                not english_seen
-                or not chinese_seen
-                or abs(
-                    english_seen / english_total
-                    - chinese_seen / chinese_total
-                ) > 0.25
-            ):
-                aligned = False
-                break
-        if aligned:
             return list(
                 zip(
                     english_comma_parts,
@@ -310,14 +343,24 @@ def merge_sentence_fragments(cues: list[Cue]) -> list[Cue]:
     return merged
 
 
-def reflow_cues(cues: list[Cue]) -> list[Cue]:
+def reflow_cues(
+    cues: list[Cue],
+    *,
+    align_sentence_to_clause_punctuation: bool = False,
+) -> list[Cue]:
     reflowed = []
 
     for cue in cues:
         duration = cue.end - cue.start
         if duration <= 0:
             continue
-        aligned_clauses = _split_aligned_clauses(cue.english, cue.chinese)
+        aligned_clauses = _split_aligned_clauses(
+            cue.english,
+            cue.chinese,
+            align_sentence_to_clause_punctuation=(
+                align_sentence_to_clause_punctuation
+            ),
+        )
         clause_weights = [
             max(1, len(english.split()))
             for english, _ in aligned_clauses
@@ -534,8 +577,12 @@ def _write_katie_lower_third_ass(
             )
         except ValueError as error:
             raise ValueError(
-                f"Katie subtitle cue at {cue.start:.3f}s does not fit the "
-                "bounded lower-third layout."
+                f"Katie subtitle cue {cue_index + 1} at {cue.start:.3f}s "
+                f"does not fit (English characters={len(cue.english)}, "
+                f"Chinese characters={len(cue.chinese)}, maximum English "
+                f"line characters={max_english_chars}, maximum Chinese "
+                f"line characters={max_chinese_chars}); manual bilingual "
+                "phrase alignment is required."
             ) from error
         if not chinese_lines or not english_lines:
             raise ValueError(
@@ -623,9 +670,19 @@ def write_ass(
         _chinese_font, _english_font, _max_chinese, max_english = (
             _katie_wrap_limits(width, height)
         )
-        wrapped_lines = [
-            _wrap_katie_english(cue.english, max_english) for cue in cues
-        ]
+        wrapped_lines = []
+        for cue_index, cue in enumerate(cues, start=1):
+            try:
+                wrapped_lines.append(
+                    _wrap_katie_english(cue.english, max_english)
+                )
+            except ValueError as error:
+                raise ValueError(
+                    f"Katie subtitle cue {cue_index} at {cue.start:.3f}s "
+                    f"cannot fit (English characters={len(cue.english)}, "
+                    f"maximum characters per line={max_english}); "
+                    "manual bilingual phrase alignment is required."
+                ) from error
     elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
@@ -1347,7 +1404,29 @@ def main() -> None:
         language_probability = float(info.language_probability)
     if not cues:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
-    cues = reflow_cues(cues)
+    reflow_details: dict[str, object] = {
+        "input_cue_count": len(cues),
+        "reused_source_srt_preserved": args.reuse_subtitles is not None,
+        "alignment_policy": (
+            "punctuation_and_proportional_clause_alignment"
+            if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            else "existing_clause_alignment"
+        ),
+    }
+    with audit.record(
+        "subtitle_reflow",
+        asset_id=source.name,
+        tool="Python",
+        version=platform.python_version(),
+        details=reflow_details,
+    ):
+        cues = reflow_cues(
+            cues,
+            align_sentence_to_clause_punctuation=(
+                args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            ),
+        )
+        reflow_details["output_cue_count"] = len(cues)
     if args.disable_word_highlighting:
         word_timings = None
         word_highlighting = disabled_word_highlighting_status()
@@ -1464,6 +1543,7 @@ def main() -> None:
         },
         "visual_review": visual_review or {"status": "not_verified"},
         "reused_existing_subtitles": args.reuse_subtitles is not None,
+        "subtitle_reflow": reflow_details,
         "subtitle_cues": len(cues),
         "languages": ["en", "zh-Hans"],
         "video_file": output_video.name,

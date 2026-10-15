@@ -359,6 +359,9 @@ jobs:
           path: |
             ${{ runner.temp }}/katie-source/source-verification.json
             ${{ runner.temp }}/katie-source/source-probe.json
+            ${{ runner.temp }}/katie-prior/katie-output/*.srt
+            ${{ runner.temp }}/katie-prior/katie-output/manifest.json
+            ${{ runner.temp }}/katie-prior/katie-output/operation-audit.json
             ${{ runner.temp }}/katie-output/manifest.json
             ${{ runner.temp }}/katie-output/operation-audit.json
             ${{ runner.temp }}/katie-output/*.srt
@@ -391,6 +394,9 @@ jobs:
           path: |
             ${{ runner.temp }}/katie-source/source-verification.json
             ${{ runner.temp }}/katie-source/source-probe.json
+            ${{ runner.temp }}/katie-prior/katie-output/*.srt
+            ${{ runner.temp }}/katie-prior/katie-output/manifest.json
+            ${{ runner.temp }}/katie-prior/katie-output/operation-audit.json
             ${{ runner.temp }}/katie-output/katie-zacharia-g7we6gecwnc-bilingual.mp4
             ${{ runner.temp }}/katie-output/*.srt
             ${{ runner.temp }}/katie-output/*.vtt

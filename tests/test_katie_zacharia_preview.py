@@ -240,6 +240,9 @@ class KatieZachariaPreviewTests(unittest.TestCase):
         self.assertIn("scripts/extract_katie_review_frames.py", workflow)
         self.assertIn("katie-zacharia-private-review-${{ github.run_id }}", workflow)
         self.assertIn("if: success() && inputs.private_review_only", workflow)
+        self.assertIn("katie-prior/katie-output/*.srt", workflow)
+        self.assertIn("katie-prior/katie-output/manifest.json", workflow)
+        self.assertIn("katie-prior/katie-output/operation-audit.json", workflow)
         render_with_fetch, publish_job = workflow.split("  publish-preview:", maxsplit=1)
         render_job = render_with_fetch.split("  render-preview:", maxsplit=1)[1]
         self.assertIn("      actions: read\n      contents: read", render_job)

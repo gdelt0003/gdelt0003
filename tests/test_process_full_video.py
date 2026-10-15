@@ -257,6 +257,74 @@ class FullVideoSubtitleTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "without a safe punctuation"):
             _wrap_katie_chinese("超长而且没有任何安全的中文分句标点符号" * 5, max_chinese)
 
+    def test_katie_reflows_punctuation_aligned_translation_clauses(self):
+        original = Cue(
+            13.605,
+            35.11,
+            "The committee released a detailed report yesterday. "
+            "Members will answer questions at the briefing. "
+            "Additional records will be available next week.",
+            "委员会昨天发布了一份详细报告，成员将在简报会上回答问题，"
+            "更多记录将于下周公布。",
+        )
+        original_srt = srt_text([original], "en")
+
+        self.assertEqual(reflow_cues([original]), [original])
+        reflowed = reflow_cues(
+            [original],
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, _max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(len(reflowed), 3)
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        self.assertTrue(
+            all(
+                left.end == right.start
+                for left, right in zip(reflowed, reflowed[1:])
+            )
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            original.english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            original.chinese,
+        )
+        self.assertTrue(
+            all(
+                len(_wrap_katie_english(cue.english, max_english)) <= 2
+                for cue in reflowed
+            )
+        )
+        self.assertEqual(srt_text([original], "en"), original_srt)
+
+    def test_katie_layout_failure_identifies_cue_without_logging_caption_text(self):
+        overflow_text = " ".join(["longword"] * 100)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "katie-captions.ass"
+            with self.assertRaisesRegex(
+                ValueError,
+                r"Katie subtitle cue 2 .*English characters=\d+, "
+                r"maximum characters per line=42",
+            ) as raised:
+                write_ass(
+                    path,
+                    [
+                        Cue(0, 2, "A short sentence.", "简短的一句话。"),
+                        Cue(2, 10, overflow_text, "需要人工重新对齐。"),
+                    ],
+                    1920,
+                    1080,
+                    layout_profile=KATIE_SUBTITLE_LAYOUT,
+                )
+
+        self.assertNotIn(overflow_text, str(raised.exception))
+
     def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
             0,
