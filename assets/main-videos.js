@@ -73,6 +73,21 @@ function renderMainVideos(payload) {
     }
     addText(content, 'p', 'main-video-review-status', item.review_status || '复核状态未登记');
     addText(content, 'p', 'main-video-note meta', item.note || '');
+    if (item.subtitle_layout_request) {
+      const layout = item.subtitle_layout_request;
+      const layoutPanel = document.createElement('section');
+      layoutPanel.className = 'main-video-layout-request';
+      addText(layoutPanel, 'h4', 'main-video-layout-heading', '字幕布局要求');
+      addText(
+        layoutPanel,
+        'p',
+        'main-video-layout-status',
+        `配置：${layout.profile || '未知'} · ${layout.status || '状态未登记'} · 画面复核：${layout.visual_render_review || 'not_verified'}`,
+      );
+      addText(layoutPanel, 'p', 'main-video-layout-contract', layout.contract || '');
+      addText(layoutPanel, 'p', 'main-video-layout-source-graphics', layout.source_graphics || '');
+      content.append(layoutPanel);
+    }
 
     const links = document.createElement('p');
     links.className = 'main-video-links';
@@ -136,12 +151,24 @@ function renderMainVideos(payload) {
           sCard.append(rights);
         }
 
-        const metaParts = [s.publisher, s.max_resolution, s.view_count ? `${s.view_count} views` : null].filter(Boolean);
+        const duration = Number.isFinite(s.duration_seconds)
+          ? `${Math.floor(s.duration_seconds / 60)}:${String(Math.floor(s.duration_seconds % 60)).padStart(2, '0')}`
+          : '时长未知';
+        const metaParts = [
+          s.hosting_platform || '托管平台未知',
+          s.publisher || '发布方未知',
+          s.max_resolution || '分辨率未知',
+          duration,
+          Number.isFinite(s.view_count) ? `${s.view_count} views` : '播放量未知',
+        ];
         if (metaParts.length) addText(sCard, 'p', 'main-video-source-meta', metaParts.join(' · '));
 
-        if (s.upload_date || s.publish_date) {
-          addText(sCard, 'p', 'main-video-source-times', `上传: ${s.upload_date || '未知'} · 发布/事件: ${s.publish_date || '未知'}`);
-        }
+        addText(
+          sCard,
+          'p',
+          'main-video-source-times',
+          `上传时间: ${s.upload_date || '未核实'} · 发布时间: ${s.publish_date || '未核实'} · 事件时间: ${s.event_time || '未核实'}`,
+        );
         if (Array.isArray(s.captions) && s.captions.length) {
           addText(sCard, 'p', 'main-video-source-captions', `字幕: ${s.captions.map((c) => c.label || c.language).join(', ')}`);
         }
@@ -149,19 +176,35 @@ function renderMainVideos(payload) {
         if (s.notes) addText(sCard, 'p', 'main-video-source-notes meta', s.notes);
 
         // source trust note (separate from numeric score)
-        if (s.source_trust_note) {
-          addText(sCard, 'p', 'main-video-source-trust-note', `信任评分: ${s.source_trust_note}`);
-        }
+        addText(
+          sCard,
+          'p',
+          'main-video-source-trust-note',
+          `来源信任评分: ${s.source_trust_note || '未评分（评分口径未提供）'}`,
+        );
 
         // caption provenance details: preserve user-given reference score separately
-        if (s.caption_provenance) {
-          const cp = s.caption_provenance;
-          const parts = [];
-          if (typeof cp.user_given_reference_score !== 'undefined') parts.push(`用户参考字幕分: ${cp.user_given_reference_score}`);
-          if (cp.user_score_note) parts.push(cp.user_score_note);
-          if (cp.verification) parts.push(`核验状态: ${cp.verification}`);
-          if (parts.length) addText(sCard, 'p', 'main-video-source-captions-provenance meta', parts.join(' · '));
+        const cp = s.caption_provenance || {};
+        const captionParts = [
+          `字幕状态: ${cp.verification || '来源轨道/审校状态未核实'}`,
+        ];
+        if (typeof cp.user_given_reference_score === 'number') {
+          captionParts.push(`用户参考字幕分: ${cp.user_given_reference_score}/100`);
         }
+        if (cp.user_score_note) captionParts.push(cp.user_score_note);
+        addText(
+          sCard,
+          'p',
+          'main-video-source-captions-provenance meta',
+          captionParts.join(' · '),
+        );
+
+        addText(
+          sCard,
+          'p',
+          'main-video-source-rights',
+          `复用权利: ${s.reuse_rights_note || '未核实（未判断可否复用）'}`,
+        );
 
         sourcesWrap.append(sCard);
       }

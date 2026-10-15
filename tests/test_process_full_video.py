@@ -6,6 +6,10 @@ import pysubs2
 
 from scripts.process_full_video import (
     Cue,
+    KATIE_SUBTITLE_LAYOUT,
+    _katie_wrap_limits,
+    _wrap_katie_chinese,
+    _wrap_katie_english,
     ass_escape,
     ass_time,
     bilingual_srt_text,
@@ -90,6 +94,72 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(rendered.styles["Chinese"].fontsize, 56)
         self.assertEqual(len(rendered.events), 1)
         self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
+
+    def test_katie_layout_uses_fixed_chinese_first_lower_third_panel(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "katie-captions.ass"
+            write_ass(
+                path,
+                [
+                    Cue(0, 2.5, "A complete English sentence.", "完整的中文句子。"),
+                    Cue(
+                        2.5,
+                        5,
+                        "This thought stays together while the caption wraps "
+                        "to line two.",
+                        "完整意思仍然保留，同时英文分成两行显示。",
+                    ),
+                ],
+                1920,
+                1080,
+                layout_profile=KATIE_SUBTITLE_LAYOUT,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), 6)
+        self.assertEqual(
+            [event.layer for event in rendered.events],
+            [0, 1, 1, 0, 1, 1],
+        )
+        self.assertIn(r"\p1", rendered.events[0].text)
+        self.assertEqual(rendered.events[0].text, rendered.events[3].text)
+        self.assertIn(r"\pos(106,827)", rendered.events[0].text)
+        self.assertIn("l 1709 0 l 1709 221", rendered.events[0].text)
+        self.assertIn(r"\an8\pos(960,", rendered.events[1].text)
+        self.assertIn(r"\an2\pos(960,", rendered.events[2].text)
+        self.assertIn("完整的中文句子。", rendered.events[1].text)
+        self.assertIn("A complete English sentence.", rendered.events[2].text)
+        self.assertIn(r"\pos(960,1035)", rendered.events[2].text)
+        self.assertIn(r"\pos(960,1035)", rendered.events[5].text)
+        self.assertNotIn(r"\N", rendered.events[2].text)
+        self.assertIn(r"\N", rendered.events[5].text)
+        self.assertGreater(
+            rendered.styles["Chinese"].fontsize,
+            rendered.styles["English"].fontsize,
+        )
+    def test_katie_wrapping_preserves_text_and_rejects_overflow(self):
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+        english = (
+            "Please preserve every word in this sentence without dropping "
+            "any phrase."
+        )
+        chinese = "这是一段完整的中文说明，字幕应当保留全部文字，并且维持原本的意思。"
+
+        english_lines = _wrap_katie_english(english, max_english)
+        chinese_lines = _wrap_katie_chinese(chinese, max_chinese)
+
+        self.assertLessEqual(len(english_lines), 2)
+        self.assertLessEqual(len(chinese_lines), 2)
+        self.assertTrue(all(len(line) <= max_english for line in english_lines))
+        self.assertTrue(all(len(line) <= max_chinese for line in chinese_lines))
+        self.assertEqual(" ".join(english_lines).split(), english.split())
+        self.assertEqual("".join(chinese_lines), chinese)
+        with self.assertRaisesRegex(ValueError, "more than two English lines"):
+            _wrap_katie_english(" ".join(["longword"] * 100), max_english)
+        with self.assertRaisesRegex(ValueError, "without a safe punctuation"):
+            _wrap_katie_chinese("超长而且没有任何安全的中文分句标点符号" * 5, max_chinese)
 
     def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
@@ -261,6 +331,26 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(
             report["subtitle_readability"]["lower_margin_percent"],
             18,
+        )
+
+    def test_katie_layout_verification_keeps_visual_review_unverified(self):
+        report = verify_cues(
+            [Cue(0, 3, "A complete sentence.", "完整的一句话。")],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=KATIE_SUBTITLE_LAYOUT,
+        )
+        readability = report["subtitle_readability"]
+
+        self.assertEqual(readability["layout_configuration"], "passed")
+        self.assertEqual(readability["status"], "manual_review_required")
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
+        self.assertEqual(readability["line_order"], ["zh-Hans", "en"])
+        self.assertAlmostEqual(
+            readability["chinese_to_english_size_ratio"],
+            38 / 30,
+            places=2,
         )
 
     def test_copies_review_evidence_for_output_gate(self):

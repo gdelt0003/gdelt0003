@@ -36,6 +36,8 @@ MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
 CAPTION_LOWER_MARGIN_PERCENT = 18
 ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
+DEFAULT_SUBTITLE_LAYOUT = "default"
+KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
 
 
 @dataclass(frozen=True)
@@ -378,7 +380,208 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
     return lines[:max_lines]
 
 
-def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
+def _katie_wrap_limits(width: int, height: int) -> tuple[int, int, int, int]:
+    chinese_font = max(18, round(height * 0.035))
+    english_font = max(16, round(chinese_font * 0.80))
+    safe_width = round(width * 0.82)
+    max_chinese_chars = max(8, min(28, int(safe_width / chinese_font)))
+    max_english_chars = max(
+        16,
+        min(42, int(safe_width / (english_font * 0.55))),
+    )
+    return chinese_font, english_font, max_chinese_chars, max_english_chars
+
+
+def _wrap_katie_english(text: str, max_chars: int) -> list[str]:
+    words = text.split()
+    lines = []
+    current = ""
+    for word in words:
+        if len(word) > max_chars:
+            raise ValueError(
+                "Katie subtitle contains an English token wider than the "
+                "caption safe width."
+            )
+        candidate = f"{current} {word}".strip()
+        if current and len(candidate) > max_chars:
+            lines.append(current)
+            current = word
+        else:
+            current = candidate
+    if current:
+        lines.append(current)
+    if len(lines) > 2:
+        raise ValueError(
+            "Katie subtitle needs more than two English lines; reflow it "
+            "into aligned phrase cues instead of overflowing the caption panel."
+        )
+    return lines
+
+
+def _wrap_katie_chinese(text: str, max_chars: int) -> list[str]:
+    text = text.strip()
+    if len(text) <= max_chars:
+        return [text] if text else []
+
+    punctuation = "，。！？；：、,.!?;"
+    split_at = max(
+        (
+            index + 1
+            for index, character in enumerate(text[:max_chars])
+            if character in punctuation
+        ),
+        default=0,
+    )
+    if not split_at:
+        raise ValueError(
+            "Katie subtitle exceeds one Chinese line without a safe "
+            "punctuation boundary."
+        )
+    lines = [text[:split_at], text[split_at:].strip()]
+    if len(lines[1]) > max_chars:
+        raise ValueError(
+            "Katie subtitle needs more than two Chinese lines; reflow it "
+            "into aligned phrase cues instead of overflowing the caption panel."
+        )
+    return lines
+
+
+def _write_katie_lower_third_ass(
+    path: Path,
+    cues: list[Cue],
+    width: int,
+    height: int,
+) -> None:
+    (
+        chinese_font,
+        english_font,
+        max_chinese_chars,
+        max_english_chars,
+    ) = _katie_wrap_limits(width, height)
+    panel_width = round(width * 0.89)
+    panel_height = round(height * 0.205)
+    panel_left = round((width - panel_width) / 2)
+    panel_top = height - round(height * 0.03) - panel_height
+    panel_padding = round(height * 0.012)
+    text_x = round(width / 2)
+    chinese_y = panel_top + panel_padding
+    english_y = panel_top + panel_height - panel_padding
+    text_margin = round(width * 0.085)
+
+    subtitles = pysubs2.SSAFile()
+    subtitles.info.update(
+        {
+            "ScriptType": "v4.00+",
+            "PlayResX": str(width),
+            "PlayResY": str(height),
+            "WrapStyle": "0",
+            "ScaledBorderAndShadow": "yes",
+        }
+    )
+    shared_style = {
+        "fontname": "Noto Sans CJK SC",
+        "secondarycolor": pysubs2.Color(255, 0, 0),
+        "outlinecolor": pysubs2.Color(10, 12, 16),
+        "backcolor": pysubs2.Color(0, 0, 0, 0x70),
+        "bold": True,
+        "borderstyle": 1,
+        "outline": 1,
+        "shadow": 0,
+        "marginl": text_margin,
+        "marginr": text_margin,
+        "marginv": 0,
+        "encoding": 1,
+    }
+    subtitles.styles["Chinese"] = pysubs2.SSAStyle(
+        **shared_style,
+        fontsize=chinese_font,
+        primarycolor=pysubs2.Color(255, 245, 224),
+        alignment=pysubs2.Alignment.TOP_CENTER,
+    )
+    subtitles.styles["English"] = pysubs2.SSAStyle(
+        **shared_style,
+        fontsize=english_font,
+        primarycolor=pysubs2.Color(255, 255, 255),
+        alignment=pysubs2.Alignment.BOTTOM_CENTER,
+    )
+
+    for cue in cues:
+        try:
+            chinese_lines = _wrap_katie_chinese(
+                cue.chinese,
+                max_chinese_chars,
+            )
+            english_lines = _wrap_katie_english(
+                cue.english,
+                max_english_chars,
+            )
+        except ValueError as error:
+            raise ValueError(
+                f"Katie subtitle cue at {cue.start:.3f}s does not fit the "
+                "bounded lower-third layout."
+            ) from error
+        if not chinese_lines or not english_lines:
+            raise ValueError(
+                f"Katie subtitle cue at {cue.start:.3f}s is missing a language."
+            )
+        start = round(cue.start * 1000)
+        end = round(cue.end * 1000)
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                layer=0,
+                start=start,
+                end=end,
+                style="Chinese",
+                text=(
+                    f"{{\\an7\\pos({panel_left},{panel_top})\\p1"
+                    r"\1c&H2B241C&\1a&H28&}"
+                    f"m 0 0 l {panel_width} 0 l {panel_width} "
+                    f"{panel_height} l 0 {panel_height}{{\\p0}}"
+                ),
+            )
+        )
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                layer=1,
+                start=start,
+                end=end,
+                style="Chinese",
+                text=(
+                    f"{{\\rChinese\\an8\\pos({text_x},{chinese_y})"
+                    f"\\fs{chinese_font}}}"
+                    + r"\N".join(ass_escape(line) for line in chinese_lines)
+                ),
+            )
+        )
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                layer=1,
+                start=start,
+                end=end,
+                style="English",
+                text=(
+                    f"{{\\rEnglish\\an2\\pos({text_x},{english_y})"
+                    f"\\fs{english_font}}}"
+                    + r"\N".join(ass_escape(line) for line in english_lines)
+                ),
+            )
+        )
+    subtitles.save(str(path), format_="ass", encoding="utf-8")
+
+
+def write_ass(
+    path: Path,
+    cues: list[Cue],
+    width: int,
+    height: int,
+    layout_profile: str = DEFAULT_SUBTITLE_LAYOUT,
+) -> None:
+    if layout_profile == KATIE_SUBTITLE_LAYOUT:
+        _write_katie_lower_third_ass(path, cues, width, height)
+        return
+    if layout_profile != DEFAULT_SUBTITLE_LAYOUT:
+        raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
+
     chinese_font = max(32, round(height * 0.052))
     english_font = max(
         34,
@@ -459,6 +662,7 @@ def verify_cues(
     height: int,
     translation_review: dict[str, object] | None = None,
     visual_review: dict[str, object] | None = None,
+    layout_profile: str = DEFAULT_SUBTITLE_LAYOUT,
 ) -> dict[str, object]:
     if not cues:
         raise RuntimeError("Caption verification failed: there are no cues.")
@@ -490,15 +694,40 @@ def verify_cues(
             chinese_rate_flags.append(index)
         previous_end = cue.end
 
-    chinese_font = max(32, round(height * 0.052))
-    english_font = max(
-        34,
-        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
-    )
-    if english_font / chinese_font < 1.20:
-        raise RuntimeError(
-            "Caption verification failed: English text is not at least 20% larger."
+    if layout_profile == KATIE_SUBTITLE_LAYOUT:
+        (
+            chinese_font,
+            english_font,
+            max_chinese_chars,
+            max_english_chars,
+        ) = _katie_wrap_limits(width, height)
+        if chinese_font / english_font < 1.20:
+            raise RuntimeError(
+                "Caption verification failed: Chinese text is not at least "
+                "20% larger for the Katie layout."
+            )
+        for index, cue in enumerate(cues, start=1):
+            try:
+                _wrap_katie_chinese(cue.chinese, max_chinese_chars)
+                _wrap_katie_english(cue.english, max_english_chars)
+            except ValueError as error:
+                raise RuntimeError(
+                    f"Caption verification failed: cue {index} does not fit "
+                    "the bounded Katie lower-third layout."
+                ) from error
+    elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
+        chinese_font = max(32, round(height * 0.052))
+        english_font = max(
+            34,
+            round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
         )
+        if english_font / chinese_font < 1.20:
+            raise RuntimeError(
+                "Caption verification failed: English text is not at least "
+                "20% larger."
+            )
+    else:
+        raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
     review = translation_review or {}
     visual = visual_review or {}
 
@@ -521,23 +750,51 @@ def verify_cues(
         "source_resolution": "passed",
         "subtitle_readability": {
             "status": (
-                "style_contract_passed"
-                if not english_rate_flags and not chinese_rate_flags
-                else "manual_review_required"
+                "manual_review_required"
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                or english_rate_flags
+                or chinese_rate_flags
+                else "style_contract_passed"
+            ),
+            "layout_profile": layout_profile,
+            "layout_configuration": (
+                "passed"
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else "default"
             ),
             "english_font_px": english_font,
             "chinese_font_px": chinese_font,
             "english_to_chinese_size_ratio": round(
                 english_font / chinese_font, 3
             ),
-            "horizontal_safe_width_percent": 78,
-            "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
+            "chinese_to_english_size_ratio": round(
+                chinese_font / english_font, 3
+            ),
+            "horizontal_safe_width_percent": (
+                82 if layout_profile == KATIE_SUBTITLE_LAYOUT else 78
+            ),
+            "lower_margin_percent": (
+                3 if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else CAPTION_LOWER_MARGIN_PERCENT
+            ),
             "max_lines_per_language": 2,
+            "caption_region_height_percent": (
+                20.5 if layout_profile == KATIE_SUBTITLE_LAYOUT else None
+            ),
+            "line_order": (
+                ["zh-Hans", "en"]
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else ["en", "zh-Hans"]
+            ),
+            "visual_frame_review": (
+                "passed"
+                if visual.get("status") == "passed"
+                else "not_verified"
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else "required"
+            ),
             "english_reading_speed_over_20_cps_cues": english_rate_flags,
             "chinese_reading_speed_over_10_cps_cues": chinese_rate_flags,
-            "visual_frame_review": (
-                "passed" if visual.get("status") == "passed" else "required"
-            ),
         },
         "translation_accuracy": {
             "status": (
@@ -795,6 +1052,15 @@ def main() -> None:
         type=Path,
         help="Reuse existing English and Chinese SRT files instead of rerunning ASR and translation.",
     )
+    parser.add_argument(
+        "--subtitle-layout",
+        choices=(DEFAULT_SUBTITLE_LAYOUT, KATIE_SUBTITLE_LAYOUT),
+        default=DEFAULT_SUBTITLE_LAYOUT,
+        help=(
+            "Subtitle layout profile. The Katie profile uses a fixed lower-third "
+            "panel with larger Chinese above smaller English."
+        ),
+    )
     args = parser.parse_args()
 
     asset_prefix = validate_asset_prefix(args.asset_prefix)
@@ -983,7 +1249,13 @@ def main() -> None:
             vtt_from_bilingual_srt(combined_srt),
             encoding="utf-8",
         )
-        write_ass(ass_path, cues, width, height)
+        write_ass(
+            ass_path,
+            cues,
+            width,
+            height,
+            layout_profile=args.subtitle_layout,
+        )
 
     output_video = output_dir / f"{prefix}-bilingual.mp4"
     ffmpeg_version = run(["ffmpeg", "-version"], capture=True).splitlines()[0]
@@ -1024,6 +1296,7 @@ def main() -> None:
         height=height,
         translation_review=translation_review,
         visual_review=visual_review,
+        layout_profile=args.subtitle_layout,
     )
 
     manifest = {
@@ -1056,10 +1329,21 @@ def main() -> None:
             bilingual_srt.name,
         ],
         "subtitle_style": (
-            "gold Chinese above white English; English nominal font size is "
-            "1.50x Chinese; authored with pysubs2 "
-            f"{package_version('pysubs2')} and burned with FFmpeg libass; "
-            "responsive phrase-level timing"
+            (
+                "fixed lower-third panel (20.5% frame height, 89% frame width); "
+                "Chinese above and at least 1.20x English font size; English "
+                "below; fixed positions; maximum two lines per language; "
+                "authored with pysubs2 "
+                f"{package_version('pysubs2')} and burned with FFmpeg libass; "
+                "phrase-level timing; visual review remains required"
+            )
+            if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            else (
+                "gold Chinese above white English; English nominal font size is "
+                "1.50x Chinese; authored with pysubs2 "
+                f"{package_version('pysubs2')} and burned with FFmpeg libass; "
+                "responsive phrase-level timing"
+            )
         ),
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,

@@ -41,6 +41,16 @@ async function main() {
 
   const catalogRaw = fs.readFileSync(path.join(root, 'outputs', 'main-videos.json'), 'utf8');
   const catalog = JSON.parse(catalogRaw);
+  const katie = catalog.videos[0];
+  assert.equal(katie.provenance.sources.length, 10, 'catalog contains ten event-related video candidates');
+  assert.ok(
+    katie.provenance.sources.every((source) => new URL(source.url).hostname === 'www.youtube.com'),
+    'only event-related YouTube video pages are included in the ranked list',
+  );
+  assert.ok(
+    katie.provenance.sources.every((source) => !source.url.includes('bullhead-city')),
+    'the unrelated Bullhead City transcript is excluded',
+  );
 
   const context = {
     document,
@@ -66,7 +76,7 @@ async function main() {
 
   // verify top-10 cap (count only .main-video-source children; heading is excluded)
   const sourceCards = sourcesWrap.children.filter((c) => c.className === 'main-video-source');
-  assert.ok(sourceCards.length <= 10, `top-10 cap enforced (found ${sourceCards.length})`);
+  assert.equal(sourceCards.length, 10, 'render all ten event-related video candidates');
 
   // ensure Roll Call transcript is not present as a video source (search only in source cards)
   const rollcall = sourceCards.find((c) => c.textContent && c.textContent.includes('Roll Call'));
@@ -79,6 +89,22 @@ async function main() {
     card.children.some((child) => (child.textContent || '').includes('未评分（评分口径未提供）'))
   ));
   assert.ok(trustNoteFound, 'source trust note should appear when present');
+  assert.ok(
+    sourceCards[0].children.some(
+      (child) => child.className === 'main-video-source-rights'
+        && child.textContent.includes('未核实'),
+    ),
+    'reuse rights remain explicit and separate from source trust',
+  );
+  assert.ok(
+    sourceCards[0].children.some(
+      (child) => child.className === 'main-video-source-times'
+        && child.textContent.includes('发布时间:')
+        && child.textContent.includes('事件时间: 未核实')
+        && !child.textContent.includes('发布/事件'),
+    ),
+    'publish and event times are displayed separately',
+  );
 }
 
 main().catch((error) => {

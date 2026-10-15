@@ -17,6 +17,14 @@
       "source_sha256": "97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7",
       "source_asset_id": "642103215",
       "review_status": "机器生成测试预览，未经人工核验；英语 ASR、中文翻译、源音/画面匹配及完整画面可读性均未验证，发布质量 gate 仍阻塞。",
+      "subtitle_layout_request": {
+        "profile": "katie-fixed-lower-third-zh-first",
+        "status": "configured_not_rendered",
+        "contract": "固定于画面下方的字幕区；中文在上且字号至少为英文的 1.20 倍，英文在下；每种语言最多两行；双语字幕各自固定锚点，字幕块不随单/双行跳动。优先单行；超出安全宽度时不截断，无法在完整词/安全标点边界内排入两行则阻止渲染并要求短语级复核。",
+        "source_graphics": "保留源视频原有横幅；若确认复用权后按此配置渲染，字幕背景区会覆盖/复用下方横幅区域，不代表源画面已清理。",
+        "reuse_rights": "未确认；本次未下载、重渲染或发布视频。",
+        "visual_render_review": "not_verified"
+      },
       "note": "来源 SHA-256 97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7。保留来源画面与音轨；未完成人工字幕、翻译或完整画面复核，不声称来源画面无内嵌图文。使用本地 runner ASR/翻译模型与 FFmpeg，无付费 API 或声音克隆。",
       "subtitles": [
         {
@@ -53,7 +61,7 @@
             "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
             "overlay_assessment": "官方上传可见底部横幅 'TEXT 'TRUTH' TO 45470' 与 White House 标识，约占底部 15-20% 帧高；不遮挡人脸，视为源画面含嵌入横幅（未清除）。",
             "classification": "confirmed",
-            "notes": "官方 White House upload; YouTube ASR track labeled '英语 (自动生成)' (用户参考分 60，按用户指示)。截图已记录并保存在会话产物。",
+            "notes": "官方 White House upload；YouTube ASR track 标注为“英语 (自动生成)”。底部横幅为源画面内嵌元素；用户要求的新字幕区会覆盖/复用该区域，但当前预览未按新布局重渲染。",
             "source_trust_score": null,
             "source_trust_note": "未评分（评分口径未提供）",
             "caption_provenance": {
@@ -61,7 +69,7 @@
               "user_score_note": "用户给定参考分，非测量/审校分；原 YouTube ASR 标注为 '英语 (自动生成)'。",
               "verification": "自动成生（asr）/未见算法或人工核验证据"
             },
-            "checked_with": "Playwright page inspect; screenshot saved",
+            "checked_with": "Playwright page metadata and accessible player inspection; no render-frame review for this output",
             "checked_fields": ["duration_seconds","view_count","upload_date","publish_date","max_resolution","captions","overlay_assessment"]
           },
 

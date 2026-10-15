@@ -213,7 +213,8 @@ jobs:
           python scripts/process_full_video.py \
             --input "$RUNNER_TEMP/katie-source/katie-zacharia-g7we6gecwnc-source.mp4" \
             --output-dir "$RUNNER_TEMP/katie-output" \
-            --asset-prefix katie-zacharia-g7we6gecwnc
+            --asset-prefix katie-zacharia-g7we6gecwnc \
+            --subtitle-layout katie-fixed-lower-third-zh-first
           python scripts/publish_full_video_preview.py \
             --manifest "$RUNNER_TEMP/katie-output/manifest.json" \
             --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \

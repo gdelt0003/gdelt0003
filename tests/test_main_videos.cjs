@@ -42,6 +42,13 @@ async function main() {
         render_engine_url: 'https://source.example.test/renderer',
         source_url: 'https://source.example.test/first',
         subtitles: [{ label: 'English SRT', url: 'captions/first.srt' }],
+        subtitle_layout_request: {
+          profile: 'katie-fixed-lower-third-zh-first',
+          status: 'configured_not_rendered',
+          contract: 'Chinese above English with a fixed panel.',
+          source_graphics: 'The source banner remains intact.',
+          visual_render_review: 'not_verified',
+        },
       },
       {
         id: 'second',
@@ -89,6 +96,14 @@ async function main() {
     videos.children[0].children[1].children.at(-1).children.length,
     3,
     'include MP4, subtitle, and source links',
+  );
+  const layoutRequest = videos.children[0].children[1].children.find(
+    (node) => node.className === 'main-video-layout-request',
+  );
+  assert.ok(layoutRequest, 'render the requested burned-in subtitle layout status');
+  assert.equal(
+    layoutRequest.children.find((node) => node.className === 'main-video-layout-status').textContent,
+    '配置：katie-fixed-lower-third-zh-first · configured_not_rendered · 画面复核：not_verified',
   );
 
   const catalog = JSON.parse(

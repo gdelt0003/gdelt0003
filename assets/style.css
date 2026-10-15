@@ -157,6 +157,17 @@ button {
 .main-video-meta, .main-video-review-status { color: var(--muted); line-height: 1.6; }
 .main-video-review-status { padding: 10px 12px; border-radius: 10px; background: rgba(9,13,23,.8); }
 .main-video-note { line-height: 1.6; }
+.main-video-layout-request {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid rgba(94,234,212,.2);
+  border-radius: 10px;
+  background: rgba(9,13,23,.68);
+}
+.main-video-layout-heading { margin: 0 0 6px; color: var(--accent); }
+.main-video-layout-status,
+.main-video-layout-contract,
+.main-video-layout-source-graphics { margin: 6px 0 0; color: var(--muted); line-height: 1.55; }
 .main-video-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
 .main-video-links a {
   padding: 8px 12px; border-radius: 999px; color: var(--text); background: #111827;
@@ -206,6 +217,9 @@ button {
 .source-trust.lead { background: linear-gradient(135deg,#f59e0b,#f97316); color: #331e05; }
 .source-trust.unverified { background: linear-gradient(135deg,#64748b,#475569); color: #e6eef7; }
 .source-rights { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: .78rem; color: var(--muted); background: rgba(255,255,255,0.02); margin-left: 6px; }
+.main-video-source-trust-note,
+.main-video-source-captions-provenance,
+.main-video-source-rights { color: var(--muted); font-size: .82rem; line-height: 1.5; }
 
 @media (max-width: 600px) {
   .main-video-sources { grid-template-columns: 1fr; }

@@ -218,6 +218,7 @@ class KatieZachariaPreviewTests(unittest.TestCase):
         self.assertIn("reuse_rights_confirmed", workflow)
         self.assertIn("width < 1920 or height < 1080", workflow)
         self.assertIn("scripts/process_full_video.py", workflow)
+        self.assertIn("--subtitle-layout katie-fixed-lower-third-zh-first", workflow)
         self.assertIn("--prerelease", workflow)
         self.assertIn("actions/deploy-pages@v4", workflow)
         self.assertNotIn("OPENROUTER_API_KEY", workflow)
