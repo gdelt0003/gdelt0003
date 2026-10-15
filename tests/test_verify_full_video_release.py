@@ -49,7 +49,7 @@ class FullVideoReleaseGateTests(unittest.TestCase):
         self.assertIn("fewer than 3 independent LLM judges completed", blockers)
         self.assertIn("fewer than 3 source cross-checks completed", blockers)
 
-    def test_katie_profile_checks_english_larger_than_chinese(self):
+    def test_katie_profile_checks_chinese_larger_than_english(self):
         manifest = {
             "quality_checks": {
                 "structural_checks": "passed",
@@ -62,8 +62,8 @@ class FullVideoReleaseGateTests(unittest.TestCase):
                 "subtitle_readability": {
                     "status": "manual_review_required",
                     "layout_profile": "katie-fixed-lower-third-zh-first",
-                    "english_to_chinese_size_ratio": 1.1,
-                    "chinese_to_english_size_ratio": 0.91,
+                    "english_to_chinese_size_ratio": 0.91,
+                    "chinese_to_english_size_ratio": 1.1,
                     "visual_frame_review": "not_verified",
                     "english_reading_speed_over_20_cps_cues": [],
                     "chinese_reading_speed_over_10_cps_cues": [],
@@ -74,15 +74,15 @@ class FullVideoReleaseGateTests(unittest.TestCase):
 
         blockers = release_blockers(manifest)
         self.assertIn(
-            "English subtitle font is less than 1.20x Chinese font for the Katie layout",
+            "Chinese subtitle font is less than 1.20x English font for the Katie layout",
             blockers,
         )
         manifest["quality_checks"]["subtitle_readability"][
-            "english_to_chinese_size_ratio"
+            "chinese_to_english_size_ratio"
         ] = 1.25
         blockers = release_blockers(manifest)
         self.assertNotIn(
-            "English subtitle font is less than 1.20x Chinese font for the Katie layout",
+            "Chinese subtitle font is less than 1.20x English font for the Katie layout",
             blockers,
         )
         self.assertIn("visual frame review has not passed", blockers)

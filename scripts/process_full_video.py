@@ -48,7 +48,7 @@ MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
 CAPTION_LOWER_MARGIN_PERCENT = 18
 ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
-KATIE_ENGLISH_TO_CHINESE_FONT_RATIO = 1.25
+KATIE_CHINESE_TO_ENGLISH_FONT_RATIO = 1.25
 DEFAULT_SUBTITLE_LAYOUT = "default"
 KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
 
@@ -394,10 +394,10 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 
 def _katie_wrap_limits(width: int, height: int) -> tuple[int, int, int, int]:
-    chinese_font = max(18, round(height * 0.035))
+    chinese_font = max(18, round(height * 0.026))
     english_font = max(
-        20,
-        round(chinese_font * KATIE_ENGLISH_TO_CHINESE_FONT_RATIO),
+        15,
+        round(chinese_font / KATIE_CHINESE_TO_ENGLISH_FONT_RATIO),
     )
     safe_width = round(width * 0.82)
     max_chinese_chars = max(8, min(28, int(safe_width / chinese_font)))
@@ -475,10 +475,10 @@ def _write_katie_lower_third_ass(
         max_chinese_chars,
         max_english_chars,
     ) = _katie_wrap_limits(width, height)
-    panel_width = round(width * 0.89)
+    panel_width = width
     panel_height = round(height * 0.205)
-    panel_left = round((width - panel_width) / 2)
-    panel_top = height - round(height * 0.03) - panel_height
+    panel_left = 0
+    panel_top = height - panel_height
     panel_padding = round(height * 0.012)
     text_x = round(width / 2)
     chinese_y = panel_top + panel_padding
@@ -806,9 +806,9 @@ def verify_cues(
             max_chinese_chars,
             max_english_chars,
         ) = _katie_wrap_limits(width, height)
-        if english_font / chinese_font < 1.20:
+        if chinese_font / english_font < 1.20:
             raise RuntimeError(
-                "Caption verification failed: English text is not at least "
+                "Caption verification failed: Chinese text is not at least "
                 "20% larger for the Katie layout."
             )
         for index, cue in enumerate(cues, start=1):
@@ -882,7 +882,7 @@ def verify_cues(
                 82 if layout_profile == KATIE_SUBTITLE_LAYOUT else 78
             ),
             "lower_margin_percent": (
-                3 if layout_profile == KATIE_SUBTITLE_LAYOUT
+                0 if layout_profile == KATIE_SUBTITLE_LAYOUT
                 else CAPTION_LOWER_MARGIN_PERCENT
             ),
             "max_lines_per_language": 2,
@@ -1474,9 +1474,10 @@ def main() -> None:
         ],
         "subtitle_style": (
             (
-                "fixed opaque lower-third backing (20.5% frame height, 89% "
-                "frame width) on the subtitle derivative only; Chinese above "
-                "and English below at least 1.20x Chinese font size; fixed "
+                "fixed opaque lower-third backing (20.5% frame height, full "
+                "frame width, bottom-flush) on the subtitle derivative only; "
+                "Chinese above and at least 1.20x English font size; English "
+                "below; reduced absolute font sizes; fixed "
                 "positions; maximum two lines per language; "
                 "authored with pysubs2 "
                 f"{package_version('pysubs2')} and burned with FFmpeg libass; "
