@@ -90,6 +90,42 @@ function renderMainVideos(payload) {
       links.append(sourceLink);
     }
     content.append(links);
+
+    // Render provenance/source cards when available
+    if (item.provenance && Array.isArray(item.provenance.sources) && item.provenance.sources.length) {
+      const sourcesWrap = document.createElement('div');
+      sourcesWrap.className = 'main-video-sources';
+      addText(sourcesWrap, 'h4', 'sources-heading', '来源与证据');
+
+      for (const s of item.provenance.sources) {
+        const sCard = document.createElement('div');
+        sCard.className = 'main-video-source';
+
+        const sLink = document.createElement('a');
+        sLink.href = safeVideoUrl(s.url) || '#';
+        sLink.target = '_blank';
+        sLink.rel = 'noreferrer';
+        sLink.textContent = s.title || s.publisher || s.id;
+        sCard.append(sLink);
+
+        const metaParts = [s.publisher, s.classification, s.max_resolution, s.view_count ? `${s.view_count} views` : null].filter(Boolean);
+        if (metaParts.length) addText(sCard, 'p', 'main-video-source-meta', metaParts.join(' · '));
+
+        if (s.upload_date || s.publish_date) {
+          addText(sCard, 'p', 'main-video-source-times', `上传: ${s.upload_date || '未知'} · 发布/事件: ${s.publish_date || '未知'}`);
+        }
+        if (Array.isArray(s.captions) && s.captions.length) {
+          addText(sCard, 'p', 'main-video-source-captions', `字幕: ${s.captions.map((c) => c.label || c.language).join(', ')}`);
+        }
+        if (s.overlay_assessment) addText(sCard, 'p', 'main-video-source-overlay', `画面评估: ${s.overlay_assessment}`);
+        if (s.notes) addText(sCard, 'p', 'main-video-source-notes meta', s.notes);
+
+        sourcesWrap.append(sCard);
+      }
+
+      content.append(sourcesWrap);
+    }
+
     card.append(player, content);
     $mainVideos.append(card);
   }

@@ -95,7 +95,7 @@ async function main() {
     fs.readFileSync(path.join(root, 'outputs', 'main-videos.json'), 'utf8'),
   );
   assert.ok(Array.isArray(catalog.videos), 'main videos are stored in an extensible catalog');
-  assert.equal(catalog.videos[0].id, 'whitehouse-oW-PQlgw1wo');
+  assert.equal(catalog.videos[0].id, 'katie-zacharia-2026-10-13-preview-38661270142');
 }
 
 main().catch((error) => {
