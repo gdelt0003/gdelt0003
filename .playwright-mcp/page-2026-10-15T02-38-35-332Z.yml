@@ -1,0 +1,36 @@
+- generic [active] [ref=f4e1]:
+  - generic "YouTube 视频播放器" [ref=f4e5]:
+    - button "播放" [ref=f4e9] [cursor=pointer]
+    - generic [ref=f4e10]:
+      - generic [ref=f4e11] [cursor=pointer]:
+        - slider "播放滑块" [ref=f4e12]
+        - generic:
+          - generic:
+            - generic:
+              - slider "点击或滚动面板可进行精确跳转。"
+      - generic [ref=f4e21]:
+        - generic [ref=f4e22]:
+          - button "播放 (k)" [ref=f4e23] [cursor=pointer]
+          - generic [ref=f4e24]:
+            - button "静音 (m)" [ref=f4e26] [cursor=pointer]
+            - slider "音量":
+              - generic [ref=f4e27] [cursor=pointer]
+          - button "0 分钟 0 秒/14 分钟 25 秒" [ref=f4e30] [cursor=pointer]: 0:00 / 14:25
+        - generic [ref=f4e31]:
+          - generic [ref=f4e32]:
+            - button "无法显示字幕" [ref=f4e33] [cursor=pointer]
+            - button "设置" [ref=f4e35] [cursor=pointer]
+          - generic [ref=f4e36]:
+            - button "影院模式 (t)" [ref=f4e37] [cursor=pointer]
+            - button "全屏 (f)" [ref=f4e38] [cursor=pointer]
+  - banner [ref=f4e62]:
+    - generic [ref=f4e64]:
+      - generic [ref=f4e65]:
+        - button "导视" [ref=f4e67] [cursor=pointer]
+        - generic [ref=f4e69]:
+          - link:
+            - /url: /
+      - search [ref=f4e71]:
+        - generic [ref=f4e73]:
+          - combobox [expanded] [ref=f4e76]
+          - button "Search" [ref=f4e77] [cursor=pointer]

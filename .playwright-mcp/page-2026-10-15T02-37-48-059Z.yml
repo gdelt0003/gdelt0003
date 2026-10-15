@@ -1,0 +1,693 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - button "导视" [ref=e9] [cursor=pointer]
+          - link "YouTube 首页" [ref=e14] [cursor=pointer]:
+            - /url: /
+          - button "跳过导航" [ref=e23] [cursor=pointer]
+        - generic [ref=e27]:
+          - search [ref=e28]:
+            - generic [ref=e30]:
+              - generic [ref=e31]:
+                - combobox "搜索" [expanded] [ref=e33]: Press Secretary Katie Zacharia briefing October 13 2026
+                - button "清空搜索查询" [ref=e35] [cursor=pointer]
+              - button "Search" [ref=e42] [cursor=pointer]
+          - generic [ref=e47]:
+            - button "通过语音搜索内容" [ref=e49] [cursor=pointer]
+            - tooltip "tooltip"
+        - generic [ref=e54]:
+          - button "设置" [ref=e59] [cursor=pointer]
+          - link "登录" [ref=e65] [cursor=pointer]:
+            - /url: https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3Dhttps%253A%252F%252Fwww.youtube.com%252Fresults%253Fsearch_query%253DPress%252BSecretary%252BKatie%252BZacharia%252Bbriefing%252BOctober%252B13%252B2026%2526sp%253DCAMSAhAB&hl=zh-CN&ec=65620
+    - navigation [ref=e69]:
+      - generic [ref=e70]:
+        - link "首页" [ref=e72] [cursor=pointer]:
+          - /url: /
+        - link "Shorts" [ref=e78] [cursor=pointer]:
+          - /url: /shorts/
+        - link "订阅" [ref=e84] [cursor=pointer]:
+          - /url: /feed/subscriptions
+        - link "我" [ref=e90] [cursor=pointer]:
+          - /url: /feed/you
+    - generic [ref=e95]:
+      - main [ref=e96]:
+        - generic [ref=e97]:
+          - generic [ref=e101]:
+            - button "搜索过滤条件" [ref=e103] [cursor=pointer]:
+              - generic: 过滤
+            - tooltip "tooltip"
+          - generic [ref=e112]:
+            - generic [ref=e114]:
+              - link [aria-hidden] [ref=e116] [cursor=pointer]:
+                - /url: /watch?v=70IxSTGD-FQ&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                - img [ref=e121]:
+                  - generic [aria-hidden] [ref=e122]: 12:07
+                - generic: 正在播放
+                - generic [ref=e123]:
+                  - generic [ref=e124]: 0:00
+                  - generic [ref=e132]: 12:07
+              - generic [ref=e136] [cursor=pointer]:
+                - generic [ref=e137]:
+                  - generic [ref=e138]:
+                    - heading [level=3] [ref=e139]:
+                      - 'link "‘Quite unusual’: Kaitlan Collins reacts to Katie Zacharia’s first WH briefing 12分钟7秒钟" [ref=e140]':
+                        - /url: /watch?v=70IxSTGD-FQ&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "‘Quite unusual’: Kaitlan Collins reacts to Katie Zacharia’s first WH briefing"
+                    - button "操作菜单" [ref=e144]
+                  - generic [ref=e150]:
+                    - generic [ref=e151]: 196万
+                    - generic [ref=e152]: •1天前
+                - generic [ref=e153]:
+                  - link "前往频道：CNN" [ref=e154]:
+                    - /url: /@CNN
+                  - generic [ref=e156]:
+                    - link "CNN" [ref=e160]:
+                      - /url: /@CNN
+                    - img "已验证" [ref=e165]
+                - generic [ref=e169]:
+                  - generic [ref=e170]: President Donald Trump's new press secretary Katie Zacharia held her first media briefing from behind the White House podium ...
+                  - tooltip "tooltip"
+                - generic [ref=e172]:
+                  - img "最新" [ref=e175]:
+                    - generic [aria-hidden] [ref=e176]: 最新
+                  - img "字幕" [ref=e179]:
+                    - generic [aria-hidden] [ref=e180]: 字幕
+                - generic [ref=e183]:
+                  - generic [ref=e184]:
+                    - generic [ref=e187]: 匹配章节
+                    - button "0:00 New WH press secretary Katie Zacharia answers ..." [ref=e189]
+                  - button "更多" [ref=e195]
+            - generic [ref=e200]:
+              - link [aria-hidden] [ref=e202] [cursor=pointer]:
+                - /url: /watch?v=_t1MsU9N-tE&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                - img [ref=e207]:
+                  - generic [aria-hidden] [ref=e208]: 15:32
+                - generic: 正在播放
+              - generic [ref=e209] [cursor=pointer]:
+                - generic [ref=e210]:
+                  - generic [ref=e211]:
+                    - heading [level=3] [ref=e212]:
+                      - 'link "''Oh, Katie'': Psaki lets loose on Trump''s new press secretary 15分钟" [ref=e213]':
+                        - /url: /watch?v=_t1MsU9N-tE&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "'Oh, Katie': Psaki lets loose on Trump's new press secretary"
+                    - button "操作菜单" [ref=e217]
+                  - generic [ref=e223]:
+                    - generic [ref=e224]: 151万
+                    - generic [ref=e225]: •23小时前
+                - generic [ref=e226]:
+                  - link "前往频道：MS NOW" [ref=e227]:
+                    - /url: /@msnow
+                  - generic [ref=e229]:
+                    - link "MS NOW" [ref=e233]:
+                      - /url: /@msnow
+                    - img "已验证" [ref=e238]
+                - generic [ref=e242]:
+                  - generic [ref=e243]: Jen Psaki reacts to Katie Zacharia's first day as Donald Trump's press secretary, the mockery she made of the press briefing, and ...
+                  - tooltip "tooltip"
+                - generic [ref=e245]:
+                  - img "最新" [ref=e248]:
+                    - generic [aria-hidden] [ref=e249]: 最新
+                  - img "字幕" [ref=e252]:
+                    - generic [aria-hidden] [ref=e253]: 字幕
+                - generic [ref=e256]:
+                  - generic [ref=e257]:
+                    - generic [ref=e260]: 8 个章节
+                    - button "Katie Zachariah's debut | Critique of the briefing | Controlled questioning | Substance and mishaps | Internal reaction | Questionable credentials | Impact on press freedom | Closing announcement" [ref=e262]
+                  - button "更多" [ref=e267]
+            - generic [ref=e272]:
+              - link [aria-hidden] [ref=e274] [cursor=pointer]:
+                - /url: /watch?v=gj04ODadQgQ&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e276] [cursor=pointer]:
+                - generic [ref=e277]:
+                  - generic [ref=e278]:
+                    - heading [level=3] [ref=e279]:
+                      - 'link "Kayleigh McEnany reacts to Katie Zacharia''s first briefing: ''MIC DROP'' 13分钟8秒钟" [ref=e280]':
+                        - /url: /watch?v=gj04ODadQgQ&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "Kayleigh McEnany reacts to Katie Zacharia's first briefing: 'MIC DROP'"
+                    - button "操作菜单" [ref=e284]
+                  - generic [ref=e290]:
+                    - generic [ref=e291]: 120万
+                    - generic [ref=e292]: •1天前
+                - generic [ref=e293]:
+                  - link "前往频道：Fox News" [ref=e294]:
+                    - /url: /@FoxNews
+                  - generic [ref=e296]:
+                    - link "Fox News" [ref=e300]:
+                      - /url: /@FoxNews
+                    - img "已验证" [ref=e305]
+                - generic [ref=e309]:
+                  - generic [ref=e310]: "... White House press secretary Katie Zacharia's first briefing. #foxnews #news #fnc #fox #us #politics #whitehouse #katiezacharia ..."
+                  - tooltip "tooltip"
+                - generic [ref=e312]:
+                  - img "最新" [ref=e315]:
+                    - generic [aria-hidden] [ref=e316]: 最新
+                  - img "字幕" [ref=e319]:
+                    - generic [aria-hidden] [ref=e320]: 字幕
+            - generic [ref=e322]:
+              - link [aria-hidden] [ref=e324] [cursor=pointer]:
+                - /url: /watch?v=EYZzRgLnqc0&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e326] [cursor=pointer]:
+                - generic [ref=e327]:
+                  - generic [ref=e328]:
+                    - heading [level=3] [ref=e329]:
+                      - link "Kimberly Guilfoyle responds after Trump asks for resignation 12分钟57秒钟" [ref=e330]:
+                        - /url: /watch?v=EYZzRgLnqc0&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Kimberly Guilfoyle responds after Trump asks for resignation
+                    - button "操作菜单" [ref=e334]
+                  - generic [ref=e340]:
+                    - generic [ref=e341]: 90万
+                    - generic [ref=e342]: •1天前
+                - generic [ref=e343]:
+                  - link "前往频道：CNN" [ref=e344]:
+                    - /url: /@CNN
+                  - generic [ref=e345]:
+                    - link "CNN" [ref=e349]:
+                      - /url: /@CNN
+                    - img "已验证" [ref=e354]
+                - generic [ref=e358]:
+                  - generic [ref=e359]: New press secretary Katie Zacharia confirmed in her first press briefing Tuesday that the White House had “asked Ambassador ...
+                  - tooltip "tooltip"
+                - generic [ref=e361]:
+                  - img "最新" [ref=e364]:
+                    - generic [aria-hidden] [ref=e365]: 最新
+                  - img "字幕" [ref=e368]:
+                    - generic [aria-hidden] [ref=e369]: 字幕
+                - generic [ref=e372]:
+                  - generic [ref=e373]:
+                    - generic [ref=e376]: 5 个章节
+                    - button "New White House press secretary announces Guilfoyle has been asked to resign | CNN’s Kylie Atwood reports on Guilfoyle’s response | President Trump answers questions about Guilfoyle | Donor who accused Guilfoyle of pay-to-play offer reacts to the news | Situation Room panel reacts" [ref=e378]
+                  - button "更多" [ref=e383]
+            - generic [ref=e388]:
+              - link [aria-hidden] [ref=e390] [cursor=pointer]:
+                - /url: /watch?v=r0VbeHStZ50&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e392] [cursor=pointer]:
+                - generic [ref=e393]:
+                  - generic [ref=e394]:
+                    - heading [level=3] [ref=e395]:
+                      - link "Trump’s new Press Secy lasts just 14 MINUTES 7分钟31秒钟" [ref=e396]:
+                        - /url: /watch?v=r0VbeHStZ50&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Trump’s new Press Secy lasts just 14 MINUTES
+                    - button "操作菜单" [ref=e400]
+                  - generic [ref=e406]:
+                    - generic [ref=e407]: 83万
+                    - generic [ref=e408]: •1天前
+                - generic [ref=e409]:
+                  - link "前往频道：David Pakman" [ref=e410]:
+                    - /url: /@thedavidpakmanshow
+                  - generic [ref=e411]:
+                    - link "David Pakman" [ref=e415]:
+                      - /url: /@thedavidpakmanshow
+                    - img "已验证" [ref=e420]
+                - generic [ref=e424]:
+                  - generic [ref=e425]: Katie Zacharia struggles through an abrupt 14-minute debut press briefing, calling on only three reporters before leaving ...
+                  - tooltip "tooltip"
+                - generic [ref=e427]:
+                  - img "最新" [ref=e430]:
+                    - generic [aria-hidden] [ref=e431]: 最新
+                  - img "字幕" [ref=e434]:
+                    - generic [aria-hidden] [ref=e435]: 字幕
+            - generic [ref=e437]:
+              - link [aria-hidden] [ref=e439] [cursor=pointer]:
+                - /url: /watch?v=AJ6jRxHy9xc&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e441] [cursor=pointer]:
+                - generic [ref=e442]:
+                  - generic [ref=e443]:
+                    - heading [level=3] [ref=e444]:
+                      - 'link "LIVE: White House press briefing with Katie Zacharia (full) 14分钟24秒钟" [ref=e445]':
+                        - /url: /watch?v=AJ6jRxHy9xc&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "LIVE: White House press briefing with Katie Zacharia (full)"
+                    - button "操作菜单" [ref=e449]
+                  - generic [ref=e455]:
+                    - generic [ref=e456]: 50万
+                    - generic [ref=e457]: •直播时间：1天前
+                - generic [ref=e458]:
+                  - link "前往频道：Associated Press" [ref=e459]:
+                    - /url: /@AssociatedPress
+                  - generic [ref=e460]:
+                    - link "Associated Press" [ref=e464]:
+                      - /url: /@AssociatedPress
+                    - img "已验证" [ref=e469]
+                - generic [ref=e473]:
+                  - generic [ref=e474]: "Watch live as President Donald Trump's new White House press secretary, Katie Zacharia, briefs the media. #trump."
+                  - tooltip "tooltip"
+                - img "最新" [ref=e479]:
+                  - generic [aria-hidden] [ref=e480]: 最新
+            - generic [ref=e482]:
+              - link [aria-hidden] [ref=e484] [cursor=pointer]:
+                - /url: /watch?v=2YBt4CC5tQ4&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e486] [cursor=pointer]:
+                - generic [ref=e487]:
+                  - generic [ref=e488]:
+                    - heading [level=3] [ref=e489]:
+                      - link "Katie Zacharia has 'catastrophic debut' as Trump's new Press Secretary 6分钟32秒钟" [ref=e490]:
+                        - /url: /watch?v=2YBt4CC5tQ4&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Katie Zacharia has 'catastrophic debut' as Trump's new Press Secretary
+                    - button "操作菜单" [ref=e494]
+                  - generic [ref=e500]:
+                    - generic [ref=e501]: 50万
+                    - generic [ref=e502]: •1天前
+                - generic [ref=e503]:
+                  - button "联合创作频道" [ref=e505]
+                  - generic [ref=e525]:
+                    - text: LBC
+                    - generic [ref=e526]: 和
+                    - text: LBC America
+                - generic [ref=e531]:
+                  - generic [ref=e532]: Donald Trump's new pick for Press Secretary certainly has a familiar look - but will she meet a familiar fate to Anthony Scaramucci ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e537]:
+                  - generic [aria-hidden] [ref=e538]: 最新
+            - generic [ref=e540]:
+              - link [aria-hidden] [ref=e542] [cursor=pointer]:
+                - /url: /watch?v=g7we6gecwnc&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e544] [cursor=pointer]:
+                - generic [ref=e545]:
+                  - generic [ref=e546]:
+                    - heading [level=3] [ref=e547]:
+                      - link "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 14分钟26秒钟" [ref=e548]:
+                        - /url: /watch?v=g7we6gecwnc&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026
+                    - button "操作菜单" [ref=e552]
+                  - generic [ref=e558]:
+                    - generic [ref=e559]: 33万
+                    - generic [ref=e560]: •直播时间：1天前
+                - generic [ref=e561]:
+                  - link "前往频道：The White House" [ref=e562]:
+                    - /url: /@WhiteHouse
+                  - generic [ref=e563]:
+                    - link "The White House" [ref=e567]:
+                      - /url: /@WhiteHouse
+                    - img "已验证" [ref=e572]
+                - generic [ref=e576]:
+                  - text: The White House.
+                  - tooltip "tooltip"
+                - img "最新" [ref=e581]:
+                  - generic [aria-hidden] [ref=e582]: 最新
+            - generic [ref=e584]:
+              - link [aria-hidden] [ref=e586] [cursor=pointer]:
+                - /url: /watch?v=tdLdq03Ov3s&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e588] [cursor=pointer]:
+                - generic [ref=e589]:
+                  - generic [ref=e590]:
+                    - heading [level=3] [ref=e591]:
+                      - link "Katie Zacharia holds awkward debut briefing as Trump's press secretary 3分钟2秒钟" [ref=e592]:
+                        - /url: /watch?v=tdLdq03Ov3s&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Katie Zacharia holds awkward debut briefing as Trump's press secretary
+                    - button "操作菜单" [ref=e596]
+                  - generic [ref=e602]:
+                    - generic [ref=e603]: 27万
+                    - generic [ref=e604]: •1天前
+                - generic [ref=e605]:
+                  - link "前往频道：Guardian News" [ref=e606]:
+                    - /url: /@guardiannews
+                  - generic [ref=e607]:
+                    - link "Guardian News" [ref=e611]:
+                      - /url: /@guardiannews
+                    - img "已验证" [ref=e616]
+                - generic [ref=e620]:
+                  - generic [ref=e621]: New White House press secretary Katie Zacharia faced reporters for the first time on Tuesday, delivering a brief 14-minute briefing ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e626]:
+                  - generic [aria-hidden] [ref=e627]: 最新
+            - generic [ref=e629]:
+              - link [aria-hidden] [ref=e631] [cursor=pointer]:
+                - /url: /watch?v=J8D5WidNnp8&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e633] [cursor=pointer]:
+                - generic [ref=e634]:
+                  - generic [ref=e635]:
+                    - heading [level=3] [ref=e636]:
+                      - link "🚨Trump Press Secretary GETS STAGE FRIGHT and RUNS OFF… 12分钟46秒钟" [ref=e637]:
+                        - /url: /watch?v=J8D5WidNnp8&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: 🚨Trump Press Secretary GETS STAGE FRIGHT and RUNS OFF…
+                    - button "操作菜单" [ref=e641]
+                  - generic [ref=e647]:
+                    - generic [ref=e648]: 33万
+                    - generic [ref=e649]: •1天前
+                - generic [ref=e650]:
+                  - link "前往频道：MeidasTouch" [ref=e651]:
+                    - /url: /@MeidasTouch
+                  - generic [ref=e652]:
+                    - link "MeidasTouch" [ref=e656]:
+                      - /url: /@MeidasTouch
+                    - img "已验证" [ref=e661]
+                - generic [ref=e665]:
+                  - generic [ref=e666]: MeidasTouch host Ben Meiselas reports on Donald Trump's new press secretary's rocky first day at the podium, where she ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e671]:
+                  - generic [aria-hidden] [ref=e672]: 最新
+            - generic [ref=e674]:
+              - link [aria-hidden] [ref=e676] [cursor=pointer]:
+                - /url: /watch?v=kqCPZPERGMA&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e678] [cursor=pointer]:
+                - generic [ref=e679]:
+                  - generic [ref=e680]:
+                    - heading [level=3] [ref=e681]:
+                      - 'link "''Did they not test her out?'': Strategist says Zacharia makes Leavitt ''look like James Madison'' 7分钟1秒钟" [ref=e682]':
+                        - /url: /watch?v=kqCPZPERGMA&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "'Did they not test her out?': Strategist says Zacharia makes Leavitt 'look like James Madison'"
+                    - button "操作菜单" [ref=e686]
+                  - generic [ref=e692]:
+                    - generic [ref=e693]: 32万
+                    - generic [ref=e694]: •1天前
+                - generic [ref=e695]:
+                  - link "前往频道：MS NOW" [ref=e696]:
+                    - /url: /@msnow
+                  - generic [ref=e697]:
+                    - link "MS NOW" [ref=e701]:
+                      - /url: /@msnow
+                    - img "已验证" [ref=e706]
+                - generic [ref=e710]:
+                  - generic [ref=e711]: Katie Zacharia, the new White House press secretary, ending her first briefing after just 14 minutes. MS NOW Senior White House ...
+                  - tooltip "tooltip"
+                - generic [ref=e713]:
+                  - img "最新" [ref=e716]:
+                    - generic [aria-hidden] [ref=e717]: 最新
+                  - img "字幕" [ref=e720]:
+                    - generic [aria-hidden] [ref=e721]: 字幕
+            - generic [ref=e723]:
+              - link [aria-hidden] [ref=e725] [cursor=pointer]:
+                - /url: /watch?v=L0r9HBmaUVA&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e727] [cursor=pointer]:
+                - generic [ref=e728]:
+                  - generic [ref=e729]:
+                    - heading [level=3] [ref=e730]:
+                      - 'link "BREAKING: Trump’s New Press Secretary Has a Disastrous Debut | Morning Shots 37分钟" [ref=e731]':
+                        - /url: /watch?v=L0r9HBmaUVA&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "BREAKING: Trump’s New Press Secretary Has a Disastrous Debut | Morning Shots"
+                    - button "操作菜单" [ref=e735]
+                  - generic [ref=e741]:
+                    - generic [ref=e742]: 32万
+                    - generic [ref=e743]: •直播时间：1天前
+                - generic [ref=e744]:
+                  - link "前往频道：The Bulwark" [ref=e745]:
+                    - /url: /@bulwarkmedia
+                  - generic [ref=e746]:
+                    - link "The Bulwark" [ref=e750]:
+                      - /url: /@bulwarkmedia
+                    - img "已验证" [ref=e755]
+                - generic [ref=e759]:
+                  - generic [ref=e760]: Andrew Egger and Bill Kristol give their takes on the news White House Press Secretary Katie Zacharia made when she ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e765]:
+                  - generic [aria-hidden] [ref=e766]: 最新
+            - generic [ref=e768]:
+              - link [aria-hidden] [ref=e770] [cursor=pointer]:
+                - /url: /watch?v=htj-Y2NGd_Y&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e772] [cursor=pointer]:
+                - generic [ref=e773]:
+                  - generic [ref=e774]:
+                    - heading [level=3] [ref=e775]:
+                      - link "Megyn Kelly Gives Her Take on Trump's New Press Secretary Katie Zacharia After Her First Briefing 8分钟54秒钟" [ref=e776]:
+                        - /url: /watch?v=htj-Y2NGd_Y&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Megyn Kelly Gives Her Take on Trump's New Press Secretary Katie Zacharia After Her First Briefing
+                    - button "操作菜单" [ref=e780]
+                  - generic [ref=e786]:
+                    - generic [ref=e787]: 27万
+                    - generic [ref=e788]: •1天前
+                - generic [ref=e789]:
+                  - link "前往频道：Megyn Kelly" [ref=e790]:
+                    - /url: /@MegynKelly
+                  - generic [ref=e791]:
+                    - link "Megyn Kelly" [ref=e795]:
+                      - /url: /@MegynKelly
+                    - img "已验证" [ref=e800]
+                - generic [ref=e804]:
+                  - generic [ref=e805]: Megyn Kelly discusses her take on President Trump's new press secretary Katie Zacharia, following her first briefing, the media's ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e810]:
+                  - generic [aria-hidden] [ref=e811]: 最新
+            - generic [ref=e813]:
+              - link [aria-hidden] [ref=e815] [cursor=pointer]:
+                - /url: /watch?v=zLRczRAHLs8&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e817] [cursor=pointer]:
+                - generic [ref=e818]:
+                  - generic [ref=e819]:
+                    - heading [level=3] [ref=e820]:
+                      - link "HOLY SH*T THIS WAS HUMILIATING 10分钟26秒钟" [ref=e821]:
+                        - /url: /watch?v=zLRczRAHLs8&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: HOLY SH*T THIS WAS HUMILIATING
+                    - button "操作菜单" [ref=e825]
+                  - generic [ref=e831]:
+                    - generic [ref=e832]: 30万
+                    - generic [ref=e833]: •1天前
+                - generic [ref=e834]:
+                  - link "前往频道：Pondering Politics" [ref=e835]:
+                    - /url: /@ponderingpolitics
+                  - generic [ref=e836]:
+                    - link "Pondering Politics" [ref=e840]:
+                      - /url: /@ponderingpolitics
+                    - img "已验证" [ref=e845]
+                - generic [ref=e849]:
+                  - generic [ref=e850]: "Jessiah reacts to the trainwreck first press briefing from Donald Trump's new White House press secretary Katie Zachariah. #news ..."
+                  - tooltip "tooltip"
+                - img "最新" [ref=e855]:
+                  - generic [aria-hidden] [ref=e856]: 最新
+            - generic [ref=e858]:
+              - link [aria-hidden] [ref=e860] [cursor=pointer]:
+                - /url: /watch?v=1VYethoEXnw&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e862] [cursor=pointer]:
+                - generic [ref=e863]:
+                  - generic [ref=e864]:
+                    - heading [level=3] [ref=e865]:
+                      - link "Trump's Pick for Press Secretary is a COMPLETE DISASTER 4分钟46秒钟" [ref=e866]:
+                        - /url: /watch?v=1VYethoEXnw&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Trump's Pick for Press Secretary is a COMPLETE DISASTER
+                    - button "操作菜单" [ref=e870]
+                  - generic [ref=e876]:
+                    - generic [ref=e877]: 31万
+                    - generic [ref=e878]: •1天前
+                - generic [ref=e879]:
+                  - link "前往频道：Paul Lance" [ref=e880]:
+                    - /url: /@PaulForEquality
+                  - link "Paul Lance" [ref=e885]:
+                    - /url: /@PaulForEquality
+                - generic [ref=e886]:
+                  - generic [ref=e887]: Katie Zacharia made her debut as White House press secretary today—and it was a train wreck. She stumbled through prepared ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e892]:
+                  - generic [aria-hidden] [ref=e893]: 最新
+            - generic [ref=e895]:
+              - link [aria-hidden] [ref=e897] [cursor=pointer]:
+                - /url: /watch?v=OL_NUoaFU3Q&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e899] [cursor=pointer]:
+                - generic [ref=e900]:
+                  - generic [ref=e901]:
+                    - heading [level=3] [ref=e902]:
+                      - link "Trump Press Sec NEAR TEARS as Briefing IMPLODES 9分钟20秒钟" [ref=e903]:
+                        - /url: /watch?v=OL_NUoaFU3Q&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Trump Press Sec NEAR TEARS as Briefing IMPLODES
+                    - button "操作菜单" [ref=e907]
+                  - generic [ref=e913]:
+                    - generic [ref=e914]: 24万
+                    - generic [ref=e915]: •1天前
+                - generic [ref=e916]:
+                  - link "前往频道：Keith Edwards" [ref=e917]:
+                    - /url: /@keithedwards
+                  - generic [ref=e918]:
+                    - link "Keith Edwards" [ref=e922]:
+                      - /url: /@keithedwards
+                    - img "已验证" [ref=e927]
+                - generic [ref=e931]:
+                  - generic [ref=e932]: ... Edwards reacts to new White House Press Secretary Katie Zacharia's first disastrous press briefing. JOIN THE COMMUNITY ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e937]:
+                  - generic [aria-hidden] [ref=e938]: 最新
+            - generic [ref=e940]:
+              - link [aria-hidden] [ref=e942] [cursor=pointer]:
+                - /url: /watch?v=2kY8apxvPEw&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e944] [cursor=pointer]:
+                - generic [ref=e945]:
+                  - generic [ref=e946]:
+                    - heading [level=3] [ref=e947]:
+                      - link "Trump's New Press Secretary Just Became The Internet's Most Viral Meme! 9分钟15秒钟" [ref=e948]:
+                        - /url: /watch?v=2kY8apxvPEw&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Trump's New Press Secretary Just Became The Internet's Most Viral Meme!
+                    - button "操作菜单" [ref=e952]
+                  - generic [ref=e958]:
+                    - generic [ref=e959]: 26万
+                    - generic [ref=e960]: •1天前
+                - generic [ref=e961]:
+                  - link "前往频道：Really American" [ref=e962]:
+                    - /url: /@ReallyAmerican
+                  - generic [ref=e963]:
+                    - link "Really American" [ref=e967]:
+                      - /url: /@ReallyAmerican
+                    - img "已验证" [ref=e972]
+                - generic [ref=e976]:
+                  - generic [ref=e977]: Really American Host Kenny Hesse breaks down Trump's New Press Secretary Katie Zacharia having the worst day of her life ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e982]:
+                  - generic [aria-hidden] [ref=e983]: 最新
+            - generic [ref=e985]:
+              - link [aria-hidden] [ref=e987] [cursor=pointer]:
+                - /url: /watch?v=jWTVCPMk3S4&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e989] [cursor=pointer]:
+                - generic [ref=e990]:
+                  - generic [ref=e991]:
+                    - heading [level=3] [ref=e992]:
+                      - 'link "FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26 14分钟8秒钟" [ref=e993]':
+                        - /url: /watch?v=jWTVCPMk3S4&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: "FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26"
+                    - button "操作菜单" [ref=e997]
+                  - generic [ref=e1003]:
+                    - generic [ref=e1004]: 19万
+                    - generic [ref=e1005]: •1天前
+                - generic [ref=e1006]:
+                  - link "前往频道：Right Side Broadcasting Network" [ref=e1007]:
+                    - /url: /@RSBN
+                  - generic [ref=e1008]:
+                    - link "Right Side Broadcasting Network" [ref=e1012]:
+                      - /url: /@RSBN
+                    - img "已验证" [ref=e1017]
+                - generic [ref=e1021]:
+                  - generic [ref=e1022]: Katie Zacharia Holds First Press Briefing as New White House Press Sec. October 13, 2026 Join this channel to get access to ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e1027]:
+                  - generic [aria-hidden] [ref=e1028]: 最新
+            - generic [ref=e1030]:
+              - link [aria-hidden] [ref=e1032] [cursor=pointer]:
+                - /url: /watch?v=NQe35Oc6Do0&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e1034] [cursor=pointer]:
+                - generic [ref=e1035]:
+                  - generic [ref=e1036]:
+                    - heading [level=3] [ref=e1037]:
+                      - link "Katie Zacharia holds first briefing as White House press secretary | full video 15分钟" [ref=e1038]:
+                        - /url: /watch?v=NQe35Oc6Do0&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: Katie Zacharia holds first briefing as White House press secretary | full video
+                    - button "操作菜单" [ref=e1042]
+                  - generic [ref=e1048]:
+                    - generic [ref=e1049]: 19万
+                    - generic [ref=e1050]: •直播时间：1天前
+                - generic [ref=e1051]:
+                  - link "前往频道：CBS News" [ref=e1052]:
+                    - /url: /@CBSNews
+                  - generic [ref=e1053]:
+                    - link "CBS News" [ref=e1057]:
+                      - /url: /@CBSNews
+                    - img "已验证" [ref=e1062]
+                - generic [ref=e1066]:
+                  - generic [ref=e1067]: President Trump's new press secretary, Katie Zacharia, held her first briefing at the White House. The job has been vacant since ...
+                  - tooltip "tooltip"
+                - img "最新" [ref=e1072]:
+                  - generic [aria-hidden] [ref=e1073]: 最新
+            - generic [ref=e1075]:
+              - link [aria-hidden] [ref=e1077] [cursor=pointer]:
+                - /url: /watch?v=RDZ9uEZZk-w&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+              - generic [ref=e1079] [cursor=pointer]:
+                - generic [ref=e1080]:
+                  - generic [ref=e1081]:
+                    - heading [level=3] [ref=e1082]:
+                      - link "New White House press sec. Katie Zacharia holds first briefing 14分钟18秒钟" [ref=e1083]:
+                        - /url: /watch?v=RDZ9uEZZk-w&pp=ygU3UHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIGJyaWVmaW5nIE9jdG9iZXIgMTMgMjAyNg%3D%3D
+                        - text: New White House press sec. Katie Zacharia holds first briefing
+                    - button "操作菜单" [ref=e1087]
+                  - generic [ref=e1093]:
+                    - generic [ref=e1094]: 18万
+                    - generic [ref=e1095]: •1天前
+                - generic [ref=e1096]:
+                  - link "前往频道：LiveNOW from FOX" [ref=e1097]:
+                    - /url: /@livenowfox
+                  - generic [ref=e1098]:
+                    - link "LiveNOW from FOX" [ref=e1102]:
+                      - /url: /@livenowfox
+                    - img "已验证" [ref=e1107]
+                - generic [ref=e1111]:
+                  - generic [ref=e1112]: New White House Press Secretary Katie Zacharia host first White House briefing amid the ongoing Trump-Putin diesel deal and ...
+                  - tooltip "tooltip"
+                - generic [ref=e1114]:
+                  - img "最新" [ref=e1117]:
+                    - generic [aria-hidden] [ref=e1118]: 最新
+                  - img "字幕" [ref=e1121]:
+                    - generic [aria-hidden] [ref=e1122]: 字幕
+      - text: •
+  - dialog [active] [ref=e1146]:
+    - generic [ref=e1147]:
+      - generic [ref=e1148]:
+        - generic [ref=e1149]: 搜索过滤条件
+        - button "取消" [ref=e1151] [cursor=pointer]
+      - generic [ref=e1155]:
+        - generic [ref=e1156]:
+          - heading "类型" [level=4] [ref=e1157]
+          - link "长视频" [ref=e1159] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSAA%253D%253D
+            - generic "移除过滤条件“长视频”" [ref=e1160]: 长视频
+          - link "短视频" [ref=e1166] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSAhAJ
+            - generic "搜索“短视频”" [ref=e1167]: 短视频
+          - link "频道" [ref=e1170] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSAhAC
+            - generic "搜索“频道”" [ref=e1171]: 频道
+          - link "播放列表" [ref=e1174] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSAhAD
+            - generic "搜索“播放列表”" [ref=e1175]: 播放列表
+          - link "电影" [ref=e1178] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSAhAE
+            - generic "搜索“电影”" [ref=e1179]: 电影
+        - generic [ref=e1181]:
+          - heading "时长" [level=4] [ref=e1182]
+          - link "3 分钟以下" [ref=e1184] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABGAQ%253D
+            - generic "搜索“3 分钟以下”" [ref=e1185]: 3 分钟以下
+          - link "3 - 20 分钟" [ref=e1188] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABGAU%253D
+            - generic "搜索“3 - 20 分钟”" [ref=e1189]: 3 - 20 分钟
+          - link "20 分钟以上" [ref=e1192] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABGAI%253D
+            - generic "搜索“20 分钟以上”" [ref=e1193]: 20 分钟以上
+        - generic [ref=e1195]:
+          - heading "上传日期" [level=4] [ref=e1196]
+          - link "今天" [ref=e1198] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBAgCEAE%253D
+            - generic "搜索“今天”" [ref=e1199]: 今天
+          - link "本周" [ref=e1202] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBAgDEAE%253D
+            - generic "搜索“本周”" [ref=e1203]: 本周
+          - link "本月" [ref=e1206] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBAgEEAE%253D
+            - generic "搜索“本月”" [ref=e1207]: 本月
+          - link "今年" [ref=e1210] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBAgFEAE%253D
+            - generic "搜索“今年”" [ref=e1211]: 今年
+        - generic [ref=e1213]:
+          - heading "功能" [level=4] [ref=e1214]
+          - link "直播" [ref=e1216] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABQAE%253D
+            - generic "搜索“直播”" [ref=e1217]: 直播
+          - link "4K" [ref=e1220] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABcAE%253D
+            - generic "搜索“4K”" [ref=e1221]: 4K
+          - link "HD" [ref=e1224] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABIAE%253D
+            - generic "搜索“HD”" [ref=e1225]: HD
+          - link "字幕" [ref=e1228] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABKAE%253D
+            - generic "搜索“字幕”" [ref=e1229]: 字幕
+          - link "知识共享" [ref=e1232] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABMAE%253D
+            - generic "搜索“知识共享”" [ref=e1233]: 知识共享
+          - link "360°" [ref=e1236] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABeAE%253D
+            - generic "搜索“360°”" [ref=e1237]: 360°
+          - link "VR180" [ref=e1240] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBRAB0AEB
+            - generic "搜索“VR180”" [ref=e1241]: VR180
+          - link "3D" [ref=e1244] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABOAE%253D
+            - generic "搜索“3D”" [ref=e1245]: 3D
+          - link "HDR" [ref=e1248] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBRAByAEB
+            - generic "搜索“HDR”" [ref=e1249]: HDR
+          - link "位置" [ref=e1252] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBRABuAEB
+            - generic "搜索“位置”" [ref=e1253]: 位置
+          - link "已购买" [ref=e1256] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAMSBBABSAE%253D
+            - generic "搜索“已购买”" [ref=e1257]: 已购买
+        - generic [ref=e1259]:
+          - heading "优先顺序" [level=4] [ref=e1260]
+          - link "相关程度" [ref=e1262] [cursor=pointer]:
+            - /url: /results?search_query=Press+Secretary+Katie+Zacharia+briefing+October+13+2026&sp=CAASAhAB
+            - generic "按相关性从高到底排序" [ref=e1263]: 相关程度
+          - generic "按热门程度从高到底排序" [ref=e1267] [cursor=pointer]: 热门程度

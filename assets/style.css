@@ -191,3 +191,22 @@ button {
   .highlights-heading { align-items: flex-start; flex-direction: column; }
   .main-video-content { padding: 12px; }
 }
+
+/* Provenance / source cards for main videos */
+.main-video-sources { margin-top: 14px; display: grid; gap: 10px; }
+.main-video-source { padding: 10px; border-radius: 10px; background: rgba(17,24,39,0.6); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.main-video-source a { color: var(--accent); text-decoration: none; font-weight: 700; }
+.main-video-source-meta { color: var(--muted); font-size: .85rem; }
+.main-video-source-times, .main-video-source-captions, .main-video-source-overlay, .main-video-source-notes { color: var(--muted); font-size: .82rem; }
+
+/* Rank and badges */
+.source-rank { display: inline-block; min-width: 36px; text-align: center; font-weight: 800; color: #062c29; background: linear-gradient(180deg, #fef3c7, #f59e0b); padding: 4px 8px; border-radius: 8px; margin-right: 8px; }
+.source-trust { display: inline-block; padding: 4px 8px; border-radius: 999px; font-weight: 700; font-size: .8rem; background: rgba(255,255,255,0.04); color: var(--text); }
+.source-trust.confirmed { background: linear-gradient(135deg,#22c55e,#16a34a); color: #052e1f; }
+.source-trust.lead { background: linear-gradient(135deg,#f59e0b,#f97316); color: #331e05; }
+.source-trust.unverified { background: linear-gradient(135deg,#64748b,#475569); color: #e6eef7; }
+.source-rights { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: .78rem; color: var(--muted); background: rgba(255,255,255,0.02); margin-left: 6px; }
+
+@media (max-width: 600px) {
+  .main-video-sources { grid-template-columns: 1fr; }
+}

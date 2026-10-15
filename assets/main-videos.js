@@ -97,10 +97,24 @@ function renderMainVideos(payload) {
       sourcesWrap.className = 'main-video-sources';
       addText(sourcesWrap, 'h4', 'sources-heading', '来源与证据');
 
-      for (const s of item.provenance.sources) {
+      // compute a simple top-10 ranking by view_count (descending). preserve original order when view_count missing
+      const sortedSources = Array.isArray(item.provenance.sources)
+        ? [...item.provenance.sources].sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
+        : [];
+      const topList = sortedSources.slice(0, 10);
+
+      for (let i = 0; i < topList.length; i += 1) {
+        const s = topList[i];
         const sCard = document.createElement('div');
         sCard.className = 'main-video-source';
 
+        // rank badge
+        const rank = document.createElement('span');
+        rank.className = 'source-rank';
+        rank.textContent = `#${i + 1}`;
+        sCard.append(rank);
+
+        // title / link
         const sLink = document.createElement('a');
         sLink.href = safeVideoUrl(s.url) || '#';
         sLink.target = '_blank';
@@ -108,7 +122,21 @@ function renderMainVideos(payload) {
         sLink.textContent = s.title || s.publisher || s.id;
         sCard.append(sLink);
 
-        const metaParts = [s.publisher, s.classification, s.max_resolution, s.view_count ? `${s.view_count} views` : null].filter(Boolean);
+        // trust badge
+        const trust = document.createElement('span');
+        trust.className = `source-trust ${String(s.classification || '').toLowerCase()}`;
+        trust.textContent = s.classification || 'unknown';
+        sCard.append(trust);
+
+        // rights badge (separate from trust/provenance)
+        if (s.rights) {
+          const rights = document.createElement('span');
+          rights.className = 'source-rights';
+          rights.textContent = s.rights;
+          sCard.append(rights);
+        }
+
+        const metaParts = [s.publisher, s.max_resolution, s.view_count ? `${s.view_count} views` : null].filter(Boolean);
         if (metaParts.length) addText(sCard, 'p', 'main-video-source-meta', metaParts.join(' · '));
 
         if (s.upload_date || s.publish_date) {
@@ -119,6 +147,21 @@ function renderMainVideos(payload) {
         }
         if (s.overlay_assessment) addText(sCard, 'p', 'main-video-source-overlay', `画面评估: ${s.overlay_assessment}`);
         if (s.notes) addText(sCard, 'p', 'main-video-source-notes meta', s.notes);
+
+        // source trust note (separate from numeric score)
+        if (s.source_trust_note) {
+          addText(sCard, 'p', 'main-video-source-trust-note', `信任评分: ${s.source_trust_note}`);
+        }
+
+        // caption provenance details: preserve user-given reference score separately
+        if (s.caption_provenance) {
+          const cp = s.caption_provenance;
+          const parts = [];
+          if (typeof cp.user_given_reference_score !== 'undefined') parts.push(`用户参考字幕分: ${cp.user_given_reference_score}`);
+          if (cp.user_score_note) parts.push(cp.user_score_note);
+          if (cp.verification) parts.push(`核验状态: ${cp.verification}`);
+          if (parts.length) addText(sCard, 'p', 'main-video-source-captions-provenance meta', parts.join(' · '));
+        }
 
         sourcesWrap.append(sCard);
       }

@@ -54,9 +54,17 @@
             "overlay_assessment": "官方上传可见底部横幅 'TEXT 'TRUTH' TO 45470' 与 White House 标识，约占底部 15-20% 帧高；不遮挡人脸，视为源画面含嵌入横幅（未清除）。",
             "classification": "confirmed",
             "notes": "官方 White House upload; YouTube ASR track labeled '英语 (自动生成)' (用户参考分 60，按用户指示)。截图已记录并保存在会话产物。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {
+              "user_given_reference_score": 60,
+              "user_score_note": "用户给定参考分，非测量/审校分；原 YouTube ASR 标注为 '英语 (自动生成)'。",
+              "verification": "自动成生（asr）/未见算法或人工核验证据"
+            },
             "checked_with": "Playwright page inspect; screenshot saved",
             "checked_fields": ["duration_seconds","view_count","upload_date","publish_date","max_resolution","captions","overlay_assessment"]
           },
+
           {
             "id": "yt:AJ6jRxHy9xc",
             "title": "LIVE: White House press briefing with Katie Zacharia (full)",
@@ -71,9 +79,13 @@
             "overlay_assessment": "AP 上传带右下角台标/bug；未见更清洁的画面。",
             "classification": "lead",
             "notes": "长时段直播记录；视角与官方匹配但取景略紧，未证实为独立机位。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"自动成生（asr）/未核验"},
             "checked_with": "Playwright page inspect",
             "checked_fields": ["duration_seconds","view_count","upload_date","max_resolution","captions","overlay_assessment"]
           },
+
           {
             "id": "yt:Uya88MLbHV0",
             "title": "White House Press Secretary Katie Zacharia Holds First Briefing",
@@ -88,9 +100,13 @@
             "overlay_assessment": "含多轨字幕选择；可能提供额外上下文（+36s），未验证为更长连续源。",
             "classification": "lead",
             "notes": "C-SPAN 提供多个字幕轨；页面描述与事件匹配，但连续性未完全核验。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"多轨/CC1 与 asr 并存；核验证据未见"},
             "checked_with": "Playwright page inspect",
             "checked_fields": ["duration_seconds","max_resolution","captions"]
           },
+
           {
             "id": "yt:rQlpuY2tj-4",
             "title": "LIVE: New White House press secretary Katie Zacharia holds first briefing",
@@ -105,9 +121,13 @@
             "overlay_assessment": "长时直播记录（可能包含前后延伸内容），连续性需进一步核验。",
             "classification": "lead",
             "notes": "可能为更长 coverage（直播合并），但未检查全部录像以确认连续性。",
+            "source_trust_score": null,
+            "source_trust_note": "未评分（评分口径未提供）",
+            "caption_provenance": {"verification":"自动成生（asr）/未核验"},
             "checked_with": "Playwright page inspect",
             "checked_fields": ["duration_seconds","max_resolution","captions"]
           },
+
           {
             "id": "yt:UgIivPOerNc",
             "title": "LIVE: White House press secretary Katie Zacharia holds first briefing | NBC News",
@@ -168,7 +188,7 @@
             "duration_seconds": 140,
             "upload_date": "2026-10-13T08:08:19-07:00",
             "publish_date": "2026-10-13T08:08:19-07:00",
-            "max_resolution": "1080x1920",
+            "max_resolution": "1920x1080",
             "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
             "overlay_assessment": "片段摘录（非完整录制），适合作为快速引用而非完整来源。",
             "classification": "unverified",
@@ -177,21 +197,38 @@
             "checked_fields": ["duration_seconds"]
           },
           {
-            "id": "external:rollcall-transcript",
-            "title": "Roll Call transcript (user-supplied link)",
-            "url": "https://rollcall.com/factbase/trump/transcript/donald-trump-speech-midterm-political-rally-bullhead-city-arizona-october-14-2026/",
-            "publisher": "Roll Call (transcript)",
+            "id": "yt:h30qlVplAsE",
+            "title": "LIVE: White House press briefing with Katie Zacharia (CNBC)",
+            "url": "https://www.youtube.com/watch?v=h30qlVplAsE",
+            "publisher": "CNBC",
             "view_count": null,
-            "duration_seconds": null,
-            "upload_date": null,
-            "publish_date": null,
-            "max_resolution": null,
-            "captions": [],
-            "overlay_assessment": "这是用户提供的 transcript 页面（不同事件 URL 注意：Bullhead City 2026-10-14 非 Katie 事件）；不能视为官方字幕轨或核验证据，状态未核实。",
+            "duration_seconds": 862,
+            "upload_date": "2026-10-13T07:10:00-07:00",
+            "publish_date": "2026-10-13T07:10:00-07:00",
+            "max_resolution": "1280x720",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "720p 流，不符合用户首选 >=1080p；含频道台标/可能有画面烙印。",
             "classification": "unverified",
-            "notes": "第三方 transcript 页面；稿件文本可作为参考，但未证明字幕算法或人工复核。",
-            "checked_with": "Web fetch (user-supplied link)",
-            "checked_fields": ["title","url","notes"]
+            "notes": "短期直播/回放；分辨率不满足首选要求。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution","captions"]
+          },
+          {
+            "id": "yt:rDw_no4Rjk8",
+            "title": "FULL White House Press Briefing: Katie Zacharia (ABC 13WHAM)",
+            "url": "https://www.youtube.com/watch?v=rDw_no4Rjk8",
+            "publisher": "13WHAM (ABC)",
+            "view_count": null,
+            "duration_seconds": 858,
+            "upload_date": "2026-10-13T07:08:00-07:00",
+            "publish_date": "2026-10-13T07:08:00-07:00",
+            "max_resolution": "1920x1080",
+            "captions": [{"label":"英语 (自动生成)","kind":"asr","language":"en"}],
+            "overlay_assessment": "1080p 版本；画面可能为转播或转载，独立机位未证实。",
+            "classification": "unverified",
+            "notes": "本地台/地方新闻转载，需验证是否为独立机位或转播。",
+            "checked_with": "Playwright page inspect",
+            "checked_fields": ["duration_seconds","max_resolution"]
           }
         ]
       }
