@@ -86,8 +86,11 @@ function renderSourceDetails(payload) {
     .filter(Boolean)
     .join(' · ');
   renderArtifactDetails(video);
-  const sources = MainVideoRanking.rank(video.provenance.sources);
-  $sourceStatus.textContent = `显示 ${sources.length} 条候选来源（最多 10 条）`;
+
+  const categories = MainVideoRanking.groupByCategory(video.provenance.sources, 10);
+  const totalSources = categories.reduce((sum, section) => sum + section.total, 0);
+  const visibleSources = categories.flatMap((section) => section.sources);
+  $sourceStatus.textContent = `显示 ${visibleSources.length} 条候选来源（${totalSources} 条总计，按类别分组显示）`;
   $sourceDetails.replaceChildren();
 
   addSourceText(
@@ -95,121 +98,171 @@ function renderSourceDetails(payload) {
     'p',
     'main-video-source-ranking-method',
     video.provenance.ranking_method
-      || '官方事件锚点始终保留并置顶；其余候选按事件匹配状态 → 内嵌图文状态 → 分辨率 → 时长 → 播放量排序。缺失值不补估，同级保持清单顺序。来源信任评分口径未定义，暂不参与排序。',
+      || '官方事件锚点始终保留并置顶；其余候选按事件匹配状态 → 内嵌图文状态 → 分辨率 → 时长 → 播放量排序。缺失值不补估，同级保持清单顺序。证据覆盖分数为 0–100，仅基于已记录证据，不衡量可信度或热门程度。',
+  );
+  addSourceText(
+    $sourceDetails,
+    'p',
+    'main-video-source-score-rubric',
+    '证据覆盖分数（0–100）: 直链 URL、标题/发布方、时间、分辨率、时长、画面评估、字幕核验与证据笔记各占一项。未记录项记 0 分并显式标注 unknown/unreviewed。用户主观参考分保留在单独区块，不计入证据分。',
   );
   if (video.provenance.search_method) {
     addSourceText($sourceDetails, 'p', 'main-video-source-search-method', `检索方法: ${video.provenance.search_method}`);
   }
 
-  for (let index = 0; index < sources.length; index += 1) {
-    const source = sources[index];
-    const card = document.createElement('article');
-    card.className = 'main-video-source';
+  for (const section of categories) {
+    const sectionElement = document.createElement('section');
+    sectionElement.className = 'main-video-source-category';
 
-    addSourceText(card, 'span', 'source-rank', `#${index + 1}`);
-    const sourceUrl = safeSourceUrl(source.url);
-    if (sourceUrl) {
-      const link = document.createElement('a');
-      link.href = sourceUrl;
-      link.textContent = source.title || source.publisher || source.id || '来源链接';
-      link.target = '_blank';
-      link.rel = 'noreferrer';
-      card.append(link);
-    } else {
-      addSourceText(card, 'span', 'main-video-source-title', source.title || source.id || '来源链接未提供');
+    const heading = document.createElement('h4');
+    heading.className = 'main-video-source-category-title';
+    heading.textContent = `${section.label}（${section.total} 条候选 · ${section.confirmedCount} 条事件匹配已确认；本静态快照未检出更多已核验候选）`;
+    sectionElement.append(heading);
+
+    const list = document.createElement('div');
+    list.className = 'main-video-source-category-list';
+
+    if (!section.sources.length) {
+      const empty = document.createElement('p');
+      empty.className = 'main-video-source-category-empty';
+      empty.textContent = `该类别候选 0 条；本静态快照未找到已核验的${section.label}来源，没有补造来源条目。`;
+      list.append(empty);
     }
 
-    addSourceText(
-      card,
-      'span',
-      `source-trust ${String(source.classification || '').toLowerCase()}`,
-      MainVideoRanking.statusLabel(source.classification),
-    );
-    if (source.rights) addSourceText(card, 'span', 'source-rights', source.rights);
+    for (let index = 0; index < section.sources.length; index += 1) {
+      const source = section.sources[index];
+      const card = document.createElement('article');
+      card.className = 'main-video-source';
 
-    const duration = Number.isFinite(source.duration_seconds) && source.duration_seconds >= 0
-      ? `${Math.floor(source.duration_seconds / 60)}:${String(Math.floor(source.duration_seconds % 60)).padStart(2, '0')}`
-      : '时长未知';
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-meta',
-      [
-        source.hosting_platform || '托管平台未知',
-        source.publisher || '发布方未知',
-        source.max_resolution || '分辨率未知',
-        duration,
-        Number.isFinite(source.view_count) && source.view_count >= 0
-          ? `${source.view_count} 次观看`
-          : '播放量未知',
-      ].join(' · '),
-    );
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-times',
-      `上传时间: ${source.upload_date || '未核实'} · 发布时间: ${source.publish_date || '未核实'} · 事件时间: ${source.event_time || '未核实'}`,
-    );
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-overlay-status',
-      `内嵌横幅/标志: ${MainVideoRanking.overlayLabel(source.overlay_status)}`,
-    );
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-occlusion-status',
-      `遮挡评估: ${
-        source.occlusion_status === 'face_not_obstructed'
-          ? '记录为未遮挡人脸（仅限已观察部分）'
-          : '未核验'
-      }`,
-    );
-    if (Array.isArray(source.captions) && source.captions.length) {
+      addSourceText(card, 'span', 'source-rank', `#${index + 1}`);
+      const sourceUrl = safeSourceUrl(source.url);
+      if (sourceUrl) {
+        const link = document.createElement('a');
+        link.href = sourceUrl;
+        link.textContent = source.title || source.publisher || source.id || '来源链接';
+        link.target = '_blank';
+        link.rel = 'noreferrer';
+        card.append(link);
+      } else {
+        addSourceText(card, 'span', 'main-video-source-title', source.title || source.id || '来源链接未提供');
+      }
+
+      addSourceText(
+        card,
+        'span',
+        `source-trust ${String(source.classification || '').toLowerCase()}`,
+        MainVideoRanking.statusLabel(source.classification),
+      );
+      if (source.rights) addSourceText(card, 'span', 'source-rights', source.rights);
+
+      const evidence = MainVideoRanking.evidenceScore(source);
+      const scoreText = `${MainVideoRanking.scoreDisplayLabel(source)} · 证据覆盖: ${evidence.basis || '无已记录项'}`;
+      addSourceText(card, 'p', 'main-video-source-evidence-score', `证据覆盖分数: ${scoreText}`);
       addSourceText(
         card,
         'p',
-        'main-video-source-captions',
-        `字幕: ${source.captions.map((caption) => caption.label || caption.language || '未标注').join(', ')}`,
+        'main-video-source-evidence-basis',
+        `评分口径: ${MainVideoRanking.scoreBasisLabel(source)}。未记录项以 unknown/unreviewed 明示，不补充。`,
       );
-    }
-    if (source.overlay_assessment) {
-      addSourceText(card, 'p', 'main-video-source-overlay', `内嵌图文观察: ${source.overlay_assessment}`);
-    }
-    if (source.notes) addSourceText(card, 'p', 'main-video-source-notes meta', source.notes);
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-trust-note',
-      `来源信任评分: ${
-        source.source_trust_note
-          || (Number.isFinite(source.source_trust_score)
-            ? `记录的分值 ${source.source_trust_score}（评分口径未提供）`
-            : '未评分（评分口径未提供）')
-      }`,
-    );
 
-    const captionProvenance = source.caption_provenance || {};
-    const captionDetails = [`字幕状态: ${captionProvenance.verification || '来源轨道/审校状态未核实'}`];
-    if (typeof captionProvenance.user_given_reference_score === 'number') {
-      captionDetails.push(`用户参考字幕分: ${captionProvenance.user_given_reference_score}/100`);
-    }
-    if (captionProvenance.user_score_note) captionDetails.push(captionProvenance.user_score_note);
-    addSourceText(card, 'p', 'main-video-source-captions-provenance meta', captionDetails.join(' · '));
-    addSourceText(
-      card,
-      'p',
-      'main-video-source-rights',
-      `复用权利: ${source.reuse_rights_note || '未核实（未判断可否复用）'}`,
-    );
-    if (Array.isArray(source.checked_fields) && source.checked_fields.length) {
-      addSourceText(card, 'p', 'main-video-source-checked-fields', `核验字段: ${source.checked_fields.join(', ')}`);
-    } else {
-      addSourceText(card, 'p', 'main-video-source-checked-fields', '核验字段: 未提供');
-    }
+      const subjective = MainVideoRanking.userSubjectiveScore(source);
+      if (subjective) {
+        addSourceText(
+          card,
+          'p',
+          'main-video-source-user-score',
+          `用户主观参考分: ${subjective.value}/100（${subjective.note}）`,
+        );
+      } else {
+        addSourceText(card, 'p', 'main-video-source-user-score', '用户主观参考分: 未记录；仅保留证据覆盖分，不将用户主观分混入来源评分。');
+      }
 
-    $sourceDetails.append(card);
+      const duration = Number.isFinite(source.duration_seconds) && source.duration_seconds >= 0
+        ? `${Math.floor(source.duration_seconds / 60)}:${String(Math.floor(source.duration_seconds % 60)).padStart(2, '0')}`
+        : '时长未知';
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-meta',
+        [
+          source.hosting_platform || '托管平台未知',
+          source.publisher || '发布方未知',
+          source.max_resolution || '分辨率未知',
+          duration,
+          Number.isFinite(source.view_count) && source.view_count >= 0
+            ? `${source.view_count} 次观看`
+            : '播放量未知',
+        ].join(' · '),
+      );
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-times',
+        `上传时间: ${source.upload_date || '未核实'} · 发布时间: ${source.publish_date || '未核实'} · 事件时间: ${source.event_time || '未核实'}`,
+      );
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-overlay-status',
+        `内嵌横幅/标志: ${MainVideoRanking.overlayLabel(source.overlay_status)}`,
+      );
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-occlusion-status',
+        `遮挡评估: ${
+          source.occlusion_status === 'face_not_obstructed'
+            ? '记录为未遮挡人脸（仅限已观察部分）'
+            : '未核验'
+        }`,
+      );
+      if (Array.isArray(source.captions) && source.captions.length) {
+        addSourceText(
+          card,
+          'p',
+          'main-video-source-captions',
+          `字幕: ${source.captions.map((caption) => caption.label || caption.language || '未标注').join(', ')}`,
+        );
+      }
+      if (source.overlay_assessment) {
+        addSourceText(card, 'p', 'main-video-source-overlay', `内嵌图文观察: ${source.overlay_assessment}`);
+      }
+      if (source.notes) addSourceText(card, 'p', 'main-video-source-notes meta', source.notes);
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-trust-note',
+        `来源证据分：${MainVideoRanking.scoreDisplayLabel(source)}。${
+          source.source_trust_note
+            || (Number.isFinite(source.source_trust_score)
+              ? `记录的分值 ${source.source_trust_score}（评分口径未提供）`
+              : '未评分（评分口径未提供）')
+        }`,
+      );
+
+      const captionProvenance = source.caption_provenance || {};
+      const captionDetails = [`字幕状态: ${captionProvenance.verification || '来源轨道/审校状态未核实'}`];
+      if (typeof captionProvenance.user_given_reference_score === 'number') {
+        captionDetails.push(`用户参考字幕分: ${captionProvenance.user_given_reference_score}/100`);
+      }
+      if (captionProvenance.user_score_note) captionDetails.push(captionProvenance.user_score_note);
+      addSourceText(card, 'p', 'main-video-source-captions-provenance meta', captionDetails.join(' · '));
+      addSourceText(
+        card,
+        'p',
+        'main-video-source-rights',
+        `复用权利: ${source.reuse_rights_note || '未核实（未判断可否复用）'}`,
+      );
+      if (Array.isArray(source.checked_fields) && source.checked_fields.length) {
+        addSourceText(card, 'p', 'main-video-source-checked-fields', `核验字段: ${source.checked_fields.join(', ')}`);
+      } else {
+        addSourceText(card, 'p', 'main-video-source-checked-fields', '核验字段: 未提供');
+      }
+
+      list.append(card);
+    }
+    sectionElement.append(list);
+    $sourceDetails.append(sectionElement);
   }
 }
 

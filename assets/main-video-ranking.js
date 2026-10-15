@@ -24,8 +24,36 @@
     })[String(value || 'unassessed').toLowerCase()] ?? 0;
   }
 
+  function categoryName(value) {
+    const raw = String(value || '').trim().toLowerCase();
+    if (!raw) return 'other';
+    if (['video', 'videos', 'youtube', 'tv', 'clip', 'stream', 'livestream'].includes(raw)) return 'video';
+    if (['news', 'newsroom', 'news_article', 'press', 'article', 'broadcast', 'media'].includes(raw)) return 'news';
+    if (['social', 'tweet', 'x', 'twitter', 'truthsocial', 'facebook', 'instagram', 'tiktok', 'threads', 'mastodon'].includes(raw)) return 'social';
+    if (raw.includes('social')) return 'social';
+    if (raw.includes('news')) return 'news';
+    if (raw.includes('video')) return 'video';
+    return 'other';
+  }
+
+  function inferCategory(source) {
+    if (!source || typeof source !== 'object') return 'other';
+    const direct = source.category || source.type || source.source_type || source.kind || source.source_kind;
+    if (direct) return categoryName(direct);
+
+    const platform = String(source.hosting_platform || source.platform || '').toLowerCase();
+    if (['youtube', 'vimeo', 'rumble', 'bitchute', 'facebook', 'x', 'twitter', 'tiktok', 'instagram', 'truthsocial'].includes(platform)) {
+      return platform === 'youtube' ? 'video' : (platform === 'truthsocial' || platform === 'x' || platform === 'twitter' || platform === 'instagram' || platform === 'facebook' || platform === 'tiktok' ? 'social' : 'video');
+    }
+
+    const url = String(source.url || '');
+    if (/(x\.com|twitter\.com|truthsocial\.com|instagram\.com|facebook\.com|tiktok\.com|threads\.net|mastodon)/.test(url)) return 'social';
+    if (/(apnews|reuters|cnn|bbc|cbs|npr|foxnews|msnbc|nbc|c-span|abc|axios|politico|washingtonpost|nytimes|wsj|aljazeera)/i.test(url)) return 'news';
+    return 'video';
+  }
+
   function rank(sources) {
-    return sources
+    return (Array.isArray(sources) ? sources : [])
       .map((source, index) => ({ source, index }))
       .sort((left, right) => {
         const a = left.source;
@@ -43,8 +71,114 @@
         }
         return left.index - right.index;
       })
-      .slice(0, 10)
       .map(({ source }) => source);
+  }
+
+  function groupByCategory(sources, maxPerCategory = 10) {
+    const ranked = rank(sources);
+    const groups = new Map();
+    for (const source of ranked) {
+      const category = inferCategory(source);
+      if (!groups.has(category)) groups.set(category, []);
+      groups.get(category).push(source);
+    }
+
+    const order = ['video', 'news', 'social', 'other'];
+    const categories = [];
+    for (const category of order) {
+      if (category === 'other' && !groups.has(category)) continue;
+      const items = groups.get(category) || [];
+      categories.push({
+        category,
+        label: category === 'video' ? '视频' : category === 'news' ? '新闻/媒体' : category === 'social' ? '社交/平台' : '其他',
+        total: items.length,
+        confirmedCount: items.filter((source) => String(source.classification || '').toLowerCase() === 'confirmed').length,
+        sources: items.slice(0, maxPerCategory),
+      });
+    }
+    for (const [category, items] of groups.entries()) {
+      if (!order.includes(category)) {
+        categories.push({
+          category,
+          label: '其他',
+          total: items.length,
+          confirmedCount: items.filter((source) => String(source.classification || '').toLowerCase() === 'confirmed').length,
+          sources: items.slice(0, maxPerCategory),
+        });
+      }
+    }
+    return categories;
+  }
+
+  function evidenceScore(source) {
+    const entry = source || {};
+    let total = 0;
+    const checks = [];
+    const isAssessedValue = (value) => (
+      typeof value === 'string'
+      && value.trim() !== ''
+      && !/(unassessed|unverified|unknown|not[_ -]?verified|未核验|未验证|未核实|未知)/i.test(value.trim())
+    );
+
+    function addCheck(label, passes) {
+      checks.push({ label, passes });
+      if (passes) total += 1;
+    }
+
+    addCheck('direct_url', !!(typeof entry.url === 'string' && entry.url.trim()));
+    addCheck('title_or_publisher', !!((entry.title && entry.title.trim()) || (entry.publisher && entry.publisher.trim())));
+    addCheck('publish_time', !!(entry.upload_date || entry.publish_date || entry.event_time));
+    addCheck('resolution', !!(entry.max_resolution || entry.resolution));
+    addCheck('duration', Number.isFinite(entry.duration_seconds) && entry.duration_seconds >= 0);
+    addCheck(
+      'overlay_review',
+      ['clear_verified', 'possible_overlay', 'overlay_present'].includes(String(entry.overlay_status || '').toLowerCase())
+        || isAssessedValue(entry.overlay_assessment),
+    );
+    addCheck(
+      'caption_review',
+      (Array.isArray(entry.captions) && entry.captions.length > 0)
+        || isAssessedValue(entry.caption_provenance?.verification),
+    );
+    addCheck('provenance_notes', !!(entry.notes || entry.checked_fields || entry.checked_with));
+
+    const score = Math.round((total / checks.length) * 100);
+    return {
+      score,
+      checks,
+      basis: checks
+        .filter((item) => item.passes)
+        .map((item) => item.label)
+        .join(', '),
+      unknowns: checks
+        .filter((item) => !item.passes)
+        .map((item) => item.label),
+    };
+  }
+
+  function scoreBasisLabel(source) {
+    const info = evidenceScore(source);
+    const labelMap = {
+      direct_url: '直链 URL',
+      title_or_publisher: '标题/发布方',
+      publish_time: '时间信息',
+      resolution: '分辨率',
+      duration: '时长',
+      overlay_review: '画面/横幅评估',
+      caption_review: '字幕/字幕轨记录',
+      provenance_notes: '核验说明或证据笔记',
+    };
+    const known = (info.basis || '')
+      .split(', ')
+      .filter(Boolean)
+      .map((key) => labelMap[key] || key);
+    const missing = info.unknowns.map((key) => labelMap[key] || key);
+    return `${known.join('、') || '无已记录项'}；unknown/unreviewed: ${missing.join('、') || '无'}`;
+  }
+
+  function scoreDisplayLabel(source) {
+    const { score } = evidenceScore(source);
+    return `${score}/100`;
   }
 
   function statusLabel(value) {
@@ -64,5 +198,24 @@
     })[String(value || 'unassessed').toLowerCase()] || '未核验';
   }
 
-  global.MainVideoRanking = Object.freeze({ rank, statusLabel, overlayLabel });
+  function userSubjectiveScore(source) {
+    const value = source?.caption_provenance?.user_given_reference_score;
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return { value, note: source?.caption_provenance?.user_score_note || '用户提供的参考分，非证据覆盖分' };
+    }
+    return null;
+  }
+
+  global.MainVideoRanking = Object.freeze({
+    rank,
+    groupByCategory,
+    statusLabel,
+    overlayLabel,
+    inferCategory,
+    categoryName,
+    evidenceScore,
+    scoreBasisLabel,
+    scoreDisplayLabel,
+    userSubjectiveScore,
+  });
 }(globalThis));

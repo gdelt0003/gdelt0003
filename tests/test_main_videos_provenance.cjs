@@ -85,12 +85,50 @@ async function main() {
 
   assert.equal(title.textContent, katie.title);
   assert.equal(meta.textContent, '2026-10-13 · GDELT · process_full_video.py 机器生成预览 · 1920x1080');
-  assert.equal(status.textContent, '显示 10 条候选来源（最多 10 条）');
-  const cards = sourceDetails.children.filter((child) => child.className === 'main-video-source');
+  assert.match(status.textContent, /显示 \d+ 条候选来源/);
+  assert.match(status.textContent, /按类别分组显示/);
+
+  const categorySections = sourceDetails.children.filter((child) => child.className === 'main-video-source-category');
+  assert.equal(categorySections.length, 3, 'show video, news, and social counts even when some categories are empty');
+  const videoSection = categorySections.find((section) => section.children[0].textContent.startsWith('视频'));
+  const cards = videoSection.children
+    .find((child) => child.className === 'main-video-source-category-list')
+    .children.filter((child) => child.className === 'main-video-source');
   assert.equal(cards.length, 10, 'render all ten event-related video candidates on the detail page');
+  assert.ok(
+    categorySections.some((section) => (
+      section.children[0].textContent.startsWith('新闻/媒体（0 条候选')
+      && section.children[1].children[0].textContent.includes('未找到已核验的新闻/媒体来源')
+    )),
+    'show the actual zero count and do not fabricate empty-category source rows',
+  );
   assert.equal(cards[0].children[0].textContent, '#1');
   assert.equal(cards[0].children[1].textContent, 'Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026');
   assert.equal(cards[0].children[2].textContent, '事件匹配已确认');
+  assert.ok(
+    cards[0].children.some((child) => (
+      child.className === 'main-video-source-evidence-score'
+      && child.textContent.includes('证据覆盖分数:')
+      && /\d+\/100/.test(child.textContent)
+    )),
+    'render a transparent evidence-coverage score for every source',
+  );
+  assert.ok(
+    cards[1].children.some((child) => (
+      child.className === 'main-video-source-evidence-basis'
+      && child.textContent.includes('unknown/unreviewed:')
+      && child.textContent.includes('画面/横幅评估')
+    )),
+    'name missing evidence criteria as unknown or unreviewed',
+  );
+  assert.ok(
+    cards[0].children.some((child) => (
+      child.className === 'main-video-source-user-score'
+      && child.textContent.includes('60/100')
+      && child.textContent.includes('用户主观参考分')
+    )),
+    'keep user-reported scores separate from the evidence coverage score',
+  );
   assert.ok(
     cards[0].children.some((child) => (
       child.className === 'main-video-source-overlay-status'
@@ -158,6 +196,28 @@ async function main() {
     'the detail page retains subtitle layout review state',
   );
 
+  const grouping = context.MainVideoRanking.groupByCategory([
+    { id: 'v1', category: 'video', title: 'Video A', url: 'https://example.test/video-a', max_resolution: '1920x1080', duration_seconds: 180, overlay_status: 'overlay_present' },
+    { id: 'n1', category: 'news', title: 'News A', url: 'https://example.test/news-a', max_resolution: '1280x720', duration_seconds: 120, publish_date: '2026-10-13', overlay_status: 'unassessed' },
+    { id: 's1', category: 'social', title: 'Social A', url: 'https://x.com/example', max_resolution: '720x480', duration_seconds: 30 },
+    { id: 'o1', category: 'other', title: 'Other A', url: 'https://example.test/other-a' },
+  ], 10);
+  assert.equal(grouping.length, 4, 'group the ranked sources by video, news, social, and other when present');
+  assert.equal(grouping[0].category, 'video');
+  assert.equal(grouping[1].category, 'news');
+  assert.equal(grouping[2].category, 'social');
+  assert.equal(grouping[3].category, 'other');
+  assert.ok(grouping.every((group) => group.sources.length > 0), 'each category with sources should render its own section');
+
+  const unknownReview = context.MainVideoRanking.evidenceScore({
+    url: 'https://example.test/unknown-review',
+    title: 'Unknown review status',
+    overlay_status: 'unassessed',
+    caption_provenance: { verification: '未核验' },
+  });
+  assert.equal(unknownReview.checks.find((check) => check.label === 'overlay_review').passes, false);
+  assert.equal(unknownReview.checks.find((check) => check.label === 'caption_review').passes, false);
+
   const withoutAnchor = Array.from({ length: 11 }, (_, index) => ({
     id: `candidate-${index}`,
     classification: 'confirmed',
@@ -175,10 +235,26 @@ async function main() {
     duration_seconds: 10,
     view_count: 1,
   };
-  const topTen = context.MainVideoRanking.rank([...withoutAnchor, anchor]);
-  assert.equal(topTen.length, 10);
-  assert.equal(topTen[0].id, 'official-anchor', 'retain and pin the official event anchor when capping');
-  assert.ok(topTen.some((source) => source.event_anchor), 'official event anchor stays in the top ten');
+  const ranked = context.MainVideoRanking.rank([...withoutAnchor, anchor]);
+  assert.equal(ranked.length, 12, 'no global hard cap; every ranked source remains visible');
+  assert.equal(ranked[0].id, 'official-anchor', 'retain the official anchor without slicing to ten');
+  assert.ok(ranked.some((source) => source.event_anchor), 'official event anchor stays ranked');
+
+  const partial = { title: 'Incomplete lead', url: 'https://example.test/partial', classification: 'lead', overlay_status: 'unassessed' };
+  const partialScore = context.MainVideoRanking.evidenceScore(partial);
+  assert.ok(partialScore.score < 100, 'unknown evidence stays below the full score');
+  assert.ok(partialScore.unknowns.length > 0, 'unknown fields stay explicit instead of becoming fabricated certainty');
+
+  const subjectiveSource = {
+    caption_provenance: { user_given_reference_score: 60, user_score_note: '用户参考分，不计入证据覆盖分' },
+    url: 'https://example.test/subjective',
+    title: 'Subjective lead',
+    publish_date: '2026-10-13',
+    overlay_status: 'unassessed',
+  };
+  const subjective = context.MainVideoRanking.userSubjectiveScore(subjectiveSource);
+  assert.equal(subjective.value, 60);
+  assert.match(subjective.note, /不计入证据覆盖分/);
 
   const page = fs.readFileSync(
     path.join(root, 'events', 'katie-zacharia-2026-10-13', 'sources.html'),
@@ -186,7 +262,8 @@ async function main() {
   );
   assert.match(page, /来源与版本信心/);
   assert.match(page, /不执行实时检索、夜间复核或自动验证/);
-  assert.match(page, /遮挡状态未核验，不代表画面无遮挡/);
+  assert.match(page, /证据覆盖分 0–100/);
+  assert.match(page, /按视频\/新闻\/社交\/其他类别分组/);
   assert.match(page, /main-video-ranking\.js/);
   assert.match(page, /main-video-sources\.js/);
 }
