@@ -8,13 +8,18 @@ on:
         type: boolean
         required: true
         default: false
+      private_review_only:
+        description: Render on a cloud runner and upload a private review artifact without publishing
+        type: boolean
+        required: true
+        default: false
       same_event_source_confirmed:
         description: I confirmed the official White House listing identifies this exact source
         type: boolean
         required: true
         default: false
       reuse_rights_confirmed:
-        description: I confirmed this source may be processed and shared as an unverified test preview
+        description: I confirmed this exact source may be processed for private review and/or shared publicly as selected
         type: boolean
         required: true
         default: false
@@ -27,17 +32,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish-preview:
-    if: github.ref == 'refs/heads/main' && inputs.publish_test_preview
+  render-preview:
+    if: github.ref == 'refs/heads/main' && (inputs.publish_test_preview || inputs.private_review_only)
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
-      contents: write
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      actions: write
+      contents: read
     steps:
       - name: Check out the published site
         uses: actions/checkout@v4
@@ -56,12 +57,17 @@ jobs:
       - name: Require exact-event and reuse-rights confirmations
         env:
           PUBLISH_PREVIEW: ${{ inputs.publish_test_preview }}
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
           SAME_EVENT_CONFIRMED: ${{ inputs.same_event_source_confirmed }}
           RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
         run: |
           set -euo pipefail
-          if [[ "$PUBLISH_PREVIEW" != "true" ]]; then
-            echo "Explicit test-preview publication confirmation is required." >&2
+          if [[ "$PUBLISH_PREVIEW" == "true" && "$PRIVATE_REVIEW_ONLY" == "true" ]]; then
+            echo "Select either private review or public test-preview publication, not both." >&2
+            exit 1
+          fi
+          if [[ "$PUBLISH_PREVIEW" != "true" && "$PRIVATE_REVIEW_ONLY" != "true" ]]; then
+            echo "Select private review or explicitly confirmed public test-preview publication." >&2
             exit 1
           fi
           if [[ "$SAME_EVENT_CONFIRMED" != "true" ]]; then
@@ -87,13 +93,18 @@ jobs:
         shell: bash
 
       - name: Install FFmpeg, CJK fonts, and local inference dependencies
+        env:
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
         run: |
           set -euo pipefail
           sudo apt-get update
           sudo apt-get install --yes ffmpeg fonts-noto-cjk
           python -m pip install --upgrade pip
-          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
-          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+          python -m pip install pysubs2==1.8.0
+          if [[ "$PRIVATE_REVIEW_ONLY" != "true" ]]; then
+            python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+            python -m pip install faster-whisper transformers sentencepiece
+          fi
           ffmpeg -version
           ffprobe -version
         shell: bash
@@ -101,6 +112,7 @@ jobs:
       - name: Verify and download the exact draft-release asset
         env:
           GH_TOKEN: ${{ github.token }}
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
         run: |
           set -euo pipefail
           source_tag="g7we6gecwnc-source-intake-20261015"
@@ -144,6 +156,7 @@ jobs:
             "$RUNNER_TEMP/katie-source/source-verification.json" \
             "$download_started_at" "$source_size" "$source_sha256" <<'PY'
           import json
+          import os
           import sys
           from datetime import datetime, timezone
           from pathlib import Path
@@ -190,8 +203,14 @@ jobs:
               "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
               "same_event_source_match_confirmed": True,
               "reuse_rights_confirmed": True,
+              "processing_mode": (
+                  "private_review_only"
+                  if os.environ["PRIVATE_REVIEW_ONLY"] == "true"
+                  else "publish_test_preview"
+              ),
               "reuse_rights_status": (
-                  "user_requested_public_test_preview; White House copyright policy "
+                  "user_confirmed_processing_for_selected_dispatch_mode; "
+                  "White House copyright policy "
                   "consulted; third-party or transferred-rights exceptions not "
                   "independently checked"
               ),
@@ -207,14 +226,42 @@ jobs:
           PY
         shell: bash
 
-      - name: Transcribe, translate, burn captions, and record provenance
+      - name: Download previously reviewed-run subtitle artifact
+        if: inputs.private_review_only
+        uses: actions/download-artifact@v4
+        with:
+          name: katie-zacharia-full-video-preview-38661270142
+          run-id: 38661270142
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/katie-prior
+
+      - name: Verify reused subtitles match the pinned source and event
+        if: inputs.private_review_only
         run: |
           set -euo pipefail
-          python scripts/process_full_video.py \
-            --input "$RUNNER_TEMP/katie-source/katie-zacharia-g7we6gecwnc-source.mp4" \
-            --output-dir "$RUNNER_TEMP/katie-output" \
-            --asset-prefix katie-zacharia-g7we6gecwnc \
+          python scripts/verify_katie_reused_subtitles.py \
+            --artifact-dir "$RUNNER_TEMP/katie-prior/katie-output" \
+            --source-verification "$RUNNER_TEMP/katie-source/source-verification.json"
+        shell: bash
+
+      - name: Transcribe, translate, burn captions, and record provenance
+        env:
+          PRIVATE_REVIEW_ONLY: ${{ inputs.private_review_only }}
+        run: |
+          set -euo pipefail
+          common_args=(
+            --input "$RUNNER_TEMP/katie-source/katie-zacharia-g7we6gecwnc-source.mp4"
+            --output-dir "$RUNNER_TEMP/katie-output"
+            --asset-prefix katie-zacharia-g7we6gecwnc
             --subtitle-layout katie-fixed-lower-third-zh-first
+          )
+          if [[ "$PRIVATE_REVIEW_ONLY" == "true" ]]; then
+            python scripts/process_full_video.py \
+              "${common_args[@]}" \
+              --reuse-subtitles "$RUNNER_TEMP/katie-prior/katie-output"
+          else
+            python scripts/process_full_video.py "${common_args[@]}"
+          fi
           python scripts/publish_full_video_preview.py \
             --manifest "$RUNNER_TEMP/katie-output/manifest.json" \
             --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \
@@ -223,6 +270,17 @@ jobs:
           python scripts/verify_operation_audit.py \
             --audit "$RUNNER_TEMP/katie-output/operation-audit.json" \
             --manifest "$RUNNER_TEMP/katie-output/manifest.json"
+        shell: bash
+
+      - name: Extract representative private-review frames
+        if: inputs.private_review_only
+        run: |
+          set -euo pipefail
+          python scripts/extract_katie_review_frames.py \
+            --video "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc-bilingual.mp4" \
+            --subtitle-srt "$RUNNER_TEMP/katie-output/katie-zacharia-g7we6gecwnc.en-zh.srt" \
+            --manifest "$RUNNER_TEMP/katie-output/manifest.json" \
+            --output-dir "$RUNNER_TEMP/katie-output/review-frames"
         shell: bash
 
       - name: Preserve runner provenance and generated subtitles
@@ -237,8 +295,70 @@ jobs:
             ${{ runner.temp }}/katie-output/operation-audit.json
             ${{ runner.temp }}/katie-output/*.srt
             ${{ runner.temp }}/katie-output/*.vtt
+            ${{ runner.temp }}/katie-output/review-frames/
           if-no-files-found: ignore
           retention-days: 90
+
+      - name: Transfer rendered package to public-only job
+        if: success() && inputs.publish_test_preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: katie-zacharia-render-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/katie-source/source-verification.json
+            ${{ runner.temp }}/katie-source/source-probe.json
+            ${{ runner.temp }}/katie-output/katie-zacharia-g7we6gecwnc-bilingual.mp4
+            ${{ runner.temp }}/katie-output/*.srt
+            ${{ runner.temp }}/katie-output/*.vtt
+            ${{ runner.temp }}/katie-output/manifest.json
+            ${{ runner.temp }}/katie-output/operation-audit.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload private rendered review package
+        if: success() && inputs.private_review_only
+        uses: actions/upload-artifact@v4
+        with:
+          name: katie-zacharia-private-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/katie-source/source-verification.json
+            ${{ runner.temp }}/katie-source/source-probe.json
+            ${{ runner.temp }}/katie-output/katie-zacharia-g7we6gecwnc-bilingual.mp4
+            ${{ runner.temp }}/katie-output/*.srt
+            ${{ runner.temp }}/katie-output/*.vtt
+            ${{ runner.temp }}/katie-output/manifest.json
+            ${{ runner.temp }}/katie-output/operation-audit.json
+            ${{ runner.temp }}/katie-output/review-frames/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish-preview:
+    if: github.ref == 'refs/heads/main' && inputs.publish_test_preview
+    needs: render-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the published site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download rendered preview package
+        uses: actions/download-artifact@v4
+        with:
+          name: katie-zacharia-render-${{ github.run_id }}
+          path: ${{ runner.temp }}
 
       - name: Create the public unverified-preview prerelease
         env:
