@@ -21,11 +21,23 @@ if __package__:
         current_pipeline_version,
         current_task_id,
     )
+    from .spoken_word_highlighting import (
+        TimedWord,
+        ass_highlighted_english_line,
+        disabled_word_highlighting_status,
+        load_reviewed_word_timings,
+    )
 else:
     from operation_audit import (
         OperationAudit,
         current_pipeline_version,
         current_task_id,
+    )
+    from spoken_word_highlighting import (
+        TimedWord,
+        ass_highlighted_english_line,
+        disabled_word_highlighting_status,
+        load_reviewed_word_timings,
     )
 
 
@@ -451,7 +463,8 @@ def _write_katie_lower_third_ass(
     cues: list[Cue],
     width: int,
     height: int,
-) -> None:
+    word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
+) -> bool:
     (
         chinese_font,
         english_font,
@@ -505,7 +518,7 @@ def _write_katie_lower_third_ass(
         alignment=pysubs2.Alignment.BOTTOM_CENTER,
     )
 
-    for cue in cues:
+    for cue_index, cue in enumerate(cues):
         try:
             chinese_lines = _wrap_katie_chinese(
                 cue.chinese,
@@ -524,6 +537,30 @@ def _write_katie_lower_third_ass(
             raise ValueError(
                 f"Katie subtitle cue at {cue.start:.3f}s is missing a language."
             )
+        english_text = r"\N".join(
+            ass_escape(line) for line in english_lines
+        )
+        if word_timings is not None:
+            cue_word_timings = word_timings[cue_index]
+            word_offset = 0
+            highlighted_lines = []
+            for line in english_lines:
+                line_word_count = len(line.split())
+                highlighted = ass_highlighted_english_line(
+                    line,
+                    cue_word_timings[word_offset:word_offset + line_word_count],
+                    cue.start,
+                    english_font,
+                    ass_escape,
+                    reset_style=False,
+                )
+                if highlighted is None:
+                    raise RuntimeError("Word highlighting preflight was inconsistent.")
+                highlighted_lines.append(highlighted)
+                word_offset += line_word_count
+            if word_offset != len(cue_word_timings):
+                raise RuntimeError("Word highlighting preflight was inconsistent.")
+            english_text = r"\N".join(highlighted_lines)
         start = round(cue.start * 1000)
         end = round(cue.end * 1000)
         subtitles.events.append(
@@ -561,12 +598,13 @@ def _write_katie_lower_third_ass(
                 style="English",
                 text=(
                     f"{{\\rEnglish\\an2\\pos({text_x},{english_y})"
-                    f"\\fs{english_font}}}"
-                    + r"\N".join(ass_escape(line) for line in english_lines)
+                    f"\\fs{english_font}\\fscy100}}"
+                    + english_text
                 ),
             )
         )
     subtitles.save(str(path), format_="ass", encoding="utf-8")
+    return word_timings is not None
 
 
 def write_ass(
@@ -575,12 +613,49 @@ def write_ass(
     width: int,
     height: int,
     layout_profile: str = DEFAULT_SUBTITLE_LAYOUT,
-) -> None:
+    word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
+) -> bool:
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
-        _write_katie_lower_third_ass(path, cues, width, height)
-        return
-    if layout_profile != DEFAULT_SUBTITLE_LAYOUT:
+        _chinese_font, _english_font, _max_chinese, max_english = (
+            _katie_wrap_limits(width, height)
+        )
+        wrapped_lines = [
+            _wrap_katie_english(cue.english, max_english) for cue in cues
+        ]
+    elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
+        chinese_font = max(32, round(height * 0.052))
+        english_font = max(
+            34,
+            round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+        )
+        safe_width = round(width * 0.78)
+        max_english = max(
+            20,
+            int(safe_width / (english_font * 0.55)),
+        )
+        wrapped_lines = [
+            _wrap_english(cue.english, max_english) for cue in cues
+        ]
+    else:
         raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
+
+    if word_timings is not None and (
+        len(word_timings) != len(cues)
+        or any(
+            [word for line in lines for word in line.split()]
+            != [word.text for word in cue_words]
+            for lines, cue_words in zip(wrapped_lines, word_timings)
+        )
+    ):
+        word_timings = None
+    if layout_profile == KATIE_SUBTITLE_LAYOUT:
+        return _write_katie_lower_third_ass(
+            path,
+            cues,
+            width,
+            height,
+            word_timings,
+        )
 
     chinese_font = max(32, round(height * 0.052))
     english_font = max(
@@ -626,9 +701,30 @@ def write_ass(
         fontsize=english_font,
         primarycolor=pysubs2.Color(255, 255, 255),
     )
-    for cue in cues:
+    for cue_index, cue in enumerate(cues):
         chinese_lines = _wrap_chinese(cue.chinese, max_chinese_chars)
-        english_lines = _wrap_english(cue.english, max_english_chars)
+        english_lines = wrapped_lines[cue_index]
+        highlighted_english_lines = []
+        word_offset = 0
+        cue_word_timings = (
+            word_timings[cue_index] if word_timings is not None else None
+        )
+        if cue_word_timings is not None:
+            for line in english_lines:
+                line_word_count = len(line.split())
+                highlighted = ass_highlighted_english_line(
+                    line,
+                    cue_word_timings[word_offset:word_offset + line_word_count],
+                    cue.start,
+                    english_font,
+                    ass_escape,
+                )
+                if highlighted is None:
+                    raise RuntimeError("Word highlighting preflight was inconsistent.")
+                highlighted_english_lines.append(highlighted)
+                word_offset += line_word_count
+            if word_offset != len(cue_word_timings):
+                raise RuntimeError("Word highlighting preflight was inconsistent.")
         dialogue_lines = [
             *(
                 f"{{\\rChinese\\fs{chinese_font}\\1c&H004DD8FF&}}"
@@ -636,9 +732,13 @@ def write_ass(
                 for line in chinese_lines
             ),
             *(
-                f"{{\\rEnglish\\fs{english_font}\\1c&H00FFFFFF&}}"
-                f"{ass_escape(line)}"
-                for line in english_lines
+                highlighted_english_lines
+                if cue_word_timings is not None
+                else (
+                    f"{{\\rEnglish\\fs{english_font}\\1c&H00FFFFFF&}}"
+                    f"{ass_escape(line)}"
+                    for line in english_lines
+                )
             ),
         ]
         if not dialogue_lines:
@@ -652,6 +752,7 @@ def write_ass(
             )
         )
     subtitles.save(str(path), format_="ass", encoding="utf-8")
+    return word_timings is not None
 
 
 def verify_cues(
@@ -1064,6 +1165,19 @@ def main() -> None:
             "panel with larger Chinese above smaller English."
         ),
     )
+    parser.add_argument(
+        "--word-timings",
+        type=Path,
+        help=(
+            "Reviewed JSON word timings for the final bilingual cues; "
+            "invalid or unreviewed timings leave phrase captions unchanged."
+        ),
+    )
+    parser.add_argument(
+        "--disable-word-highlighting",
+        action="store_true",
+        help="Explicitly disable spoken-word highlighting.",
+    )
     args = parser.parse_args()
 
     asset_prefix = validate_asset_prefix(args.asset_prefix)
@@ -1230,6 +1344,14 @@ def main() -> None:
     if not cues:
         raise RuntimeError("Translation produced no Chinese subtitle cues.")
     cues = reflow_cues(cues)
+    if args.disable_word_highlighting:
+        word_timings = None
+        word_highlighting = disabled_word_highlighting_status()
+    else:
+        word_timings, word_highlighting = load_reviewed_word_timings(
+            args.word_timings,
+            cues,
+        )
 
     prefix = asset_prefix
     english_srt = output_dir / f"{prefix}.en.srt"
@@ -1243,7 +1365,7 @@ def main() -> None:
         tool="Python",
         version=platform.python_version(),
         details={"cue_count": len(cues)},
-    ):
+    ) as operation:
         english_srt.write_text(srt_text(cues, "en"), encoding="utf-8")
         chinese_srt.write_text(srt_text(cues, "zh"), encoding="utf-8")
         combined_srt = bilingual_srt_text(cues)
@@ -1252,13 +1374,23 @@ def main() -> None:
             vtt_from_bilingual_srt(combined_srt),
             encoding="utf-8",
         )
-        write_ass(
+        highlighting_applied = write_ass(
             ass_path,
             cues,
             width,
             height,
             layout_profile=args.subtitle_layout,
+            word_timings=word_timings,
         )
+        if (
+            word_highlighting["status"] == "enabled"
+            and not highlighting_applied
+        ):
+            word_highlighting = {
+                "status": "not_verified",
+                "reason": "word_highlighting_render_preflight_failed",
+            }
+        operation["details"]["word_highlighting"] = word_highlighting
 
     output_video = output_dir / f"{prefix}-bilingual.mp4"
     ffmpeg_version = run(["ffmpeg", "-version"], capture=True).splitlines()[0]
@@ -1267,7 +1399,11 @@ def main() -> None:
         asset_id=output_video.name,
         tool="ffmpeg",
         version=ffmpeg_version,
-        details={"source_asset": source.name, "resolution": f"{width}x{height}"},
+        details={
+            "source_asset": source.name,
+            "resolution": f"{width}x{height}",
+            "word_highlighting": word_highlighting,
+        },
     ):
         run([
             "ffmpeg", "-y", "-i", str(source),
@@ -1301,6 +1437,7 @@ def main() -> None:
         visual_review=visual_review,
         layout_profile=args.subtitle_layout,
     )
+    quality_checks["word_highlighting"] = word_highlighting
 
     manifest = {
         "source_video": source.name,
@@ -1339,6 +1476,11 @@ def main() -> None:
                 "authored with pysubs2 "
                 f"{package_version('pysubs2')} and burned with FFmpeg libass; "
                 "phrase-level timing; visual review remains required"
+                + (
+                    "; reviewed audio-derived spoken-word emphasis"
+                    if word_highlighting["status"] == "enabled"
+                    else ""
+                )
             )
             if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
             else (
@@ -1346,8 +1488,15 @@ def main() -> None:
                 "1.50x Chinese; authored with pysubs2 "
                 f"{package_version('pysubs2')} and burned with FFmpeg libass; "
                 "responsive phrase-level timing"
+                + (
+                    "; reviewed audio-derived spoken-word emphasis"
+                    if word_highlighting["status"] == "enabled"
+                    else ""
+                )
             )
         ),
+        "render": {"word_highlighting": word_highlighting},
+        "word_highlighting": word_highlighting,
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
         "operation_audit_file": "operation-audit.json",
