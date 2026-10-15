@@ -751,9 +751,12 @@ def verify_cues(
         "subtitle_readability": {
             "status": (
                 "manual_review_required"
-                if layout_profile == KATIE_SUBTITLE_LAYOUT
-                or english_rate_flags
+                if english_rate_flags
                 or chinese_rate_flags
+                or (
+                    layout_profile == KATIE_SUBTITLE_LAYOUT
+                    and visual.get("status") != "passed"
+                )
                 else "style_contract_passed"
             ),
             "layout_profile": layout_profile,
