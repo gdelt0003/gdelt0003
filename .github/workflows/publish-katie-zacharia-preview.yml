@@ -110,37 +110,21 @@ jobs:
           source_sha256="97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7"
           mkdir -p "$RUNNER_TEMP/katie-source" "$RUNNER_TEMP/katie-output"
 
-          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$source_tag" \
-            > "$RUNNER_TEMP/katie-source/release.json"
+          gh api "repos/$GITHUB_REPOSITORY/releases" --paginate \
+            > "$RUNNER_TEMP/katie-source/releases.json"
           gh api "repos/$GITHUB_REPOSITORY/releases/assets/$source_asset_id" \
             > "$RUNNER_TEMP/katie-source/asset.json"
-          python - "$RUNNER_TEMP/katie-source/release.json" \
+          python - "$RUNNER_TEMP/katie-source/releases.json" \
             "$RUNNER_TEMP/katie-source/asset.json" <<'PY'
           import json
           import sys
+          from scripts.publish_full_video_preview import validate_source_release
 
-          release_path, asset_path = sys.argv[1:]
-          release = json.load(open(release_path, encoding="utf-8"))
+          releases_path, asset_path = sys.argv[1:]
+          releases = json.load(open(releases_path, encoding="utf-8"))
           asset = json.load(open(asset_path, encoding="utf-8"))
-          if release.get("tag_name") != "g7we6gecwnc-source-intake-20261015":
-              raise SystemExit("Source release tag mismatch.")
-          if release.get("draft") is not True:
-              raise SystemExit("Source intake release must remain a draft.")
-          expected = {
-              "id": 642103215,
-              "name": "katie-zacharia-g7we6gecwnc-source.mp4",
-              "size": 313019832,
-              "digest": "sha256:97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7",
-              "state": "uploaded",
-          }
-          for key, value in expected.items():
-              if asset.get(key) != value:
-                  raise SystemExit(
-                      f"Source asset {key} mismatch: expected {value!r}, "
-                      f"got {asset.get(key)!r}"
-                  )
-          if not any(item.get("id") == expected["id"] for item in release.get("assets", [])):
-              raise SystemExit("Pinned source asset is not attached to the draft release.")
+          release = validate_source_release(releases, asset)
+          print(f"Verified draft release {release['id']} and pinned asset {asset['id']}.")
           PY
 
           download_started_at="$(python -c 'from datetime import datetime, timezone; print(datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"))')"
@@ -189,6 +173,7 @@ jobs:
           )
           record = {
               "release_tag": "g7we6gecwnc-source-intake-20261015",
+              "release_id": 413291052,
               "release_is_draft": True,
               "asset_id": "642103215",
               "asset_name": "katie-zacharia-g7we6gecwnc-source.mp4",

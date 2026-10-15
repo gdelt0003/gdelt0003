@@ -9,6 +9,7 @@ from scripts.publish_full_video_preview import (
     RIGHTS_EVIDENCE_URL,
     SOURCE_ASSET_ID,
     SOURCE_ASSET_NAME,
+    SOURCE_RELEASE_ID,
     SOURCE_SHA256,
     SOURCE_SIZE_BYTES,
     SOURCE_URL,
@@ -16,6 +17,7 @@ from scripts.publish_full_video_preview import (
     publish_catalog_entry,
     record_provenance,
     validate_source_verification,
+    validate_source_release,
 )
 from scripts.verify_operation_audit import validate_operation_audit
 
@@ -36,6 +38,7 @@ class KatieZachariaPreviewTests(unittest.TestCase):
     def source_verification(self, **overrides):
         record = {
             "release_tag": "g7we6gecwnc-source-intake-20261015",
+            "release_id": SOURCE_RELEASE_ID,
             "release_is_draft": True,
             "asset_id": SOURCE_ASSET_ID,
             "asset_name": SOURCE_ASSET_NAME,
@@ -64,6 +67,43 @@ class KatieZachariaPreviewTests(unittest.TestCase):
     def test_source_validation_rejects_wrong_asset_hash(self):
         with self.assertRaisesRegex(ValueError, "sha256 mismatch"):
             validate_source_verification(self.source_verification(sha256="0" * 64))
+
+    def test_resolves_draft_release_from_listing_and_checks_pinned_asset(self):
+        release = {
+            "id": SOURCE_RELEASE_ID,
+            "tag_name": "g7we6gecwnc-source-intake-20261015",
+            "draft": True,
+            "assets": [{"id": 642103215}],
+        }
+        asset = {
+            "id": 642103215,
+            "name": SOURCE_ASSET_NAME,
+            "size": SOURCE_SIZE_BYTES,
+            "digest": f"sha256:{SOURCE_SHA256}",
+            "state": "uploaded",
+        }
+
+        self.assertIs(validate_source_release([release], asset), release)
+
+    def test_release_list_validation_rejects_missing_asset_or_wrong_release(self):
+        release = {
+            "id": SOURCE_RELEASE_ID,
+            "tag_name": "g7we6gecwnc-source-intake-20261015",
+            "draft": True,
+            "assets": [],
+        }
+        asset = {
+            "id": 642103215,
+            "name": SOURCE_ASSET_NAME,
+            "size": SOURCE_SIZE_BYTES,
+            "digest": f"sha256:{SOURCE_SHA256}",
+            "state": "uploaded",
+        }
+
+        with self.assertRaisesRegex(ValueError, "not attached"):
+            validate_source_release([release], asset)
+        with self.assertRaisesRegex(ValueError, "not found in the release list"):
+            validate_source_release([], asset)
 
     def test_records_exact_source_provenance_and_unverified_status(self):
         manifest = self.write_json(
@@ -167,7 +207,12 @@ class KatieZachariaPreviewTests(unittest.TestCase):
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("default: false", workflow)
         self.assertIn("runs-on: ubuntu-latest", workflow)
+        self.assertIn("contents: write", workflow)
         self.assertIn("642103215", workflow)
+        self.assertIn('releases" --paginate', workflow)
+        self.assertNotIn("releases/tags/", workflow)
+        self.assertIn("releases/assets/$source_asset_id", workflow)
+        self.assertIn("Authorization: Bearer $GH_TOKEN", workflow)
         self.assertIn(SOURCE_SHA256, workflow)
         self.assertIn("same_event_source_confirmed", workflow)
         self.assertIn("reuse_rights_confirmed", workflow)

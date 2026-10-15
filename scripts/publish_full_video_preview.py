@@ -23,6 +23,7 @@ SOURCE_ASSET_ID = "642103215"
 SOURCE_ASSET_NAME = "katie-zacharia-g7we6gecwnc-source.mp4"
 SOURCE_SIZE_BYTES = 313019832
 SOURCE_SHA256 = "97cbe4cf18e6fb2ab9e79acc21a7b8ebd9856099530fcc8e11ba1d61285e47f7"
+SOURCE_RELEASE_ID = 413291052
 ASSET_PREFIX = "katie-zacharia-g7we6gecwnc"
 ASR_MODEL = "large-v3-turbo"
 TRANSLATION_MODEL = "facebook/m2m100_1.2B"
@@ -48,9 +49,43 @@ def write_json(path: Path, value: dict) -> None:
     temporary_path.replace(path)
 
 
+def validate_source_release(releases: list[dict], asset: dict) -> dict:
+    """Resolve the pinned draft release from the releases list and verify its asset."""
+    release = next(
+        (
+            item
+            for item in releases
+            if item.get("id") == SOURCE_RELEASE_ID
+            and item.get("tag_name") == "g7we6gecwnc-source-intake-20261015"
+        ),
+        None,
+    )
+    if release is None:
+        raise ValueError("Pinned draft source release was not found in the release list.")
+    if release.get("draft") is not True:
+        raise ValueError("Source intake release must remain a draft.")
+    expected = {
+        "id": 642103215,
+        "name": SOURCE_ASSET_NAME,
+        "size": SOURCE_SIZE_BYTES,
+        "digest": f"sha256:{SOURCE_SHA256}",
+        "state": "uploaded",
+    }
+    for key, value in expected.items():
+        if asset.get(key) != value:
+            raise ValueError(
+                f"Source asset {key} mismatch: expected {value!r}, "
+                f"got {asset.get(key)!r}"
+            )
+    if not any(item.get("id") == expected["id"] for item in release.get("assets", [])):
+        raise ValueError("Pinned source asset is not attached to the draft release.")
+    return release
+
+
 def validate_source_verification(source: dict) -> None:
     expected = {
         "release_tag": "g7we6gecwnc-source-intake-20261015",
+        "release_id": SOURCE_RELEASE_ID,
         "release_is_draft": True,
         "asset_id": SOURCE_ASSET_ID,
         "asset_name": SOURCE_ASSET_NAME,
@@ -142,6 +177,7 @@ def record_provenance(
         "error": None,
         "details": {
             "release_tag": source["release_tag"],
+            "release_id": source["release_id"],
             "release_is_draft": source["release_is_draft"],
             "asset_name": SOURCE_ASSET_NAME,
             "input_size_bytes": SOURCE_SIZE_BYTES,
