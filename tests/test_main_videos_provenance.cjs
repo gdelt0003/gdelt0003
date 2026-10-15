@@ -89,6 +89,12 @@ async function main() {
     5,
     'include the attributable social reaction leads without claiming independent verification',
   );
+  assert.ok(
+    katie.provenance.sources
+      .filter((source) => (source.category || context.MainVideoRanking.inferCategory(source)) === 'social')
+      .every((source) => source.publish_date === null),
+    'social attribution leads keep publish_date null unless the post timestamp is directly verified',
+  );
   assert.equal(katie.provenance.sources.filter((source) => source.event_anchor).length, 1);
   assert.equal(katie.provenance.sources.find((source) => source.event_anchor).publisher, 'The White House');
   assert.ok(
