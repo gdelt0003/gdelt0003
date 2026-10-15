@@ -64,15 +64,20 @@ async function main() {
   const sourcesWrap = firstContent.children.find((n) => n.className === 'main-video-sources');
   assert.ok(sourcesWrap, 'provenance sources panel rendered');
 
-  // verify top-10 cap
-  assert.ok(sourcesWrap.children.length <= 10, 'top-10 cap enforced');
+  // verify top-10 cap (count only .main-video-source children; heading is excluded)
+  const sourceCards = sourcesWrap.children.filter((c) => c.className === 'main-video-source');
+  assert.ok(sourceCards.length <= 10, `top-10 cap enforced (found ${sourceCards.length})`);
 
-  // ensure Roll Call transcript is not present as a video source
-  const rollcall = sourcesWrap.children.find((c) => c.textContent && c.textContent.includes('Roll Call'));
+  // ensure Roll Call transcript is not present as a video source (search only in source cards)
+  const rollcall = sourceCards.find((c) => c.textContent && c.textContent.includes('Roll Call'));
   assert.equal(rollcall, undefined, 'Roll Call transcript should not be present as a source video');
 
   // check for source trust note text in at least one source (whitehouse entry)
-  const trustNoteFound = sourcesWrap.children.some((c) => c.textContent && c.textContent.includes('未评分（评分口径未提供）'));
+  // search child nodes for the trust note text (test harness elements keep textContent on leaf nodes)
+  const trustNoteFound = sourceCards.some((card) => (
+    (card.textContent && card.textContent.includes('未评分（评分口径未提供）')) ||
+    card.children.some((child) => (child.textContent || '').includes('未评分（评分口径未提供）'))
+  ));
   assert.ok(trustNoteFound, 'source trust note should appear when present');
 }
 
