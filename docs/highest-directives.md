@@ -125,3 +125,9 @@ V0.03 要求单个 `oW-PQlgw1wo` 实例完成云端 ASR/翻译/刻录、逐操�
 - 文档 PR #8 曾关闭且未合并；本记录只描述当时状态，不把关闭的 PR 写成已合入。PR #4 已合入，但 V0.03 gate 仍未通过。
 
 V0.03 目前执行路径已跑到部署，但验收未通过。具体逐项清单见 [`full-video-verification-checklist.md`](full-video-verification-checklist.md)；不得把部署成功表述为质量验收通过。
+
+## PVX 字幕比较页状态（2026-10-15）
+
+PVX 页面只提供一份明确标为未核验的 SmartSub 3.9.0 公开机器生成草稿；源音/ASR、翻译、阅读速度和完整画面复核均未验证，草稿不代表质量验收通过。SmartSub 是实际视频处理与渲染工具；Copilot coding-agent 贡献的是仓库工程，不是视频渲染。
+
+页面分列五条媒体路线：SmartSub 预览、未运行的 Copilot/GPT-6 媒体处理、未运行的 VideoCaptioner 日语路径、未运行的 ytb2bili workflow，以及已观察但没有证据处理该媒体的 Microsoft Frontier agent route。性能比较保持 `measured: false`；未运行路线没有 PVX 成绩，未知值不得补估。VideoCaptioner 的上游许可证标为已核实的 GPL-3.0；ytb2bili 不标许可证，因为其许可证文件无法核实。仅链接上游来源，不复制代码。本次不处理视频、不下载素材、不抽帧、不发布或部署 Pages；首页主视频目录保持原样，包括 Katie PR #29 条目。
