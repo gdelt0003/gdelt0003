@@ -37,6 +37,8 @@ function pathwayStatus(status) {
     caption_artifacts_reused_unverified: '复用既有字幕 · 未在本次重跑',
     proposed_not_runner_validated: '提案中 · 未合并/未完成 hosted-runner 验证',
     research_only_not_run: '研究候选 · 未运行',
+    blocked_not_run: '受阻 · 未运行',
+    observed_no_media_evidence: '观察到路线 · 无处理该媒体的证据',
     implemented_and_deployed: '工程实现已合并并部署',
   };
   return labels[status] || '状态未记录';
@@ -49,9 +51,13 @@ function renderPathway(pathway) {
 
   const type = document.createElement('p');
   type.className = 'eyebrow';
-  type.textContent = pathway.kind === 'copilot_engineering'
-    ? 'MICROSOFT / GITHUB COPILOT · ENGINEERING'
-    : 'OPEN-SOURCE MEDIA TOOL / MODEL';
+  const kinds = {
+    copilot_engineering: 'MICROSOFT / GITHUB COPILOT · REPOSITORY ENGINEERING',
+    microsoft_media: 'MICROSOFT · MEDIA PROCESSING',
+    microsoft_frontier: 'MICROSOFT FRONTIER · OBSERVED ROUTE',
+    open_source_media: 'OPEN-SOURCE MEDIA TOOL',
+  };
+  type.textContent = kinds[pathway.kind] || 'MEDIA ROUTE';
   card.append(type);
 
   const title = document.createElement('h3');
@@ -72,6 +78,18 @@ function renderPathway(pathway) {
     commit.className = 'meta pathway-commit';
     commit.textContent = `固定上游 commit：${pathway.source_commit}`;
     card.append(commit);
+  }
+
+  if (pathway.license_label) {
+    const license = document.createElement('p');
+    license.className = 'meta pathway-license';
+    license.textContent = `上游仓库许可证：${pathway.license_label}`;
+    card.append(license);
+  } else if (pathway.license_note) {
+    const license = document.createElement('p');
+    license.className = 'meta pathway-license';
+    license.textContent = pathway.license_note;
+    card.append(license);
   }
 
   if (safeHttpUrl(pathway.video_url)) {
@@ -96,6 +114,8 @@ function renderPathway(pathway) {
   appendLink(links, '实际运行记录', pathway.workflow_url);
   appendLink(links, '相关 PR / 证据', pathway.evidence_url);
   appendLink(links, 'Pages 部署运行', pathway.deployment_url);
+  appendLink(links, '上游来源说明', pathway.source_hub_url);
+  appendLink(links, '许可证来源', pathway.license_url);
   for (const deliverable of pathway.deliverables || []) {
     appendLink(links, deliverable.label, deliverable.url);
   }
@@ -107,28 +127,28 @@ function renderComparisonRows() {
   const rows = [
     [
       '工作类型',
-      '媒体处理：识别/翻译输入、字幕排版、硬字幕渲染',
-      '仓库工程：runner 集成、来源/产物登记、测试与 Pages 部署',
+      '五条媒体路线；仅 SmartSub 3.9.0 有本事件的公开草稿预览',
+      'Copilot coding-agent：仓库工程、runner 集成、测试与 Pages 发布',
     ],
     [
-      '已交付证据',
-      'SmartSub run 与公开预览；字幕来源及质量状态随路线卡列明',
-      'PR #21、#23、#25 与成功的 Pages deployment run',
+      '媒体处理工具',
+      'SmartSub 3.9.0 实际处理/渲染视频；字幕模型与 renderer 分开归属',
+      'coding-agent 未渲染此视频',
     ],
     [
-      '开源代码归属',
-      '上游工具保留仓库、固定版本与来源链接；不把上游源码称为本仓库原创',
-      '本仓库的编排、适配和页面更改按项目提交记录归属',
+      '未运行路线',
+      'Copilot/GPT-6、VideoCaptioner、ytb2bili、Frontier 状态逐卡披露',
+      '未运行或无媒体处理证据不构成质量结果',
     ],
     [
-      '质量分数',
-      '当前预览未完成人工核验；没有同任务的多路盲测分数',
-      'Coding-agent 工程交付不是 ASR/翻译模型结果，不能套用媒体质量分数',
+      '质量与性能',
+      '源音/ASR、翻译、阅读速度和完整画面未验证；比较未测量',
+      '未提供或未知的耗时、分数及指标保持未知',
     ],
     [
-      'GPT-6 归属',
-      '媒体 provenance 记录 SmartSub 与字幕模型；未将成片标记为 GPT-6 输出',
-      'Copilot 会话模型未写入该媒体 provenance；不据此否认 agent 可调用 GPT-6',
+      '工程交付证据',
+      'SmartSub 上游依赖保持来源归属；不复制或冒领上游代码',
+      'PR #21、#23、#25 与既有 Pages 部署证据',
     ],
   ];
 

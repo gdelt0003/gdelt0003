@@ -21,7 +21,7 @@
       "kind": "open_source_media",
       "label": "buxuku/SmartSub 3.9.0",
       "status": "executed_unverified",
-      "summary": "已在 GitHub-hosted runner 执行硬字幕渲染，产出 1920x1080 草稿。SmartSub 是上游开源渲染器；本仓库以固定版本依赖并明确归属，不把它的源码或模型结果称为 Copilot/GPT-6 产出。",
+      "summary": "本事件唯一已实际执行的视频处理工具：SmartSub 3.9.0 在 GitHub-hosted runner 硬字幕渲染并生成公开草稿。该 run 复用了既有字幕文件，没有重跑 ASR 或翻译；源音/ASR、翻译、阅读速度及全帧画面均未经核验，不能视作质量通过。",
       "repository_url": "https://github.com/buxuku/SmartSub",
       "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
       "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
@@ -29,37 +29,46 @@
       "workflow_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544"
     },
     {
-      "id": "caption-models",
-      "kind": "open_source_media",
-      "label": "faster-whisper large-v3-turbo + M2M100 1.2B",
-      "status": "caption_artifacts_reused_unverified",
-      "summary": "该 run 复用了既有的英/中字幕文件，没有在 SmartSub 渲染 run 中重新运行 ASR 或翻译。源音准确性、专名/数字/否定和翻译质量仍未核验，因此不报告比较分数。",
-      "repository_url": "https://github.com/SYSTRAN/faster-whisper",
-      "translation_source_url": "https://huggingface.co/facebook/m2m100_1.2B",
-      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544"
+      "id": "copilot-gpt6-media",
+      "kind": "microsoft_media",
+      "label": "Microsoft Copilot / GPT-6 media processing",
+      "status": "blocked_not_run",
+      "summary": "没有证据表明 Copilot/GPT-6 对本事件媒体执行过处理；该媒体处理路线受阻且未运行，也没有可比较的产物或性能数据。"
     },
     {
-      "id": "autosubs",
+      "id": "videocaptioner-ja",
       "kind": "open_source_media",
-      "label": "AutoSubs 说话人分色候选",
-      "status": "proposed_not_runner_validated",
-      "summary": "独立分支上的可选云端集成提案；PR 尚未合并，未在 hosted runner 完成真实模型/媒体验证，也没有与 SmartSub 的同输入质量对比。",
-      "repository_url": "https://github.com/tmoroney/auto-subs",
-      "evidence_url": "https://github.com/gdelt0003/gdelt0003/pull/24"
-    },
-    {
-      "id": "whisperx",
-      "kind": "open_source_media",
-      "label": "WhisperX 对齐候选",
+      "label": "VideoCaptioner · 日本語字幕ルート",
       "status": "research_only_not_run",
-      "summary": "候选开源对齐工具；本仓库当前没有可验证的 WhisperX 输出或同源运行记录，不作为已完成结果。",
-      "repository_url": "https://github.com/m-bain/whisperX"
+      "summary": "上游 README 展示可用 --target-language ja 的处理命令；该路径未用于本事件，没有 PVX 输出、运行记录或性能数据。本仓库仅链接上游，不复制其代码。",
+      "repository_url": "https://github.com/WEIFENG2333/VideoCaptioner",
+      "source_hub_url": "https://github.com/WEIFENG2333/VideoCaptioner#readme",
+      "license_label": "GPL-3.0",
+      "license_url": "https://github.com/WEIFENG2333/VideoCaptioner/blob/master/LICENSE"
+    },
+    {
+      "id": "ytb2bili",
+      "kind": "open_source_media",
+      "label": "ytb2bili · YouTube-to-Bilibili workflow",
+      "status": "research_only_not_run",
+      "summary": "上游介绍完整下载、转录、翻译及发布工作流；本事件未运行该流程，没有 PVX 输出或性能数据。README 提到 MIT，但仓库许可证文件当前不可核实，因此此处不标许可证。",
+      "repository_url": "https://github.com/difyz9/ytb2bili",
+      "source_hub_url": "https://github.com/difyz9/ytb2bili#readme",
+      "license_note": "许可证未确认；不标注许可证标签。"
+    },
+    {
+      "id": "microsoft-frontier",
+      "kind": "microsoft_frontier",
+      "label": "Microsoft Frontier agent route",
+      "status": "observed_no_media_evidence",
+      "summary": "曾观察到该 agent 路线；没有证据表明它处理过本事件媒体，也没有可验证的 PVX 产物或性能数据。"
     }
   ],
   "copilot_engineering": {
+    "kind": "copilot_engineering",
     "label": "Microsoft / GitHub Copilot coding-agent 协作路线",
     "status": "implemented_and_deployed",
-    "summary": "Copilot coding-agent 会话在本仓库实现并交付 SmartSub runner 路径修复、仅串行化 Pages 部署的并发策略、预览元数据及站点发布测试。该项是工程实现与自动化成果，不等同于视频由 GPT-6 生成；agent 会话具体模型未记入此次媒体产物 provenance。",
+    "summary": "Copilot coding-agent 贡献的是本仓库工程：SmartSub runner 路径修复、Pages 部署并发策略、预览元数据、测试及站点发布集成。它不是本事件的视频处理或渲染工具；媒体由 SmartSub 3.9.0 渲染。",
     "deliverables": [
       {
         "label": "SmartSub launcher 固定路径修复",
@@ -90,6 +99,8 @@
     "review_status": {
       "source_audio_and_asr_accuracy": "not_verified",
       "translation_accuracy": "not_verified",
+      "reading_speed": "not_verified",
+      "full_frame_visual_review": "not_verified",
       "clean_frame_and_style_review": "not_verified",
       "release_gate": "blocked"
     },
@@ -195,6 +206,8 @@
       "quality_checks": {
         "source_audio_and_asr_accuracy": "not_verified",
         "translation_accuracy": "not_verified",
+        "reading_speed": "not_verified",
+        "full_frame_visual_review": "not_verified",
         "clean_frame_and_style_review": "not_verified",
         "release_gate": "blocked"
       },

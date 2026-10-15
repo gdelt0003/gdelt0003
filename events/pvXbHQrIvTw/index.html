@@ -22,31 +22,31 @@
         <p class="eyebrow">SINGLE-EVENT · BILINGUAL SUBTITLE COMPARISON</p>
         <h1 id="event-title">双语字幕方案对照</h1>
         <p id="event-subtitle" class="subtitle">正在读取事件清单…</p>
-        <p class="meta" id="event-notice">页面只呈现真实生成并登记的文件。空白指标不会用估计值填充；模型生成不代表字幕质量已通过人工验收。</p>
+        <p class="meta" id="event-notice">SmartSub 3.9.0 是本次实际视频处理与渲染工具；Copilot coding-agent 仅贡献仓库工程，不负责渲染。空白指标不会用估计值填充。</p>
         <p><a id="source-link" href="https://www.youtube.com/watch?v=pvXbHQrIvTw" rel="noreferrer" target="_blank">查看来源视频页面</a></p>
       </header>
       <section class="panel preview-warning" aria-labelledby="preview-warning-title">
         <p class="eyebrow">UNVERIFIED DRAFT PREVIEW · NOT FINAL</p>
         <h2 id="preview-warning-title">AI 生成草稿，未经人工核验</h2>
-        <p>本页提供机器生成的视频与字幕草稿预览链接，仅供审阅，不代表成片已通过质量验收。自动语音识别（ASR）和机器翻译（MT）不得视为准确、最终或经人工审校的内容。</p>
+        <p>本页只提供一份明确标为未核验的 SmartSub 3.9.0 机器生成公开草稿预览，仅供审阅；这不是质量通过或正式成片。源音/ASR、翻译准确性、阅读速度和全帧视觉审查均未验证。</p>
         <ul>
           <li>内部检查记录了疑似 ASR 错误示例 “Hormone Strait” 和 “sharing intel with his brain”；均未依据源音校正或确认。</li>
-          <li>58 条英文字幕超过 20 字符/秒，6 条中文字幕超过 10 字符/秒；这些阅读速度问题尚未修正。</li>
+          <li>既有自动检查记录了 58 条英文字幕超过 20 字符/秒、6 条中文字幕超过 10 字符/秒；阅读速度未经人工核验，问题尚未修正。</li>
           <li>此前版本仅抽查 65 帧中的 5 帧，样本里中文看起来大于英文；本次草稿按 1.50 倍名义字号重排，但尚未完成人工全帧、下三分之一字幕条或关键画面遮挡检查。</li>
-          <li>源音/ASR 准确性、翻译准确性和完整画面/样式审核均未验证；没有十模型比较或独立评审结果。</li>
+          <li>源音/ASR、翻译、阅读速度和完整画面/样式审核均未验证；没有十模型比较或独立评审结果。</li>
         </ul>
         <p><strong id="pvX-media-status">发布状态：正在读取预览清单。</strong>本页的任何机器生成预览都不代表成片已获准确性、清晰度或字幕样式验收。</p>
       </section>
       <section class="panel pathway-comparison" id="pathways" aria-labelledby="pathways-title">
         <p class="eyebrow">OPEN SOURCE MEDIA ROUTES × COPILOT ENGINEERING</p>
         <h2 id="pathways-title">多开源工具与微软/Copilot 路线：归属、结果与证据</h2>
-        <p class="meta">这里比较的是各路线实际承担的任务和可查证交付，不把代码代理与媒体模型混作同类模型，也不依据未运行候选虚构质量胜负。视频由上游开源 SmartSub 渲染；Copilot coding-agent 的成果是本仓库专有的编排、校验、测试和发布集成。</p>
+        <p class="meta">五条媒体路线分别标明已运行、未运行或缺乏处理证据；未运行路线没有 PVX 结果或性能数据。SmartSub 3.9.0 是本次实际视频处理/硬字幕渲染工具；Microsoft/GitHub Copilot coding-agent 的成果仅为本仓库编排、校验、测试和发布集成，不是视频渲染。</p>
         <div class="pathway-grid" id="pathwayGrid" aria-live="polite"></div>
       </section>
       <section class="panel comparison-metrics" id="comparison" aria-labelledby="comparison-title">
         <p class="eyebrow">COMPARABILITY CHECK</p>
         <h2 id="comparison-title">哪些结果可以公平比较</h2>
-        <p class="meta">本次已发布视频的逐项模型选择来自其运行清单；Copilot coding-agent 的工作属于仓库工程交付。角色不同，所以不报告“微软模型胜过开源模型”的质量分数。未来如要做模型质量对比，须同输入、同任务、相同字幕版式，并有可复核的人类参考与盲审。</p>
+        <p class="meta">当前比较未测量；没有同输入、同任务、同字幕版式与人工参考的公平质量对比。未运行或未知的耗时、质量分数和其他性能指标保持未知，不报告虚构胜负。</p>
         <div class="comparison-table-wrap">
           <table>
             <thead>
@@ -56,8 +56,8 @@
           </table>
         </div>
       </section>
-      <p class="meta comparison-footnote">SmartSub、faster-whisper、M2M100、AutoSubs 和 WhisperX 等开源组件/候选保留各自上游归属；本仓库不 vendoring 或冒领其实现。声音保持源录音；此公开预览未经人工核验，不是最终发布版本。</p>
+      <p class="meta comparison-footnote">SmartSub、faster-whisper、M2M100 及本页提及的开源项目均保留各自上游归属；本仓库不复制或冒领其实现。声音保持源录音；公开预览未经人工核验，不是质量通过或最终发布版本。</p>
     </main>
-    <script src="../../assets/comparison.js?v=pathways-1"></script>
+    <script src="../../assets/comparison.js?v=pathways-2"></script>
   </body>
 </html>

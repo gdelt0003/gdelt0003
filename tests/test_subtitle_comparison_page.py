@@ -41,14 +41,38 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         pathways = {pathway["id"]: pathway for pathway in manifest["pathways"]}
         self.assertEqual(
             set(pathways),
-            {"smartsub-render", "caption-models", "autosubs", "whisperx"},
+            {
+                "smartsub-render",
+                "copilot-gpt6-media",
+                "videocaptioner-ja",
+                "ytb2bili",
+                "microsoft-frontier",
+            },
         )
         self.assertEqual(pathways["smartsub-render"]["status"], "executed_unverified")
+        self.assertEqual(pathways["copilot-gpt6-media"]["status"], "blocked_not_run")
         self.assertEqual(
-            pathways["autosubs"]["status"],
-            "proposed_not_runner_validated",
+            pathways["videocaptioner-ja"]["status"],
+            "research_only_not_run",
         )
-        self.assertEqual(pathways["whisperx"]["status"], "research_only_not_run")
+        self.assertEqual(pathways["videocaptioner-ja"]["license_label"], "GPL-3.0")
+        self.assertEqual(
+            pathways["videocaptioner-ja"]["license_url"],
+            "https://github.com/WEIFENG2333/VideoCaptioner/blob/master/LICENSE",
+        )
+        self.assertNotIn("license_label", pathways["ytb2bili"])
+        self.assertEqual(
+            pathways["ytb2bili"]["source_hub_url"],
+            "https://github.com/difyz9/ytb2bili#readme",
+        )
+        self.assertNotIn("metrics", pathways["copilot-gpt6-media"])
+        self.assertNotIn("metrics", pathways["videocaptioner-ja"])
+        self.assertNotIn("metrics", pathways["ytb2bili"])
+        self.assertNotIn("metrics", pathways["microsoft-frontier"])
+        self.assertEqual(
+            pathways["microsoft-frontier"]["status"],
+            "observed_no_media_evidence",
+        )
         self.assertEqual(
             manifest["copilot_engineering"]["status"],
             "implemented_and_deployed",
@@ -58,14 +82,30 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         self.assertEqual(manifest["event"]["video_id"], "pvXbHQrIvTw")
         self.assertEqual(manifest["event"]["local_file_size_bytes"], 262338614)
         self.assertFalse(manifest["comparison_metrics"]["same_input_verified"])
+        self.assertEqual(
+            manifest["smartsub_preview"]["review_status"]["source_audio_and_asr_accuracy"],
+            "not_verified",
+        )
+        self.assertEqual(
+            manifest["smartsub_preview"]["review_status"]["reading_speed"],
+            "not_verified",
+        )
+        self.assertEqual(
+            manifest["smartsub_preview"]["review_status"]["full_frame_visual_review"],
+            "not_verified",
+        )
 
     def test_page_does_not_advertise_missing_video_or_subtitles_as_available(self):
         page = PAGE.read_text(encoding="utf-8")
         script = SCRIPT.read_text(encoding="utf-8")
 
         self.assertIn("Copilot coding-agent", page)
-        self.assertIn("不把代码代理与媒体模型混作同类模型", page)
-        self.assertIn("proposed_not_runner_validated", json.loads(MANIFEST.read_text(encoding="utf-8"))["pathways"][2]["status"])
+        self.assertIn("Copilot coding-agent 的成果仅为本仓库编排", page)
+        self.assertIn("不是视频渲染", page)
+        self.assertEqual(
+            json.loads(MANIFEST.read_text(encoding="utf-8"))["pathways"][2]["status"],
+            "research_only_not_run",
+        )
         self.assertIn("GPT-6", script)
         self.assertIn("pvXbHQrIvTw", page)
 
@@ -75,6 +115,8 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
         self.assertIn("AI 生成草稿，未经人工核验", page)
+        self.assertIn("阅读速度和全帧视觉审查均未验证", page)
+        self.assertIn("这不是质量通过", page)
         self.assertIn("Hormone Strait", page)
         self.assertIn("sharing intel with his brain", page)
         self.assertIn("58 条英文字幕", page)
@@ -105,6 +147,10 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         catalog = json.loads(
             (ROOT / "outputs" / "main-videos.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            catalog["videos"][0]["id"],
+            "katie-zacharia-2026-10-13-preview-38661270142",
         )
         preview = next(
             video

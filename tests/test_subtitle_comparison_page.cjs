@@ -65,8 +65,23 @@ test('comparison page separates open-source media routes from Copilot engineerin
   assert.match(pathways[0].children[2].textContent, /已运行 · 草稿未通过人工核验/);
   assert.equal(pathways[0].children.some((node) => node.tagName === 'video'), true);
   assert.equal(pathways[0].children.find((node) => node.tagName === 'video').src, manifest.smartsub_preview.video_url);
+  assert.match(pathways[1].children[2].textContent, /受阻 · 未运行/);
+  assert.equal(pathways[2].children.some((node) => node.textContent === '上游仓库许可证：GPL-3.0'), true);
+  assert.equal(
+    pathways[2].children.some((node) => node.children.some((child) => child.href === manifest.pathways[2].license_url)),
+    true,
+  );
+  assert.match(pathways[3].children[2].textContent, /研究候选 · 未运行/);
+  assert.equal(pathways[3].children.some((node) => /许可证未确认/.test(node.textContent)), true);
+  assert.equal(
+    pathways[3].children.some((node) => node.children.some((child) => child.href === manifest.pathways[3].source_hub_url)),
+    true,
+  );
+  assert.match(pathways[4].children[2].textContent, /无处理该媒体的证据/);
   assert.equal(pathways.at(-1).dataset.kind, 'copilot_engineering');
+  assert.match(pathways.at(-1).children[0].textContent, /REPOSITORY ENGINEERING/);
   assert.match(pathways.at(-1).children[1].textContent, /Copilot coding-agent/);
   assert.equal(elements.get('comparisonRows').children.length, 5);
-  assert.match(elements.get('comparisonRows').children.at(-1).children[2].textContent, /不据此否认 agent 可调用 GPT-6/);
+  assert.match(elements.get('comparisonRows').children[1].children[1].textContent, /SmartSub 3\.9\.0/);
+  assert.match(elements.get('comparisonRows').children[1].children[2].textContent, /coding-agent 未渲染此视频/);
 });
