@@ -207,10 +207,10 @@ def release_blockers(
     if readability.get("status") != "style_contract_passed":
         blockers.append("subtitle readability checks have not passed")
     if readability.get("layout_profile") == "katie-fixed-lower-third-zh-first":
-        ratio = readability.get("chinese_to_english_size_ratio")
+        ratio = readability.get("english_to_chinese_size_ratio")
         if not isinstance(ratio, (int, float)) or ratio < 1.2:
             blockers.append(
-                "Chinese subtitle font is less than 1.20x English font "
+                "English subtitle font is less than 1.20x Chinese font "
                 "for the Katie layout"
             )
     else:

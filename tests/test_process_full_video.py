@@ -151,6 +151,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
             [0, 1, 1, 0, 1, 1],
         )
         self.assertIn(r"\p1", rendered.events[0].text)
+        self.assertIn(r"\1a&H00&", rendered.events[0].text)
         self.assertEqual(rendered.events[0].text, rendered.events[3].text)
         self.assertIn(r"\pos(106,827)", rendered.events[0].text)
         self.assertIn("l 1709 0 l 1709 221", rendered.events[0].text)
@@ -162,9 +163,9 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertIn(r"\pos(960,1035)", rendered.events[5].text)
         self.assertNotIn(r"\N", rendered.events[2].text)
         self.assertIn(r"\N", rendered.events[5].text)
-        self.assertGreater(
-            rendered.styles["Chinese"].fontsize,
+        self.assertGreaterEqual(
             rendered.styles["English"].fontsize,
+            round(rendered.styles["Chinese"].fontsize * 1.20),
         )
 
     def test_katie_fixed_layout_preserves_panel_while_highlighting_words(self):
@@ -440,9 +441,13 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(readability["status"], "manual_review_required")
         self.assertEqual(readability["visual_frame_review"], "not_verified")
         self.assertEqual(readability["line_order"], ["zh-Hans", "en"])
+        self.assertGreaterEqual(
+            readability["english_to_chinese_size_ratio"],
+            1.20,
+        )
         self.assertAlmostEqual(
-            readability["chinese_to_english_size_ratio"],
-            38 / 30,
+            readability["english_to_chinese_size_ratio"],
+            1.26,
             places=2,
         )
 

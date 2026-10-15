@@ -48,6 +48,7 @@ MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
 CAPTION_LOWER_MARGIN_PERCENT = 18
 ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
+KATIE_ENGLISH_TO_CHINESE_FONT_RATIO = 1.25
 DEFAULT_SUBTITLE_LAYOUT = "default"
 KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
 
@@ -394,7 +395,10 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
 
 def _katie_wrap_limits(width: int, height: int) -> tuple[int, int, int, int]:
     chinese_font = max(18, round(height * 0.035))
-    english_font = max(16, round(chinese_font * 0.80))
+    english_font = max(
+        20,
+        round(chinese_font * KATIE_ENGLISH_TO_CHINESE_FONT_RATIO),
+    )
     safe_width = round(width * 0.82)
     max_chinese_chars = max(8, min(28, int(safe_width / chinese_font)))
     max_english_chars = max(
@@ -571,7 +575,7 @@ def _write_katie_lower_third_ass(
                 style="Chinese",
                 text=(
                     f"{{\\an7\\pos({panel_left},{panel_top})\\p1"
-                    r"\1c&H2B241C&\1a&H28&}"
+                    r"\1c&H2B241C&\1a&H00&}"
                     f"m 0 0 l {panel_width} 0 l {panel_width} "
                     f"{panel_height} l 0 {panel_height}{{\\p0}}"
                 ),
@@ -802,9 +806,9 @@ def verify_cues(
             max_chinese_chars,
             max_english_chars,
         ) = _katie_wrap_limits(width, height)
-        if chinese_font / english_font < 1.20:
+        if english_font / chinese_font < 1.20:
             raise RuntimeError(
-                "Caption verification failed: Chinese text is not at least "
+                "Caption verification failed: English text is not at least "
                 "20% larger for the Katie layout."
             )
         for index, cue in enumerate(cues, start=1):
@@ -1470,9 +1474,10 @@ def main() -> None:
         ],
         "subtitle_style": (
             (
-                "fixed lower-third panel (20.5% frame height, 89% frame width); "
-                "Chinese above and at least 1.20x English font size; English "
-                "below; fixed positions; maximum two lines per language; "
+                "fixed opaque lower-third backing (20.5% frame height, 89% "
+                "frame width) on the subtitle derivative only; Chinese above "
+                "and English below at least 1.20x Chinese font size; fixed "
+                "positions; maximum two lines per language; "
                 "authored with pysubs2 "
                 f"{package_version('pysubs2')} and burned with FFmpeg libass; "
                 "phrase-level timing; visual review remains required"
