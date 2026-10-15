@@ -25,6 +25,11 @@ on:
         type: boolean
         required: false
         default: false
+      download_vimeo:
+        description: Test downloading Vimeo video 1236025473 from an Ubuntu runner
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -274,8 +279,56 @@ jobs:
         if: always() && steps.download.outputs.exit_code != '0'
         run: exit 1
 
+  download-vimeo:
+    if: github.event_name == 'workflow_dispatch' && inputs.download_vimeo
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install latest yt-dlp
+        run: |
+          python -m pip install --upgrade yt-dlp
+          yt-dlp --version
+
+      - name: Download Vimeo video
+        id: download
+        env:
+          VIDEO_URL: https://vimeo.com/1236025473
+        run: |
+          mkdir -p "$RUNNER_TEMP/vimeo-download"
+          cd "$RUNNER_TEMP/vimeo-download"
+          yt-dlp --version > runner-info.txt
+          python --version >> runner-info.txt 2>&1
+          set +e
+          yt-dlp --no-warnings --no-playlist \
+            --output "$RUNNER_TEMP/vimeo-download/%(id)s.%(ext)s" \
+            "$VIDEO_URL" > yt-dlp.log 2>&1
+          download_status=$?
+          set -e
+          echo "exit_code=$download_status" >> "$GITHUB_OUTPUT"
+          cat yt-dlp.log
+          exit 0
+        shell: bash
+
+      - name: Upload Vimeo runner result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vimeo-1236025473-runner-test
+          path: ${{ runner.temp }}/vimeo-download/
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Fail if Vimeo blocked the download
+        if: always() && steps.download.outputs.exit_code != '0'
+        run: exit 1
+
   deploy:
-    needs: [build, download-source, download-same-clip, download-same-full-video]
+    needs: [build, download-source, download-same-clip, download-same-full-video, download-vimeo]
     if: always() && (github.event_name == 'push' || inputs.regenerate_clips || inputs.download_full_source) && needs.build.result != 'failure' && needs.download-source.result != 'failure' && needs.download-same-clip.result != 'failure' && needs.download-same-full-video.result != 'failure' && needs.build.result != 'cancelled' && needs.download-source.result != 'cancelled' && needs.download-same-clip.result != 'cancelled' && needs.download-same-full-video.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
