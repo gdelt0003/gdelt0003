@@ -25,6 +25,7 @@ from scripts.process_full_video import (
     verify_cues,
     write_ass,
 )
+from scripts.spoken_word_highlighting import TimedWord
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
@@ -95,6 +96,34 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(len(rendered.events), 1)
         self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
 
+    def test_default_layout_highlights_words_without_changing_phrase_timing(self):
+        cue = Cue(1, 3, "Hello, world.", "你好，世界。")
+        timings = (
+            (
+                TimedWord("Hello,", 1.1, 1.4),
+                TimedWord("world.", 1.5, 2.5),
+            ),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "captions.ass"
+            highlighting_applied = write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                word_timings=timings,
+            )
+            content = path.read_text(encoding="utf-8")
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertTrue(highlighting_applied)
+        self.assertIn(
+            r"\t(10,11,\fscy108)\t(39,40,\fscy100)}Hello,",
+            content,
+        )
+        self.assertEqual(rendered.events[0].start, 1000)
+        self.assertEqual(rendered.events[0].end, 3000)
+
     def test_katie_layout_uses_fixed_chinese_first_lower_third_panel(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "katie-captions.ass"
@@ -137,6 +166,70 @@ class FullVideoSubtitleTests(unittest.TestCase):
             rendered.styles["Chinese"].fontsize,
             rendered.styles["English"].fontsize,
         )
+
+    def test_katie_fixed_layout_preserves_panel_while_highlighting_words(self):
+        cue = Cue(0, 2.5, "A complete English sentence.", "完整的中文句子。")
+        timings = (
+            (
+                TimedWord("A", 0.1, 0.3),
+                TimedWord("complete", 0.35, 0.65),
+                TimedWord("English", 0.7, 1.0),
+                TimedWord("sentence.", 1.05, 1.45),
+            ),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "katie-word-captions.ass"
+            highlighting_applied = write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=KATIE_SUBTITLE_LAYOUT,
+                word_timings=timings,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+            english_event = rendered.events[2]
+
+        self.assertTrue(highlighting_applied)
+        self.assertEqual(len(rendered.events), 3)
+        self.assertIn(r"\pos(960,1035)", english_event.text)
+        self.assertIn(r"\t(10,11,\fscy108)", english_event.text)
+        self.assertTrue(
+            all(
+                word in english_event.text
+                for word in ("A", "complete", "English", "sentence.")
+            )
+        )
+        self.assertEqual(english_event.start, 0)
+        self.assertEqual(english_event.end, 2500)
+
+    def test_katie_fixed_layout_falls_back_if_any_word_timing_mismatches(self):
+        cue = Cue(0, 2.5, "A complete English sentence.", "完整的中文句子。")
+        timings = (
+            (
+                TimedWord("A", 0.1, 0.3),
+                TimedWord("complete", 0.35, 0.65),
+                TimedWord("English", 0.7, 1.0),
+                TimedWord("wrong.", 1.05, 1.45),
+            ),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "katie-plain-captions.ass"
+            highlighting_applied = write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=KATIE_SUBTITLE_LAYOUT,
+                word_timings=timings,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+            english_event = rendered.events[2]
+
+        self.assertFalse(highlighting_applied)
+        self.assertIn(r"\pos(960,1035)", english_event.text)
+        self.assertNotIn(r"\fscy108", english_event.text)
+        self.assertIn("A complete English sentence.", english_event.text)
     def test_katie_wrapping_preserves_text_and_rejects_overflow(self):
         _chinese_font, _english_font, max_chinese, max_english = (
             _katie_wrap_limits(1920, 1080)
