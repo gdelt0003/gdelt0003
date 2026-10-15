@@ -89,11 +89,26 @@ async function main() {
   }
 
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const resultsPage = fs.readFileSync(path.join(root, 'copilot-results.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
   assert.doesNotMatch(html, /<track\b/i, 'do not overlay duplicate, unverified captions');
   assert.match(html, /assets\/style\.css\?v=whitehouse-6/);
-  assert.match(html, /id="copilot-results"/, 'surface Copilot coding-agent deliverables on the homepage');
-  assert.match(html, /不把开源媒体工具的代码或生成结果冒领为微软成果/);
+  assert.match(html, /href="copilot-results\.html">Copilot 成果<\/a>/, 'link homepage navigation to the results page');
+  assert.doesNotMatch(html, /class="copilot-result-card"/, 'keep the full results panel off the homepage');
+  assert.doesNotMatch(html, /id="copilot-results"/, 'remove the results section from the homepage');
+  assert.match(resultsPage, /assets\/style\.css\?v=whitehouse-6/);
+  assert.match(resultsPage, /id="copilot-results"/, 'show the Copilot results section on its dedicated page');
+  assert.match(resultsPage, /不把开源媒体工具的代码或生成结果冒领为微软成果/);
+  assert.equal([...resultsPage.matchAll(/class="copilot-result-card"/g)].length, 3, 'keep all result cards on the dedicated page');
+  for (const url of [
+    'https://github.com/gdelt0003/gdelt0003/pull/21',
+    'https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544',
+    'https://github.com/gdelt0003/gdelt0003/pull/23',
+    'https://github.com/gdelt0003/gdelt0003/pull/25',
+    'https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659',
+  ]) {
+    assert.ok(resultsPage.includes(url), `preserve existing result link: ${url}`);
+  }
   assert.match(html, /events\/pvXbHQrIvTw\/#pathways/, 'keep pathway comparison on the dedicated event page');
   assert.match(html, /id="mainVideos"/, 'main videos should render into a catalog');
   assert.match(html, /assets\/main-videos\.js/);

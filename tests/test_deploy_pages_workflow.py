@@ -1,5 +1,6 @@
 import re
 import unittest
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 
@@ -40,6 +41,14 @@ class DeployPagesWorkflowTests(unittest.TestCase):
                 self.assertIn(f"      - {path}", push)
         self.assertNotIn("'scripts/**'", push)
         self.assertNotIn("'docs/**'", push)
+
+    def test_copilot_results_page_is_in_the_push_deployment_path_filter(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]
+        html_path_pattern = "'*.html'"
+
+        self.assertIn(f"      - {html_path_pattern}", push)
+        self.assertTrue(fnmatchcase("copilot-results.html", html_path_pattern.strip("'")))
 
     def test_push_deploy_is_not_blocked_by_the_post_deploy_quality_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
