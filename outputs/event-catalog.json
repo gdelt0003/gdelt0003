@@ -11,6 +11,46 @@
     "participants"
   ],
   "matching_rule": "The White House recording is the factual and event-background anchor even when its in-picture banner makes it unsuitable as editing material. Other candidates must come from credible publishers and be checked against corresponding official content, with conflicts in date, speech, sequence, or scene details flagged rather than accepted from title or thumbnail similarity. Classify background references separately from editing candidates; assess resolution and overlays independently.",
+  "unassigned_video_leads": [
+    {
+      "lead_id": "user-youtube-lead-rQlpuY2tj-4",
+      "publisher": "not reviewed",
+      "title": "User-provided YouTube source lead (title not reviewed)",
+      "url": "https://www.youtube.com/watch?v=rQlpuY2tj-4",
+      "source_role": "unassigned_video_source_lead",
+      "event_id": null,
+      "event_match_status": "pending_manual_review",
+      "duration_seconds": null,
+      "video_resolution": "unknown",
+      "clean_source_status": "unverified",
+      "frame_review_status": "pending_direct_frame_review",
+      "graphics_occlusion_status": "pending_direct_frame_review",
+      "provenance_independence_status": "pending_source_provenance_review",
+      "reuse_rights_status": "pending_rights_review",
+      "user_claims_verbatim": "这个源可以 更长 干净 高清 可信源,全体通报学习",
+      "user_rating": 90,
+      "user_rating_status": "user_subjective_rating_not_independent_score",
+      "user_angle_opinion_verbatim": "打90分...此角度视频典范,还可以增补其它角度",
+      "camera_position_review": {
+        "event_time_match_status": "pending_exact_event_and_time_match",
+        "location": "unknown",
+        "coordinates_wgs84": "unknown",
+        "azimuth_degrees": "unknown",
+        "height_meters": "unknown",
+        "pitch_degrees": "unknown",
+        "equipment": "unknown",
+        "media_camera_department": "unknown",
+        "publicly_confirmed_crew": "unknown",
+        "media_seat_annotation": "pending_verified_position",
+        "evidence_url": null,
+        "method": "not_assessed",
+        "uncertainty_or_error": "unknown",
+        "confidence": "unknown",
+        "verification_status": "pending"
+      },
+      "evidence": "URL and characterization supplied by the user. Event match, runtime, actual video-stream resolution, embedded graphics/occlusion, provenance/independence, and reuse rights have not been checked. The characterization is not verified evidence."
+    }
+  ],
   "events": [
     {
       "event_id": "evt-20261006-7794a6967fc9f877",

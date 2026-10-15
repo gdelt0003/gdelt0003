@@ -95,6 +95,26 @@ VIDEO_CANDIDATE_HEADERS = [
     "Duration (seconds)",
     "Difference from official runtime (seconds)",
     "Source provenance / lineage (reported)",
+    "Embedded graphics / occlusion review",
+    "Reuse rights review",
+    "User-provided characterization (claim; unverified)",
+    "User subjective rating (not independent score)",
+    "User angle opinion (not verified)",
+    "Camera/event-time match",
+    "Camera location",
+    "Camera coordinates WGS84",
+    "Camera azimuth (degrees)",
+    "Camera height (meters)",
+    "Camera pitch (degrees)",
+    "Camera equipment",
+    "Media/camera department",
+    "Publicly confirmed professional crew",
+    "Media-seat annotation",
+    "Camera evidence URL",
+    "Camera method",
+    "Camera uncertainty/error",
+    "Camera confidence",
+    "Camera verification status",
     "Evidence and limitations",
 ]
 
@@ -275,9 +295,84 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                     else "",
                     duration_delta,
                     source.get("independence_status", "unverified"),
+                    source.get(
+                        "graphics_occlusion_status",
+                        source.get("frame_review_status", "pending_direct_frame_review"),
+                    ),
+                    source.get("reuse_rights_status", "pending_rights_review"),
+                    source.get("user_claims_verbatim", ""),
+                    source.get("user_rating", ""),
+                    source.get("user_angle_opinion_verbatim", ""),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     source.get("evidence", ""),
                 ]
             )
+    for lead in catalog.get("unassigned_video_leads", []):
+        if not isinstance(lead, dict) or not lead.get("url"):
+            continue
+        camera = lead.get("camera_position_review") or {}
+        rows.append(
+            [
+                "",
+                "Unassigned video lead (event match pending)",
+                "pending",
+                "Unassigned lead only; do not compare or substitute until the "
+                "exact event and time are independently matched. Do not mix with "
+                "the October 13 Katie event absent that match.",
+                lead.get("publisher", "not reviewed"),
+                lead.get("title", "User-provided video lead; title not reviewed"),
+                lead.get("url", ""),
+                lead.get("event_match_status", "pending_manual_review"),
+                lead.get("clean_source_status", "unverified"),
+                lead.get("video_resolution", "unknown"),
+                lead.get("duration_seconds")
+                if lead.get("duration_seconds") is not None
+                else "",
+                "",
+                lead.get(
+                    "provenance_independence_status",
+                    "pending_source_provenance_review",
+                ),
+                lead.get(
+                    "graphics_occlusion_status", "pending_direct_frame_review"
+                ),
+                lead.get("reuse_rights_status", "pending_rights_review"),
+                lead.get("user_claims_verbatim", ""),
+                lead.get("user_rating", ""),
+                lead.get("user_angle_opinion_verbatim", ""),
+                camera.get("event_time_match_status", "pending_exact_event_and_time_match"),
+                camera.get("location", "unknown"),
+                camera.get("coordinates_wgs84", "unknown"),
+                camera.get("azimuth_degrees", "unknown"),
+                camera.get("height_meters", "unknown"),
+                camera.get("pitch_degrees", "unknown"),
+                camera.get("equipment", "unknown"),
+                camera.get("media_camera_department", "unknown"),
+                camera.get("publicly_confirmed_crew", "unknown"),
+                camera.get("media_seat_annotation", "pending_verified_position"),
+                camera.get("evidence_url") or "",
+                camera.get("method", "not_assessed"),
+                camera.get("uncertainty_or_error", "unknown"),
+                camera.get("confidence", "unknown"),
+                camera.get("verification_status", "pending"),
+                lead.get("evidence", "Evidence not yet reviewed."),
+            ]
+        )
     return rows
 
 
@@ -562,6 +657,17 @@ def build_workbook(
             "remains the identity reference and is not called clean."
         ]
     )
+    notes_sheet.append(
+        [
+            "User-submitted video leads without an exact event/time match appear "
+            "as unassigned rows. User claims and subjective ratings are not "
+            "verification. Camera location, coordinates, azimuth, height, pitch, "
+            "equipment, department, publicly confirmed crew, and media-seat "
+            "annotations require direct evidence, method, uncertainty, confidence, "
+            "and a verification status; unknowns remain unknown. Do not infer "
+            "private identities or mix an unassigned lead into a named event."
+        ]
+    )
     for row in _candidate_review_rows(catalog):
         candidate_review_sheet.append(row)
         link_cell = candidate_review_sheet.cell(candidate_review_sheet.max_row, 7)
@@ -681,7 +787,11 @@ def build_workbook(
     )
     style_sheet(
         candidate_review_sheet,
-        [28, 46, 24, 68, 28, 64, 70, 44, 22, 52, 20, 38, 42, 100],
+        [
+            28, 46, 24, 72, 28, 64, 70, 40, 22, 48, 20, 38, 42, 36, 28, 58,
+            32, 58, 40, 42, 28, 24, 24, 24, 24, 30, 30, 38, 34, 70, 28, 34,
+            24, 30, 100,
+        ],
     )
     style_sheet(instructions_sheet, [40, 150])
     notes_sheet["A1"].font = Font(bold=True, color="FFFFFF")

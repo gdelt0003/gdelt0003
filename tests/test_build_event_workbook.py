@@ -107,6 +107,75 @@ class EventWorkbookTests(unittest.TestCase):
             "not a trust score",
             candidate_headers[candidate_headers.index("Queue rank (not a trust score)")],
         )
+        user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=rQlpuY2tj-4"
+        )
+        self.assertIsNone(user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            user_lead[candidate_headers.index("Queue rank (not a trust score)")],
+            "pending",
+        )
+        self.assertIn(
+            "Do not mix with the October 13 Katie event",
+            user_lead[candidate_headers.index("Current source path")],
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Same-event evidence")],
+            "pending_manual_review",
+        )
+        self.assertEqual(user_lead[candidate_headers.index("Duration (seconds)")], None)
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Embedded graphics / occlusion review")],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Reuse rights review")],
+            "pending_rights_review",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User-provided characterization (claim; unverified)")
+            ],
+            "这个源可以 更长 干净 高清 可信源,全体通报学习",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            90,
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User angle opinion (not verified)")
+            ],
+            "打90分...此角度视频典范,还可以增补其它角度",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Camera location")], "unknown"
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("Media-seat annotation")
+            ],
+            "pending_verified_position",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("Camera verification status")
+            ],
+            "pending",
+        )
         for row in source_rows[1:]:
             local_time = row[source_headers.index("Page-published local display (not event time)")]
             timestamp = row[source_headers.index("Published metadata (UTC; not event time)")]
