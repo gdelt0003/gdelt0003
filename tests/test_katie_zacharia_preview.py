@@ -206,7 +206,11 @@ class KatieZachariaPreviewTests(unittest.TestCase):
 
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("default: false", workflow)
+        self.assertIn("private_review_only:", workflow)
+        self.assertIn("PRIVATE_REVIEW_ONLY", workflow)
         self.assertIn("runs-on: ubuntu-latest", workflow)
+        self.assertIn("render-preview:", workflow)
+        self.assertIn("publish-preview:", workflow)
         self.assertIn("contents: write", workflow)
         self.assertIn("642103215", workflow)
         self.assertIn('releases" --paginate', workflow)
@@ -219,8 +223,29 @@ class KatieZachariaPreviewTests(unittest.TestCase):
         self.assertIn("width < 1920 or height < 1080", workflow)
         self.assertIn("scripts/process_full_video.py", workflow)
         self.assertIn("--subtitle-layout katie-fixed-lower-third-zh-first", workflow)
+        self.assertIn(
+            "katie-zacharia-full-video-preview-38661270142",
+            workflow,
+        )
+        self.assertIn(
+            "scripts/verify_katie_reused_subtitles.py",
+            workflow,
+        )
+        self.assertIn('--reuse-subtitles "$RUNNER_TEMP/katie-prior/katie-output"', workflow)
+        self.assertIn('if [[ "$PRIVATE_REVIEW_ONLY" != "true" ]]; then', workflow)
+        self.assertIn("scripts/extract_katie_review_frames.py", workflow)
+        self.assertIn("katie-zacharia-private-review-${{ github.run_id }}", workflow)
+        self.assertIn("if: success() && inputs.private_review_only", workflow)
+        self.assertIn("if: github.ref == 'refs/heads/main' && inputs.publish_test_preview", workflow)
+        render_job, publish_job = workflow.split("  publish-preview:", maxsplit=1)
+        self.assertIn("Select either private review or public test-preview publication, not both.", render_job)
+        self.assertNotIn("gh release create", render_job)
+        self.assertNotIn("outputs/main-videos.json", render_job)
+        self.assertNotIn("actions/deploy-pages@v4", render_job)
+        self.assertIn("gh release create", publish_job)
+        self.assertIn("outputs/main-videos.json", publish_job)
+        self.assertIn("actions/deploy-pages@v4", publish_job)
         self.assertIn("--prerelease", workflow)
-        self.assertIn("actions/deploy-pages@v4", workflow)
         self.assertNotIn("OPENROUTER_API_KEY", workflow)
 
 
