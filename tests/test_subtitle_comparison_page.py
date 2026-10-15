@@ -145,6 +145,7 @@ class SubtitleComparisonPageTests(unittest.TestCase):
 
     def test_homepage_surfaces_copilot_deliverables_and_credits_the_open_source_renderer(self):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
+        results_page = (ROOT / "copilot-results.html").read_text(encoding="utf-8")
         catalog = json.loads(
             (ROOT / "outputs" / "main-videos.json").read_text(encoding="utf-8")
         )
@@ -158,10 +159,14 @@ class SubtitleComparisonPageTests(unittest.TestCase):
             if video["id"] == "pvXbHQrIvTw-smartsub-draft-38540536544"
         )
 
-        self.assertIn('id="copilot-results"', home)
-        self.assertIn("PR #21", home)
-        self.assertIn("PR #23", home)
-        self.assertIn("PR #25", home)
+        self.assertIn('href="copilot-results.html">Copilot 成果</a>', home)
+        self.assertNotIn('id="copilot-results"', home)
+        self.assertIn('id="copilot-results"', results_page)
+        self.assertIn("PR #21", results_page)
+        self.assertIn("PR #23", results_page)
+        self.assertIn("PR #25", results_page)
+        self.assertIn("不把开源媒体工具的代码或生成结果冒领为微软成果", results_page)
+        self.assertIn("SmartSub 保持独立上游依赖与来源归属", results_page)
         self.assertEqual(preview["render_engine"], "buxuku/SmartSub 3.9.0（上游开源项目，固定版本）")
         self.assertEqual(
             preview["render_engine_url"],
