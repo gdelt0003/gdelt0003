@@ -28,6 +28,7 @@ PAGE_TIMEOUT_SECONDS = 20
 PAGE_READ_LIMIT_BYTES = 2 * 1024 * 1024
 GDELT_MAX_RECORDS_PER_VIDEO = 10
 GDELT_TIMESPAN = "1w"
+GDELT_RETRY_BATCH_SIZE = 5
 
 
 def utc_now() -> str:
@@ -295,6 +296,15 @@ def record_new_video(
             "official_page_research_status": page_research["status"],
             "additional_source_search": source_search,
             "additional_source_search_started_at_utc": additional_source_search_started_at_utc,
+            "additional_source_search_attempts": [
+                source_search_attempt(
+                    source_search,
+                    additional_source_search_started_at_utc,
+                    source_research_completed_at_utc,
+                    run_id,
+                    run_url,
+                )
+            ],
             "missing_items": source_research_missing_items,
             "event_identity_status": "unassigned_event_lead",
             "event_identity_evidence_gaps": [
@@ -325,6 +335,133 @@ def record_new_video(
     }
 
 
+def source_search_attempt(
+    result: dict[str, Any],
+    started_at_utc: str,
+    completed_at_utc: str,
+    run_id: str,
+    run_url: str,
+) -> dict[str, Any]:
+    return {
+        "started_at_utc": started_at_utc,
+        "completed_at_utc": completed_at_utc,
+        "status": result.get("status", "unknown"),
+        "error": result.get("error"),
+        "run_id": run_id,
+        "run_url": run_url,
+        "result": dict(result),
+    }
+
+
+def _source_search_attempts(event_research: dict[str, Any]) -> list[dict[str, Any]]:
+    attempts = event_research.get("additional_source_search_attempts")
+    if isinstance(attempts, list):
+        return attempts
+
+    result = event_research.get("additional_source_search")
+    if not isinstance(result, dict):
+        return []
+    return [
+        source_search_attempt(
+            result,
+            result.get("researched_at_utc")
+            or event_research.get("additional_source_search_started_at_utc")
+            or event_research.get("started_at_utc", ""),
+            event_research.get("completed_at_utc", ""),
+            event_research.get("run_id", ""),
+            event_research.get("run_url", ""),
+        )
+    ]
+
+
+def select_failed_source_search_retries(
+    entries: list[Any],
+    videos: dict[str, Any],
+    *,
+    eligible_video_ids: set[str],
+    limit: int = GDELT_RETRY_BATCH_SIZE,
+) -> tuple[list[str], list[str]]:
+    """Select the oldest failed searches first, preserving channel order for ties."""
+    candidates = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        video_id = entry.get("id")
+        if (
+            video_id not in eligible_video_ids
+            or video_id not in videos
+            or video_id in candidates
+        ):
+            continue
+        record = videos[video_id]
+        event_research = record.get("event_source_research")
+        if not isinstance(event_research, dict):
+            continue
+        search = event_research.get("additional_source_search")
+        if not isinstance(search, dict) or search.get("status") != "failed":
+            continue
+        attempts = _source_search_attempts(event_research)
+        last_attempt = attempts[-1] if attempts else {}
+        candidates[video_id] = (
+            last_attempt.get("started_at_utc")
+            or search.get("researched_at_utc")
+            or event_research.get("additional_source_search_started_at_utc")
+            or "",
+            len(candidates),
+        )
+
+    ordered_ids = sorted(candidates, key=lambda video_id: candidates[video_id])
+    return ordered_ids[:limit], ordered_ids[limit:]
+
+
+def retry_source_search(
+    record: dict[str, Any],
+    *,
+    run_id: str,
+    run_url: str,
+    source_researcher: Callable[[str, str], dict[str, Any]],
+) -> dict[str, Any]:
+    event_research = record["event_source_research"]
+    attempts = _source_search_attempts(event_research)
+    if not isinstance(
+        event_research.get("additional_source_search_attempts"), list
+    ):
+        event_research["additional_source_search_attempts"] = attempts
+
+    started_at_utc = utc_now()
+    result = source_researcher(record["title"], started_at_utc)
+    completed_at_utc = utc_now()
+    event_research["additional_source_search"] = result
+    event_research["additional_source_search_started_at_utc"] = started_at_utc
+    event_research["additional_source_search_attempts"].append(
+        source_search_attempt(
+            result, started_at_utc, completed_at_utc, run_id, run_url
+        )
+    )
+    event_research["completed_at_utc"] = completed_at_utc
+    event_research["run_id"] = run_id
+    event_research["run_url"] = run_url
+
+    if result["status"] == "completed_with_candidates":
+        event_research["status"] = "completed_with_unverified_leads"
+    elif result["status"] == "completed_no_results":
+        event_research["status"] = "completed_metadata_search_no_candidates"
+    elif result["status"] == "blocked_missing_official_title":
+        event_research["status"] = "completed_with_missing_query_terms"
+    else:
+        event_research["status"] = "completed_with_search_failure"
+
+    search_blocker = "successful GDELT additional-source metadata search"
+    missing_items = event_research["missing_items"]
+    if result["status"] in {"completed_with_candidates", "completed_no_results"}:
+        event_research["missing_items"] = [
+            item for item in missing_items if item != search_blocker
+        ]
+    elif search_blocker not in missing_items:
+        event_research["missing_items"] = [search_blocker, *missing_items]
+    return record
+
+
 def format_run_summary(run: dict[str, Any]) -> str:
     lines = [
         "## Official White House video monitor",
@@ -336,6 +473,7 @@ def format_run_summary(run: dict[str, Any]) -> str:
         f"- Provenance: {run['run_url']}",
         f"- Metadata discovery: {run.get('metadata_discovery_status', 'not_started')}",
         f"- New videos: {len(run.get('new_video_ids', []))}; previously seen: {len(run.get('already_seen_video_ids', []))}.",
+        f"- Source-search retries: {len(run.get('retried_video_ids', []))}; deferred failures: {len(run.get('deferred_retry_video_ids', []))} (batch limit {run.get('retry_batch_limit', GDELT_RETRY_BATCH_SIZE)}).",
         "- Notices below are limited to this Actions run's summary and warning annotations; no external push notification is configured.",
         "",
     ]
@@ -374,6 +512,30 @@ def format_run_summary(run: dict[str, Any]) -> str:
         lines.append("- Media review: **not started; blocked pending exact-video authorization and reuse-rights evidence**.")
         lines.extend(f"  - {item}" for item in media_review["missing_items"])
         lines.append("")
+    for video_id in run.get("retried_video_ids", []):
+        record = run["retry_video_records"][video_id]
+        event_research = record["event_source_research"]
+        source_search = event_research["additional_source_search"]
+        lines.extend(
+            (
+                f"### Source-search retry: {video_id}",
+                "",
+                f"- Official source: {record['official_video_url']}",
+                f"- GDELT source search: **{source_search['status']}**; "
+                f"{source_search.get('candidate_count', 0)} unverified candidate(s).",
+                f"- Attempts recorded: {len(event_research['additional_source_search_attempts'])}.",
+                "- This retry did not re-research the official watch page or inspect media.",
+            )
+        )
+        if source_search.get("error"):
+            detail = (
+                str(source_search["error"])
+                .replace("`", "\\`")
+                .replace("\n", " ")
+                .replace("\r", " ")
+            )
+            lines.append(f"- GDELT search detail: `{detail}`.")
+        lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -385,8 +547,18 @@ def format_warning_annotations(run: dict[str, Any]) -> list[str]:
         annotations.append(
             f"::error title=Official video metadata discovery failed::{message}"
         )
-    for video_id in run.get("new_video_ids", []):
-        record = run["video_records"][video_id]
+    records = [
+        *(
+            run["video_records"][video_id]
+            for video_id in run.get("new_video_ids", [])
+        ),
+        *(
+            run["retry_video_records"][video_id]
+            for video_id in run.get("retried_video_ids", [])
+        ),
+    ]
+    for record in records:
+        video_id = record["video_id"]
         missing_items = [
             *record["event_source_research"]["missing_items"],
             *record["media_review_gate"]["missing_items"],
@@ -430,8 +602,12 @@ def run_monitor(
         "metadata_discovery_status": "metadata_discovery_started",
         "new_video_ids": [],
         "already_seen_video_ids": [],
+        "retried_video_ids": [],
+        "deferred_retry_video_ids": [],
+        "retry_batch_limit": GDELT_RETRY_BATCH_SIZE,
         "invalid_entry_count": 0,
         "video_records": {},
+        "retry_video_records": {},
     }
 
     metadata_completed_at_utc = started_at_utc
@@ -452,6 +628,7 @@ def run_monitor(
     if run["status"] == "success":
         run["metadata_discovery_status"] = "metadata_discovery_completed"
         run["metadata_discovery_completed_at_utc"] = metadata_completed_at_utc
+    eligible_video_ids = set(videos)
     new_entries = []
     seen_in_poll = set()
     for entry in entries:
@@ -487,6 +664,24 @@ def run_monitor(
                 videos[video_id] = record
                 run["new_video_ids"].append(video_id)
                 run["video_records"][video_id] = record
+
+    if run["status"] == "success":
+        retry_ids, deferred_retry_ids = select_failed_source_search_retries(
+            entries,
+            videos,
+            eligible_video_ids=eligible_video_ids,
+        )
+        run["retried_video_ids"] = retry_ids
+        run["deferred_retry_video_ids"] = deferred_retry_ids
+        run["retry_candidate_count"] = len(retry_ids) + len(deferred_retry_ids)
+        for video_id in retry_ids:
+            record = retry_source_search(
+                videos[video_id],
+                run_id=run_id,
+                run_url=run_url,
+                source_researcher=source_researcher,
+            )
+            run["retry_video_records"][video_id] = record
 
     run["completed_at_utc"] = utc_now()
     state["last_run"] = {
