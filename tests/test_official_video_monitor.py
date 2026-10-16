@@ -152,6 +152,10 @@ class OfficialVideoMonitorTests(unittest.TestCase):
         )
         self.assertIn(f"Research notice: {VIDEO_ID}", summary)
         self.assertIn("GitHub Actions may queue or delay scheduled runs", summary)
+        self.assertIn(
+            "no external push notification is configured",
+            summary,
+        )
         self.assertNotIn("fully researched", summary.lower())
         annotations = format_warning_annotations(run)
         self.assertTrue(any(VIDEO_ID in line for line in annotations))

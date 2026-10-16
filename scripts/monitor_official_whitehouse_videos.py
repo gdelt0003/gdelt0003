@@ -231,6 +231,7 @@ def format_run_summary(run: dict[str, Any]) -> str:
         f"- Provenance: {run['run_url']}",
         f"- Metadata discovery: {run.get('metadata_discovery_status', 'not_started')}",
         f"- New videos: {len(run.get('new_video_ids', []))}; previously seen: {len(run.get('already_seen_video_ids', []))}.",
+        "- Notices below are limited to this Actions run's summary and warning annotations; no external push notification is configured.",
         "",
     ]
     if run.get("error"):
