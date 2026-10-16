@@ -167,7 +167,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         ):
             with self.subTest(field=field):
                 self.assertIn(field, render)
-        self.assertIn("gh release download rose-garden-lunch-source-2026-10-15", render)
+        self.assertIn("download_rose_garden_source_asset.py", render)
         self.assertIn("RoseGardenLunch-IySF_8OArvw.mp4", render)
         self.assertIn(review.SOURCE_SHA256, (
             WORKFLOW.parents[2] / "scripts" / "verify_rose_garden_review.py"
@@ -211,7 +211,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("--reuse-rights-confirmed", render)
         self.assertLess(
             render.index("--validate-dispatch-inputs"),
-            render.index("gh release download rose-garden-lunch-source-2026-10-15"),
+            render.index("download_rose_garden_source_asset.py"),
         )
         self.assertLess(
             render.index("--validate-dispatch-inputs"),
@@ -223,7 +223,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         )
         self.assertLess(
             render.index("--validate-review-gates"),
-            render.index("gh release download rose-garden-lunch-source-2026-10-15"),
+            render.index("download_rose_garden_source_asset.py"),
         )
         rights_input = workflow.split("      rights_evidence_url:", maxsplit=1)[1].split(
             "\n      independent_rights_review_passed:", maxsplit=1
