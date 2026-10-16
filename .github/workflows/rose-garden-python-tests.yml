@@ -1,0 +1,63 @@
+name: Rose Garden Python tests
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/rose-garden-python-tests.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
+      - 'docs/rose-garden-caption-layout.md'
+      - 'README.md'
+      - 'requirements.txt'
+      - 'scripts/process_full_video.py'
+      - 'scripts/verify_rose_garden_review.py'
+      - 'scripts/operation_audit.py'
+      - 'scripts/spoken_word_highlighting.py'
+      - 'tests/test_process_full_video.py'
+      - 'tests/test_rose_garden_review_workflow.py'
+  push:
+    paths:
+      - '.github/workflows/rose-garden-python-tests.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
+      - 'docs/rose-garden-caption-layout.md'
+      - 'README.md'
+      - 'requirements.txt'
+      - 'scripts/process_full_video.py'
+      - 'scripts/verify_rose_garden_review.py'
+      - 'scripts/operation_audit.py'
+      - 'scripts/spoken_word_highlighting.py'
+      - 'tests/test_process_full_video.py'
+      - 'tests/test_rose_garden_review_workflow.py'
+
+permissions:
+  contents: read
+
+jobs:
+  rose-garden-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Compile changed Python modules
+        run: |
+          python -m py_compile \
+            scripts/process_full_video.py \
+            scripts/verify_rose_garden_review.py
+
+      - name: Run Rose Garden renderer and workflow tests
+        run: |
+          python -m unittest \
+            tests.test_process_full_video \
+            tests.test_rose_garden_review_workflow \
+            -v
