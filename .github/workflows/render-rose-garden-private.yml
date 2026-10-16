@@ -122,7 +122,7 @@ on:
         default: 2
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: rose-garden-private-render-${{ github.run_id }}
