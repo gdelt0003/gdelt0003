@@ -184,10 +184,29 @@ This proves the old review asset was published and is linked by the page; it
 does not prove conformance to this profile or human visual/ASR/translation
 review.
 
-PR #50 is implementing a source-aware 68% caption layout and the opt-in,
-source-banner-only Rose masking exception above. It remains unmerged and has
-not been deployed. The prior public MP4 remains the old review asset; do not
-replace it on the strength of a successful encode or manifest alone. A future
-render may be labelled only as a public review draft after the processing
-evidence preflight passes; independent rights, event-match, ASR, translation,
-and human frame/visual review still remain pending.
+The source-aware 68% caption layout and the opt-in, source-banner-only Rose
+masking exception above are on `main`. The prior public MP4 remains the old
+review asset; do not replace it on the strength of a successful encode or
+manifest alone. The latest render attempt stopped during subtitle layout
+preflight because cue 15 exceeded the safe width. This failure occurred before
+FFmpeg encoding and produced no new video. A future render may be labelled only
+as a private review draft after the processing evidence preflight passes;
+independent rights, event-match, ASR, translation, and human frame/visual
+review still remain pending.
+
+The Rose Garden renderer uses a separate event-specific font hierarchy:
+1080p output uses 35 px Chinese above 28 px English (English is 0.8× Chinese).
+Oversized cues are split only at punctuation-aligned bilingual clauses when
+each resulting cue can meet the minimum display duration. If no reliable split
+is available, or splitting would make a cue too short, the renderer preserves
+the complete bilingual cue and its timing, records the cue and overflow reason
+in the manifest and readability report, and continues encoding. Only those
+recorded exception cues bypass the two-line/safe-width geometry gate; all other
+cues remain subject to it. The report marks the output `manual_review_required`,
+not a layout pass, so the exception must be checked in the rendered video.
+Invalid cue timing and unrelated processing errors still stop the render.
+
+The **Render private Rose Garden artifact** workflow is the artifact-only
+dispatch path: it is available from `main`, preserves the pinned source and
+pre-processing evidence gates, and does not create Releases or deploy Pages.
+All post-render reviews remain pending.

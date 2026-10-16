@@ -27,6 +27,7 @@ from scripts.process_full_video import (
     bilingual_srt_text,
     copy_review_evidence,
     merge_sentence_fragments,
+    reflow_rose_garden_cues,
     reflow_cues,
     read_srt,
     srt_text,
@@ -284,7 +285,8 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
         self.assertTrue(
             all(character in rendered.events[1].text for character in cue.chinese)
         )
-        self.assertGreaterEqual(english_font / chinese_font, 1.20)
+        self.assertEqual((chinese_font, english_font), (35, 28))
+        self.assertEqual(english_font / chinese_font, 0.8)
         self.assertEqual(rendered.styles["English"].fontsize, english_font)
         self.assertEqual(rendered.styles["Chinese"].fontsize, chinese_font)
         english_lines = _wrap_english_to_width(
@@ -344,6 +346,9 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
         self.assertEqual(readability["caption_region_height_percent"], 30.4)
         self.assertEqual(readability["horizontal_safe_width_percent"], 68)
         self.assertEqual(readability["max_lines_per_language"], 2)
+        self.assertEqual(readability["english_font_px"], 28)
+        self.assertEqual(readability["chinese_font_px"], 35)
+        self.assertEqual(readability["english_to_chinese_size_ratio"], 0.8)
         self.assertEqual(readability["visual_frame_review"], "not_verified")
         self.assertEqual(readability["caption_band_occlusion"]["visual_review"], "pending")
         self.assertEqual(
@@ -358,6 +363,196 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
             "masked_not_clean",
         )
         self.assertEqual(readability["rose_source_evidence"]["event_match"], "pending")
+
+    def test_rose_garden_reflows_overflow_at_aligned_punctuation(self):
+        short = Cue(2, 2.4, "Thanks, everyone.", "谢谢大家。")
+        font_zh, font_en, *_ = _rose_garden_wrap_limits(1920, 1080)
+        self.assertEqual(
+            reflow_rose_garden_cues(
+                [short],
+                safe_width=1305,
+                chinese_font=font_zh,
+                english_font=font_en,
+            ),
+            [short],
+        )
+        original = Cue(
+            100,
+            112,
+            "The President welcomed every guest who had gathered in the "
+            "Rose Garden, and thanked the hardworking staff for making "
+            "the special event possible, before joining the invited guests "
+            "for a working lunch and conversation.",
+            "总统欢迎所有聚集在玫瑰园的来宾，"
+            "并感谢工作人员为特别活动付出的辛勤努力，"
+            "随后与受邀来宾共进工作午餐并交流。",
+        )
+        with self.assertRaisesRegex(ValueError, "more than 2 lines"):
+            _wrap_english_to_width(original.english, 1305, font_en)
+
+        result = reflow_rose_garden_cues(
+            [original],
+            safe_width=1305,
+            chinese_font=font_zh,
+            english_font=font_en,
+        )
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0].start, original.start)
+        self.assertEqual(result[-1].end, original.end)
+        self.assertTrue(
+            all(left.end == right.start for left, right in zip(result, result[1:]))
+        )
+        self.assertTrue(
+            all(
+                cue.end - cue.start >= 0.83
+                for cue in result
+            )
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in result),
+            original.english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in result),
+            original.chinese,
+        )
+        for cue in result:
+            self.assertLessEqual(
+                len(_wrap_english_to_width(cue.english, 1305, font_en)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_chinese_to_width(cue.chinese, 1305, font_zh)),
+                2,
+            )
+
+    def test_rose_garden_reflow_records_unavoidable_overflow_without_dropping_cue(self):
+        font_zh, font_en, *_ = _rose_garden_wrap_limits(1920, 1080)
+        too_long = Cue(
+            180.03,
+            185,
+            " ".join(["unbroken phrase"] * 24),
+            "没有对应标点的中文长句" * 12,
+        )
+        overflow_records = []
+        result = reflow_rose_garden_cues(
+            [too_long],
+            safe_width=1305,
+            chinese_font=font_zh,
+            english_font=font_en,
+            overflow_records=overflow_records,
+        )
+        self.assertEqual(result, [too_long])
+        self.assertEqual(len(overflow_records), 1)
+        self.assertEqual(
+            overflow_records[0]["reason"],
+            "no_aligned_phrase_boundary",
+        )
+        self.assertEqual(overflow_records[0]["source_cue_index"], 1)
+        self.assertGreater(overflow_records[0]["english_lines_required"], 2)
+        self.assertGreater(overflow_records[0]["chinese_lines_required"], 2)
+
+        too_short = Cue(
+            180.03,
+            181.2,
+            "The first aligned clause, and the second aligned clause.",
+            "第一个对应分句，第二个对应分句。",
+        )
+        short_records = []
+        self.assertEqual(
+            reflow_rose_garden_cues(
+                [too_short],
+                safe_width=350,
+                chinese_font=font_zh,
+                english_font=font_en,
+                overflow_records=short_records,
+            ),
+            [too_short],
+        )
+        self.assertEqual(
+            short_records[0]["reason"],
+            "aligned_split_below_minimum_duration",
+        )
+
+    def test_recorded_rose_overflow_writes_ass_and_requires_manual_review(self):
+        cue = Cue(
+            180.03,
+            185,
+            " ".join(["unbroken phrase"] * 24),
+            "没有对应标点的中文长句" * 12,
+        )
+        font_zh, font_en, *_ = _rose_garden_wrap_limits(1920, 1080)
+        overflow_records = []
+        cues = reflow_rose_garden_cues(
+            [cue],
+            safe_width=1305,
+            chinese_font=font_zh,
+            english_font=font_en,
+            overflow_records=overflow_records,
+        )
+
+        render_modes = (
+            {
+                "caption_position": "top",
+                "source_graphics_regions": [],
+                "occlusion_exception_authorized": False,
+                "mask_padding_px_per_edge": None,
+            },
+            {
+                "caption_position": "mask-lower-third",
+                "source_graphics_regions": self.ROSE_SOURCE_GRAPHICS,
+                "occlusion_exception_authorized": True,
+                "mask_padding_px_per_edge": 2,
+            },
+        )
+        for mode in render_modes:
+            with self.subTest(caption_position=mode["caption_position"]):
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / "rose-captions.ass"
+                    write_ass(
+                        path,
+                        cues,
+                        1920,
+                        1080,
+                        layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                        caption_overflow_records=overflow_records,
+                        **mode,
+                    )
+                    rendered = pysubs2.load(str(path), encoding="utf-8")
+
+                expected_events = 2 if mode["caption_position"] == "mask-lower-third" else 1
+                self.assertEqual(len(rendered.events), expected_events)
+                caption = rendered.events[-1]
+                self.assertEqual(caption.start, round(cue.start * 1000))
+                self.assertIn("unbroken phrase", caption.text)
+                self.assertIn("没有对应标点的中文长句", caption.text)
+                report = verify_cues(
+                    cues,
+                    duration=200,
+                    width=1920,
+                    height=1080,
+                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                    caption_position=mode["caption_position"],
+                    caption_safe_region_reviewed=(
+                        mode["caption_position"] == "mask-lower-third"
+                    ),
+                    caption_overflow_records=overflow_records,
+                    **{
+                        key: value
+                        for key, value in mode.items()
+                        if key != "caption_position"
+                    },
+                )
+                readability = report["subtitle_readability"]
+                self.assertEqual(readability["status"], "manual_review_required")
+                self.assertEqual(
+                    readability["caption_overflow_exceptions"]["count"],
+                    1,
+                )
+                self.assertEqual(
+                    readability["caption_overflow_exceptions"]["cues"],
+                    overflow_records,
+                )
 
     def test_rose_garden_caption_mask_rejects_content_that_cannot_fit(self):
         with tempfile.TemporaryDirectory() as directory:
