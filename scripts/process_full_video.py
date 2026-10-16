@@ -56,6 +56,7 @@ DEFAULT_SUBTITLE_LAYOUT = "default"
 KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
 ROSE_GARDEN_SUBTITLE_LAYOUT = "rose-garden-source-aware-bilingual"
 ROSE_CAPTION_SAFE_WIDTH_PERCENT = 68
+ASS_TIMESTAMP_ROUNDING_TOLERANCE_MS = 5
 ROSE_CAPTION_POSITIONS = {
     "top": (8, 42),
     "center": (30, 64),
@@ -1625,8 +1626,10 @@ def _verify_rose_garden_ass(
         )
         if (
             caption.layer != (1 if has_mask else 0)
-            or caption.start != round(cue.start * 1000)
-            or caption.end != round(cue.end * 1000)
+            or abs(caption.start - round(cue.start * 1000))
+            > ASS_TIMESTAMP_ROUNDING_TOLERANCE_MS
+            or abs(caption.end - round(cue.end * 1000))
+            > ASS_TIMESTAMP_ROUNDING_TOLERANCE_MS
             or expected_position not in caption.text
         ):
             raise RuntimeError(
