@@ -240,14 +240,19 @@ class EventWorkbookTests(unittest.TestCase):
         self.assertIn("Production run 38868029978 used main SHA c6f3931", rose_evidence)
         self.assertIn("English cue 15 at 180.030s", rose_evidence)
         self.assertIn("Audit, finalization, artifact upload, and Pages deployment were skipped", rose_evidence)
-        self.assertIn("Private artifact-only run 38895767927 on current main 775c90e8", rose_evidence)
-        self.assertIn("render was in progress and artifact upload pending at last read", rose_evidence)
+        self.assertIn("Private artifact-only run 38895767927 on main 775c90e8 completed with failure at 12:37:22Z", rose_evidence)
+        self.assertIn("all 375 subtitle cues were translated", rose_evidence)
+        self.assertIn("`_verify_rose_garden_ass` rejected caption geometry for cue 259", rose_evidence)
+        self.assertIn("Private artifact upload and review-state labeling were skipped", rose_evidence)
+        self.assertIn("neither failed run produced a verified new artifact", rose_evidence)
+        self.assertIn("M3 has been asked to fix cue 259 and add regression coverage", rose_evidence)
         self.assertIn("does not require the event-time/timezone or source-lineage URLs", rose_evidence)
         self.assertIn("logged both as empty and still passed validation", rose_evidence)
         self.assertIn("general https://www.whitehouse.gov/copyright/ page, not verified source-specific reuse evidence", rose_evidence)
         self.assertIn("operator confirmation do not establish source-specific reuse rights", rose_evidence)
         self.assertIn("source timecode/provenance=not_verified", rose_evidence)
-        self.assertIn("No new successful artifact or production release is verified; production remains incomplete", rose_evidence)
+        self.assertIn("neither failed run produced a verified new artifact", rose_evidence)
+        self.assertIn("Production remains incomplete", rose_evidence)
         second_user_lead = next(
             row
             for row in candidate_rows[1:]
