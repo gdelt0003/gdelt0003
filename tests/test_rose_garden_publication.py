@@ -201,6 +201,10 @@ class RoseGardenPublicationReviewTests(unittest.TestCase):
         )
         self.assertEqual(rose["event_date"], "2026-10-15")
         self.assertEqual(
+            rose["source_details_url"],
+            "events/rose-garden-lunch-2026-10-15/sources.html",
+        )
+        self.assertEqual(
             rose["video_url"],
             f"{release_url}/RoseGardenLunch-IySF_8OArvw-bilingual.mp4",
         )

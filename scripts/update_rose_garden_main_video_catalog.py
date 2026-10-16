@@ -50,7 +50,7 @@ def update_main_video_catalog(
             "publisher": "GDELT · Rose Garden bilingual review render",
             "video_url": f"{release_url}/{VIDEO_FILE}",
             "source_url": SOURCE_URL,
-            "source_details_url": "events/rose-garden-lunch-2026-10-15/",
+            "source_details_url": "events/rose-garden-lunch-2026-10-15/sources.html",
             "review_status": (
                 "五项构建后复核声明及其 HTTPS 证据已记录并绑定本次 MP4；"
                 "这仍是外部审查草稿，不代表最终发布批准。"
