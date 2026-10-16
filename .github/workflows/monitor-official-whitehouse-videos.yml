@@ -67,7 +67,7 @@ jobs:
         id: poll
         continue-on-error: true
         run: |
-          python scripts/monitor_official_whitehouse_videos.py \
+          python -m scripts.monitor_official_whitehouse_videos \
             --state-file "$RUNNER_TEMP/official-video-monitoring/state.json" \
             --run-file "$RUNNER_TEMP/official-video-monitoring/runs/${GITHUB_RUN_ID}.json" \
             --run-id "$GITHUB_RUN_ID" \
@@ -80,6 +80,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          for required_file in \
+            "$RUNNER_TEMP/official-video-monitoring/state.json" \
+            "$RUNNER_TEMP/official-video-monitoring/runs/${GITHUB_RUN_ID}.json"; do
+            if [ ! -f "$required_file" ]; then
+              echo "Required monitor output is missing: $required_file" >&2
+              exit 1
+            fi
+          done
           if [ "${{ steps.load_state.outputs.exists }}" = "true" ]; then
             git fetch --no-tags origin "$STATE_BRANCH"
             git checkout -B "$STATE_BRANCH" FETCH_HEAD
