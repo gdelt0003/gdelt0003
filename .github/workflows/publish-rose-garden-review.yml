@@ -187,9 +187,6 @@ jobs:
           SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
           ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
           MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
-          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
-          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
-          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
           SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
           SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
           FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
