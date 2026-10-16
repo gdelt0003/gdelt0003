@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Prepare diagnostics
         id: prepare_diagnostics
@@ -414,117 +414,6 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Require every render and artifact stage to succeed before publication
-        id: publication_gate
-        if: always()
-        env:
-          CHECKOUT: ${{ steps.checkout.outcome }}
-          PYTHON: ${{ steps.setup_python.outcome }}
-          FFMPEG: ${{ steps.install_ffmpeg.outcome }}
-          INPUTS: ${{ steps.input_validation.outcome }}
-          SOURCE: ${{ steps.source_download.outcome }}
-          DEPENDENCIES: ${{ steps.install_dependencies.outcome }}
-          RENDER: ${{ steps.render_video.outcome }}
-          AUDIT: ${{ steps.validate_audit.outcome }}
-          MANIFEST: ${{ steps.finalize_manifest.outcome }}
-          BUNDLE: ${{ steps.validate_bundle.outcome }}
-          ARTIFACT: ${{ steps.upload_bundle.outcome }}
-        run: |
-          for stage in \
-            "$CHECKOUT" "$PYTHON" "$FFMPEG" "$INPUTS" "$SOURCE" \
-            "$DEPENDENCIES" "$RENDER" "$AUDIT" "$MANIFEST" "$BUNDLE" "$ARTIFACT"; do
-            if [[ "$stage" != "success" ]]; then
-              echo "Publication blocked: every authorization, source, render, audit, manifest, and artifact stage must succeed." >&2
-              exit 1
-            fi
-          done
-        shell: bash
-
-      - name: Publish derived review assets to a public prerelease
-        id: publish_release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PUBLICATION_GATE: ${{ steps.publication_gate.outcome }}
-        run: |
-          if [[ "$PUBLICATION_GATE" != "success" ]]; then
-            echo "Publication gate did not succeed; refusing to publish." >&2
-            exit 1
-          fi
-          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
-          tag="rose-garden-lunch-review"
-          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. The source-aware caption region and any Rose-only banner mask are described with exact source/mask BBoxes, per-edge padding, and output resolution in the manifest. A mask, when selected, covers only the human-verified source lower-third BBox plus the recorded 1-5px per edge; the original source remains unchanged and the derivative is masked_not_clean. Independent rights, source-frame, source/event match, source URL-to-release lineage, ASR, and translation review remain pending; this is not final approval."
-          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release edit "$tag" \
-              --repo "$GITHUB_REPOSITORY" \
-              --title "Rose Garden Lunch bilingual review draft" \
-              --notes "$notes" \
-              --prerelease
-          else
-            gh release create "$tag" \
-              --repo "$GITHUB_REPOSITORY" \
-              --target "$GITHUB_SHA" \
-              --title "Rose Garden Lunch bilingual review draft" \
-              --notes "$notes" \
-              --prerelease
-          fi
-          gh release upload "$tag" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en.srt" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt" \
-            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass" \
-            "$RUNNER_TEMP/rose-garden-output/manifest.json" \
-            "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
-            --repo "$GITHUB_REPOSITORY" \
-            --clobber
-
-      - name: Verify public MP4 release asset is present and nonempty
-        id: verify_public_asset
-        env:
-          GH_TOKEN: ${{ github.token }}
-          MANIFEST_PATH: ${{ runner.temp }}/rose-garden-output/manifest.json
-        run: |
-          gh release view rose-garden-lunch-review \
-            --repo "$GITHUB_REPOSITORY" \
-            --json assets \
-            > "$RUNNER_TEMP/rose-garden-diagnostics/release-assets.json"
-          python - "$RUNNER_TEMP/rose-garden-diagnostics/release-assets.json" <<'PY'
-          import json
-          import os
-          import sys
-
-          assets = json.load(open(sys.argv[1], encoding="utf-8"))["assets"]
-          expected = "RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
-          asset = next((item for item in assets if item["name"] == expected), None)
-          if asset is None or asset["size"] <= 0:
-              raise SystemExit(f"Public release is missing a nonempty {expected}.")
-          with open(os.environ["MANIFEST_PATH"], encoding="utf-8") as source:
-              manifest = json.load(source)
-          rendered = manifest["rendered_video"]
-          expected_digest = f"sha256:{rendered['sha256']}"
-          if asset["size"] != rendered["size_bytes"] or asset["digest"] != expected_digest:
-              raise SystemExit(
-                  f"Public MP4 does not match manifest size/hash: "
-                  f"{asset['size']} bytes, {asset['digest']}"
-              )
-          print(f"Public release MP4: {asset['name']} ({asset['size']} bytes)")
-          print(f"Public release MP4 SHA-256: {rendered['sha256']}")
-          ass_name = manifest["subtitle_ass_file"]
-          ass_asset = next((item for item in assets if item["name"] == ass_name), None)
-          expected_ass_digest = f"sha256:{manifest['subtitle_ass_sha256']}"
-          if (
-              ass_asset is None
-              or ass_asset["size"] <= 0
-              or ass_asset["digest"] != expected_ass_digest
-          ):
-              raise SystemExit(
-                  "Public release is missing the manifest-verified caption ASS."
-              )
-          print(f"Public release ASS: {ass_name} ({ass_asset['size']} bytes)")
-          PY
-        shell: bash
-
       - name: Collect render diagnostics
         id: collect_diagnostics
         if: always()
@@ -562,8 +451,6 @@ jobs:
           MANIFEST: ${{ steps.finalize_manifest.outcome }}
           BUNDLE: ${{ steps.validate_bundle.outcome }}
           ARTIFACT: ${{ steps.upload_bundle.outcome }}
-          PUBLISH: ${{ steps.publish_release.outcome }}
-          PUBLIC_ASSET: ${{ steps.verify_public_asset.outcome }}
           DIAGNOSTICS: ${{ steps.upload_diagnostics.outcome }}
           MP4_PATH: ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
           MANIFEST_PATH: ${{ runner.temp }}/rose-garden-output/manifest.json
@@ -597,9 +484,7 @@ jobs:
             "operation audit:$AUDIT" \
             "manifest:$MANIFEST" \
             "nonempty bundle:$BUNDLE" \
-            "unique artifact:$ARTIFACT" \
-            "public release:$PUBLISH" \
-            "public asset verification:$PUBLIC_ASSET"; do
+            "private artifact:$ARTIFACT"; do
             stage="${status%%:*}"
             outcome="${status#*:}"
             if [[ "$outcome" != "success" ]]; then
@@ -607,12 +492,13 @@ jobs:
             fi
           done
           {
-            echo "## Rose Garden public review render"
+            echo "## Rose Garden private review render"
             echo
             echo "- Run: [${GITHUB_RUN_ID}](${RUN_URL})"
             echo "- Event: \`rose-garden-lunch-2026-10-15\`"
             echo "- Source: \`RoseGardenLunch-IySF_8OArvw.mp4\` (\`e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73\`)"
-            echo "- Public rights/review state: requester authorization recorded; independent rights, source-frame, event-match, ASR, and translation reviews remain pending."
+            echo "- Publication state: private Actions artifact plus a separate public Pages review preview; no public Release is created or changed."
+            echo "- Review state: the Pages preview is clearly pending; source-frame, event-match, rights, ASR, and translation checks remain unverified."
             echo
             echo "| Stage | Outcome |"
             echo "| --- | --- |"
@@ -626,9 +512,7 @@ jobs:
             echo "| Operation audit | ${AUDIT:-not started} |"
             echo "| Manifest/provenance | ${MANIFEST:-not started} |"
             echo "| Nonempty output bundle | ${BUNDLE:-not started} |"
-            echo "| Unique MP4/manifest/audit artifact | ${ARTIFACT:-not started} |"
-            echo "| Public release upload | ${PUBLISH:-not started} |"
-            echo "| Public release MP4 verification | ${PUBLIC_ASSET:-not started} |"
+            echo "| Private MP4/manifest/audit artifact | ${ARTIFACT:-not started} |"
             echo "| Diagnostic artifact | ${DIAGNOSTICS:-not started} |"
             echo
             echo "- Unique artifact name: \`${ARTIFACT_NAME}\` (step outcome: ${ARTIFACT:-not started})"
@@ -639,17 +523,18 @@ jobs:
             if (( ${#blockers[@]} )); then
               echo "- **Failure/blocker:** ${blockers[*]}"
             else
-              echo "- **Failure/blocker:** none; render, validation, artifact, and public release verification succeeded."
+              echo "- **Failure/blocker:** none; render and private artifact validation succeeded."
             fi
-            echo "- Pages deployment runs only after this render job and its public MP4 verification succeed."
+            echo "- Public Release creation is a separate workflow and requires five post-build review passes and protected-environment approval."
           } >> "$GITHUB_STEP_SUMMARY"
         shell: bash
 
-  deploy-pages:
+  deploy-review-preview:
     needs: render
-    if: always()
+    if: needs.render.result == 'success'
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: read
       pages: write
       id-token: write
@@ -660,61 +545,46 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Require successful render before deployment
-        id: deployment_gate
-        env:
-          RENDER_RESULT: ${{ needs.render.result }}
-        run: |
-          if [[ "$RENDER_RESULT" != "success" ]]; then
-            echo "Pages deployment blocked because the render job outcome was $RENDER_RESULT."
-          fi
-        shell: bash
+      - name: Download this run's private render artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rose-garden-review-run-${{ github.run_id }}
+          path: ${{ runner.temp }}/rose-garden-preview
 
-      - name: Check out the published site
-        if: needs.render.result == 'success'
-        id: site_checkout
+      - name: Check out the pending review page
         uses: actions/checkout@v4
 
-      - name: Upload Pages artifact
-        if: needs.render.result == 'success'
-        id: upload_pages
+      - name: Prepare pending public Pages preview
+        run: |
+          python scripts/prepare_rose_garden_review_preview.py \
+            --artifact-dir "$RUNNER_TEMP/rose-garden-preview" \
+            --site-dir "$GITHUB_WORKSPACE" \
+            --render-run-id "$GITHUB_RUN_ID"
+        shell: bash
+
+      - name: Upload Pages review preview
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
-      - name: Deploy to GitHub Pages
-        if: needs.render.result == 'success'
+      - name: Deploy pending review preview to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Write Pages deployment outcome summary
-        id: deployment_summary
+      - name: Write Pages preview deployment summary
         if: always()
         env:
-          RENDER_RESULT: ${{ needs.render.result }}
-          GATE_RESULT: ${{ steps.deployment_gate.outcome }}
-          CHECKOUT_RESULT: ${{ steps.site_checkout.outcome }}
-          UPLOAD_RESULT: ${{ steps.upload_pages.outcome }}
           DEPLOY_RESULT: ${{ steps.deployment.outcome }}
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          blocker="none"
-          if [[ "$RENDER_RESULT" != "success" ]]; then
-            blocker="blocked: render job outcome was $RENDER_RESULT; no Pages artifact was uploaded or deployed"
-          elif [[ "$DEPLOY_RESULT" != "success" ]]; then
-            blocker="Pages deployment did not succeed (outcome: ${DEPLOY_RESULT:-not started})"
-          fi
           {
-            echo "## Rose Garden Pages deployment"
+            echo "## Rose Garden pending Pages review preview"
             echo
-            echo "- Run: [${GITHUB_RUN_ID}](${RUN_URL})"
-            echo "- Render job: ${RENDER_RESULT}"
-            echo "- Render gate: ${GATE_RESULT:-not started}"
-            echo "- Site checkout: ${CHECKOUT_RESULT:-not started}"
-            echo "- Pages artifact upload: ${UPLOAD_RESULT:-not started}"
-            echo "- Pages deploy: ${DEPLOY_RESULT:-not started}"
-            echo "- Deployment URL: ${PAGE_URL:-not deployed}"
-            echo "- Failure/blocker: ${blocker}"
+            echo "- Render run: [${GITHUB_RUN_ID}](${RUN_URL})"
+            echo "- Pages deployment: ${DEPLOY_RESULT:-not started}"
+            echo "- URL: ${PAGE_URL:-not deployed}"
+            echo "- This is a public, unreviewed preview only. It does not create or alter a GitHub Release."
+            echo "- Five distinct post-build HTTPS evidence URLs and protected-environment approval remain required before Release publication."
           } >> "$GITHUB_STEP_SUMMARY"
         shell: bash

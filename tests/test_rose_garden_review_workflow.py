@@ -132,11 +132,9 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             base64.b64encode(Path(f"{payload}.sig").read_bytes()).decode("ascii"),
         )
 
-    def test_workflow_pins_cloud_source_and_only_deploys_after_render(self):
+    def test_render_workflow_only_builds_private_artifacts(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        render = workflow.split("  render:", maxsplit=1)[1].split(
-            "\n  deploy-pages:", maxsplit=1
-        )[0]
+        render = workflow.split("  render:", maxsplit=1)[1]
 
         self.assertIn("runs-on: ubuntu-latest", render)
         self.assertIn("GITHUB_REF", render)
@@ -194,9 +192,17 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         ):
             self.assertIn(arg, render)
         self.assertIn("verify_operation_audit.py", render)
-        self.assertIn("needs: render", workflow)
+        self.assertNotIn("gh release create", workflow)
+        self.assertNotIn("gh release upload", workflow)
         self.assertIn("actions/deploy-pages@v4", workflow)
-        self.assertIn("--prerelease", render)
+        self.assertIn("upload-pages-artifact", workflow)
+        self.assertIn("deploy-review-preview:", workflow)
+        preview = workflow.split("  deploy-review-preview:", maxsplit=1)[1]
+        self.assertIn("needs: render", preview)
+        self.assertIn("needs.render.result == 'success'", preview)
+        self.assertIn("prepare_rose_garden_review_preview.py", preview)
+        self.assertIn("Five distinct post-build HTTPS evidence URLs", preview)
+        self.assertIn("contents: read", workflow)
         self.assertIn("--event-identity-evidence-url", render)
         self.assertIn("--event-match-evidence-url", render)
         self.assertIn("--event-time-timezone-evidence-url", render)
@@ -234,7 +240,6 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             WORKFLOW.parents[2] / "scripts" / "verify_rose_garden_review.py"
         ).read_text(encoding="utf-8"))
         self.assertIn("name: rose-garden-review-run-${{ github.run_id }}", render)
-        self.assertIn("Require every render and artifact stage to succeed before publication", render)
         self.assertIn("GITHUB_STEP_SUMMARY", render)
         self.assertIn("Collect render diagnostics", render)
         self.assertIn("Upload per-run diagnostics", render)
@@ -250,22 +255,13 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "steps.finalize_manifest.outcome",
             "steps.validate_bundle.outcome",
             "steps.upload_bundle.outcome",
-            "steps.publish_release.outcome",
-            "steps.verify_public_asset.outcome",
             "steps.upload_diagnostics.outcome",
         ):
             with self.subTest(outcome=outcome):
                 self.assertIn(outcome, render)
         self.assertIn("rose-garden-review-run-${{ github.run_id }}", render)
         self.assertIn("Failure/blocker:", render)
-        deploy = workflow.split("  deploy-pages:", maxsplit=1)[1]
-        self.assertIn("if: always()", deploy)
-        self.assertIn("needs.render.result == 'success'", deploy)
-        self.assertIn("Upload Pages artifact", deploy)
-        self.assertIn("Deploy to GitHub Pages", deploy)
-        self.assertIn("steps.deployment.outputs.page_url", deploy)
-        self.assertIn("Write Pages deployment outcome summary", deploy)
-        self.assertIn("Failure/blocker:", deploy)
+        self.assertIn("private Actions artifact plus a separate public Pages review preview", render)
 
     def test_optional_evidence_inputs_can_be_omitted_from_workflow_dispatch(self):
         inputs = WORKFLOW.read_text(encoding="utf-8").split("\njobs:", maxsplit=1)[0]

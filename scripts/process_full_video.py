@@ -62,6 +62,14 @@ ROSE_CAPTION_POSITIONS = {
 }
 
 
+def _rose_garden_review_module():
+    if __package__:
+        from . import verify_rose_garden_review
+    else:
+        import verify_rose_garden_review
+    return verify_rose_garden_review
+
+
 @dataclass(frozen=True)
 class Cue:
     start: float
@@ -918,10 +926,7 @@ def require_trusted_mask_review(
 ) -> dict[str, str] | None:
     if position != "mask-lower-third":
         return None
-    if __package__:
-        from . import verify_rose_garden_review
-    else:
-        import verify_rose_garden_review
+    verify_rose_garden_review = _rose_garden_review_module()
 
     if frame_review_mode == "unverified-review-draft":
         if source_frame_review_record_json not in {"", "{}"} or source_frame_review_signature:
@@ -1933,9 +1938,8 @@ def verify_cues(
     visual = visual_review or {}
     still_measurement = None
     if allow_unverified_estimate:
-        from scripts.verify_rose_garden_review import user_provided_still_measurement
-
-        still_measurement = user_provided_still_measurement()
+        verify_rose_garden_review = _rose_garden_review_module()
+        still_measurement = verify_rose_garden_review.user_provided_still_measurement()
 
     def review_count(field: str) -> int:
         value = review.get(field, 0)
@@ -2536,13 +2540,15 @@ def main() -> None:
     )
     user_still_measurement = None
     if allow_unverified_estimate:
-        from scripts.verify_rose_garden_review import (
-            user_provided_still_measurement,
-            user_still_source_graphics_regions,
+        verify_rose_garden_review = _rose_garden_review_module()
+        user_still_measurement = (
+            verify_rose_garden_review.user_provided_still_measurement()
         )
-
-        user_still_measurement = user_provided_still_measurement()
-        source_graphics_regions = user_still_source_graphics_regions(width, height)
+        source_graphics_regions = (
+            verify_rose_garden_review.user_still_source_graphics_regions(
+                width, height
+            )
+        )
     trusted_frame_review_evidence = (
         {
             "record": json.loads(args.source_frame_review_record_json),

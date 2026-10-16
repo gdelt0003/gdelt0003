@@ -106,10 +106,33 @@ from pathlib import Path
 sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
 import process_full_video
 import verify_rose_garden_review
+assert process_full_video._rose_garden_review_module() is verify_rose_garden_review
+regions = verify_rose_garden_review.user_still_source_graphics_regions(1920, 1080)
+report = process_full_video.verify_cues(
+    [process_full_video.Cue(0, 3, "A sentence.", "一句话。")],
+    duration=10,
+    width=1920,
+    height=1080,
+    layout_profile=process_full_video.ROSE_GARDEN_SUBTITLE_LAYOUT,
+    caption_position="mask-lower-third",
+    source_graphics_regions=regions,
+    occlusion_exception_authorized=True,
+    mask_padding_px_per_edge=2,
+    allow_unverified_estimate=True,
+)
+assert (
+    report["subtitle_readability"]["source_graphics_review"]["measurement_status"]
+    == "unverified_still_estimate"
+)
 verify_rose_garden_review.SOURCE_SHA256 = "expected"
 verify_rose_garden_review.SOURCE_SIZE_BYTES = 1
 verify_rose_garden_review.file_sha256_and_size = lambda _: ("expected", 1)
 verify_rose_garden_review.user_still_source_graphics_regions = lambda *_: []
+measurement = (
+    process_full_video._rose_garden_review_module()
+    .user_provided_still_measurement()
+)
+assert measurement["measurement_status"] == "unverified_still_estimate"
 result = process_full_video.require_trusted_mask_review(
     "mask-lower-third",
     source_path=Path("fixture.mp4"),
@@ -124,6 +147,8 @@ result = process_full_video.require_trusted_mask_review(
 )
 assert result["source_frame_review"] == "pending"
 assert result["production_bbox_input"] == "false"
+source = Path(sys.argv[1], "scripts", "process_full_video.py")
+assert "from scripts." not in source.read_text(encoding="utf-8")
 """
         with tempfile.TemporaryDirectory() as temp:
             result = subprocess.run(
