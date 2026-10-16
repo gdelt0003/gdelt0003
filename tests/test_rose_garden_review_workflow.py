@@ -103,6 +103,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "--occlusion-exception-authorized",
             "--validate-layout-inputs",
             "--validate-review-gates",
+            "--caption-position",
             "--source-frame-review-record-json",
         ):
             self.assertIn(arg, render)
@@ -193,8 +194,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         }
         self.assertEqual(review.validate_layout_inputs(**valid), self.SOURCE_GRAPHICS)
         failures = (
-            ({"source_graphics_regions_json": "[]"}, "no defaults"),
-            ({"caption_safe_region_reviewed": False}, "Human review"),
+            ({"source_graphics_regions_json": "[]"}, "real production source-banner BBox"),
+            ({"caption_safe_region_reviewed": False}, "human review"),
             ({"rose_mask_authorized": False}, "explicit Rose exception"),
             ({"mask_padding_px_per_edge": 0}, "integer from 1 to 5"),
             ({"mask_padding_px_per_edge": 6}, "integer from 1 to 5"),
@@ -221,41 +222,107 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             ):
                 review.validate_layout_inputs(**(valid | mutation))
 
-    def test_review_gates_block_pending_and_untrusted_source_frame_evidence(self):
+    def test_review_gates_allow_nonmask_layout_with_frame_review_pending(self):
         frame_record = {
             "reviewer_identity": "reviewer@example.org",
             "reviewed_at": "2026-10-16T02:00:00Z",
             "source_timecode": "00:10:30.000",
             "source_resolution": {"width": 1920, "height": 1080},
             "source_banner_bbox_px": {
-                "left": 100,
-                "top": 740,
-                "right": 1820,
-                "bottom": 1040,
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
             },
             "evidence_ref": "https://example.org/review/123",
+            "source_sha256": review.SOURCE_SHA256,
         }
         values = {
+            "caption_position": "top",
             "independent_rights_review_passed": True,
             "event_match_review_passed": True,
             "event_time_timezone_review_passed": True,
             "source_lineage_review_passed": True,
             "source_frame_review_record_json": json.dumps(frame_record),
+            "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
             "dispatch_actor": "publisher",
             "rights_evidence_url": "https://example.org/rights",
             "event_match_evidence_url": "https://example.org/event-match",
             "event_time_timezone_evidence_url": "https://example.org/event-time",
             "source_lineage_evidence_url": "https://example.org/lineage",
         }
-        pending = values | {"independent_rights_review_passed": False}
-        with self.assertRaisesRegex(RuntimeError, "independent_rights_review_passed"):
-            review.validate_review_gates(**pending)
+        layout = {
+            "caption_position": "top",
+            "caption_safe_region_reviewed": False,
+            "source_graphics_regions_json": "[]",
+            "rose_mask_authorized": False,
+            "mask_padding_px_per_edge": 2,
+        }
+        self.assertEqual(review.validate_layout_inputs(**layout), [])
+        self.assertEqual(
+            review.validate_review_gates(
+                **(values | {"source_frame_review_record_json": "{}"})
+            ),
+            {
+                "source_frame_review": "pending",
+                "production_bbox_input": "false",
+            },
+        )
 
-        missing = values | {"source_frame_review_record_json": "{}"}
+        pending = values | {
+            "independent_rights_review_passed": False,
+            "event_match_review_passed": False,
+            "event_time_timezone_review_passed": False,
+            "source_lineage_review_passed": False,
+            "rights_evidence_url": "",
+            "event_match_evidence_url": "",
+            "event_time_timezone_evidence_url": "",
+            "source_lineage_evidence_url": "",
+        }
+        self.assertEqual(
+            review.validate_review_gates(
+                **(pending | {"source_frame_review_record_json": "{}"})
+            ),
+            {
+                "source_frame_review": "pending",
+                "production_bbox_input": "false",
+            },
+        )
+
+    def test_mask_review_gate_requires_bbox_and_keeps_untrusted_review_pending(self):
+        frame_record = {
+            "reviewer_identity": "reviewer@example.org",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
+            },
+            "evidence_ref": "https://example.org/review/123",
+            "source_sha256": review.SOURCE_SHA256,
+        }
+        values = {
+            "caption_position": "mask-lower-third",
+            "independent_rights_review_passed": True,
+            "event_match_review_passed": True,
+            "event_time_timezone_review_passed": True,
+            "source_lineage_review_passed": True,
+            "source_frame_review_record_json": "{}",
+            "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
+            "dispatch_actor": "publisher",
+            "rights_evidence_url": "https://example.org/rights",
+            "event_match_evidence_url": "https://example.org/event-match",
+            "event_time_timezone_evidence_url": "https://example.org/event-time",
+            "source_lineage_evidence_url": "https://example.org/lineage",
+        }
         with self.assertRaisesRegex(RuntimeError, "reviewer, timestamp"):
-            review.validate_review_gates(**missing)
+            review.validate_review_gates(**values)
 
-        with self.assertRaisesRegex(RuntimeError, "no approved controlled cloud"):
+        values["source_frame_review_record_json"] = json.dumps(frame_record)
+        with self.assertRaisesRegex(RuntimeError, "only an operator attestation"):
             review.validate_review_gates(**values)
 
         out_of_bounds = dict(frame_record)
@@ -265,7 +332,10 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(RuntimeError, "out of bounds"):
             review.validate_review_gates(
-                **(values | {"source_frame_review_record_json": json.dumps(out_of_bounds)})
+                **(
+                    values
+                    | {"source_frame_review_record_json": json.dumps(out_of_bounds)}
+                )
             )
 
         same_reviewer = dict(frame_record)
@@ -319,11 +389,13 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             )
         with self.assertRaisesRegex(RuntimeError, "reviewer, timestamp"):
             review.validate_review_gates(
+                caption_position="mask-lower-third",
                 independent_rights_review_passed=True,
                 event_match_review_passed=True,
                 event_time_timezone_review_passed=True,
                 source_lineage_review_passed=True,
                 source_frame_review_record_json=json.dumps(measurement),
+                source_graphics_regions_json="[]",
                 dispatch_actor="publisher",
                 rights_evidence_url="https://example.org/rights",
                 event_match_evidence_url="https://example.org/event",

@@ -30,6 +30,7 @@ from scripts.process_full_video import (
     timestamp,
     validate_asset_prefix,
     parse_source_graphics_regions,
+    require_trusted_mask_review,
     rose_caption_region,
     validate_rose_caption_placement,
     validate_release_asset_size,
@@ -227,7 +228,11 @@ class FullVideoSubtitleTests(unittest.TestCase):
         )
         readability = report["subtitle_readability"]
         self.assertEqual(readability["layout_configuration"], "passed")
-        self.assertEqual(readability["caption_region_validation"], "passed")
+        self.assertEqual(readability["caption_region_validation"], "not_verified")
+        self.assertEqual(readability["caption_position_review"], "pending")
+        self.assertEqual(readability["source_graphics_review"]["status"], "not_verified")
+        self.assertEqual(readability["source_graphics_review"]["review_status"], "pending")
+        self.assertFalse(readability["source_graphics_review"]["production_bbox_input"])
         self.assertEqual(readability["caption_region_height_percent"], 30.4)
         self.assertEqual(readability["horizontal_safe_width_percent"], 68)
         self.assertEqual(readability["max_lines_per_language"], 2)
@@ -269,6 +274,29 @@ class FullVideoSubtitleTests(unittest.TestCase):
                     mask_padding_px_per_edge=2,
                 )
 
+    def test_rose_nonmask_layout_is_computable_without_bbox_but_stays_unreviewed(self):
+        report = verify_cues(
+            [Cue(1, 3, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="top",
+            caption_safe_region_reviewed=False,
+            source_graphics_regions=[],
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["caption_region_validation"], "not_verified")
+        self.assertEqual(readability["caption_position_review"], "pending")
+        self.assertEqual(readability["source_graphics_review"]["status"], "not_verified")
+        self.assertEqual(readability["source_graphics_review"]["review_status"], "pending")
+        self.assertFalse(readability["source_graphics_review"]["production_bbox_input"])
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
+        self.assertEqual(
+            readability["caption_band_occlusion"]["status"],
+            "non_mask_layout_selected",
+        )
+
     def test_rose_source_graphics_bbox_and_authorization_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "no defaults"):
             parse_source_graphics_regions("[]")
@@ -302,8 +330,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
                 )
         for position, reviewed, authorized, graphics, expected in (
             ("mask-lower-third", True, False, regions, "explicit Rose Garden"),
-            ("top", False, False, regions, "human must confirm"),
-            ("top", True, False, [], "exactly one lower-third"),
+            ("mask-lower-third", False, True, [], "lower-third/ticker box"),
         ):
             with self.subTest(position=position, authorized=authorized), self.assertRaisesRegex(
                 ValueError, expected
@@ -328,14 +355,24 @@ class FullVideoSubtitleTests(unittest.TestCase):
                 "height": 0.1,
             },
         ]
-        with self.assertRaisesRegex(ValueError, "intersects protected"):
+        self.assertEqual(
             validate_rose_caption_placement(
                 width=1920,
                 height=1080,
                 position="top",
-                safe_region_reviewed=True,
+                safe_region_reviewed=False,
                 source_graphics_regions=overlapping,
-            )
+            ),
+            rose_caption_region(1920, 1080, "top"),
+        )
+
+    def test_untrusted_claimed_bbox_cannot_enter_production_mask_render(self):
+        claimed_region = json.dumps(self.ROSE_SOURCE_GRAPHICS)
+        self.assertTrue(
+            parse_source_graphics_regions(claimed_region)[0]["human_verified"]
+        )
+        with self.assertRaisesRegex(RuntimeError, "no trusted controlled-cloud"):
+            require_trusted_mask_review("mask-lower-third")
         out_of_frame = [
             {
                 "label": "source-lower-third",

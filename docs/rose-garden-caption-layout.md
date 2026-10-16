@@ -120,15 +120,30 @@ do not infer or fabricate a source banner BBox from event metadata or old probe
 logs. Synthetic geometry fixtures are test data only and must never be used as
 production render inputs.
 
-The current production workflow therefore fails closed even if a dispatch
-supplies review booleans and a syntactically complete frame-review record: no
-trusted verifier for that controlled route exists yet. Before enabling a
-production render, add a separately approved review mechanism that verifies
-reviewer identity, timestamp, source timecode, actual source resolution, pixel
-BBox, and its private evidence/approved-run reference. The rights, exact event
-and timezone match, and YouTube-to-release lineage gates also require evidence
-links and explicit completion; their current pending state blocks the workflow.
-No evidence-provider responsibility is assigned by this profile.
+The production workflow's requested default is `mask-lower-third`. A
+non-mask layout may be used only when explicitly selected; its geometric
+placement is computed, but visual clearance, caption-position, source-graphics,
+and source-frame review remain `pending`/`not_verified`, and
+`production_bbox_input` remains false. This is not a claim that the selected
+region is clear. Mask production rendering stays fail-closed until a separately
+approved controlled-cloud review mechanism verifies reviewer identity,
+timestamp, source timecode, actual source resolution, pixel BBox, and its
+evidence/approved-run reference. A supplied frame-review record or
+`human_verified` dispatch field alone is not trusted evidence. The renderer
+itself rejects production mask renders while that verifier is unavailable.
+Requester processing/publication authorization is a distinct confirmed
+operation authorization; rights, exact event/timezone match, and
+YouTube-to-release lineage remain pending review facts recorded in the draft,
+not preconditions for creating the authorized public review draft.
+
+Process correction: the earlier unconditional production-render rejection for
+the missing trusted frame/BBox verifier was an implementation constraint, not
+a user-imposed authorization requirement. It was incorrectly described as a
+user requirement; requester processing/publication authorization is confirmed.
+No global review-route gate blocks the authorized draft for pending rights,
+event, time, or source-lineage facts. The separate mask-specific production
+block remains because no trusted BBox review route is configured; those
+operator-supplied facts are not treated as authorization or trusted evidence.
 
 An optional CI-only SmartSub probe checks whether a pinned SmartSub CLI build
 can hard-burn a synthetic ASS fixture with this proposed mask geometry and

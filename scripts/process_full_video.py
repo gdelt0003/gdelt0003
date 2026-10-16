@@ -709,14 +709,19 @@ def rose_caption_region(
     }
 
 
-def parse_source_graphics_regions(raw_regions: str) -> list[dict[str, float | str]]:
+def parse_source_graphics_regions(
+    raw_regions: str,
+    *,
+    require_human_verified: bool = True,
+    allow_empty: bool = False,
+) -> list[dict[str, float | str | bool]]:
     try:
         regions = json.loads(raw_regions)
     except json.JSONDecodeError as error:
         raise ValueError("Source graphics regions must be valid JSON.") from error
-    if not isinstance(regions, list) or not regions:
+    if not isinstance(regions, list) or (not regions and not allow_empty):
         raise ValueError(
-            "Human-verified source graphics BBoxes are required; no defaults are inferred."
+            "Source graphics BBoxes are required for this layout; no defaults are inferred."
         )
     normalized = []
     labels = set()
@@ -726,7 +731,12 @@ def parse_source_graphics_regions(raw_regions: str) -> list[dict[str, float | st
         label = region.get("label")
         if not isinstance(label, str) or not label.strip() or label in labels:
             raise ValueError(f"Source graphics region {index} needs a unique label.")
-        if region.get("human_verified") is not True:
+        human_verified = region.get("human_verified", False)
+        if type(human_verified) is not bool:
+            raise ValueError(
+                f"Source graphics region {label!r} human_verified must be boolean."
+            )
+        if require_human_verified and human_verified is not True:
             raise ValueError(
                 f"Source graphics region {label!r} must be human-verified."
             )
@@ -755,14 +765,14 @@ def parse_source_graphics_regions(raw_regions: str) -> list[dict[str, float | st
             )
         labels.add(label)
         normalized.append(
-            {"label": label, "human_verified": True, **coordinates}
+            {"label": label, "human_verified": human_verified, **coordinates}
         )
     lower_thirds = [
         region
         for region in normalized
         if "lower-third" in str(region["label"]).lower()
     ]
-    if len(lower_thirds) != 1:
+    if require_human_verified and len(lower_thirds) != 1:
         raise ValueError(
             "Exactly one human-verified source lower-third BBox is required."
         )
@@ -807,10 +817,8 @@ def validate_rose_caption_placement(
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
 ) -> dict[str, int]:
-    if safe_region_reviewed is not True:
-        raise ValueError(
-            "A human must confirm the selected caption region is clear of source graphics."
-        )
+    if position not in ROSE_CAPTION_POSITIONS and position != "mask-lower-third":
+        raise ValueError(f"Unsupported Rose Garden caption position: {position!r}.")
     is_masking = position == "mask-lower-third"
     if is_masking != (occlusion_exception_authorized is True):
         raise ValueError(
@@ -823,6 +831,12 @@ def validate_rose_caption_placement(
         source_graphics_regions,
         mask_padding_px_per_edge,
     )
+    if not is_masking:
+        return region
+    if safe_region_reviewed is not True:
+        raise ValueError(
+            "Mask mode requires human review of the production source-banner BBox."
+        )
     lower_thirds = [
         protected for protected in source_graphics_regions
         if "lower-third" in str(protected["label"]).lower()
@@ -862,6 +876,14 @@ def validate_rose_caption_placement(
         if is_masking and is_mask_target and not intersects:
             raise ValueError("The authorized mask must cover the reviewed banner box.")
     return region
+
+
+def require_trusted_mask_review(position: str) -> None:
+    if position == "mask-lower-third":
+        raise RuntimeError(
+            "Mask production rendering is blocked: no trusted controlled-cloud "
+            "source-frame/BBox verifier is configured."
+        )
 
 
 def _estimated_text_width(text: str, font_size: int) -> float:
@@ -1882,7 +1904,12 @@ def verify_cues(
                 else None
             ),
             "caption_region_validation": (
-                "passed"
+                "not_verified"
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else "not_applicable"
+            ),
+            "caption_position_review": (
+                "pending"
                 if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
                 else "not_applicable"
             ),
@@ -1898,11 +1925,12 @@ def verify_cues(
             ),
             "source_graphics_review": (
                 {
-                    "status": "human_bbox_attestation_input",
-                    "review_status": "pending_independent_source_frame_review",
+                    "status": "not_verified",
+                    "review_status": "pending",
                     "controlled_cloud_review_route": (
                         "not_found_in_repository; confirmation_pending"
                     ),
+                    "production_bbox_input": False,
                     "source_resolution_px": {
                         "width": width,
                         "height": height,
@@ -1940,7 +1968,7 @@ def verify_cues(
                 if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
                 and caption_position == "mask-lower-third"
                 else {
-                    "status": "no_source_graphic_occlusion_intended",
+                    "status": "non_mask_layout_selected",
                     "original_source_unchanged": True,
                     "visual_review": "pending",
                 }
@@ -2301,8 +2329,13 @@ def main() -> None:
         help="Explicitly disable spoken-word highlighting.",
     )
     args = parser.parse_args()
+    require_trusted_mask_review(args.caption_position)
     source_graphics_regions = (
-        parse_source_graphics_regions(args.source_graphics_regions_json)
+        parse_source_graphics_regions(
+            args.source_graphics_regions_json,
+            require_human_verified=args.caption_position == "mask-lower-third",
+            allow_empty=args.caption_position != "mask-lower-third",
+        )
         if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
         else []
     )

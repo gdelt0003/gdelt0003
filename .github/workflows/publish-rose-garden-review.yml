@@ -49,17 +49,17 @@ on:
         required: true
         default: false
       rights_evidence_url:
-        description: HTTPS evidence for completed independent reuse-rights review; processing is blocked while empty or pending
+        description: Optional HTTPS rights evidence; independent rights review remains pending in the public draft
         type: string
         required: true
         default: ""
       independent_rights_review_passed:
-        description: Confirm independent reuse-rights review is complete and supported by the evidence URL
+        description: Operator attestation only; does not change pending review status or block this authorized draft
         type: boolean
         required: true
         default: false
       event_match_review_passed:
-        description: Confirm the source content has been matched to this exact event
+        description: Operator attestation only; event match remains pending in the public draft
         type: boolean
         required: true
         default: false
@@ -69,7 +69,7 @@ on:
         required: true
         default: ""
       event_time_timezone_review_passed:
-        description: Confirm exact event time and timezone
+        description: Operator attestation only; event time/timezone remain pending in the public draft
         type: boolean
         required: true
         default: false
@@ -79,7 +79,7 @@ on:
         required: true
         default: ""
       source_lineage_review_passed:
-        description: Confirm independent YouTube-to-source-release acquisition lineage
+        description: Operator attestation only; YouTube-to-release lineage remains pending in the public draft
         type: boolean
         required: true
         default: false
@@ -89,26 +89,26 @@ on:
         required: true
         default: ""
       source_frame_review_record_json:
-        description: Structured authorized cloud review evidence (reviewer, UTC timestamp, timecode, source resolution, pixel BBox, evidence reference); render remains blocked until a trusted review route is configured
+        description: Structured authorized cloud frame/BBox review evidence, required only for the Rose masking exception; non-occluding layouts keep frame review pending
         type: string
         required: true
         default: "{}"
       caption_position:
-        description: Human-reviewed clear caption area, or the explicitly authorized Rose banner mask
+        description: Selected caption area; defaults to the requested Rose lower-third mask
         type: choice
         options:
           - top
           - center
           - mask-lower-third
         required: true
-        default: top
+        default: mask-lower-third
       caption_safe_region_reviewed:
         description: Confirm the source graphics BBoxes and selected caption position were visually reviewed
         type: boolean
         required: true
         default: false
       source_graphics_regions_json:
-        description: Human-verified normalized source graphic BBoxes, including exactly one source lower-third
+        description: Actual source graphic BBoxes; masking requires a human-verified source lower-third BBox
         type: string
         required: true
         default: "[]"
@@ -116,7 +116,7 @@ on:
         description: Confirm use of the user-authorized Rose-only lower-third masking exception
         type: boolean
         required: true
-        default: false
+        default: true
       mask_padding_px_per_edge:
         description: Implementation-selected outward mask expansion per edge (1–5 output pixels; default 2)
         type: number
@@ -215,11 +215,13 @@ jobs:
           python scripts/verify_rose_garden_review.py "${layout_args[@]}"
           review_args=(
             --validate-review-gates
+            --caption-position "$CAPTION_POSITION"
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
             --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL"
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL"
             --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
             --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
             --dispatch-actor "$GITHUB_ACTOR"
           )
           if [[ "$INDEPENDENT_RIGHTS_REVIEW_PASSED" == "true" ]]; then
