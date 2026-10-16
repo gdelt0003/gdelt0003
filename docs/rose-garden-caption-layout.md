@@ -130,6 +130,14 @@ and timezone match, and YouTube-to-release lineage gates also require evidence
 links and explicit completion; their current pending state blocks the workflow.
 No evidence-provider responsibility is assigned by this profile.
 
+An optional CI-only SmartSub probe checks whether a pinned SmartSub CLI build
+can hard-burn a synthetic ASS fixture with this proposed mask geometry and
+inline positioning. It creates its own short test video under the runner's
+temporary directory and has read-only repository permissions. It does not
+read the Rose Garden source, validate any source-frame review, alter the
+production renderer, or authorize a production render. Its results are only
+an implementation compatibility test.
+
 A user-provided still measurement currently reports a 1920x1080 frame and
 half-open banner BBox `[68, 885, 1850, 1020)`. At the implementation-selected
 2 px per edge, its proposed mask BBox is `[66, 883, 1852, 1022)` (1786x139).
