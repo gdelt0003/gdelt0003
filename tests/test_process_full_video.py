@@ -29,6 +29,8 @@ from scripts.process_full_video import (
     bilingual_srt_text,
     copy_review_evidence,
     merge_sentence_fragments,
+    map_caption_box,
+    parse_caption_box,
     reflow_rose_garden_cues,
     reflow_cues,
     read_srt,
@@ -49,6 +51,8 @@ from scripts.spoken_word_highlighting import TimedWord
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
+    USER_CAPTION_BOX = (66, 883, 1852, 1022)
+
     ROSE_SOURCE_GRAPHICS = [
         {
             "label": "synthetic-source-lower-third-test-fixture",
@@ -366,6 +370,20 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
             "masked_not_clean",
         )
         self.assertEqual(readability["rose_source_evidence"]["event_match"], "pending")
+        metadata_search = readability["rose_source_evidence"]["metadata_search"]
+        self.assertEqual(metadata_search["queries"], 40)
+        self.assertEqual(metadata_search["raw_leads"], 18)
+        self.assertEqual(
+            metadata_search["qualifying_event_relevant_video_page_leads"],
+            0,
+        )
+        self.assertFalse(metadata_search["raw_leads_promoted_to_video_candidates"])
+        self.assertFalse(metadata_search["frames_or_audio_inspected"])
+        self.assertEqual(metadata_search["rights_or_content_review"], "not_performed")
+        self.assertIn(
+            "does not establish that no sources exist",
+            metadata_search["interpretation"],
+        )
 
     def test_rose_garden_ass_geometry_allows_centisecond_timestamp_rounding(self):
         cue = Cue(1.234, 3.456, "A complete English sentence.", "完整的一句话。")
@@ -818,6 +836,45 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
             readability["caption_band_occlusion"]["status"],
             "non_mask_layout_selected",
         )
+
+    def test_user_caption_box_scales_each_axis_proportionally(self):
+        reference = parse_caption_box("66,883,1852,1022")
+        self.assertEqual(reference, self.USER_CAPTION_BOX)
+        cases = (
+            ((1920, 1080), (66, 883, 1852, 1022)),
+            ((1280, 720), (44, 589, 1235, 681)),
+            ((3840, 2160), (132, 1766, 3704, 2044)),
+            ((2560, 1080), (88, 883, 2469, 1022)),
+        )
+        for (width, height), expected in cases:
+            with self.subTest(width=width, height=height):
+                self.assertEqual(
+                    map_caption_box(reference, width, height),
+                    expected,
+                )
+        for malformed in ("66,883,1852", "-1,0,10,10", "0,0,1921,10", "1,2,1,3"):
+            with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                parse_caption_box(malformed)
+
+    def test_user_caption_box_positions_captions_inside_its_bounds(self):
+        applied_box = map_caption_box(self.USER_CAPTION_BOX, 1920, 1080)
+        cue = Cue(1, 3, "Hello.", "你好。")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-custom-box.ass"
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_box=applied_box,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), 1)
+        center_x = round((applied_box[0] + applied_box[2]) / 2)
+        center_y = round((applied_box[1] + applied_box[3]) / 2)
+        self.assertIn(f"\\pos({center_x},{center_y})", rendered.events[0].text)
 
     def test_rose_source_graphics_bbox_and_authorization_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "no defaults"):

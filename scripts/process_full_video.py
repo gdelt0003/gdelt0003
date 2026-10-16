@@ -867,6 +867,66 @@ def _pixel_region(
     }
 
 
+CAPTION_BOX_REFERENCE_WIDTH = 1920
+CAPTION_BOX_REFERENCE_HEIGHT = 1080
+
+
+def parse_caption_box(value: str) -> tuple[int, int, int, int]:
+    try:
+        coordinates = tuple(int(part.strip()) for part in value.split(","))
+    except ValueError as error:
+        raise ValueError(
+            "Caption box must contain four comma-separated integer coordinates."
+        ) from error
+    if (
+        len(coordinates) != 4
+        or coordinates[0] < 0
+        or coordinates[1] < 0
+        or coordinates[2] <= coordinates[0]
+        or coordinates[3] <= coordinates[1]
+        or coordinates[2] > CAPTION_BOX_REFERENCE_WIDTH
+        or coordinates[3] > CAPTION_BOX_REFERENCE_HEIGHT
+    ):
+        raise ValueError(
+            "Caption box must be a non-empty half-open x1,y1,x2,y2 rectangle "
+            "inside the 1920x1080 reference frame."
+        )
+    return (
+        coordinates[0],
+        coordinates[1],
+        coordinates[2],
+        coordinates[3],
+    )
+
+
+def map_caption_box(
+    box: tuple[int, int, int, int],
+    width: int,
+    height: int,
+) -> tuple[int, int, int, int]:
+    if width <= 0 or height <= 0:
+        raise ValueError("Caption box mapping requires positive frame dimensions.")
+    left, top, right, bottom = box
+    return (
+        round(left * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(top * height / CAPTION_BOX_REFERENCE_HEIGHT),
+        round(right * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(bottom * height / CAPTION_BOX_REFERENCE_HEIGHT),
+    )
+
+
+def _caption_box_region(box: tuple[int, int, int, int]) -> dict[str, int]:
+    left, top, right, bottom = box
+    return {
+        "left": left,
+        "top": top,
+        "right": right,
+        "bottom": bottom,
+        "width": right - left,
+        "height": bottom - top,
+    }
+
+
 def rose_caption_region(
     width: int,
     height: int,
@@ -874,7 +934,10 @@ def rose_caption_region(
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
+    if caption_box is not None:
+        return _caption_box_region(caption_box)
     if position in ROSE_CAPTION_POSITIONS:
         top_percent, bottom_percent = ROSE_CAPTION_POSITIONS[position]
         left_percent = (100 - ROSE_CAPTION_SAFE_WIDTH_PERCENT) / 2
@@ -1052,6 +1115,7 @@ def validate_rose_caption_placement(
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
     if position not in ROSE_CAPTION_POSITIONS and position != "mask-lower-third":
         raise ValueError(f"Unsupported Rose Garden caption position: {position!r}.")
@@ -1067,6 +1131,7 @@ def validate_rose_caption_placement(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
     if not is_masking:
         return region
@@ -1279,6 +1344,7 @@ def _rose_caption_geometry(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     allow_overflow: bool = False,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
     if not allow_overflow and (
         len(english_lines) > 2 or len(chinese_lines) > 2
@@ -1291,6 +1357,7 @@ def _rose_caption_geometry(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
@@ -1343,6 +1410,7 @@ def _write_rose_garden_source_aware_ass(
     word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
     allow_unverified_estimate: bool = False,
     overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> bool:
     chinese_font, english_font, *_ = _rose_garden_wrap_limits(width, height)
     caption_region = validate_rose_caption_placement(
@@ -1354,8 +1422,9 @@ def _write_rose_garden_source_aware_ass(
         occlusion_exception_authorized=occlusion_exception_authorized,
         mask_padding_px_per_edge=mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
-    if caption_position == "mask-lower-third":
+    if caption_position == "mask-lower-third" or caption_box is not None:
         chinese_font, english_font = _rose_garden_font_sizes_for_region(
             chinese_font,
             english_font,
@@ -1396,6 +1465,7 @@ def _write_rose_garden_source_aware_ass(
                 mask_padding_px_per_edge=mask_padding_px_per_edge,
                 allow_unverified_estimate=allow_unverified_estimate,
                 allow_overflow=allow_overflow,
+                caption_box=caption_box,
             )
         except ValueError as error:
             raise ValueError(
@@ -1505,8 +1575,8 @@ def _write_rose_garden_source_aware_ass(
                     (
                         f"{{\\an8\\pos({round(width / 2)},"
                         f"{caption_region['top']})}}"
-                        if caption_position == "top"
-                        else f"{{\\an5\\pos({round(width / 2)},"
+                        if caption_position == "top" and caption_box is None
+                        else f"{{\\an5\\pos({round((caption_region['left'] + caption_region['right']) / 2)},"
                         f"{round((caption_region['top'] + caption_region['bottom']) / 2)})}}"
                     )
                     + r"\N".join(caption_lines)
@@ -1525,6 +1595,7 @@ def _write_rose_garden_source_aware_ass(
         mask_padding_px_per_edge,
         allow_unverified_estimate,
         overflow_records,
+        caption_box,
     )
     return word_timings is not None
 
@@ -1540,6 +1611,7 @@ def _verify_rose_garden_ass(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> None:
     subtitles = pysubs2.load(str(path), encoding="utf-8")
     has_mask = caption_position == "mask-lower-third"
@@ -1559,8 +1631,9 @@ def _verify_rose_garden_ass(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
-    if has_mask:
+    if has_mask or caption_box is not None:
         chinese_font, english_font = _rose_garden_font_sizes_for_region(
             chinese_font,
             english_font,
@@ -1568,8 +1641,11 @@ def _verify_rose_garden_ass(
         )
     expected_position = (
         f"\\pos({round(width / 2)},{region['top']})"
-        if caption_position == "top"
-        else f"\\pos({round(width / 2)},{round((region['top'] + region['bottom']) / 2)})"
+        if caption_position == "top" and caption_box is None
+        else (
+            f"\\pos({round((region['left'] + region['right']) / 2)},"
+            f"{round((region['top'] + region['bottom']) / 2)})"
+        )
     )
     if (
         subtitles.styles["English"].fontsize != english_font
@@ -1623,6 +1699,7 @@ def _verify_rose_garden_ass(
             mask_padding_px_per_edge=mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
             allow_overflow=allow_overflow,
+            caption_box=caption_box,
         )
         if (
             caption.layer != (1 if has_mask else 0)
@@ -1883,6 +1960,7 @@ def write_ass(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> bool:
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
         _chinese_font, _english_font, _max_chinese, max_english = (
@@ -1924,14 +2002,19 @@ def write_ass(
             source_graphics_regions or [],
             mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
+            caption_box=caption_box,
         )
-        if caption_position == "mask-lower-third":
+        if caption_position == "mask-lower-third" or caption_box is not None:
             _chinese_font, english_font = _rose_garden_font_sizes_for_region(
                 _chinese_font,
                 english_font,
                 caption_region["height"],
             )
-        safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+        safe_width = min(
+            round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
+            caption_region["width"]
+            - 2 * caption_region.get("mask_padding_px_per_edge", 0),
+        )
         wrapped_lines = []
         for cue_index, cue in enumerate(cues, start=1):
             allow_overflow = _has_rose_overflow(
@@ -1985,6 +2068,7 @@ def write_ass(
             word_timings,
             allow_unverified_estimate,
             caption_overflow_records,
+            caption_box,
         )
 
     chinese_font = max(32, round(height * 0.052))
@@ -2102,6 +2186,7 @@ def verify_cues(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, object]:
     if not cues:
         raise RuntimeError("Caption verification failed: there are no cues.")
@@ -2166,8 +2251,9 @@ def verify_cues(
             occlusion_exception_authorized=occlusion_exception_authorized,
             mask_padding_px_per_edge=mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
+            caption_box=caption_box,
         )
-        if caption_position == "mask-lower-third":
+        if caption_position == "mask-lower-third" or caption_box is not None:
             chinese_font, english_font = _rose_garden_font_sizes_for_region(
                 chinese_font,
                 english_font,
@@ -2208,6 +2294,7 @@ def verify_cues(
                     mask_padding_px_per_edge=mask_padding_px_per_edge,
                     allow_unverified_estimate=allow_unverified_estimate,
                     allow_overflow=allow_overflow,
+                    caption_box=caption_box,
                 )
             except ValueError as error:
                 raise RuntimeError(
@@ -2441,7 +2528,7 @@ def verify_cues(
             ),
             "rose_source_evidence": (
                 {
-                    "classification": "official_event_anchor_only",
+                    "classification": "pinned_source_reference_only",
                     "source_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
                     "whitehouse_search": {
                         "url": (
@@ -2462,6 +2549,36 @@ def verify_cues(
                         ),
                         "channel": "The White House",
                         "player_duration": "36:33",
+                    },
+                    "metadata_search": {
+                        "run_url": (
+                            "https://github.com/gdelt0003/gdelt0003/actions/"
+                            "runs/38915918932"
+                        ),
+                        "artifact_name": (
+                            "rose-garden-source-metadata-38915918932"
+                        ),
+                        "public_search_providers": 2,
+                        "queries": 40,
+                        "raw_leads": 18,
+                        "qualifying_event_relevant_video_page_leads": 0,
+                        "landing_page_fetch_errors": 7,
+                        "verified_candidates": [],
+                        "raw_leads_promoted_to_video_candidates": False,
+                        "media_downloaded": False,
+                        "frames_or_audio_inspected": False,
+                        "rights_or_content_review": "not_performed",
+                        "coverage": "limited metadata search; not an exhaustive web census",
+                        "not_covered_examples": [
+                            "Roll Call",
+                            "congressional archives",
+                            "social media",
+                            "think tanks",
+                        ],
+                        "interpretation": (
+                            "No qualifying video page lead was identified in "
+                            "this run; this does not establish that no sources exist."
+                        ),
                     },
                     "event_match": "pending",
                     "exact_event_time_and_timezone": "pending",
@@ -2775,6 +2892,14 @@ def main() -> None:
         choices=("top", "center", "mask-lower-third"),
         default="top",
     )
+    parser.add_argument(
+        "--caption-box",
+        default="",
+        help=(
+            "Optional half-open x1,y1,x2,y2 caption rectangle in a 1920x1080 "
+            "reference frame; scaled proportionally to source dimensions."
+        ),
+    )
     parser.add_argument("--caption-safe-region-reviewed", action="store_true")
     parser.add_argument("--source-graphics-regions-json", default="[]")
     parser.add_argument("--source-frame-review-record-json", default="{}")
@@ -2801,6 +2926,13 @@ def main() -> None:
         help="Explicitly disable spoken-word highlighting.",
     )
     args = parser.parse_args()
+    reference_caption_box = (
+        parse_caption_box(args.caption_box) if args.caption_box else None
+    )
+    if reference_caption_box is not None and (
+        args.subtitle_layout != ROSE_GARDEN_SUBTITLE_LAYOUT
+    ):
+        parser.error("--caption-box is only supported by the Rose Garden layout.")
     source_graphics_regions = (
         parse_source_graphics_regions(
             args.source_graphics_regions_json,
@@ -2830,6 +2962,11 @@ def main() -> None:
     )
 
     duration, width, height = probe_video(source)
+    applied_caption_box = (
+        map_caption_box(reference_caption_box, width, height)
+        if reference_caption_box is not None
+        else None
+    )
     trusted_frame_review = require_trusted_mask_review(
         args.caption_position,
         source_path=source,
@@ -3069,8 +3206,12 @@ def main() -> None:
                 source_graphics_regions,
                 args.mask_padding_px_per_edge,
                 allow_unverified_estimate=allow_unverified_estimate,
+                caption_box=applied_caption_box,
             )
-            if args.caption_position == "mask-lower-third":
+            if (
+                args.caption_position == "mask-lower-third"
+                or applied_caption_box is not None
+            ):
                 chinese_font, english_font = _rose_garden_font_sizes_for_region(
                     chinese_font,
                     english_font,
@@ -3140,6 +3281,7 @@ def main() -> None:
             mask_padding_px_per_edge=args.mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
             caption_overflow_records=caption_overflow_records,
+            caption_box=applied_caption_box,
         )
         if (
             word_highlighting["status"] == "enabled"
@@ -3203,6 +3345,7 @@ def main() -> None:
         mask_padding_px_per_edge=args.mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
         caption_overflow_records=caption_overflow_records,
+        caption_box=applied_caption_box,
     )
     quality_checks["word_highlighting"] = word_highlighting
 
@@ -3314,6 +3457,24 @@ def main() -> None:
         "word_highlighting": word_highlighting,
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
+        "caption_box": (
+            {
+                "coordinate_convention": "half_open_xyxy",
+                "reference_resolution": (
+                    f"{CAPTION_BOX_REFERENCE_WIDTH}x"
+                    f"{CAPTION_BOX_REFERENCE_HEIGHT}"
+                ),
+                "reference_bbox_px": list(reference_caption_box),
+                "applied_source_resolution": f"{width}x{height}",
+                "applied_source_bbox_px": _caption_box_region(
+                    applied_caption_box
+                ),
+                "scaling": "proportional_x_and_y",
+            }
+            if reference_caption_box is not None
+            and applied_caption_box is not None
+            else None
+        ),
         "operation_audit_file": "operation-audit.json",
         "processing_operations": audit.records,
         "whisper_detected_language_probability": (

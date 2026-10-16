@@ -43,38 +43,33 @@ on:
         type: boolean
         required: true
         default: false
+      caption_box:
+        description: Optional half-open x1,y1,x2,y2 box in the 1920x1080 reference frame
+        type: string
+        required: false
+        default: "66,883,1852,1022"
       rights_evidence_url:
-        description: Source-specific HTTPS reuse-rights evidence
+        description: Optional rights reference; not assessed by this private render
         type: string
-        required: true
+        required: false
         default: ""
-      reuse_rights_confirmed:
-        description: Confirm the evidence establishes reuse rights for this exact video
-        type: boolean
-        required: true
-        default: false
       event_identity_evidence_url:
-        description: HTTPS evidence establishing the event identity
+        description: Optional event identity reference; not required or confirmed by this private render
         type: string
-        required: true
+        required: false
         default: ""
-      exact_event_match_confirmed:
-        description: Confirm the selected source depicts this exact event
-        type: boolean
-        required: true
-        default: false
       event_match_evidence_url:
-        description: HTTPS evidence for exact source/event content match
+        description: Optional source/event match reference; not required or confirmed by this private render
         type: string
-        required: true
+        required: false
         default: ""
       event_time_timezone_evidence_url:
-        description: HTTPS evidence for exact event time and timezone
+        description: Optional event time and timezone reference; not assessed by this private render
         type: string
         required: false
         default: ""
       source_lineage_evidence_url:
-        description: HTTPS evidence for source URL to uploaded asset lineage
+        description: Optional source-to-asset lineage reference; not assessed by this private render
         type: string
         required: false
         default: ""
@@ -127,7 +122,7 @@ on:
         default: 2
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: rose-garden-private-render-${{ github.run_id }}
@@ -161,8 +156,6 @@ jobs:
           EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
           EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
-          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
-          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
           PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
           CAPTION_POSITION: ${{ inputs.caption_position }}
           CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
@@ -182,7 +175,7 @@ jobs:
             exit 1
           fi
           python scripts/verify_rose_garden_review.py \
-            --validate-dispatch-inputs \
+            --validate-private-dispatch-inputs \
             --event-id "$EVENT_ID" \
             --event-title "$EVENT_TITLE" \
             --event-date "$EVENT_DATE" \
@@ -194,9 +187,7 @@ jobs:
             --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
             --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
-            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
-            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
-            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
           layout_args=(
             --validate-layout-inputs
             --caption-position "$CAPTION_POSITION"
@@ -213,6 +204,7 @@ jobs:
           python scripts/verify_rose_garden_review.py "${layout_args[@]}"
           python scripts/verify_rose_garden_review.py \
             --validate-review-gates \
+            --private-render \
             --caption-position "$CAPTION_POSITION" \
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
             --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
@@ -270,8 +262,7 @@ jobs:
           EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
           EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
-          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
-          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          CAPTION_BOX: ${{ inputs.caption_box }}
           CAPTION_POSITION: ${{ inputs.caption_position }}
           CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
           SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
@@ -287,6 +278,7 @@ jobs:
             --output-dir "$RUNNER_TEMP/rose-garden-output"
             --asset-prefix RoseGardenLunch-IySF_8OArvw
             --subtitle-layout rose-garden-source-aware-bilingual
+            --caption-box "$CAPTION_BOX"
             --caption-position "$CAPTION_POSITION"
             --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
             --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
@@ -306,15 +298,14 @@ jobs:
             --audit "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
             --manifest "$RUNNER_TEMP/rose-garden-output/manifest.json"
           python scripts/verify_rose_garden_review.py \
+            --private-render \
             --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
             --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
             --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
-            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
-            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
-            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
           test -s "$RUNNER_TEMP/rose-garden-output/manifest.json"
           test -s "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
@@ -343,7 +334,7 @@ jobs:
             echo
             echo "- Output: private Actions artifact only; no Release or Pages deployment."
             echo "- Source-frame and visual review: pending."
-            echo "- Event-match and reuse-rights review: pending independent review."
+            echo "- Event identity/match: pending; reuse rights: unassessed and pending review."
             echo "- English ASR and Chinese translation review: pending."
             echo "- A successful render or artifact upload is not publication approval."
           } >> "$GITHUB_STEP_SUMMARY"
