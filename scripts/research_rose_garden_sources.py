@@ -234,6 +234,11 @@ def inspect_landing_page(result: dict[str, str], checked_at: str) -> dict[str, o
             record["candidate_status"] = "event_relevant_non_video_page"
         else:
             record["candidate_status"] = "event_relevant_video_page_lead_unverified"
+            record["full_video_review_status"] = "not_performed"
+            record["full_video_review_blocker"] = (
+                "Exact-video media-review authorization and rights evidence are not established; "
+                "this workflow is restricted to page metadata and does not retrieve or inspect media."
+            )
     except (urllib.error.URLError, TimeoutError, ValueError) as error:
         record["landing_page_metadata_error"] = str(error)
     return record
@@ -334,6 +339,12 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         "schema_version": 2,
         "event_id": EVENT_ID,
         "event_title": EVENT_TITLE,
+        "research_phase": "metadata_only_source_page_discovery",
+        "full_video_research_status": "not_performed",
+        "full_video_research_blocker": (
+            "This workflow is restricted to page metadata. Exact-video media-review "
+            "authorization and rights evidence are not established."
+        ),
         "research_status": (
             "event_relevant_video_page_leads_found_unverified"
             if candidates
@@ -366,9 +377,11 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
     markdown_path = output_dir / "rose-garden-source-search-summary.md"
     json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary_lines = [
-        "# Rose Garden source search",
+        "# Rose Garden source metadata search",
         "",
         f"- Event scope: `{EVENT_ID}`",
+        "- Research phase: metadata/source-page discovery only; full video research was not performed.",
+        "- Full video review blocker: exact-video media-review authorization and rights evidence are not established.",
         f"- Search and landing-page metadata leads: {len(leads)}",
         f"- Unique event-relevant video landing-page leads (unverified): {len(candidates)}",
         f"- Search provider/query combinations: {len(search_jobs)}",
@@ -403,6 +416,7 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
                 f"- Description metadata: {lead.get('page_description') or 'not provided'}",
                 f"- Event relevance evidence: {'; '.join(lead['event_relevance_evidence'])}",
                 f"- Video-page evidence: {'; '.join(lead['video_page_evidence'])}",
+                f"- Full video review blocker: {lead['full_video_review_blocker']}",
                 "- Status: unverified page lead; no human video-content review.",
                 "",
             ]

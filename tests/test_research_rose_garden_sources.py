@@ -82,12 +82,17 @@ class RoseGardenMetadataResearchTests(unittest.TestCase):
             summary = summary_path.read_text(encoding="utf-8")
 
         self.assertEqual(report["event_id"], EVENT_ID)
+        self.assertEqual(report["research_phase"], "metadata_only_source_page_discovery")
+        self.assertEqual(report["full_video_research_status"], "not_performed")
+        self.assertIn("authorization and rights evidence", report["full_video_research_blocker"])
         self.assertEqual(report["search_providers"], list(SEARCH_PROVIDERS))
         self.assertEqual(report["search_query_count"], len(SEARCH_QUERIES) * 2)
         self.assertEqual(saved["candidate_count"], 1)
         self.assertEqual(saved["lead_count"], 1)
         lead = saved["candidates"][0]
         self.assertEqual(lead["candidate_status"], "event_relevant_video_page_lead_unverified")
+        self.assertEqual(lead["full_video_review_status"], "not_performed")
+        self.assertIn("authorization and rights evidence", lead["full_video_review_blocker"])
         self.assertEqual(lead["event_match"], "unverified")
         self.assertEqual(lead["video_source_credibility"], "not_assessed")
         self.assertEqual(lead["video_content_credibility"], "not_assessed")
@@ -156,6 +161,7 @@ class RoseGardenMetadataResearchTests(unittest.TestCase):
             summary = summary_path.read_text(encoding="utf-8")
 
         self.assertEqual(report["candidate_count"], 0)
+        self.assertEqual(report["full_video_research_status"], "not_performed")
         self.assertEqual(report["lead_count"], 4)
         statuses = {lead["candidate_status"] for lead in report["search_leads"]}
         self.assertEqual(
