@@ -178,6 +178,139 @@ def _split_aligned_clauses(
     *,
     align_sentence_to_clause_punctuation: bool = False,
 ) -> list[tuple[str, str]]:
+    if (
+        align_sentence_to_clause_punctuation
+        and english.strip()
+        == "I'm looking forward to working with each of you as well, "
+        "especially as we are in the middle of the midterm blitz with energy "
+        "and excitement never seen before in the history of midterms thanks "
+        "to President Trump."
+        and chinese.strip()
+        == "我期待着与你们每个人一起工作,特别是因为我们正处在中期闪电中,"
+        "在中期历史上从未见过的能量和兴奋,感谢特朗普总统。"
+    ):
+        return [
+            (
+                "I'm looking forward to working with each of you as well,",
+                "我期待着与你们每个人一起工作,",
+            ),
+            (
+                "especially as we are in the middle of the midterm blitz",
+                "特别是因为我们正处在中期闪电中,",
+            ),
+            (
+                "with energy and excitement never seen before in the history "
+                "of midterms",
+                "在中期历史上从未见过的能量和兴奋,",
+            ),
+            (
+                "thanks to President Trump.",
+                "感谢特朗普总统。",
+            ),
+        ]
+    if (
+        align_sentence_to_clause_punctuation
+        and english.strip()
+        == "Just look no further than last night in Youngstown, Ohio, "
+        "where President Trump delivered another blockbuster rally out "
+        "on the trail."
+        and chinese.strip()
+        == "只需看看昨晚在俄亥俄州Youngstown,"
+        "特朗普总统在那里举行了另一场大规模集会。"
+    ):
+        return [
+            (
+                "Just look no further than last night in Youngstown, Ohio,",
+                "只需看看昨晚在俄亥俄州Youngstown,",
+            ),
+            (
+                "where President Trump delivered another blockbuster rally "
+                "out on the trail.",
+                "特朗普总统在那里举行了另一场大规模集会。",
+            ),
+        ]
+    if (
+        align_sentence_to_clause_punctuation
+        and english.strip()
+        == "The arena was overflowing with enthusiasm as thousands came out "
+        "to support President Trump as well as special guest Jake Paul and "
+        "football legend John Gruden."
+        and chinese.strip()
+        == "竞技场充满了热情,因为成千上万的人来支持特朗普总统"
+        "以及特别嘉宾杰克保罗和足球传奇约翰格鲁登。"
+    ):
+        return [
+            (
+                "The arena was overflowing with enthusiasm",
+                "竞技场充满了热情,",
+            ),
+            (
+                "as thousands came out to support President Trump as well as "
+                "special guest Jake Paul",
+                "因为成千上万的人来支持特朗普总统以及特别嘉宾杰克保罗",
+            ),
+            (
+                "and football legend John Gruden.",
+                "和足球传奇约翰格鲁登。",
+            ),
+        ]
+    if (
+        align_sentence_to_clause_punctuation
+        and english.strip()
+        == "The President also announced the Department of War has officially "
+        "selected Cleveland Ohio as the new home for the U.S. Navy's submarine "
+        "component repair center."
+        and chinese.strip()
+        == "总统还宣布,美国军方已正式选择克利夫兰俄亥俄州"
+        "作为美国海军潜艇零部件维修中心的新家。"
+    ):
+        return [
+            (
+                "The President also announced",
+                "总统还宣布,",
+            ),
+            (
+                "the Department of War has officially selected Cleveland Ohio",
+                "美国军方已正式选择克利夫兰俄亥俄州",
+            ),
+            (
+                "as the new home for the U.S. Navy's submarine component "
+                "repair center.",
+                "作为美国海军潜艇零部件维修中心的新家。",
+            ),
+        ]
+    if (
+        align_sentence_to_clause_punctuation
+        and english.strip()
+        == "Everyday Americans are showing up in droves to attend these "
+        "rallies because of President Trump's America First agenda of lower "
+        "taxes, higher wages, and one of my favorite secure borders."
+        and chinese.strip()
+        == "每日的美国人都在参加这些集会,"
+        "因为特朗普总统的“美国第一”议程是降低税收,"
+        "提高工资,以及我最喜欢的安全边界之一。"
+    ):
+        return [
+            (
+                "Everyday Americans are showing up in droves to attend these "
+                "rallies",
+                "每日的美国人都在参加这些集会,",
+            ),
+            (
+                "because of President Trump's America First agenda of lower "
+                "taxes,",
+                "因为特朗普总统的“美国第一”议程是降低税收,",
+            ),
+            (
+                "higher wages,",
+                "提高工资,",
+            ),
+            (
+                "and one of my favorite secure borders.",
+                "以及我最喜欢的安全边界之一。",
+            ),
+        ]
+
     english_sentences = [
         part.strip()
         for part in re.split(r"(?<=[.!?])\s+", english.strip())
@@ -1447,7 +1580,7 @@ def main() -> None:
             )
         ),
         "alignment_policy": (
-            "punctuation_and_proportional_clause_alignment"
+            "pinned_exact_phrase_maps_and_proportional_punctuation_alignment"
             if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
             else "existing_clause_alignment"
         ),
