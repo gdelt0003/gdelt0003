@@ -18,14 +18,37 @@ import xml.etree.ElementTree as ET
 EVENT_ID = "rose-garden-lunch-2026-10-15"
 EVENT_TITLE = "President Trump Participates in a Rose Garden Lunch"
 EVENT_REFERENCE_VIDEO_ID = "IySF_8OArvw"
-SEARCH_QUERIES = (
+TARGETED_SOURCE_DOMAINS = (
+    "c-span.org",
+    "apnews.com",
+    "reuters.com",
+    "pbs.org",
+    "abcnews.go.com",
+    "cbsnews.com",
+    "nbcnews.com",
+    "cnn.com",
+    "foxnews.com",
+    "usatoday.com",
+)
+BASE_SEARCH_QUERIES = (
     f'"{EVENT_TITLE}" "Oct. 15, 2026"',
-    f'"{EVENT_REFERENCE_VIDEO_ID}" Rose Garden',
-    '"Rose Garden Lunch" Trump White House October 15 2026',
+    f'"{EVENT_TITLE}" "October 15, 2026"',
+    '"President Donald Trump" "Rose Garden" lunch "October 15, 2026"',
+    '"Donald J. Trump" "Rose Garden Lunch" "October 15, 2026"',
+    f'"{EVENT_REFERENCE_VIDEO_ID}"',
+    f'"{EVENT_REFERENCE_VIDEO_ID}" "Rose Garden"',
+    f'site:whitehouse.gov/videos "{EVENT_TITLE}"',
+    f'site:whitehouse.gov "{EVENT_TITLE}" "October 15, 2026"',
+    f'site:youtube.com/watch "{EVENT_REFERENCE_VIDEO_ID}"',
+    'site:youtube.com/watch "Rose Garden Lunch" Trump "October 15, 2026"',
+)
+SEARCH_QUERIES = BASE_SEARCH_QUERIES + tuple(
+    f'site:{domain} "Rose Garden" Trump lunch'
+    for domain in TARGETED_SOURCE_DOMAINS
 )
 SEARCH_PROVIDERS = ("duckduckgo_html", "bing_rss")
 USER_AGENT = "gdelt0003-rose-garden-metadata-research/1.0"
-MAX_RESULTS_PER_QUERY = 5
+MAX_RESULTS_PER_QUERY = 3
 MAX_LANDING_PAGE_BYTES = 512 * 1024
 
 
@@ -353,7 +376,16 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         "search_providers": list(SEARCH_PROVIDERS),
         "search_query_count": len(search_jobs),
         "search_queries": list(SEARCH_QUERIES),
-        "search_coverage": "two public search providers x the listed event-scoped queries; not an exhaustive web census",
+        "targeted_source_domains": list(TARGETED_SOURCE_DOMAINS),
+        "search_coverage": (
+            f"{len(SEARCH_PROVIDERS)} public search providers x "
+            f"{len(SEARCH_QUERIES)} event-specific query formulations; "
+            "includes domain-restricted searches for the event host and established publishers; "
+            "not an exhaustive web census"
+        ),
+        "landing_page_metadata_error_count": sum(
+            "landing_page_metadata_error" in lead for lead in leads
+        ),
         "search_started_at": checked_at,
         "runner_hosted_only": True,
         "media_downloaded": False,
@@ -386,6 +418,8 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         f"- Unique event-relevant video landing-page leads (unverified): {len(candidates)}",
         f"- Search provider/query combinations: {len(search_jobs)}",
         f"- Provider/query errors: {len(query_errors)}",
+        f"- Landing-page metadata fetch errors: {report['landing_page_metadata_error_count']}",
+        f"- Targeted publisher domains: {', '.join(TARGETED_SOURCE_DOMAINS)}",
         "- Candidate status: qualifying pages are unverified leads; event match and both credibility dimensions are not assessed.",
         "- Human video-content review: not performed.",
         "- Media downloaded or frames/audio inspected: no.",
@@ -393,7 +427,17 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         "Search results and HTML metadata are leads only, not proof of event match, credibility, rights, or video content. ",
         "This metadata-only qualification does not approve reuse or publication.",
         "",
+        "## Search queries run",
+        "",
     ]
+    summary_lines.extend(f"- `{query}`" for query in SEARCH_QUERIES)
+    summary_lines.extend(
+        [
+            "",
+            "Domain targeting is a search-coverage strategy only; it does not establish publisher or video credibility.",
+            "",
+        ]
+    )
     if candidates:
         summary_lines.extend(["## Event-relevant video landing pages", ""])
     else:
@@ -436,6 +480,11 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
                     f"- Status: {lead['candidate_status']}",
                     f"- Query: {lead['query']}",
                     f"- Search observations: {len(lead['search_observations'])}",
+                    *(
+                        [f"- Landing-page metadata error: {lead['landing_page_metadata_error']}"]
+                        if lead.get("landing_page_metadata_error")
+                        else []
+                    ),
                     "",
                 ]
             )
