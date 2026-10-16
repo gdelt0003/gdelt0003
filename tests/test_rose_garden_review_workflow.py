@@ -346,8 +346,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         ):
             with self.subTest(field=field):
                 self.assertIn(field, workflow)
-        self.assertIn("contents: read", workflow)
-        self.assertNotIn("contents: write", workflow)
+        self.assertIn("permissions:\n  contents: write", workflow)
+        self.assertIn("GH_TOKEN: ${{ github.token }}", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("retention-days: 30", workflow)
         self.assertNotIn("inputs.reuse_rights_confirmed", workflow)
@@ -360,6 +360,11 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertNotIn("gh release", lower)
         self.assertNotIn("create release", lower)
         self.assertNotIn("deploy-pages", lower)
+        rights_input = workflow.split("      rights_evidence_url:", maxsplit=1)[1].split(
+            "\n      event_identity_evidence_url:", maxsplit=1
+        )[0]
+        self.assertIn('default: ""', rights_input)
+        self.assertIn("required: false", rights_input)
 
     def test_optional_evidence_inputs_can_be_omitted_from_workflow_dispatch(self):
         inputs = WORKFLOW.read_text(encoding="utf-8").split("\njobs:", maxsplit=1)[0]
@@ -391,11 +396,12 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         }
         review.validate_dispatch_inputs(**defaults)
         private_render = defaults | {
-            "rights_evidence_url": "http://example.org/rights",
+            "rights_evidence_url": "",
             "event_identity_evidence_url": "not-a-verified-reference",
             "event_match_evidence_url": "file://local/match",
         }
         review.validate_dispatch_inputs(**private_render)
+        self.assertEqual(private_render["rights_evidence_url"], "")
         self.assertEqual(
             review.validate_review_gates(
                 caption_position="top",
@@ -1292,7 +1298,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 finalized = review.finalize_review_manifest(
                     source,
                     output_dir,
-                    rights_evidence_url="https://example.org/reuse-rights",
+                    rights_evidence_url="",
                     event_identity_evidence_url="https://example.org/event-identity",
                     event_match_evidence_url="https://example.org/exact-match",
                     event_time_timezone_evidence_url="https://example.org/event-time",
@@ -1316,7 +1322,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             finalized["processing_prerequisites"][
                 "source_specific_reuse_rights_evidence_url"
             ],
-            "https://example.org/reuse-rights",
+            None,
         )
         self.assertEqual(
             finalized["processing_prerequisites"][
@@ -1338,6 +1344,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "confirmed_for_this_run",
         )
         self.assertEqual(finalized["rights_review"]["reuse_rights_assessment"], "unassessed")
+        self.assertIsNone(finalized["rights_review"]["rights_evidence_url"])
         self.assertEqual(finalized["private_review"]["independent_rights_review"], "pending")
         self.assertEqual(finalized["private_review"]["source_frame_review"], "pending")
         self.assertEqual(finalized["private_review"]["source_audio_asr_review"], "pending")
