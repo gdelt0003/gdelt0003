@@ -324,8 +324,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("github.ref == 'refs/heads/main'", workflow)
         self.assertIn("GITHUB_REF", workflow)
-        self.assertIn("--validate-dispatch-inputs", workflow)
-        self.assertIn("--validate-review-gates", workflow)
+        self.assertIn("--validate-private-dispatch-inputs", workflow)
+        self.assertIn("--caption-box \"$CAPTION_BOX\"", workflow)
         self.assertIn("requester_authorized_processing", workflow)
         self.assertNotIn("requester_authorized_publication", workflow)
         for field in (
@@ -337,19 +337,23 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "inputs.source_asset",
             "inputs.source_sha256",
             "inputs.rights_evidence_url",
-            "inputs.reuse_rights_confirmed",
             "inputs.event_identity_evidence_url",
-            "inputs.exact_event_match_confirmed",
             "inputs.event_match_evidence_url",
+            "inputs.caption_box",
             "inputs.source_frame_review_record_json",
             "inputs.source_frame_review_signature",
             "inputs.frame_review_mode",
         ):
             with self.subTest(field=field):
                 self.assertIn(field, workflow)
-        self.assertIn("contents: write", workflow)
+        self.assertIn("contents: read", workflow)
+        self.assertNotIn("contents: write", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("retention-days: 30", workflow)
+        self.assertNotIn("inputs.reuse_rights_confirmed", workflow)
+        self.assertNotIn("inputs.exact_event_match_confirmed", workflow)
+        self.assertNotIn("--exact-event-match-confirmed", workflow)
+        self.assertNotIn("--reuse-rights-confirmed", workflow)
         self.assertNotIn("actions/deploy-pages", lower)
         self.assertNotIn("upload-pages-artifact", lower)
         self.assertNotIn("pages: write", lower)
@@ -386,6 +390,31 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
         }
         review.validate_dispatch_inputs(**defaults)
+        private_render = defaults | {
+            "rights_evidence_url": "http://example.org/rights",
+            "event_identity_evidence_url": "not-a-verified-reference",
+            "event_match_evidence_url": "file://local/match",
+        }
+        review.validate_dispatch_inputs(**private_render)
+        self.assertEqual(
+            review.validate_review_gates(
+                caption_position="top",
+                independent_rights_review_passed=False,
+                event_match_review_passed=False,
+                event_time_timezone_review_passed=False,
+                source_lineage_review_passed=False,
+                source_frame_review_record_json="{}",
+                source_graphics_regions_json="[]",
+                dispatch_actor="publisher",
+                rights_evidence_url="http://example.org/rights",
+                event_match_evidence_url="file://local/match",
+                event_time_timezone_evidence_url="",
+                source_lineage_evidence_url="",
+                frame_review_mode="unverified-review-draft",
+                private_render=True,
+            )["source_frame_review"],
+            "pending",
+        )
         processing = defaults | {
             "rights_evidence_url": "https://example.org/reuse-rights",
             "event_identity_evidence_url": "https://example.org/event-identity",
@@ -410,10 +439,9 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         defaults["source_sha256"] = "0" * 64
         with self.assertRaisesRegex(RuntimeError, "source_sha256"):
             review.validate_dispatch_inputs(**defaults)
-        defaults["source_sha256"] = review.SOURCE_SHA256
-        defaults["rights_evidence_url"] = "http://example.com/rights"
+        processing["rights_evidence_url"] = "http://example.com/rights"
         with self.assertRaisesRegex(RuntimeError, "HTTPS"):
-            review.validate_dispatch_inputs(**defaults)
+            review.validate_dispatch_inputs(**processing)
 
     def test_layout_dispatch_is_fail_closed_for_missing_bbox_review_or_mask_auth(self):
         bbox = json.dumps(self.SOURCE_GRAPHICS)
@@ -1269,8 +1297,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                     event_match_evidence_url="https://example.org/exact-match",
                     event_time_timezone_evidence_url="https://example.org/event-time",
                     source_lineage_evidence_url="https://example.org/source-lineage",
-                    exact_event_match_confirmed=True,
-                    reuse_rights_confirmed=True,
+                    private_render=True,
                 )
 
         self.assertEqual(
@@ -1278,8 +1305,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             review.SOURCE_SHA256,
         )
         self.assertEqual(
-            finalized["public_review"]["status"],
-            "public_external_review_draft",
+            finalized["private_review"]["status"],
+            "private_artifact_only",
         )
         self.assertEqual(
             finalized["processing_prerequisites"]["independent_evidence_review"],
@@ -1310,11 +1337,12 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             finalized["rights_review"]["requester_authorization"],
             "confirmed_for_this_run",
         )
-        self.assertEqual(finalized["public_review"]["independent_rights_review"], "pending")
-        self.assertEqual(finalized["public_review"]["source_frame_review"], "pending")
-        self.assertEqual(finalized["public_review"]["source_audio_asr_review"], "pending")
-        self.assertEqual(finalized["public_review"]["translation_review"], "pending")
-        self.assertEqual(finalized["public_review"]["final_release_approval"], "not_granted")
+        self.assertEqual(finalized["rights_review"]["reuse_rights_assessment"], "unassessed")
+        self.assertEqual(finalized["private_review"]["independent_rights_review"], "pending")
+        self.assertEqual(finalized["private_review"]["source_frame_review"], "pending")
+        self.assertEqual(finalized["private_review"]["source_audio_asr_review"], "pending")
+        self.assertEqual(finalized["private_review"]["translation_review"], "pending")
+        self.assertEqual(finalized["private_review"]["public_release"], "not_authorized")
         self.assertEqual(
             finalized["quality_checks"]["subtitle_readability"][
                 "caption_ass_validation"

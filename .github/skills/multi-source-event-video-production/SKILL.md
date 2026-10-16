@@ -19,7 +19,7 @@ Use this skill for public-event source discovery, bilingual video production, mu
 ## Production controls
 
 1. Run downloads, metadata probing, frame checks, ASR, subtitle rendering, and video encoding only on an authorized GitHub-hosted runner. Do not process video from a developer workstation.
-2. Before processing, require an event identity record, official anchor, selected source URL, HTTPS identity/source-match/rights evidence, explicit exact-event match confirmation, and reuse-rights confirmation. A non-anchor source must be explicitly allow-listed as a reviewed same-event URL. Before public release, re-confirm source/event match, reuse rights, clean source frames, English ASR, and Chinese translation against the built artifact using five distinct HTTPS evidence URLs. Checkboxes are operator attestations, not independent proof.
+2. For private processing, do not impose identity, event-match, lineage, or reuse-rights evidence as prerequisites unless required by applicable law or platform rules. Record identity, source match, rights, and human review as pending or unassessed unless directly established; keep the output private and do not publish it. Before public release, review source/event match, reuse rights, source frames, English ASR, and Chinese translation against the built artifact. Evidence and operator attestations must not be represented as independent proof.
 3. Reject source streams below 1920x1080 rather than upscaling. Preserve the original frame, duration context, and source graphics.
 4. Produce English ASR and Simplified Chinese translation, but identify ASR/MT as unreviewed until a human checks the actual source audio, names, numbers, negation, and meaning. Do not call heuristic timing word-aligned.
 5. Animate or emphasize a currently spoken English word only when word timestamps come from an audio alignment/ASR process and have been checked against the soundtrack. If that evidence is unavailable, render normal readable captions and mark word highlighting unverified.
@@ -35,7 +35,7 @@ Use this skill for public-event source discovery, bilingual video production, mu
 
 - [ ] A unique, evidence-backed event identity is present; unknown date/time is not inferred from upload metadata.
 - [ ] Candidate sources belong to the same event; matching time and camera/continuity claims have direct evidence.
-- [ ] Source reuse rights, actual video resolution, source graphics, and required review are recorded.
+- [ ] Source reuse rights, actual video resolution, source graphics, and required review are recorded with unassessed or pending states where not established.
 - [ ] Highlight ranges are valid and each has an editorial reason.
 - [ ] Ten named edit presets are distinct and the manifest names each output.
 - [ ] English transcript and Chinese translation are available, with unresolved review status visible.
