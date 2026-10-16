@@ -76,12 +76,12 @@ on:
       event_time_timezone_evidence_url:
         description: HTTPS evidence for exact event time and timezone
         type: string
-        required: true
+        required: false
         default: ""
       source_lineage_evidence_url:
         description: HTTPS evidence for source URL to uploaded release asset lineage
         type: string
-        required: true
+        required: false
         default: ""
       source_frame_review_record_json:
         description: Structured authorized cloud frame/BBox review evidence, required only for the Rose masking exception; non-occluding layouts keep frame review pending
@@ -91,7 +91,7 @@ on:
       source_frame_review_signature:
         description: Base64 OpenSSH signature of the canonical frame-review JSON from an allowlisted reviewer key
         type: string
-        required: true
+        required: false
         default: ""
       frame_review_mode:
         description: Draft mode uses the fixed still estimate and keeps all frame/BBox review pending; trusted mode requires an allowlisted signed source-frame review
