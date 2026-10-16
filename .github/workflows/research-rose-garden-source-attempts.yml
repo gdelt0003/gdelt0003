@@ -1,0 +1,48 @@
+name: Research Rose Garden sources individually
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - gdelt0003-rose-source-attempts
+    paths:
+      - 'config/event-discovery-sources.json'
+      - 'scripts/research_rose_garden_source_attempts.py'
+      - '.github/workflows/research-rose-garden-source-attempts.yml'
+  schedule:
+    - cron: '17 14 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rose-garden-source-attempts
+  cancel-in-progress: false
+
+jobs:
+  source-attempts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Attempt each registered URL and broader public searches
+        run: |
+          python scripts/research_rose_garden_source_attempts.py \
+            --output-dir "$RUNNER_TEMP/rose-garden-source-attempts"
+        shell: bash
+
+      - name: Upload source-by-source attempt report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-source-attempts-${{ github.run_id }}
+          path: ${{ runner.temp }}/rose-garden-source-attempts/
+          if-no-files-found: warn
+          retention-days: 90
