@@ -1,9 +1,15 @@
 import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
+from scripts.download_rose_garden_source_asset import (
+    download_source_asset,
+    find_draft_asset,
+)
 from scripts.verify_rose_garden_publication_review import (
     EVENT_ID,
     RENDERED_ASSET,
@@ -221,6 +227,78 @@ class RoseGardenPublicationReviewTests(unittest.TestCase):
         self.assertNotIn("--clobber", publish_workflow)
         self.assertIn("actions/deploy-pages@v4", publish_workflow)
         self.assertIn("update_rose_garden_review_page.py", publish_workflow)
+
+
+class RoseGardenDraftSourceAssetTests(unittest.TestCase):
+    RELEASE = {
+        "id": 123,
+        "tag_name": "rose-garden-lunch-source-2026-10-15",
+        "draft": True,
+        "assets": [
+            {
+                "id": 456,
+                "name": "RoseGardenLunch-IySF_8OArvw.mp4",
+            }
+        ],
+    }
+
+    def test_resolves_source_asset_from_draft_release_listing(self):
+        self.assertEqual(
+            find_draft_asset(
+                [self.RELEASE],
+                "rose-garden-lunch-source-2026-10-15",
+                "RoseGardenLunch-IySF_8OArvw.mp4",
+            ),
+            (123, 456),
+        )
+
+    def test_rejects_missing_duplicate_non_draft_or_missing_asset(self):
+        cases = (
+            ([], "exactly one source release"),
+            ([self.RELEASE, self.RELEASE], "exactly one source release"),
+            ([self.RELEASE | {"draft": False}], "must remain a draft"),
+            ([self.RELEASE | {"assets": []}], "Expected exactly one"),
+        )
+        for releases, message in cases:
+            with self.subTest(releases=releases), self.assertRaisesRegex(
+                RuntimeError, message
+            ):
+                find_draft_asset(
+                    releases,
+                    "rose-garden-lunch-source-2026-10-15",
+                    "RoseGardenLunch-IySF_8OArvw.mp4",
+                )
+
+    def test_downloads_by_asset_id_and_checks_digest(self):
+        payload = b"test-only source asset bytes"
+        releases = [[self.RELEASE]]
+        calls = 0
+
+        def fake_gh(args, **kwargs):
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                return subprocess.CompletedProcess(
+                    args, 0, stdout=json.dumps(releases), stderr=""
+                )
+            kwargs["stdout"].write(payload)
+            return subprocess.CompletedProcess(args, 0)
+
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "source.mp4"
+            with patch(
+                "scripts.download_rose_garden_source_asset.subprocess.run",
+                side_effect=fake_gh,
+            ):
+                download_source_asset(
+                    repo="gdelt0003/gdelt0003",
+                    release_tag="rose-garden-lunch-source-2026-10-15",
+                    asset_name="RoseGardenLunch-IySF_8OArvw.mp4",
+                    expected_sha256=hashlib.sha256(payload).hexdigest(),
+                    output=output,
+                )
+            self.assertEqual(output.read_bytes(), payload)
+        self.assertEqual(calls, 2)
 
 
 if __name__ == "__main__":

@@ -285,17 +285,22 @@ jobs:
         id: source_download
         env:
           GH_TOKEN: ${{ github.token }}
+          SOURCE_RELEASE_TAG: ${{ inputs.source_release_tag }}
+          SOURCE_ASSET: ${{ inputs.source_asset }}
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
         run: |
           set -o pipefail
           mkdir -p "$RUNNER_TEMP/rose-garden-input"
-          gh release download rose-garden-lunch-source-2026-10-15 \
+          python scripts/download_rose_garden_source_asset.py \
             --repo "$GITHUB_REPOSITORY" \
-            --pattern "RoseGardenLunch-IySF_8OArvw.mp4" \
-            --dir "$RUNNER_TEMP/rose-garden-input" \
+            --release-tag "$SOURCE_RELEASE_TAG" \
+            --asset-name "$SOURCE_ASSET" \
+            --sha256 "$SOURCE_SHA256" \
+            --output "$RUNNER_TEMP/rose-garden-input/$SOURCE_ASSET" \
             2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/source-download.log"
           if ! python scripts/verify_rose_garden_review.py \
-            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
+            --source "$RUNNER_TEMP/rose-garden-input/$SOURCE_ASSET" \
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
             > "$RUNNER_TEMP/rose-garden-diagnostics/source-probe.json" \
             2> "$RUNNER_TEMP/rose-garden-diagnostics/source-verify.log"; then
