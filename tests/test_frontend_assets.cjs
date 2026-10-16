@@ -92,7 +92,7 @@ async function main() {
   const resultsPage = fs.readFileSync(path.join(root, 'copilot-results.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
   assert.doesNotMatch(html, /<track\b/i, 'do not overlay duplicate, unverified captions');
-  assert.match(html, /assets\/style\.css\?v=whitehouse-7/);
+  assert.match(html, /assets\/style\.css\?v=whitehouse-8/);
   assert.match(html, /href="copilot-results\.html">Copilot 成果<\/a>/, 'link homepage navigation to the results page');
   assert.doesNotMatch(html, /class="copilot-result-card"/, 'keep the full results panel off the homepage');
   assert.doesNotMatch(html, /id="copilot-results"/, 'remove the results section from the homepage');

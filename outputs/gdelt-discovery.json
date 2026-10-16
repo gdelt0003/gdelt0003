@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "snapshot_status": "unavailable",
+  "checked_at_utc": null,
+  "source_url": "https://gdelt.github.io/#api=doc&query=trump%20&contentmode=ArtList&maxrecords=250&sort=DateDesc&format=html&timespan=1w",
+  "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+  "query": "trump",
+  "identity_rule": "GDELT seen dates describe article metadata, not event time. Article titles do not independently verify an event.",
+  "status_note": "No successful GDELT snapshot is currently stored. This empty list is not evidence that a search returned zero articles.",
+  "leads": []
+}
