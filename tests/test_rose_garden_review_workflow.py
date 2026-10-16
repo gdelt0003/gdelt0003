@@ -1,6 +1,7 @@
 import hashlib
 import base64
 import json
+import re
 import subprocess
 import tempfile
 import unittest
@@ -265,6 +266,23 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("steps.deployment.outputs.page_url", deploy)
         self.assertIn("Write Pages deployment outcome summary", deploy)
         self.assertIn("Failure/blocker:", deploy)
+
+    def test_optional_evidence_inputs_can_be_omitted_from_workflow_dispatch(self):
+        inputs = WORKFLOW.read_text(encoding="utf-8").split("\njobs:", maxsplit=1)[0]
+        for field in (
+            "event_time_timezone_evidence_url",
+            "source_lineage_evidence_url",
+            "source_frame_review_signature",
+        ):
+            match = re.search(
+                rf"(?ms)^      {field}:\n(?P<body>.*?)(?=^      [a-z_][a-z0-9_]*:|\Z)",
+                inputs,
+            )
+            self.assertIsNotNone(match)
+            block = match.group("body")
+            with self.subTest(field=field):
+                self.assertIn('default: ""', block)
+                self.assertIn("required: false", block)
 
     def test_dispatch_inputs_are_exact_and_rights_evidence_does_not_claim_review(self):
         defaults = {
