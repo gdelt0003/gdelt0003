@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 import sys
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -29,6 +30,7 @@ PAGE_READ_LIMIT_BYTES = 2 * 1024 * 1024
 GDELT_MAX_RECORDS_PER_VIDEO = 10
 GDELT_TIMESPAN = "1w"
 GDELT_RETRY_BATCH_SIZE = 5
+MAX_CONCURRENT_GDELT_SEARCHES = 2
 
 
 def utc_now() -> str:
@@ -375,25 +377,16 @@ def _source_search_attempts(event_research: dict[str, Any]) -> list[dict[str, An
 
 
 def select_failed_source_search_retries(
-    entries: list[Any],
     videos: dict[str, Any],
     *,
     eligible_video_ids: set[str],
     limit: int = GDELT_RETRY_BATCH_SIZE,
 ) -> tuple[list[str], list[str]]:
-    """Select the oldest failed searches first, preserving channel order for ties."""
+    """Select persisted failures oldest-first, preserving insertion order for ties."""
     candidates = {}
-    for entry in entries:
-        if not isinstance(entry, dict):
+    for video_id, record in videos.items():
+        if video_id not in eligible_video_ids:
             continue
-        video_id = entry.get("id")
-        if (
-            video_id not in eligible_video_ids
-            or video_id not in videos
-            or video_id in candidates
-        ):
-            continue
-        record = videos[video_id]
         event_research = record.get("event_source_research")
         if not isinstance(event_research, dict):
             continue
@@ -628,7 +621,7 @@ def run_monitor(
     if run["status"] == "success":
         run["metadata_discovery_status"] = "metadata_discovery_completed"
         run["metadata_discovery_completed_at_utc"] = metadata_completed_at_utc
-    eligible_video_ids = set(videos)
+    persisted_video_ids = set(videos)
     new_entries = []
     seen_in_poll = set()
     for entry in entries:
@@ -645,6 +638,14 @@ def run_monitor(
         seen_in_poll.add(video_id)
         new_entries.append(entry)
 
+    source_search_slots = threading.BoundedSemaphore(MAX_CONCURRENT_GDELT_SEARCHES)
+
+    def limited_source_researcher(
+        title: str, researched_at_utc: str
+    ) -> dict[str, Any]:
+        with source_search_slots:
+            return source_researcher(title, researched_at_utc)
+
     def research(entry: dict[str, Any]) -> dict[str, Any]:
         return record_new_video(
             entry,
@@ -653,7 +654,7 @@ def run_monitor(
             run_id=run_id,
             run_url=run_url,
             page_researcher=page_researcher,
-            source_researcher=source_researcher,
+            source_researcher=limited_source_researcher,
         )
 
     if new_entries:
@@ -667,9 +668,8 @@ def run_monitor(
 
     if run["status"] == "success":
         retry_ids, deferred_retry_ids = select_failed_source_search_retries(
-            entries,
             videos,
-            eligible_video_ids=eligible_video_ids,
+            eligible_video_ids=persisted_video_ids,
         )
         run["retried_video_ids"] = retry_ids
         run["deferred_retry_video_ids"] = deferred_retry_ids
@@ -679,7 +679,7 @@ def run_monitor(
                 videos[video_id],
                 run_id=run_id,
                 run_url=run_url,
-                source_researcher=source_researcher,
+                source_researcher=limited_source_researcher,
             )
             run["retry_video_records"][video_id] = record
 

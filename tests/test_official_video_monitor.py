@@ -1,5 +1,6 @@
 import json
 import tempfile
+import threading
 import unittest
 from unittest import mock
 from pathlib import Path
@@ -529,13 +530,17 @@ class OfficialVideoMonitorTests(unittest.TestCase):
                 "error": "GDELT HTTP 429",
             }
 
+        listed_video_ids = [video_ids[-1]]
         retry_state, run = run_monitor(
             state=state,
             run_id="124",
             run_url=RUN_URL,
             trigger="schedule",
             poller=lambda: {
-                "entries": [{"id": video_id, "title": video_id} for video_id in video_ids]
+                "entries": [
+                    {"id": video_id, "title": "Still listed"}
+                    for video_id in listed_video_ids
+                ]
             },
             page_researcher=lambda *_: self.fail("retry must not revisit video pages"),
             source_researcher=fail_retry,
@@ -547,6 +552,7 @@ class OfficialVideoMonitorTests(unittest.TestCase):
         self.assertEqual(run["retried_video_ids"], video_ids[:5])
         self.assertEqual(run["deferred_retry_video_ids"], video_ids[5:])
         self.assertEqual(searched_titles, video_ids[:5])
+        self.assertNotIn(video_ids[0], listed_video_ids)
         self.assertEqual(len(run["retry_video_records"]), 5)
         self.assertEqual(
             len(
@@ -564,6 +570,46 @@ class OfficialVideoMonitorTests(unittest.TestCase):
             ),
             1,
         )
+
+    def test_new_video_source_search_concurrency_is_capped_at_two(self):
+        video_ids = [f"conc{index:07d}" for index in range(1, 5)]
+        lock = threading.Lock()
+        both_started = threading.Event()
+        active = 0
+        max_active = 0
+
+        def source_search(_title, researched_at_utc):
+            nonlocal active, max_active
+            with lock:
+                active += 1
+                max_active = max(max_active, active)
+                if active == 2:
+                    both_started.set()
+            both_started.wait(timeout=1)
+            with lock:
+                active -= 1
+            return {
+                "status": "completed_no_results",
+                "researched_at_utc": researched_at_utc,
+                "candidate_count": 0,
+                "candidates": [],
+            }
+
+        _, run = run_monitor(
+            state=empty_state(),
+            run_id="123",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {
+                "entries": [{"id": video_id, "title": video_id} for video_id in video_ids]
+            },
+            page_researcher=page_research,
+            source_researcher=source_search,
+            started_at_utc=STARTED_AT,
+        )
+
+        self.assertEqual(run["new_video_ids"], video_ids)
+        self.assertEqual(max_active, 2)
 
     def test_missing_title_records_source_search_blocker(self):
         result = research_related_source_metadata("", STARTED_AT)
