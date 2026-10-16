@@ -217,7 +217,12 @@ class RoseGardenPublicationReviewTests(unittest.TestCase):
         self.assertIn("deploy-review-preview:", render_workflow)
         self.assertIn("needs: render", render_workflow)
         self.assertIn("prepare_rose_garden_review_preview.py", render_workflow)
-        self.assertIn("contents: read", render_workflow)
+        render_job = render_workflow.split("  render:", maxsplit=1)[1].split(
+            "\n  deploy-review-preview:", maxsplit=1
+        )[0]
+        self.assertIn("permissions:\n      contents: write", render_job)
+        self.assertNotIn("gh release create", render_job)
+        self.assertNotIn("gh release edit", render_job)
         self.assertIn("rose-garden-publication", publish_workflow)
         self.assertIn("verify_rose_garden_publication_review.py", publish_workflow)
         self.assertIn("needs: validate-review", publish_workflow)
