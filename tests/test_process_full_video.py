@@ -1,3 +1,4 @@
+import argparse
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,11 +12,14 @@ from scripts.process_full_video import (
     bilingual_srt_text,
     copy_review_evidence,
     merge_sentence_fragments,
+    parse_caption_box,
     reflow_cues,
     read_srt,
+    scale_caption_box,
     srt_text,
     timestamp,
     validate_asset_prefix,
+    validate_caption_box,
     validate_release_asset_size,
     vtt_from_bilingual_srt,
     verify_cues,
@@ -76,20 +80,82 @@ class FullVideoSubtitleTests(unittest.TestCase):
             rendered = pysubs2.load(str(path), encoding="utf-8")
         self.assertIn(
             r"{\rChinese\fs56\1c&H004DD8FF&}中文"
-            r"\N{\rEnglish\fs84\1c&H00FFFFFF&}Text \{one\}",
+            r"\N{\rEnglish\fs45\1c&H00FFFFFF&}Text \{one\}",
             content,
         )
         self.assertIn("0:00:00.00,0:00:02.50", content)
         self.assertIn("Style: Chinese,Noto Sans CJK SC,56,&H004DD8FF", content)
-        self.assertIn("Style: English,Noto Sans CJK SC,84,&H00FFFFFF", content)
+        self.assertIn("Style: English,Noto Sans CJK SC,45,&H00FFFFFF", content)
         self.assertIn("&H70000000,-1,0,0,0,100,100,0,0,3,6,0,2", content)
         self.assertIn(",211,211,194,1", content)
         self.assertIn(",194,1\n", content)
         self.assertIn("WrapStyle: 0", content)
-        self.assertEqual(rendered.styles["English"].fontsize, 84)
+        self.assertEqual(rendered.styles["English"].fontsize, 45)
         self.assertEqual(rendered.styles["Chinese"].fontsize, 56)
         self.assertEqual(len(rendered.events), 1)
-        self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
+        self.assertIn(r"{\rEnglish\fs45\1c&H00FFFFFF&}", rendered.events[0].text)
+
+    def test_positions_bilingual_captions_in_explicit_half_open_box(self):
+        box = parse_caption_box("66, 883, 1852, 1022")
+        self.assertEqual(box, (66, 883, 1852, 1022))
+        validate_caption_box(box, 1920, 1080)
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "captions.ass"
+            write_ass(
+                path,
+                [Cue(0, 2.5, "Text", "中文")],
+                1920,
+                1080,
+                box,
+            )
+            content = path.read_text(encoding="utf-8")
+
+        self.assertIn(r"{\an5\pos(959,952.5)}", content)
+
+    def test_rejects_captions_that_would_overflow_explicit_box(self):
+        box = (66, 883, 1852, 1022)
+        too_long_chinese = "字" * 31
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "does not fit the specified box"):
+                write_ass(
+                    Path(directory) / "captions.ass",
+                    [Cue(0, 2.5, "Text", too_long_chinese)],
+                    1920,
+                    1080,
+                    box,
+                )
+
+    def test_rejects_caption_boxes_outside_the_frame(self):
+        with self.assertRaisesRegex(ValueError, "exceeds the 1920x1080 frame"):
+            validate_caption_box((66, 883, 1921, 1022), 1920, 1080)
+        with self.assertRaisesRegex(
+            argparse.ArgumentTypeError, "four comma-separated integers"
+        ):
+            parse_caption_box("66,883,1852")
+
+    def test_scales_reference_caption_box_to_video_resolution(self):
+        reference_box = (66, 883, 1852, 1022)
+        self.assertEqual(
+            scale_caption_box(reference_box, 1920, 1080),
+            reference_box,
+        )
+        self.assertEqual(
+            scale_caption_box(reference_box, 3840, 2160),
+            (132, 1766, 3704, 2044),
+        )
+        self.assertEqual(
+            scale_caption_box(reference_box, 1280, 720),
+            (44, 589, 1235, 681),
+        )
+        self.assertEqual(
+            scale_caption_box(reference_box, 2560, 1440),
+            (88, 1177, 2469, 1363),
+        )
+        self.assertEqual(
+            scale_caption_box(reference_box, 2560, 1080),
+            (88, 883, 2469, 1022),
+        )
 
     def test_reflow_splits_only_at_bilingually_aligned_clauses(self):
         original = Cue(
@@ -256,7 +322,7 @@ class FullVideoSubtitleTests(unittest.TestCase):
         )
         self.assertAlmostEqual(
             report["subtitle_readability"]["english_to_chinese_size_ratio"],
-            1.5,
+            0.804,
         )
         self.assertEqual(
             report["subtitle_readability"]["lower_margin_percent"],

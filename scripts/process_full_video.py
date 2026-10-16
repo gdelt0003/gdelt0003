@@ -35,7 +35,9 @@ MAX_RELEASE_ASSET_BYTES = 1_950_000_000
 MIN_SUBTITLE_CUE_SECONDS = 0.83
 MAX_FRAGMENT_GAP_SECONDS = 1.25
 CAPTION_LOWER_MARGIN_PERCENT = 18
-ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
+ENGLISH_TO_CHINESE_FONT_RATIO = 0.80
+CAPTION_BOX_REFERENCE_WIDTH = 1920
+CAPTION_BOX_REFERENCE_HEIGHT = 1080
 
 
 @dataclass(frozen=True)
@@ -378,13 +380,23 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
     return lines[:max_lines]
 
 
-def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
+def write_ass(
+    path: Path,
+    cues: list[Cue],
+    width: int,
+    height: int,
+    caption_box: tuple[int, int, int, int] | None = None,
+) -> None:
     chinese_font = max(32, round(height * 0.052))
     english_font = max(
         34,
         round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
     )
-    safe_width = round(width * 0.78)
+    if caption_box is None:
+        safe_width = round(width * 0.78)
+    else:
+        validate_caption_box(caption_box, width, height)
+        safe_width = round((caption_box[2] - caption_box[0]) * 0.96)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
     max_chinese_chars = max(10, int(safe_width / chinese_font))
     margin = max(28, round(height * CAPTION_LOWER_MARGIN_PERCENT / 100))
@@ -407,10 +419,14 @@ def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
         "borderstyle": 3,
         "outline": 6,
         "shadow": 0,
-        "alignment": pysubs2.Alignment.BOTTOM_CENTER,
-        "marginl": round(width * 0.11),
-        "marginr": round(width * 0.11),
-        "marginv": margin,
+        "alignment": (
+            pysubs2.Alignment.MIDDLE_CENTER
+            if caption_box is not None
+            else pysubs2.Alignment.BOTTOM_CENTER
+        ),
+        "marginl": 0 if caption_box is not None else round(width * 0.11),
+        "marginr": 0 if caption_box is not None else round(width * 0.11),
+        "marginv": 0 if caption_box is not None else margin,
         "encoding": 1,
     }
     subtitles.styles["Chinese"] = pysubs2.SSAStyle(
@@ -426,6 +442,13 @@ def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
     for cue in cues:
         chinese_lines = _wrap_chinese(cue.chinese, max_chinese_chars)
         english_lines = _wrap_english(cue.english, max_english_chars)
+        if caption_box is not None and (
+            len(chinese_lines) > 1 or len(english_lines) > 1
+        ):
+            raise RuntimeError(
+                "Caption text does not fit the specified box without "
+                "wrapping; refusing to render outside the box."
+            )
         dialogue_lines = [
             *(
                 f"{{\\rChinese\\fs{chinese_font}\\1c&H004DD8FF&}}"
@@ -440,15 +463,64 @@ def write_ass(path: Path, cues: list[Cue], width: int, height: int) -> None:
         ]
         if not dialogue_lines:
             continue
+        position_override = ""
+        if caption_box is not None:
+            x1, y1, x2, y2 = caption_box
+            position_override = (
+                f"{{\\an5\\pos({(x1 + x2) / 2:g},{(y1 + y2) / 2:g})}}"
+            )
         subtitles.events.append(
             pysubs2.SSAEvent(
                 start=round(cue.start * 1000),
                 end=round(cue.end * 1000),
                 style="Chinese",
-                text=r"\N".join(dialogue_lines),
+                text=position_override + r"\N".join(dialogue_lines),
             )
         )
     subtitles.save(str(path), format_="ass", encoding="utf-8")
+
+
+def parse_caption_box(value: str) -> tuple[int, int, int, int]:
+    try:
+        coordinates = tuple(int(part.strip()) for part in value.split(","))
+    except ValueError as error:
+        raise argparse.ArgumentTypeError(
+            "Caption box must contain four comma-separated integers."
+        ) from error
+    if len(coordinates) != 4:
+        raise argparse.ArgumentTypeError(
+            "Caption box must contain four comma-separated integers."
+        )
+    x1, y1, x2, y2 = coordinates
+    if x1 < 0 or y1 < 0 or x2 <= x1 or y2 <= y1:
+        raise argparse.ArgumentTypeError(
+            "Caption box must be a positive half-open rectangle."
+        )
+    return x1, y1, x2, y2
+
+
+def validate_caption_box(
+    box: tuple[int, int, int, int], width: int, height: int
+) -> None:
+    x1, y1, x2, y2 = box
+    if x2 > width or y2 > height:
+        raise ValueError(f"Caption box {box} exceeds the {width}x{height} frame.")
+
+
+def scale_caption_box(
+    box: tuple[int, int, int, int], width: int, height: int
+) -> tuple[int, int, int, int]:
+    validate_caption_box(
+        box, CAPTION_BOX_REFERENCE_WIDTH, CAPTION_BOX_REFERENCE_HEIGHT
+    )
+    scaled = (
+        round(box[0] * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(box[1] * height / CAPTION_BOX_REFERENCE_HEIGHT),
+        round(box[2] * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(box[3] * height / CAPTION_BOX_REFERENCE_HEIGHT),
+    )
+    validate_caption_box(scaled, width, height)
+    return scaled
 
 
 def verify_cues(
@@ -457,6 +529,7 @@ def verify_cues(
     duration: float,
     width: int,
     height: int,
+    caption_box: tuple[int, int, int, int] | None = None,
     translation_review: dict[str, object] | None = None,
     visual_review: dict[str, object] | None = None,
 ) -> dict[str, object]:
@@ -495,9 +568,9 @@ def verify_cues(
         34,
         round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
     )
-    if english_font / chinese_font < 1.20:
+    if chinese_font / english_font < 1.20:
         raise RuntimeError(
-            "Caption verification failed: English text is not at least 20% larger."
+            "Caption verification failed: Chinese text is not at least 20% larger."
         )
     review = translation_review or {}
     visual = visual_review or {}
@@ -530,7 +603,11 @@ def verify_cues(
             "english_to_chinese_size_ratio": round(
                 english_font / chinese_font, 3
             ),
-            "horizontal_safe_width_percent": 78,
+            "horizontal_safe_width_percent": (
+                round((caption_box[2] - caption_box[0]) * 0.96 / width * 100)
+                if caption_box is not None
+                else 78
+            ),
             "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
             "max_lines_per_language": 2,
             "english_reading_speed_over_20_cps_cues": english_rate_flags,
@@ -795,6 +872,14 @@ def main() -> None:
         type=Path,
         help="Reuse existing English and Chinese SRT files instead of rerunning ASR and translation.",
     )
+    parser.add_argument(
+        "--caption-box",
+        type=parse_caption_box,
+        help=(
+            "Reference half-open x1,y1,x2,y2 box in 1920x1080 coordinates; "
+            "scaled proportionally to the source frame."
+        ),
+    )
     args = parser.parse_args()
 
     asset_prefix = validate_asset_prefix(args.asset_prefix)
@@ -810,6 +895,10 @@ def main() -> None:
     )
 
     duration, width, height = probe_video(source)
+    if args.caption_box is not None:
+        caption_box = scale_caption_box(args.caption_box, width, height)
+    else:
+        caption_box = None
     language_probability = None
     translation_models_used = (
         [] if args.reuse_subtitles else [TRANSLATION_MODEL]
@@ -983,7 +1072,7 @@ def main() -> None:
             vtt_from_bilingual_srt(combined_srt),
             encoding="utf-8",
         )
-        write_ass(ass_path, cues, width, height)
+        write_ass(ass_path, cues, width, height, caption_box)
 
     output_video = output_dir / f"{prefix}-bilingual.mp4"
     ffmpeg_version = run(["ffmpeg", "-version"], capture=True).splitlines()[0]
@@ -1022,6 +1111,7 @@ def main() -> None:
         duration=duration,
         width=width,
         height=height,
+        caption_box=caption_box,
         translation_review=translation_review,
         visual_review=visual_review,
     )
@@ -1060,6 +1150,35 @@ def main() -> None:
             "1.50x Chinese; authored with pysubs2 "
             f"{package_version('pysubs2')} and burned with FFmpeg libass; "
             "responsive phrase-level timing"
+        ),
+        "caption_layout": (
+            {
+                "mode": "normalized_reference_box",
+                "reference_resolution": [
+                    CAPTION_BOX_REFERENCE_WIDTH,
+                    CAPTION_BOX_REFERENCE_HEIGHT,
+                ],
+                "reference_box_xyxy_half_open": list(args.caption_box),
+                "normalized_box_xyxy": [
+                    round(args.caption_box[0] / CAPTION_BOX_REFERENCE_WIDTH, 6),
+                    round(args.caption_box[1] / CAPTION_BOX_REFERENCE_HEIGHT, 6),
+                    round(args.caption_box[2] / CAPTION_BOX_REFERENCE_WIDTH, 6),
+                    round(args.caption_box[3] / CAPTION_BOX_REFERENCE_HEIGHT, 6),
+                ],
+                "applied_box_xyxy_half_open": list(caption_box),
+                "applied_resolution": [width, height],
+                "box_width_px": caption_box[2] - caption_box[0],
+                "box_height_px": caption_box[3] - caption_box[1],
+                "positioning": "centered; one line per language required",
+                "vertical_extent_check": "requires rendered-frame review",
+                "visual_frame_review": "required",
+            }
+            if args.caption_box is not None
+            else {
+                "mode": "default_bottom_center",
+                "lower_margin_percent": CAPTION_LOWER_MARGIN_PERCENT,
+                "visual_frame_review": "required",
+            }
         ),
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
