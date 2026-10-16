@@ -186,6 +186,7 @@ button {
 .review-warning { padding: 12px; border-left: 4px solid #fbbf24; background: rgba(120, 53, 15, .2); }
 .review-video { margin: 16px 0; overflow: hidden; border-radius: 10px; background: #000; }
 .review-video iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+.review-video video { display: block; width: 100%; height: auto; }
 .review-checklist { display: grid; gap: 10px; padding-left: 20px; }
 .review-checklist label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .review-checklist span { color: var(--muted); font-size: .85rem; }

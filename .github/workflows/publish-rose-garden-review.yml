@@ -1,0 +1,169 @@
+name: Publish Rose Garden bilingual review video
+
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_public_review:
+        description: Confirm the requester authorized cloud processing and public external-review publication of this exact source
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rose-garden-review-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - name: Require main branch and explicit authorization
+        env:
+          AUTHORIZED: ${{ inputs.authorize_public_review }}
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "This production workflow may only run from main." >&2
+            exit 1
+          fi
+          if [[ "$AUTHORIZED" != "true" ]]; then
+            echo "Explicit authorization for public review is required." >&2
+            exit 1
+          fi
+        shell: bash
+
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg and CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          ffmpeg -version
+          ffprobe -version
+        shell: bash
+
+      - name: Download and verify the pinned uploaded source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-input"
+          gh release download rose-garden-lunch-source-2026-10-15 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "RoseGardenLunch-IySF_8OArvw.mp4" \
+            --dir "$RUNNER_TEMP/rose-garden-input"
+          python scripts/verify_rose_garden_review.py \
+            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4"
+        shell: bash
+
+      - name: Cache transcription and translation models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-rose-garden-full-video-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Install CPU transcription and translation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+        shell: bash
+
+      - name: Transcribe, translate, and burn bilingual captions
+        run: |
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
+            --output-dir "$RUNNER_TEMP/rose-garden-output" \
+            --asset-prefix RoseGardenLunch-IySF_8OArvw
+        shell: bash
+
+      - name: Validate media operation audit
+        run: >-
+          python scripts/verify_operation_audit.py
+          --audit "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
+          --manifest "$RUNNER_TEMP/rose-garden-output/manifest.json"
+        shell: bash
+
+      - name: Validate render and record provenance and pending reviews
+        run: |
+          python scripts/verify_rose_garden_review.py \
+            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
+            --output-dir "$RUNNER_TEMP/rose-garden-output"
+        shell: bash
+
+      - name: Create or update public prerelease review assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="rose-garden-lunch-review"
+          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. Independent rights, source-frame, source/event match, ASR, and translation review remain pending; this is not final approval."
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release edit "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "Rose Garden Lunch bilingual review draft" \
+              --notes "$notes" \
+              --prerelease
+          else
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "Rose Garden Lunch bilingual review draft" \
+              --notes "$notes" \
+              --prerelease
+          fi
+          gh release upload "$tag" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en.srt" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt" \
+            "$RUNNER_TEMP/rose-garden-output/manifest.json" \
+            "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+        shell: bash
+
+      - name: Preserve operation audit for this workflow run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-operation-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/rose-garden-output/operation-audit.json
+          if-no-files-found: ignore
+          retention-days: 90
+
+  deploy-pages:
+    needs: render
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the published site
+        uses: actions/checkout@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
