@@ -33,22 +33,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:16+00:00",
-        "completed_at_utc": "2026-10-16T13:23:26+00:00",
-        "run_id": "38907411619",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38907411619",
+        "completed_at_utc": "2026-10-16T23:11:04+00:00",
+        "run_id": "38979933171",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from Missoula, MT, Oct. 15, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T13:23:16+00:00",
+          "researched_at_utc": "2026-10-16T23:10:50+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T13:23:16+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T23:10:50+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -104,6 +104,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-16T23:10:50+00:00",
+            "completed_at_utc": "2026-10-16T23:11:04+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "38979933171",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from Missoula, MT, Oct. 15, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T23:10:50+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
           }
         ]
       },
@@ -156,22 +175,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:16+00:00",
-        "completed_at_utc": "2026-10-16T13:23:39+00:00",
-        "run_id": "38907411619",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38907411619",
+        "completed_at_utc": "2026-10-16T23:11:15+00:00",
+        "run_id": "38979933171",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Bullhead City, AZ, Oct. 14, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T13:23:26+00:00",
+          "researched_at_utc": "2026-10-16T23:11:04+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T13:23:26+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T23:11:04+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -226,6 +245,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T23:11:04+00:00",
+            "completed_at_utc": "2026-10-16T23:11:15+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38979933171",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Bullhead City, AZ, Oct. 14, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T23:11:04+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ]
@@ -12028,22 +12066,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:54+00:00",
-        "completed_at_utc": "2026-10-16T13:01:10+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T23:10:28+00:00",
+        "run_id": "38979933171",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"American Mining Roundtable\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T13:00:55+00:00",
+          "researched_at_utc": "2026-10-16T23:10:17+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T13:00:55+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T23:10:17+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12060,7 +12098,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T13:00:55+00:00",
+            "completed_at_utc": "2026-10-16T13:01:10+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"American Mining Roundtable\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T13:00:55+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T23:10:17+00:00",
+            "completed_at_utc": "2026-10-16T23:10:28+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38979933171",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"American Mining Roundtable\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T23:10:17+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -12111,22 +12189,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:55+00:00",
-        "completed_at_utc": "2026-10-16T13:01:22+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T23:10:39+00:00",
+        "run_id": "38979933171",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"THE CAPITAL: RESTORED\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T13:00:56+00:00",
+          "researched_at_utc": "2026-10-16T23:10:28+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T13:00:56+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T23:10:28+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12143,7 +12221,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T13:00:56+00:00",
+            "completed_at_utc": "2026-10-16T13:01:22+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"THE CAPITAL: RESTORED\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T13:00:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T23:10:28+00:00",
+            "completed_at_utc": "2026-10-16T23:10:39+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38979933171",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"THE CAPITAL: RESTORED\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T23:10:28+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -12194,22 +12312,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:55+00:00",
-        "completed_at_utc": "2026-10-16T13:01:12+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T23:10:50+00:00",
+        "run_id": "38979933171",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"A vision for two very different Americas\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T13:00:56+00:00",
+          "researched_at_utc": "2026-10-16T23:10:39+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T13:00:56+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T23:10:39+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12226,7 +12344,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T13:00:56+00:00",
+            "completed_at_utc": "2026-10-16T13:01:12+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"A vision for two very different Americas\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T13:00:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T23:10:39+00:00",
+            "completed_at_utc": "2026-10-16T23:10:50+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38979933171",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"A vision for two very different Americas\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T23:10:39+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -12455,10 +12613,10 @@
     }
   },
   "last_run": {
-    "run_id": "38977690624",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38977690624",
-    "started_at_utc": "2026-10-16T22:46:16+00:00",
-    "completed_at_utc": "2026-10-16T22:47:09+00:00",
+    "run_id": "38979933171",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38979933171",
+    "started_at_utc": "2026-10-16T23:10:15+00:00",
+    "completed_at_utc": "2026-10-16T23:11:15+00:00",
     "status": "success"
   }
 }
