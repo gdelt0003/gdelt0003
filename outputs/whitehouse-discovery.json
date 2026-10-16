@@ -1,9 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-15T02:48:02+00:00",
+  "checked_at_utc": "2026-10-16T02:47:38+00:00",
   "channel_url": "https://www.youtube.com/@WhiteHouse/videos",
   "identity_rule": "Upload metadata is not event time. Leads stay unassigned until event date/time, location, people, and content are independently checked.",
   "leads": [
+    {
+      "video_id": "VPzIphlwkFA",
+      "title": "President Trump Gaggles with Press Upon Departure from Missoula, MT, Oct. 15, 2026",
+      "publisher": "The White House",
+      "url": "https://www.youtube.com/watch?v=VPzIphlwkFA",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 121,
+      "event_id": null,
+      "event_date": null,
+      "event_time_local": null,
+      "assignment_status": "unassigned_event_lead",
+      "evidence_status": "metadata_only"
+    },
     {
       "video_id": "117BmljC8qk",
       "title": "President Trump Gaggles with Press at Bullhead City, AZ, Oct. 14, 2026",
@@ -264,20 +278,6 @@
       "published_timestamp_unix": null,
       "upload_date_metadata": null,
       "duration_seconds": 324,
-      "event_id": null,
-      "event_date": null,
-      "event_time_local": null,
-      "assignment_status": "unassigned_event_lead",
-      "evidence_status": "metadata_only"
-    },
-    {
-      "video_id": "kuYkk0TxYuM",
-      "title": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 5, 2026",
-      "publisher": "The White House",
-      "url": "https://www.youtube.com/watch?v=kuYkk0TxYuM",
-      "published_timestamp_unix": null,
-      "upload_date_metadata": null,
-      "duration_seconds": 833,
       "event_id": null,
       "event_date": null,
       "event_time_local": null,
