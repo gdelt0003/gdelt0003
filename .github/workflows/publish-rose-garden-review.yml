@@ -3,11 +3,56 @@ name: Publish Rose Garden bilingual review video
 on:
   workflow_dispatch:
     inputs:
-      authorize_public_review:
-        description: Confirm the requester authorized cloud processing and public external-review publication of this exact source
+      event_id:
+        description: Pinned event ID
+        type: string
+        required: true
+        default: rose-garden-lunch-2026-10-15
+      event_title:
+        description: Pinned event title
+        type: string
+        required: true
+        default: President Trump Participates in a Rose Garden Lunch
+      event_date:
+        description: Pinned event date
+        type: string
+        required: true
+        default: "2026-10-15"
+      source_url:
+        description: Official-source video URL for this review
+        type: string
+        required: true
+        default: https://www.youtube.com/watch?v=IySF_8OArvw
+      source_release_tag:
+        description: Uploaded source release tag
+        type: string
+        required: true
+        default: rose-garden-lunch-source-2026-10-15
+      source_asset:
+        description: Exact uploaded source filename
+        type: string
+        required: true
+        default: RoseGardenLunch-IySF_8OArvw.mp4
+      source_sha256:
+        description: Required SHA-256 of the uploaded source asset
+        type: string
+        required: true
+        default: e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73
+      requester_authorized_processing:
+        description: Confirm requester authorization to process this exact video
         type: boolean
         required: true
         default: false
+      requester_authorized_publication:
+        description: Confirm requester authorization to publish this exact video as a public external-review draft
+        type: boolean
+        required: true
+        default: false
+      rights_evidence_url:
+        description: Optional HTTPS rights-evidence URL; independent rights review remains pending
+        type: string
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -23,29 +68,87 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Require main branch and explicit authorization
+      - name: Prepare diagnostics
+        id: prepare_diagnostics
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-diagnostics"
+          printf 'run_id=%s\n' "$GITHUB_RUN_ID" \
+            > "$RUNNER_TEMP/rose-garden-diagnostics/run-context.txt"
+        shell: bash
+
+      - name: Check out main
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        id: setup_python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate run authorization and pinned event/source inputs
+        id: input_validation
         env:
-          AUTHORIZED: ${{ inputs.authorize_public_review }}
+          EVENT_ID: ${{ inputs.event_id }}
+          EVENT_TITLE: ${{ inputs.event_title }}
+          EVENT_DATE: ${{ inputs.event_date }}
+          SOURCE_URL: ${{ inputs.source_url }}
+          SOURCE_RELEASE_TAG: ${{ inputs.source_release_tag }}
+          SOURCE_ASSET: ${{ inputs.source_asset }}
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          PUBLICATION_AUTHORIZED: ${{ inputs.requester_authorized_publication }}
         run: |
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "This production workflow may only run from main." >&2
             exit 1
           fi
-          if [[ "$AUTHORIZED" != "true" ]]; then
-            echo "Explicit authorization for public review is required." >&2
+          if [[ "$PROCESSING_AUTHORIZED" != "true" || "$PUBLICATION_AUTHORIZED" != "true" ]]; then
+            echo "Requester authorization for processing and public review publication is required." >&2
             exit 1
           fi
+          python scripts/verify_rose_garden_review.py \
+            --validate-dispatch-inputs \
+            --event-id "$EVENT_ID" \
+            --event-title "$EVENT_TITLE" \
+            --event-date "$EVENT_DATE" \
+            --source-url "$SOURCE_URL" \
+            --source-release-tag "$SOURCE_RELEASE_TAG" \
+            --source-asset "$SOURCE_ASSET" \
+            --source-sha256 "$SOURCE_SHA256" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+          python - "$RUNNER_TEMP/rose-garden-diagnostics/run-context.txt" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          fields = {
+              "event_id": "EVENT_ID",
+              "event_title": "EVENT_TITLE",
+              "event_date": "EVENT_DATE",
+              "source_url": "SOURCE_URL",
+              "source_release_tag": "SOURCE_RELEASE_TAG",
+              "source_asset": "SOURCE_ASSET",
+              "source_sha256": "SOURCE_SHA256",
+              "rights_evidence_url": "RIGHTS_EVIDENCE_URL",
+          }
+          context_path = Path(sys.argv[1])
+          context = {"run_id": os.environ["GITHUB_RUN_ID"]}
+          context.update({key: os.environ[value] for key, value in fields.items()})
+          context["requester_authorized_processing"] = True
+          context["requester_authorized_publication"] = True
+          context["independent_rights_review"] = "pending"
+          context_path.with_name("run-input.json").write_text(
+              json.dumps(context, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
         shell: bash
 
-      - name: Check out main
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Install ffmpeg and CJK fonts
+        id: install_ffmpeg
         run: |
           sudo apt-get update
           sudo apt-get install --yes ffmpeg fonts-noto-cjk
@@ -54,25 +157,38 @@ jobs:
         shell: bash
 
       - name: Download and verify the pinned uploaded source
+        id: source_download
         env:
           GH_TOKEN: ${{ github.token }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
         run: |
+          set -o pipefail
           mkdir -p "$RUNNER_TEMP/rose-garden-input"
           gh release download rose-garden-lunch-source-2026-10-15 \
             --repo "$GITHUB_REPOSITORY" \
             --pattern "RoseGardenLunch-IySF_8OArvw.mp4" \
-            --dir "$RUNNER_TEMP/rose-garden-input"
-          python scripts/verify_rose_garden_review.py \
-            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4"
+            --dir "$RUNNER_TEMP/rose-garden-input" \
+            2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/source-download.log"
+          if ! python scripts/verify_rose_garden_review.py \
+            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            > "$RUNNER_TEMP/rose-garden-diagnostics/source-probe.json" \
+            2> "$RUNNER_TEMP/rose-garden-diagnostics/source-verify.log"; then
+            cat "$RUNNER_TEMP/rose-garden-diagnostics/source-verify.log" >&2
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/rose-garden-diagnostics/source-probe.json"
         shell: bash
 
       - name: Cache transcription and translation models
+        id: model_cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
           key: ${{ runner.os }}-rose-garden-full-video-whisper-large-v3-turbo-m2m100-1.2b
 
       - name: Install CPU transcription and translation dependencies
+        id: install_dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
@@ -80,14 +196,18 @@ jobs:
         shell: bash
 
       - name: Transcribe, translate, and burn bilingual captions
+        id: render_video
         run: |
+          set -o pipefail
           python scripts/process_full_video.py \
             --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
-            --asset-prefix RoseGardenLunch-IySF_8OArvw
+            --asset-prefix RoseGardenLunch-IySF_8OArvw \
+            2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/render.log"
         shell: bash
 
       - name: Validate media operation audit
+        id: validate_audit
         run: >-
           python scripts/verify_operation_audit.py
           --audit "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
@@ -95,16 +215,77 @@ jobs:
         shell: bash
 
       - name: Validate render and record provenance and pending reviews
+        id: finalize_manifest
+        env:
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
         run: |
           python scripts/verify_rose_garden_review.py \
             --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
-            --output-dir "$RUNNER_TEMP/rose-garden-output"
+            --output-dir "$RUNNER_TEMP/rose-garden-output" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
         shell: bash
 
-      - name: Create or update public prerelease review assets
+      - name: Require nonempty MP4, manifest, and operation audit
+        id: validate_bundle
+        run: |
+          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
+          test -s "$RUNNER_TEMP/rose-garden-output/manifest.json"
+          test -s "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
+        shell: bash
+
+      - name: Upload unique render, manifest, and audit artifact
+        id: upload_bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-review-run-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt
+            ${{ runner.temp }}/rose-garden-output/manifest.json
+            ${{ runner.temp }}/rose-garden-output/operation-audit.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Require every render and artifact stage to succeed before publication
+        id: publication_gate
+        if: always()
+        env:
+          CHECKOUT: ${{ steps.checkout.outcome }}
+          PYTHON: ${{ steps.setup_python.outcome }}
+          FFMPEG: ${{ steps.install_ffmpeg.outcome }}
+          INPUTS: ${{ steps.input_validation.outcome }}
+          SOURCE: ${{ steps.source_download.outcome }}
+          DEPENDENCIES: ${{ steps.install_dependencies.outcome }}
+          RENDER: ${{ steps.render_video.outcome }}
+          AUDIT: ${{ steps.validate_audit.outcome }}
+          MANIFEST: ${{ steps.finalize_manifest.outcome }}
+          BUNDLE: ${{ steps.validate_bundle.outcome }}
+          ARTIFACT: ${{ steps.upload_bundle.outcome }}
+        run: |
+          for stage in \
+            "$CHECKOUT" "$PYTHON" "$FFMPEG" "$INPUTS" "$SOURCE" \
+            "$DEPENDENCIES" "$RENDER" "$AUDIT" "$MANIFEST" "$BUNDLE" "$ARTIFACT"; do
+            if [[ "$stage" != "success" ]]; then
+              echo "Publication blocked: every authorization, source, render, audit, manifest, and artifact stage must succeed." >&2
+              exit 1
+            fi
+          done
+        shell: bash
+
+      - name: Publish derived review assets to a public prerelease
+        id: publish_release
         env:
           GH_TOKEN: ${{ github.token }}
+          PUBLICATION_GATE: ${{ steps.publication_gate.outcome }}
         run: |
+          if [[ "$PUBLICATION_GATE" != "success" ]]; then
+            echo "Publication gate did not succeed; refusing to publish." >&2
+            exit 1
+          fi
+          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
           tag="rose-garden-lunch-review"
           notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. Independent rights, source-frame, source/event match, ASR, and translation review remain pending; this is not final approval."
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
@@ -131,19 +312,164 @@ jobs:
             "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
             --repo "$GITHUB_REPOSITORY" \
             --clobber
+
+      - name: Verify public MP4 release asset is present and nonempty
+        id: verify_public_asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MANIFEST_PATH: ${{ runner.temp }}/rose-garden-output/manifest.json
+        run: |
+          gh release view rose-garden-lunch-review \
+            --repo "$GITHUB_REPOSITORY" \
+            --json assets \
+            > "$RUNNER_TEMP/rose-garden-diagnostics/release-assets.json"
+          python - "$RUNNER_TEMP/rose-garden-diagnostics/release-assets.json" <<'PY'
+          import json
+          import os
+          import sys
+
+          assets = json.load(open(sys.argv[1], encoding="utf-8"))["assets"]
+          expected = "RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
+          asset = next((item for item in assets if item["name"] == expected), None)
+          if asset is None or asset["size"] <= 0:
+              raise SystemExit(f"Public release is missing a nonempty {expected}.")
+          with open(os.environ["MANIFEST_PATH"], encoding="utf-8") as source:
+              manifest = json.load(source)
+          rendered = manifest["rendered_video"]
+          expected_digest = f"sha256:{rendered['sha256']}"
+          if asset["size"] != rendered["size_bytes"] or asset["digest"] != expected_digest:
+              raise SystemExit(
+                  f"Public MP4 does not match manifest size/hash: "
+                  f"{asset['size']} bytes, {asset['digest']}"
+              )
+          print(f"Public release MP4: {asset['name']} ({asset['size']} bytes)")
+          print(f"Public release MP4 SHA-256: {rendered['sha256']}")
+          PY
         shell: bash
 
-      - name: Preserve operation audit for this workflow run
+      - name: Collect render diagnostics
+        id: collect_diagnostics
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-diagnostics"
+          for name in manifest.json operation-audit.json; do
+            if [[ -s "$RUNNER_TEMP/rose-garden-output/$name" ]]; then
+              cp "$RUNNER_TEMP/rose-garden-output/$name" "$RUNNER_TEMP/rose-garden-diagnostics/$name"
+            fi
+          done
+        shell: bash
+
+      - name: Upload per-run diagnostics
+        id: upload_diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rose-garden-operation-audit-${{ github.run_id }}
-          path: ${{ runner.temp }}/rose-garden-output/operation-audit.json
-          if-no-files-found: ignore
+          name: rose-garden-diagnostics-${{ github.run_id }}
+          path: ${{ runner.temp }}/rose-garden-diagnostics
+          if-no-files-found: warn
           retention-days: 90
+
+      - name: Write run outcome summary
+        id: run_summary
+        if: always()
+        env:
+          CHECKOUT: ${{ steps.checkout.outcome }}
+          PYTHON: ${{ steps.setup_python.outcome }}
+          FFMPEG: ${{ steps.install_ffmpeg.outcome }}
+          AUTHORIZATION: ${{ steps.input_validation.outcome }}
+          SOURCE: ${{ steps.source_download.outcome }}
+          DEPENDENCIES: ${{ steps.install_dependencies.outcome }}
+          RENDER: ${{ steps.render_video.outcome }}
+          AUDIT: ${{ steps.validate_audit.outcome }}
+          MANIFEST: ${{ steps.finalize_manifest.outcome }}
+          BUNDLE: ${{ steps.validate_bundle.outcome }}
+          ARTIFACT: ${{ steps.upload_bundle.outcome }}
+          PUBLISH: ${{ steps.publish_release.outcome }}
+          PUBLIC_ASSET: ${{ steps.verify_public_asset.outcome }}
+          DIAGNOSTICS: ${{ steps.upload_diagnostics.outcome }}
+          MP4_PATH: ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
+          MANIFEST_PATH: ${{ runner.temp }}/rose-garden-output/manifest.json
+          AUDIT_PATH: ${{ runner.temp }}/rose-garden-output/operation-audit.json
+          ARTIFACT_NAME: rose-garden-review-run-${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          mp4_size="missing or empty"
+          mp4_sha256="missing"
+          manifest_size="missing or empty"
+          audit_size="missing or empty"
+          if [[ -s "$MP4_PATH" ]]; then
+            mp4_size="$(stat -c '%s bytes' "$MP4_PATH")"
+            mp4_sha256="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["rendered_video"]["sha256"])' "$MANIFEST_PATH" 2>/dev/null || echo missing)"
+          fi
+          if [[ -s "$MANIFEST_PATH" ]]; then
+            manifest_size="$(stat -c '%s bytes' "$MANIFEST_PATH")"
+          fi
+          if [[ -s "$AUDIT_PATH" ]]; then
+            audit_size="$(stat -c '%s bytes' "$AUDIT_PATH")"
+          fi
+          blockers=()
+          for status in \
+            "checkout:$CHECKOUT" \
+            "Python setup:$PYTHON" \
+            "ffmpeg setup:$FFMPEG" \
+            "authorization:$AUTHORIZATION" \
+            "source download:$SOURCE" \
+            "model dependencies:$DEPENDENCIES" \
+            "render:$RENDER" \
+            "operation audit:$AUDIT" \
+            "manifest:$MANIFEST" \
+            "nonempty bundle:$BUNDLE" \
+            "unique artifact:$ARTIFACT" \
+            "public release:$PUBLISH" \
+            "public asset verification:$PUBLIC_ASSET"; do
+            stage="${status%%:*}"
+            outcome="${status#*:}"
+            if [[ "$outcome" != "success" ]]; then
+              blockers+=("$stage=$outcome")
+            fi
+          done
+          {
+            echo "## Rose Garden public review render"
+            echo
+            echo "- Run: [${GITHUB_RUN_ID}](${RUN_URL})"
+            echo "- Event: \`rose-garden-lunch-2026-10-15\`"
+            echo "- Source: \`RoseGardenLunch-IySF_8OArvw.mp4\` (\`e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73\`)"
+            echo "- Public rights/review state: requester authorization recorded; independent rights, source-frame, event-match, ASR, and translation reviews remain pending."
+            echo
+            echo "| Stage | Outcome |"
+            echo "| --- | --- |"
+            echo "| Checkout | ${CHECKOUT:-not started} |"
+            echo "| Python setup | ${PYTHON:-not started} |"
+            echo "| ffmpeg/fonts setup | ${FFMPEG:-not started} |"
+            echo "| Authorization and pinned inputs | ${AUTHORIZATION:-not started} |"
+            echo "| Download and source probe | ${SOURCE:-not started} |"
+            echo "| Model dependencies | ${DEPENDENCIES:-not started} |"
+            echo "| Render/burn | ${RENDER:-not started} |"
+            echo "| Operation audit | ${AUDIT:-not started} |"
+            echo "| Manifest/provenance | ${MANIFEST:-not started} |"
+            echo "| Nonempty output bundle | ${BUNDLE:-not started} |"
+            echo "| Unique MP4/manifest/audit artifact | ${ARTIFACT:-not started} |"
+            echo "| Public release upload | ${PUBLISH:-not started} |"
+            echo "| Public release MP4 verification | ${PUBLIC_ASSET:-not started} |"
+            echo "| Diagnostic artifact | ${DIAGNOSTICS:-not started} |"
+            echo
+            echo "- Unique artifact name: \`${ARTIFACT_NAME}\` (step outcome: ${ARTIFACT:-not started})"
+            echo "- Rendered MP4 on runner: ${mp4_size}"
+            echo "- Rendered MP4 SHA-256: \`${mp4_sha256}\`"
+            echo "- Manifest on runner: ${manifest_size}"
+            echo "- Operation audit on runner: ${audit_size}"
+            if (( ${#blockers[@]} )); then
+              echo "- **Failure/blocker:** ${blockers[*]}"
+            else
+              echo "- **Failure/blocker:** none; render, validation, artifact, and public release verification succeeded."
+            fi
+            echo "- Pages deployment runs only after this render job and its public MP4 verification succeed."
+          } >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
 
   deploy-pages:
     needs: render
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -156,14 +482,61 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Require successful render before deployment
+        id: deployment_gate
+        env:
+          RENDER_RESULT: ${{ needs.render.result }}
+        run: |
+          if [[ "$RENDER_RESULT" != "success" ]]; then
+            echo "Pages deployment blocked because the render job outcome was $RENDER_RESULT."
+          fi
+        shell: bash
+
       - name: Check out the published site
+        if: needs.render.result == 'success'
+        id: site_checkout
         uses: actions/checkout@v4
 
       - name: Upload Pages artifact
+        if: needs.render.result == 'success'
+        id: upload_pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
       - name: Deploy to GitHub Pages
+        if: needs.render.result == 'success'
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Write Pages deployment outcome summary
+        id: deployment_summary
+        if: always()
+        env:
+          RENDER_RESULT: ${{ needs.render.result }}
+          GATE_RESULT: ${{ steps.deployment_gate.outcome }}
+          CHECKOUT_RESULT: ${{ steps.site_checkout.outcome }}
+          UPLOAD_RESULT: ${{ steps.upload_pages.outcome }}
+          DEPLOY_RESULT: ${{ steps.deployment.outcome }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          blocker="none"
+          if [[ "$RENDER_RESULT" != "success" ]]; then
+            blocker="blocked: render job outcome was $RENDER_RESULT; no Pages artifact was uploaded or deployed"
+          elif [[ "$DEPLOY_RESULT" != "success" ]]; then
+            blocker="Pages deployment did not succeed (outcome: ${DEPLOY_RESULT:-not started})"
+          fi
+          {
+            echo "## Rose Garden Pages deployment"
+            echo
+            echo "- Run: [${GITHUB_RUN_ID}](${RUN_URL})"
+            echo "- Render job: ${RENDER_RESULT}"
+            echo "- Render gate: ${GATE_RESULT:-not started}"
+            echo "- Site checkout: ${CHECKOUT_RESULT:-not started}"
+            echo "- Pages artifact upload: ${UPLOAD_RESULT:-not started}"
+            echo "- Pages deploy: ${DEPLOY_RESULT:-not started}"
+            echo "- Deployment URL: ${PAGE_URL:-not deployed}"
+            echo "- Failure/blocker: ${blocker}"
+          } >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
