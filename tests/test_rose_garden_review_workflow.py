@@ -280,6 +280,40 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 )
             )
 
+    def test_user_still_bbox_is_recorded_as_unverified_and_not_production_input(self):
+        measurement = review.user_provided_still_measurement()
+        self.assertEqual(measurement["evidence_type"], "user_provided_still_measurement")
+        self.assertEqual(measurement["source_resolution_px"], {
+            "width": 1920,
+            "height": 1080,
+        })
+        self.assertEqual(
+            measurement["source_banner_bbox_px_half_open"],
+            {"left": 68, "top": 885, "right": 1850, "bottom": 1020},
+        )
+        self.assertEqual(
+            measurement["proposed_mask_bbox_px_half_open"],
+            {"left": 66, "top": 883, "right": 1852, "bottom": 1022},
+        )
+        self.assertEqual(
+            measurement["proposed_mask_dimensions_px"],
+            {"width": 1786, "height": 139},
+        )
+        self.assertEqual(measurement["padding_px_per_edge"], 2)
+        self.assertEqual(measurement["timecode_status"], "not_verified")
+        self.assertEqual(measurement["provenance_status"], "not_verified")
+        self.assertEqual(measurement["video_wide_position_stability"], "not_verified")
+        self.assertEqual(measurement["controlled_cloud_frame_review"], "not_verified")
+        self.assertFalse(measurement["production_bbox_input"])
+        with self.assertRaisesRegex(RuntimeError, "no defaults"):
+            review.validate_layout_inputs(
+                caption_position="mask-lower-third",
+                caption_safe_region_reviewed=True,
+                source_graphics_regions_json="[]",
+                rose_mask_authorized=True,
+                mask_padding_px_per_edge=2,
+            )
+
     def test_source_verification_checks_exact_asset_and_probe_requirements(self):
         self.assertEqual(review.SOURCE_SIZE_BYTES, 1_030_142_647)
         self.assertEqual(

@@ -130,6 +130,15 @@ and timezone match, and YouTube-to-release lineage gates also require evidence
 links and explicit completion; their current pending state blocks the workflow.
 No evidence-provider responsibility is assigned by this profile.
 
+A user-provided still measurement currently reports a 1920x1080 frame and
+half-open banner BBox `[68, 885, 1850, 1020)`. At the implementation-selected
+2 px per edge, its proposed mask BBox is `[66, 883, 1852, 1022)` (1786x139).
+The manifest records this only as `user_provided_still_measurement`: its
+timecode and provenance are `not_verified`, it does not establish that the
+banner remains in this position throughout the video, and it is not a
+controlled cloud frame-review record. It is not a production BBox input and
+cannot satisfy the source-frame review gate.
+
 ## Rose Garden implementation status
 
 The existing public Rose Garden MP4 was rendered by run

@@ -26,6 +26,44 @@ SOURCE_SHA256 = "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f7
 ASSET_PREFIX = "RoseGardenLunch-IySF_8OArvw"
 SUBTITLE_LAYOUT = "rose-garden-source-aware-bilingual"
 CAPTION_SAFE_WIDTH_PERCENT = 68
+USER_PROVIDED_STILL_BANNER_BBOX = {
+    "left": 68,
+    "top": 885,
+    "right": 1850,
+    "bottom": 1020,
+}
+USER_PROVIDED_STILL_RESOLUTION = {"width": 1920, "height": 1080}
+USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE = 2
+
+
+def user_provided_still_measurement() -> dict[str, Any]:
+    source_bbox = USER_PROVIDED_STILL_BANNER_BBOX
+    padding = USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE
+    return {
+        "evidence_type": "user_provided_still_measurement",
+        "source_resolution_px": dict(USER_PROVIDED_STILL_RESOLUTION),
+        "source_banner_bbox_px_half_open": dict(source_bbox),
+        "proposed_mask_bbox_px_half_open": {
+            "left": source_bbox["left"] - padding,
+            "top": source_bbox["top"] - padding,
+            "right": source_bbox["right"] + padding,
+            "bottom": source_bbox["bottom"] + padding,
+        },
+        "proposed_mask_dimensions_px": {
+            "width": (
+                source_bbox["right"] - source_bbox["left"] + 2 * padding
+            ),
+            "height": (
+                source_bbox["bottom"] - source_bbox["top"] + 2 * padding
+            ),
+        },
+        "padding_px_per_edge": padding,
+        "timecode_status": "not_verified",
+        "provenance_status": "not_verified",
+        "video_wide_position_stability": "not_verified",
+        "controlled_cloud_frame_review": "not_verified",
+        "production_bbox_input": False,
+    }
 
 
 def render_caption_geometry_frame(ass_path: Path, width: int, height: int, start: float) -> bytes:
@@ -738,6 +776,9 @@ def finalize_review_manifest(
         "duration_seconds": round(source_details["duration_seconds"], 3),
         "resolution": f'{source_details["width"]}x{source_details["height"]}',
     }
+    manifest["user_provided_still_measurement"] = (
+        user_provided_still_measurement()
+    )
     manifest["event_identity"] = {
         "event_id": EVENT_ID,
         "title": EVENT_TITLE,
