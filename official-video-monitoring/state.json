@@ -8750,22 +8750,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:45+00:00",
-        "completed_at_utc": "2026-10-16T13:00:05+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T20:41:08+00:00",
+        "run_id": "38963957789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Promises Made, Promises Kept: Fraud Takedown\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:59:46+00:00",
+          "researched_at_utc": "2026-10-16T20:40:56+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:59:46+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T20:40:56+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -8782,7 +8782,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:59:46+00:00",
+            "completed_at_utc": "2026-10-16T13:00:05+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: Fraud Takedown\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:59:46+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T20:40:56+00:00",
+            "completed_at_utc": "2026-10-16T20:41:08+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38963957789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: Fraud Takedown\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T20:40:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -8833,22 +8873,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:53+00:00",
-        "completed_at_utc": "2026-10-16T13:00:07+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T20:41:19+00:00",
+        "run_id": "38963957789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Promises Made, Promises Kept: TrumpRx\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:59:54+00:00",
+          "researched_at_utc": "2026-10-16T20:41:08+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:59:54+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T20:41:08+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -8865,7 +8905,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:59:54+00:00",
+            "completed_at_utc": "2026-10-16T13:00:07+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: TrumpRx\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:59:54+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T20:41:08+00:00",
+            "completed_at_utc": "2026-10-16T20:41:19+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38963957789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: TrumpRx\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T20:41:08+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -8916,22 +8996,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:54+00:00",
-        "completed_at_utc": "2026-10-16T13:00:07+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T20:41:29+00:00",
+        "run_id": "38963957789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"This is America’s destiny: to be the greatest, most extraordinary country ever to grace the Earth\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:59:55+00:00",
+          "researched_at_utc": "2026-10-16T20:41:19+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:59:55+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T20:41:19+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -8948,7 +9028,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:59:55+00:00",
+            "completed_at_utc": "2026-10-16T13:00:07+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"This is America’s destiny: to be the greatest, most extraordinary country ever to grace the Earth\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:59:55+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T20:41:19+00:00",
+            "completed_at_utc": "2026-10-16T20:41:29+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38963957789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"This is America’s destiny: to be the greatest, most extraordinary country ever to grace the Earth\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T20:41:19+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -8999,22 +9119,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:54+00:00",
-        "completed_at_utc": "2026-10-16T13:00:08+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T20:41:37+00:00",
+        "run_id": "38963957789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"America Misses Charlie Kirk\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:59:55+00:00",
+          "researched_at_utc": "2026-10-16T20:41:29+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:59:55+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T20:41:29+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9031,7 +9151,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:59:55+00:00",
+            "completed_at_utc": "2026-10-16T13:00:08+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"America Misses Charlie Kirk\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:59:55+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T20:41:29+00:00",
+            "completed_at_utc": "2026-10-16T20:41:37+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38963957789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"America Misses Charlie Kirk\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T20:41:29+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -9082,22 +9242,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:55+00:00",
-        "completed_at_utc": "2026-10-16T13:00:08+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T20:41:45+00:00",
+        "run_id": "38963957789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Promises Made, Promises Kept: One Big Beautiful Bill\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:59:56+00:00",
+          "researched_at_utc": "2026-10-16T20:41:37+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:59:56+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T20:41:37+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9114,7 +9274,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:59:56+00:00",
+            "completed_at_utc": "2026-10-16T13:00:08+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: One Big Beautiful Bill\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:59:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T20:41:37+00:00",
+            "completed_at_utc": "2026-10-16T20:41:45+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38963957789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Promises Made, Promises Kept: One Big Beautiful Bill\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T20:41:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -11455,10 +11655,10 @@
     }
   },
   "last_run": {
-    "run_id": "38959940152",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38959940152",
-    "started_at_utc": "2026-10-16T20:07:43+00:00",
-    "completed_at_utc": "2026-10-16T20:08:54+00:00",
+    "run_id": "38963957789",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38963957789",
+    "started_at_utc": "2026-10-16T20:40:54+00:00",
+    "completed_at_utc": "2026-10-16T20:41:45+00:00",
     "status": "success"
   }
 }
