@@ -17,9 +17,10 @@ import xml.etree.ElementTree as ET
 
 EVENT_ID = "rose-garden-lunch-2026-10-15"
 EVENT_TITLE = "President Trump Participates in a Rose Garden Lunch"
+EVENT_REFERENCE_VIDEO_ID = "IySF_8OArvw"
 SEARCH_QUERIES = (
     f'"{EVENT_TITLE}" "Oct. 15, 2026"',
-    '"IySF_8OArvw" Rose Garden',
+    f'"{EVENT_REFERENCE_VIDEO_ID}" Rose Garden',
     '"Rose Garden Lunch" Trump White House October 15 2026',
 )
 SEARCH_PROVIDERS = ("duckduckgo_html", "bing_rss")
@@ -63,6 +64,8 @@ class MetadataParser(HTMLParser):
         self.description = ""
         self.site_name = ""
         self.canonical_url = ""
+        self.open_graph_type = ""
+        self.video_metadata: list[str] = []
         self._in_title = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -76,6 +79,10 @@ class MetadataParser(HTMLParser):
                 self.description = content.strip()
             elif key in {"og:site_name", "application-name"} and not self.site_name:
                 self.site_name = content.strip()
+            elif key == "og:type":
+                self.open_graph_type = content.strip()
+            elif key in {"og:video", "og:video:url", "og:video:secure_url", "twitter:player"} and content.strip():
+                self.video_metadata.append(key)
         if tag == "link" and "canonical" in (attributes.get("rel") or "").lower().split():
             self.canonical_url = attributes.get("href") or ""
 
@@ -187,7 +194,7 @@ def search_query(
 
 def inspect_landing_page(result: dict[str, str], checked_at: str) -> dict[str, object]:
     record: dict[str, object] = {
-        "candidate_status": "lead_unverified",
+        "candidate_status": "landing_page_metadata_unavailable",
         "event_match": "unverified",
         "video_source_credibility": "not_assessed",
         "video_content_credibility": "not_assessed",
@@ -207,14 +214,68 @@ def inspect_landing_page(result: dict[str, str], checked_at: str) -> dict[str, o
                 "page_title": " ".join(parser.title.split()),
                 "page_description": parser.description,
                 "site_name": parser.site_name,
+                "open_graph_type": parser.open_graph_type or None,
+                "video_metadata": parser.video_metadata,
                 "canonical_url": urllib.parse.urljoin(final_url, parser.canonical_url)
                 if parser.canonical_url
                 else None,
             }
         )
+        event_evidence = _event_relevance_evidence(record)
+        video_evidence = _video_page_evidence(record)
+        record["event_relevance_evidence"] = event_evidence
+        record["video_page_evidence"] = video_evidence
+        has_page_metadata = bool(parser.title.strip() or parser.description.strip())
+        if not has_page_metadata and not event_evidence:
+            record["candidate_status"] = "landing_page_metadata_insufficient"
+        elif not event_evidence:
+            record["candidate_status"] = "irrelevant_search_result"
+        elif not video_evidence:
+            record["candidate_status"] = "event_relevant_non_video_page"
+        else:
+            record["candidate_status"] = "event_relevant_video_page_lead_unverified"
     except (urllib.error.URLError, TimeoutError, ValueError) as error:
         record["landing_page_metadata_error"] = str(error)
     return record
+
+
+def _event_relevance_evidence(record: dict[str, object]) -> list[str]:
+    page_metadata = " ".join(
+        str(record.get(field) or "") for field in ("page_title", "page_description")
+    ).casefold()
+    evidence = []
+    if (
+        "rose garden" in page_metadata
+        and "lunch" in page_metadata
+        and "trump" in page_metadata
+    ):
+        evidence.append("landing-page title or description mentions Trump, Rose Garden, and lunch")
+    if EVENT_REFERENCE_VIDEO_ID.casefold() in str(record.get("landing_page_url") or "").casefold():
+        evidence.append("landing-page URL contains the known event-reference video ID")
+    return evidence
+
+
+def _video_page_evidence(record: dict[str, object]) -> list[str]:
+    evidence = []
+    url = str(record.get("landing_page_url") or record.get("url") or "")
+    parsed = urllib.parse.urlsplit(url)
+    host = parsed.netloc.lower().removeprefix("www.")
+    path_segments = {segment.casefold() for segment in parsed.path.split("/") if segment}
+    query = urllib.parse.parse_qs(parsed.query)
+    if (
+        (host == "youtube.com" and (parsed.path == "/watch" and query.get("v")))
+        or host == "youtu.be"
+        or (host.endswith(".youtube.com") and path_segments.intersection({"embed", "shorts", "live"}))
+    ):
+        evidence.append("video-platform URL")
+    if path_segments.intersection({"video", "videos", "watch", "live", "embed"}):
+        evidence.append("video path in landing-page URL")
+    open_graph_type = str(record.get("open_graph_type") or "").casefold()
+    if open_graph_type == "video" or open_graph_type.startswith("video."):
+        evidence.append(f"Open Graph video type: {record['open_graph_type']}")
+    for key in record.get("video_metadata", []):
+        evidence.append(f"video metadata: {key}")
+    return evidence
 
 
 def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
@@ -255,11 +316,29 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
         leads = list(pool.map(lambda item: inspect_landing_page(item, checked_at), unique.values()))
 
+    candidates_by_page: dict[str, dict[str, object]] = {}
+    for lead in leads:
+        if lead["candidate_status"] != "event_relevant_video_page_lead_unverified":
+            continue
+        page_identity = str(
+            lead.get("canonical_url") or lead.get("landing_page_url") or lead["url"]
+        )
+        if page_identity not in candidates_by_page:
+            candidates_by_page[page_identity] = lead
+        else:
+            candidates_by_page[page_identity]["search_observations"].extend(
+                lead["search_observations"]
+            )
+    candidates = list(candidates_by_page.values())
     report: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "event_id": EVENT_ID,
         "event_title": EVENT_TITLE,
-        "research_status": "metadata_leads_only_unverified",
+        "research_status": (
+            "event_relevant_video_page_leads_found_unverified"
+            if candidates
+            else "no_qualifying_video_page_leads_found"
+        ),
         "search_providers": list(SEARCH_PROVIDERS),
         "search_query_count": len(search_jobs),
         "search_queries": list(SEARCH_QUERIES),
@@ -269,13 +348,16 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         "media_downloaded": False,
         "media_frames_audio_inspected": False,
         "human_video_content_review": "not_performed",
-        "candidate_count": len(leads),
+        "lead_count": len(leads),
+        "candidate_count": len(candidates),
         "query_errors": query_errors,
-        "candidates": leads,
+        "candidates": candidates,
+        "search_leads": leads,
         "limitations": (
-            "Search results and landing-page HTML metadata are leads only. "
-            "They do not establish event match, source credibility, video-content credibility, "
-            "rights, video duration, resolution, camera angle, or visual/audio cleanliness. "
+            "Candidate qualification uses landing-page HTML metadata and URL patterns only. "
+            "Search results and metadata are leads only; they do not establish event match, "
+            "source credibility, video-content credibility, rights, video duration, resolution, "
+            "camera angle, or visual/audio cleanliness. "
             "No video/audio/media was downloaded or inspected."
         ),
     }
@@ -288,30 +370,61 @@ def research(output_dir: Path) -> tuple[Path, Path, dict[str, object]]:
         "",
         f"- Event scope: `{EVENT_ID}`",
         f"- Search and landing-page metadata leads: {len(leads)}",
+        f"- Unique event-relevant video landing-page leads (unverified): {len(candidates)}",
         f"- Search provider/query combinations: {len(search_jobs)}",
         f"- Provider/query errors: {len(query_errors)}",
-        "- Candidate status: all leads are unverified; event match and both credibility dimensions are not assessed.",
+        "- Candidate status: qualifying pages are unverified leads; event match and both credibility dimensions are not assessed.",
         "- Human video-content review: not performed.",
         "- Media downloaded or frames/audio inspected: no.",
         "",
-        "Search results and HTML metadata are not proof of event match, credibility, rights, or video content. ",
-        "Each candidate requires separate human review; this run does not approve reuse or publication.",
+        "Search results and HTML metadata are leads only, not proof of event match, credibility, rights, or video content. ",
+        "This metadata-only qualification does not approve reuse or publication.",
         "",
     ]
-    for index, lead in enumerate(leads, start=1):
+    if candidates:
+        summary_lines.extend(["## Event-relevant video landing pages", ""])
+    else:
         summary_lines.extend(
             [
-                f"## Lead {index}: {lead.get('page_title') or lead['title'] or lead['url']}",
-                f"- URL: {lead['url']}",
-                f"- Query: {lead['query']}",
-                f"- Search observations: {len(lead['search_observations'])}",
-                f"- Landing page: {lead.get('landing_page_url', 'unavailable')}",
-                f"- Site metadata: {lead.get('site_name') or 'not provided'}",
-                f"- Description metadata: {lead.get('page_description') or 'not provided'}",
-                "- Status: unverified lead; no human video-content review.",
+                "## Event-relevant video landing pages",
+                "",
+                "Not found: no search result met both the event-metadata and video-page metadata checks.",
                 "",
             ]
         )
+    for index, lead in enumerate(candidates, start=1):
+        summary_lines.extend(
+            [
+                f"### Candidate lead {index}: {lead.get('page_title') or lead['title'] or lead['url']}",
+                f"- URL: {lead.get('landing_page_url') or lead['url']}",
+                f"- Query: {lead['query']}",
+                f"- Search observations: {len(lead['search_observations'])}",
+                f"- Site metadata: {lead.get('site_name') or 'not provided'}",
+                f"- Description metadata: {lead.get('page_description') or 'not provided'}",
+                f"- Event relevance evidence: {'; '.join(lead['event_relevance_evidence'])}",
+                f"- Video-page evidence: {'; '.join(lead['video_page_evidence'])}",
+                "- Status: unverified page lead; no human video-content review.",
+                "",
+            ]
+        )
+    other_leads = [
+        lead
+        for lead in leads
+        if lead["candidate_status"] != "event_relevant_video_page_lead_unverified"
+    ]
+    if other_leads:
+        summary_lines.extend(["## Other search leads (not counted as candidates)", ""])
+        for index, lead in enumerate(other_leads, start=1):
+            summary_lines.extend(
+                [
+                    f"### Lead {index}: {lead.get('page_title') or lead['title'] or lead['url']}",
+                    f"- URL: {lead.get('landing_page_url') or lead['url']}",
+                    f"- Status: {lead['candidate_status']}",
+                    f"- Query: {lead['query']}",
+                    f"- Search observations: {len(lead['search_observations'])}",
+                    "",
+                ]
+            )
     if query_errors:
         summary_lines.extend(["## Search errors", ""])
         summary_lines.extend(f"- {error['query']}: {error['error']}" for error in query_errors)

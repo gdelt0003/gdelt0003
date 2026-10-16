@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/rose-garden-python-tests.yml'
+      - '.github/workflows/research-rose-garden-sources.yml'
       - '.github/workflows/publish-rose-garden-review.yml'
       - '.github/workflows/render-rose-garden-private.yml'
       - '.github/workflows/smartsub-ass-geometry-probe.yml'
@@ -11,16 +12,19 @@ on:
       - 'README.md'
       - 'requirements.txt'
       - 'scripts/process_full_video.py'
+      - 'scripts/research_rose_garden_sources.py'
       - 'scripts/smartsub_ass_geometry_probe.py'
       - 'scripts/verify_rose_garden_review.py'
       - 'scripts/operation_audit.py'
       - 'scripts/spoken_word_highlighting.py'
       - 'tests/test_process_full_video.py'
+      - 'tests/test_research_rose_garden_sources.py'
       - 'tests/test_rose_garden_review_workflow.py'
       - 'tests/test_smartsub_ass_geometry_probe.py'
   push:
     paths:
       - '.github/workflows/rose-garden-python-tests.yml'
+      - '.github/workflows/research-rose-garden-sources.yml'
       - '.github/workflows/publish-rose-garden-review.yml'
       - '.github/workflows/render-rose-garden-private.yml'
       - '.github/workflows/smartsub-ass-geometry-probe.yml'
@@ -28,11 +32,13 @@ on:
       - 'README.md'
       - 'requirements.txt'
       - 'scripts/process_full_video.py'
+      - 'scripts/research_rose_garden_sources.py'
       - 'scripts/smartsub_ass_geometry_probe.py'
       - 'scripts/verify_rose_garden_review.py'
       - 'scripts/operation_audit.py'
       - 'scripts/spoken_word_highlighting.py'
       - 'tests/test_process_full_video.py'
+      - 'tests/test_research_rose_garden_sources.py'
       - 'tests/test_rose_garden_review_workflow.py'
       - 'tests/test_smartsub_ass_geometry_probe.py'
 
@@ -61,11 +67,13 @@ jobs:
         run: |
           python -m py_compile \
             scripts/process_full_video.py \
+            scripts/research_rose_garden_sources.py \
             scripts/verify_rose_garden_review.py
 
-      - name: Run Rose Garden renderer and workflow tests
+      - name: Run Rose Garden metadata, renderer, and workflow tests
         run: |
           python -m unittest \
+            tests.test_research_rose_garden_sources \
             tests.test_process_full_video \
             tests.test_rose_garden_review_workflow \
             tests.test_smartsub_ass_geometry_probe \
