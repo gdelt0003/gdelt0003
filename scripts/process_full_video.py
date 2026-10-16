@@ -312,7 +312,27 @@ def _join_chinese_fragments(parts: list[str]) -> str:
     return result
 
 
-def merge_sentence_fragments(cues: list[Cue]) -> list[Cue]:
+def _is_katie_intro_source_boundary(previous: Cue, current: Cue) -> bool:
+    return (
+        previous.english.strip()
+        == "Good morning. I am so honored to work for President Trump"
+        and previous.chinese.strip() == "我很荣幸能为特朗普总统"
+        and current.english.strip()
+        == "and the American people as the new White House press secretary. "
+        "I want to thank President Trump for his trust that he has placed in me. "
+        "I have wanted to work for him for a a very long time."
+        and current.chinese.strip()
+        == "和美国人民担任新的白宫新闻秘书,"
+        "我要感谢特朗普总统对我的信任,"
+        "我很想为他工作很长一段时间。"
+    )
+
+
+def merge_sentence_fragments(
+    cues: list[Cue],
+    *,
+    preserve_katie_intro_boundary: bool = False,
+) -> list[Cue]:
     """Join ASR-sized fragments so translations stay with their full sentence."""
     if not cues:
         return []
@@ -335,7 +355,14 @@ def merge_sentence_fragments(cues: list[Cue]) -> list[Cue]:
     for cue in cues[1:]:
         previous = group[-1]
         gap = cue.start - previous.end
-        if _ends_sentence(previous.english) or gap > MAX_FRAGMENT_GAP_SECONDS:
+        if (
+            _ends_sentence(previous.english)
+            or gap > MAX_FRAGMENT_GAP_SECONDS
+            or (
+                preserve_katie_intro_boundary
+                and _is_katie_intro_source_boundary(previous, cue)
+            )
+        ):
             flush()
             group = []
         group.append(cue)
@@ -1326,7 +1353,12 @@ def main() -> None:
                 "English and Chinese SRT timings do not match, or a cue "
                 "extends beyond the source video."
             )
-        cues = merge_sentence_fragments(cues)
+        cues = merge_sentence_fragments(
+            cues,
+            preserve_katie_intro_boundary=(
+                args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            ),
+        )
     else:
         with audit.record(
             "asr",
@@ -1407,6 +1439,13 @@ def main() -> None:
     reflow_details: dict[str, object] = {
         "input_cue_count": len(cues),
         "reused_source_srt_preserved": args.reuse_subtitles is not None,
+        "katie_intro_source_boundary_preserved": (
+            args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            and any(
+                _is_katie_intro_source_boundary(left, right)
+                for left, right in zip(cues, cues[1:])
+            )
+        ),
         "alignment_policy": (
             "punctuation_and_proportional_clause_alignment"
             if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT

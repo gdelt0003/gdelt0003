@@ -303,6 +303,86 @@ class FullVideoSubtitleTests(unittest.TestCase):
         )
         self.assertEqual(srt_text([original], "en"), original_srt)
 
+    def test_katie_preserves_pinned_intro_boundary_and_reflows_full_sentences(self):
+        original = [
+            Cue(
+                7.54,
+                13.605,
+                "Good morning. I am so honored to work for President Trump",
+                "我很荣幸能为特朗普总统",
+            ),
+            Cue(
+                13.605,
+                35.11,
+                "and the American people as the new White House press secretary. "
+                "I want to thank President Trump for his trust that he has "
+                "placed in me. I have wanted to work for him for a a very "
+                "long time.",
+                "和美国人民担任新的白宫新闻秘书,"
+                "我要感谢特朗普总统对我的信任,"
+                "我很想为他工作很长一段时间。",
+            ),
+        ]
+
+        merged = merge_sentence_fragments(
+            original,
+            preserve_katie_intro_boundary=True,
+        )
+        reflowed = reflow_cues(
+            merged,
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(len(merged), 2)
+        self.assertEqual(merged, original)
+        self.assertEqual(
+            [(cue.start, cue.end) for cue in reflowed],
+            [
+                (7.54, 13.605),
+                (13.605, 19.67051282051282),
+                (19.67051282051282, 27.941666666666666),
+                (27.941666666666666, 35.11),
+            ],
+        )
+        self.assertEqual(
+            [cue.english for cue in reflowed],
+            [
+                "Good morning. I am so honored to work for President Trump",
+                "and the American people as the new White House press secretary.",
+                "I want to thank President Trump for his trust that he has placed in me.",
+                "I have wanted to work for him for a a very long time.",
+            ],
+        )
+        self.assertEqual(
+            [cue.chinese for cue in reflowed],
+            [
+                "我很荣幸能为特朗普总统",
+                "和美国人民担任新的白宫新闻秘书,",
+                "我要感谢特朗普总统对我的信任,",
+                "我很想为他工作很长一段时间。",
+            ],
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            " ".join(cue.english for cue in original),
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            "".join(cue.chinese for cue in original),
+        )
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
     def test_katie_layout_failure_identifies_cue_without_logging_caption_text(self):
         overflow_text = " ".join(["longword"] * 100)
         with tempfile.TemporaryDirectory() as directory:
