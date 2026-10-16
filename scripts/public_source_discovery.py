@@ -431,10 +431,13 @@ def run_lane(lane: str, query: str, run_url: str) -> dict[str, Any]:
             seen.add(lead["url"])
             unique.append(lead)
     reached = any(item["status"] == "reached" for item in attempts)
+    parse_failures = any(item["status"] == "parse_failed" for item in attempts)
     status = (
         "results_unverified"
         if unique
-        else "reached_no_parseable_results"
+        else "reached_parse_failure"
+        if parse_failures
+        else "reached_no_results"
         if reached
         else "unavailable_or_blocked"
     )

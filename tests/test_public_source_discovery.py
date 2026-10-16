@@ -126,6 +126,38 @@ class PublicSourceDiscoveryTests(unittest.TestCase):
             all(item["status"] == "robots_disallowed" for item in report["attempts"])
         )
 
+    def test_successful_empty_response_is_not_reported_as_parse_failure(self):
+        def fake_attempt(service, query, url):
+            if service == "gdelt":
+                body = json.dumps({"articles": []})
+            else:
+                body = (
+                    "<rss><channel></channel></rss>"
+                )
+            return (
+                {
+                    "service": service,
+                    "query": query,
+                    "request_url": url,
+                    "attempted_at_utc": "2026-10-16T00:00:00+00:00",
+                    "status": "reached",
+                    "http_status": 200,
+                },
+                body,
+            )
+
+        with patch.object(discovery, "attempt", side_effect=fake_attempt), patch.object(
+            discovery.time, "sleep"
+        ):
+            report = discovery.run_lane(
+                "news",
+                "Katie Zacharia White House briefing 2026-10-13",
+                "https://github.com/example/repo/actions/runs/123",
+            )
+        self.assertEqual(report["status"], "reached_no_results")
+        self.assertEqual(report["lead_count"], 0)
+        self.assertTrue(all(item["status"] == "reached" for item in report["attempts"]))
+
 
 if __name__ == "__main__":
     unittest.main()
