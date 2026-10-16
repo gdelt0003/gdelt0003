@@ -383,6 +383,300 @@ class FullVideoSubtitleTests(unittest.TestCase):
                 2,
             )
 
+    def test_katie_reflows_midterm_blitz_at_matched_bilingual_phrases(self):
+        original = [
+            Cue(
+                35.11,
+                45.721,
+                "I'm looking forward to working with each of you as well, "
+                "especially as we are in the middle of the midterm blitz "
+                "with energy",
+                "我期待着与你们每个人一起工作,"
+                "特别是因为我们正处在中期闪电中,"
+                "在中期历史上从未见过的能量",
+            ),
+            Cue(
+                45.721,
+                51.91,
+                "and excitement never seen before in the history of midterms "
+                "thanks to President Trump.",
+                "和兴奋,感谢特朗普总统。",
+            ),
+        ]
+        original_english = " ".join(cue.english for cue in original)
+        original_chinese = "".join(cue.chinese for cue in original)
+
+        merged = merge_sentence_fragments(original)
+        reflowed = reflow_cues(
+            merged,
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(len(reflowed), 4)
+        self.assertEqual(
+            [cue.english for cue in reflowed],
+            [
+                "I'm looking forward to working with each of you as well,",
+                "especially as we are in the middle of the midterm blitz",
+                "with energy and excitement never seen before in the history "
+                "of midterms",
+                "thanks to President Trump.",
+            ],
+        )
+        self.assertEqual(
+            [cue.chinese for cue in reflowed],
+            [
+                "我期待着与你们每个人一起工作,",
+                "特别是因为我们正处在中期闪电中,",
+                "在中期历史上从未见过的能量和兴奋,",
+                "感谢特朗普总统。",
+            ],
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            original_english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            original_chinese,
+        )
+        self.assertEqual(reflowed[0].start, original[0].start)
+        self.assertEqual(reflowed[-1].end, original[-1].end)
+        self.assertTrue(
+            all(left.end == right.start for left, right in zip(reflowed, reflowed[1:]))
+        )
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
+    def test_katie_reflows_youngstown_appositive_and_relative_clause(self):
+        original = Cue(
+            51.91,
+            62.33,
+            "Just look no further than last night in Youngstown, Ohio, "
+            "where President Trump delivered another blockbuster rally "
+            "out on the trail.",
+            "只需看看昨晚在俄亥俄州Youngstown,"
+            "特朗普总统在那里举行了另一场大规模集会。",
+        )
+        reflowed = reflow_cues(
+            [original],
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                (
+                    "Just look no further than last night in Youngstown, Ohio,",
+                    "只需看看昨晚在俄亥俄州Youngstown,",
+                ),
+                (
+                    "where President Trump delivered another blockbuster rally "
+                    "out on the trail.",
+                    "特朗普总统在那里举行了另一场大规模集会。",
+                ),
+            ],
+        )
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        self.assertEqual(" ".join(cue.english for cue in reflowed), original.english)
+        self.assertEqual("".join(cue.chinese for cue in reflowed), original.chinese)
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
+    def test_katie_reflows_arena_attendees_and_named_guests(self):
+        original = Cue(
+            62.33,
+            75.15,
+            "The arena was overflowing with enthusiasm as thousands came out "
+            "to support President Trump as well as special guest Jake Paul "
+            "and football legend John Gruden.",
+            "竞技场充满了热情,因为成千上万的人来支持特朗普总统"
+            "以及特别嘉宾杰克保罗和足球传奇约翰格鲁登。",
+        )
+        reflowed = reflow_cues(
+            [original],
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                (
+                    "The arena was overflowing with enthusiasm",
+                    "竞技场充满了热情,",
+                ),
+                (
+                    "as thousands came out to support President Trump as well "
+                    "as special guest Jake Paul",
+                    "因为成千上万的人来支持特朗普总统以及特别嘉宾杰克保罗",
+                ),
+                (
+                    "and football legend John Gruden.",
+                    "和足球传奇约翰格鲁登。",
+                ),
+            ],
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            original.english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            original.chinese,
+        )
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
+    def test_katie_reflows_navy_repair_center_announcement(self):
+        original = Cue(
+            75.15,
+            87.51,
+            "The President also announced the Department of War has officially "
+            "selected Cleveland Ohio as the new home for the U.S. Navy's "
+            "submarine component repair center.",
+            "总统还宣布,美国军方已正式选择克利夫兰俄亥俄州"
+            "作为美国海军潜艇零部件维修中心的新家。",
+        )
+        reflowed = reflow_cues(
+            [original],
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                (
+                    "The President also announced",
+                    "总统还宣布,",
+                ),
+                (
+                    "the Department of War has officially selected Cleveland "
+                    "Ohio",
+                    "美国军方已正式选择克利夫兰俄亥俄州",
+                ),
+                (
+                    "as the new home for the U.S. Navy's submarine component "
+                    "repair center.",
+                    "作为美国海军潜艇零部件维修中心的新家。",
+                ),
+            ],
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            original.english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            original.chinese,
+        )
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
+    def test_katie_reflows_america_first_policy_list(self):
+        original = Cue(
+            103.55,
+            121.0,
+            "Everyday Americans are showing up in droves to attend these "
+            "rallies because of President Trump's America First agenda of "
+            "lower taxes, higher wages, and one of my favorite secure borders.",
+            "每日的美国人都在参加这些集会,"
+            "因为特朗普总统的“美国第一”议程是降低税收,"
+            "提高工资,以及我最喜欢的安全边界之一。",
+        )
+        reflowed = reflow_cues(
+            [original],
+            align_sentence_to_clause_punctuation=True,
+        )
+        _chinese_font, _english_font, max_chinese, max_english = (
+            _katie_wrap_limits(1920, 1080)
+        )
+
+        self.assertEqual(
+            [(cue.english, cue.chinese) for cue in reflowed],
+            [
+                (
+                    "Everyday Americans are showing up in droves to attend "
+                    "these rallies",
+                    "每日的美国人都在参加这些集会,",
+                ),
+                (
+                    "because of President Trump's America First agenda of "
+                    "lower taxes,",
+                    "因为特朗普总统的“美国第一”议程是降低税收,",
+                ),
+                ("higher wages,", "提高工资,"),
+                (
+                    "and one of my favorite secure borders.",
+                    "以及我最喜欢的安全边界之一。",
+                ),
+            ],
+        )
+        self.assertEqual(
+            " ".join(cue.english for cue in reflowed),
+            original.english,
+        )
+        self.assertEqual(
+            "".join(cue.chinese for cue in reflowed),
+            original.chinese,
+        )
+        self.assertEqual(reflowed[0].start, original.start)
+        self.assertEqual(reflowed[-1].end, original.end)
+        for cue in reflowed:
+            self.assertLessEqual(
+                len(_wrap_katie_english(cue.english, max_english)),
+                2,
+            )
+            self.assertLessEqual(
+                len(_wrap_katie_chinese(cue.chinese, max_chinese)),
+                2,
+            )
+
     def test_katie_layout_failure_identifies_cue_without_logging_caption_text(self):
         overflow_text = " ".join(["longword"] * 100)
         with tempfile.TemporaryDirectory() as directory:
