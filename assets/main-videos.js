@@ -1,5 +1,10 @@
 const $mainVideos = document.getElementById('mainVideos');
 const $mainVideosStatus = document.getElementById('mainVideosStatus');
+const $mainVideosFilters = document.getElementById('mainVideosFilters');
+const $mainVideosSort = document.getElementById('mainVideosSort');
+let catalogVideos = [];
+let activeFilter = 'all';
+let activeSort = 'newest';
 
 function safeVideoUrl(value) {
   if (typeof value !== 'string' || !value.trim()) return null;
@@ -25,21 +30,36 @@ function addLink(parent, urlValue, label, className = '') {
   parent.append(link);
 }
 
-function renderMainVideos(payload) {
-  const videos = Array.isArray(payload.videos) ? payload.videos : [];
-  const renderableVideos = videos
-    .map((item, index) => ({ item, index }))
-    .filter(({ item }) => safeVideoUrl(item?.video_url))
+function eventTime(item) {
+  const time = Date.parse(`${item.event_date || ''}T00:00:00Z`);
+  return Number.isFinite(time) ? time : -1;
+}
+
+function matchesFilter(item) {
+  const isMachineGenerated = String(item.homepage_status || '').includes('机器生成');
+  return activeFilter === 'all'
+    || (activeFilter === 'machine' && isMachineGenerated)
+    || (activeFilter === 'other' && !isMachineGenerated);
+}
+
+function renderMainVideos() {
+  const renderableVideos = catalogVideos
+    .filter(({ item }) => matchesFilter(item))
     .sort((left, right) => {
-      const leftDate = Date.parse(`${left.item.event_date || ''}T00:00:00Z`);
-      const rightDate = Date.parse(`${right.item.event_date || ''}T00:00:00Z`);
-      const leftTime = Number.isFinite(leftDate) ? leftDate : -1;
-      const rightTime = Number.isFinite(rightDate) ? rightDate : -1;
-      return rightTime - leftTime || left.index - right.index;
+      if (activeSort === 'title') {
+        return String(left.item.title || '').localeCompare(String(right.item.title || ''), 'zh-CN')
+          || left.index - right.index;
+      }
+      const dateOrder = activeSort === 'oldest'
+        ? eventTime(left.item) - eventTime(right.item)
+        : eventTime(right.item) - eventTime(left.item);
+      return dateOrder || left.index - right.index;
     });
 
   $mainVideos.replaceChildren();
-  $mainVideosStatus.textContent = `${renderableVideos.length} 条主视频`;
+  $mainVideosStatus.textContent = activeFilter === 'all'
+    ? `${renderableVideos.length} 条主视频`
+    : `${renderableVideos.length} 条主视频 · 筛选结果`;
 
   for (const { item } of renderableVideos) {
     const card = document.createElement('article');
@@ -89,16 +109,43 @@ function renderMainVideos(payload) {
   }
 
   if ($mainVideos.children.length === 0) {
-    $mainVideosStatus.textContent = '暂无可播放主视频';
-    $mainVideos.textContent = '尚无已登记的主视频。';
+    $mainVideosStatus.textContent = '此筛选下暂无可播放主视频';
+    $mainVideos.textContent = '当前类别尚无已登记的主视频。';
   }
 }
+
+function loadMainVideoCatalog(payload) {
+  const videos = Array.isArray(payload.videos) ? payload.videos : [];
+  catalogVideos = videos
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => safeVideoUrl(item?.video_url));
+  renderMainVideos();
+}
+
+$mainVideosFilters?.addEventListener('click', (event) => {
+  const filter = event.target?.dataset?.mainVideoFilter;
+  if (!['all', 'machine', 'other'].includes(filter)) return;
+  activeFilter = filter;
+  for (const button of $mainVideosFilters.querySelectorAll('[data-main-video-filter]')) {
+    const selected = button.dataset.mainVideoFilter === activeFilter;
+    button.classList.toggle('is-active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  }
+  renderMainVideos();
+});
+
+$mainVideosSort?.addEventListener('change', () => {
+  activeSort = ['newest', 'oldest', 'title'].includes($mainVideosSort.value)
+    ? $mainVideosSort.value
+    : 'newest';
+  renderMainVideos();
+});
 
 async function loadMainVideos() {
   try {
     const response = await fetch('outputs/main-videos.json', { cache: 'no-store' });
     if (!response.ok) throw new Error(`Main video catalog HTTP ${response.status}`);
-    renderMainVideos(await response.json());
+    loadMainVideoCatalog(await response.json());
   } catch (error) {
     console.error('Unable to load the main video catalog', error);
     $mainVideosStatus.textContent = '主视频清单暂不可用';

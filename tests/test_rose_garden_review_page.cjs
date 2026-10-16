@@ -61,7 +61,7 @@ test('review page presents a compact, accessible video-first layout', () => {
   assert.match(page, /<dl class="review-video-meta">/);
   assert.match(page, /<span data-review-status>待审<\/span>/);
 
-  assert.match(styles, /\.review-page \{ max-width: 1120px; \}/);
+  assert.match(styles, /\.review-page \{ max-width: 1600px; \}/);
   assert.match(styles, /\.review-header > p, \.review-section > p \{ max-width: 76ch; \}/);
   assert.match(styles, /\.review-video-layout \{ display: grid; grid-template-columns: minmax\(0, 1\.85fr\) minmax\(230px, \.85fr\);/);
   assert.match(styles, /\.review-video video \{[^}]*aspect-ratio: 16 \/ 9;/);

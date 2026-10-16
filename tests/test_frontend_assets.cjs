@@ -92,11 +92,11 @@ async function main() {
   const resultsPage = fs.readFileSync(path.join(root, 'copilot-results.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'assets', 'style.css'), 'utf8');
   assert.doesNotMatch(html, /<track\b/i, 'do not overlay duplicate, unverified captions');
-  assert.match(html, /assets\/style\.css\?v=whitehouse-6/);
+  assert.match(html, /assets\/style\.css\?v=whitehouse-7/);
   assert.match(html, /href="copilot-results\.html">Copilot 成果<\/a>/, 'link homepage navigation to the results page');
   assert.doesNotMatch(html, /class="copilot-result-card"/, 'keep the full results panel off the homepage');
   assert.doesNotMatch(html, /id="copilot-results"/, 'remove the results section from the homepage');
-  assert.match(resultsPage, /assets\/style\.css\?v=whitehouse-6/);
+  assert.match(resultsPage, /assets\/style\.css\?v=whitehouse-7/);
   assert.match(resultsPage, /id="copilot-results"/, 'show the Copilot results section on its dedicated page');
   assert.match(resultsPage, /不把开源媒体工具的代码或生成结果冒领为微软成果/);
   assert.equal([...resultsPage.matchAll(/class="copilot-result-card"/g)].length, 3, 'keep all result cards on the dedicated page');
