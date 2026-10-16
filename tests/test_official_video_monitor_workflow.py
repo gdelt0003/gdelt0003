@@ -33,7 +33,9 @@ class OfficialVideoMonitorWorkflowTests(unittest.TestCase):
 
     def test_monitor_runs_as_repository_module_and_requires_outputs_before_persisting(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        poll_step = workflow.split("      - name: Poll and research each new video", 1)[1]
+        poll_step = workflow.split(
+            "      - name: Poll new videos and retry failed source searches", 1
+        )[1]
         poll_command = poll_step.split("      - name:", 1)[0]
         persist_step = workflow.split(
             "      - name: Persist deduplication state and run provenance", 1
@@ -58,7 +60,7 @@ class OfficialVideoMonitorWorkflowTests(unittest.TestCase):
         for forbidden in ("ffmpeg", "download_full_source", "deploy-pages", "create Release"):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, workflow)
-        self.assertIn("research each new video", workflow)
+        self.assertIn("retry failed source searches", workflow)
 
 
 if __name__ == "__main__":

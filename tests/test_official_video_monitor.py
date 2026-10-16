@@ -1,4 +1,6 @@
+import json
 import tempfile
+import threading
 import unittest
 from unittest import mock
 from pathlib import Path
@@ -390,6 +392,224 @@ class OfficialVideoMonitorTests(unittest.TestCase):
             event_research["missing_items"],
         )
         self.assertIn("GDELT HTTP 429", format_run_summary(run))
+
+    def test_failed_source_search_retries_without_researching_video_page(self):
+        failed_searches = []
+
+        def fail_search(title, researched_at_utc):
+            failed_searches.append(researched_at_utc)
+            return {
+                "status": "failed",
+                "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+                "query": f'"{title}"',
+                "researched_at_utc": researched_at_utc,
+                "candidate_count": 0,
+                "candidates": [],
+                "error": "GDELT HTTP 429",
+            }
+
+        state, first_run = run_monitor(
+            state=empty_state(),
+            run_id="123",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {"entries": [{"id": VIDEO_ID, "title": "New video"}]},
+            page_researcher=page_research,
+            source_researcher=fail_search,
+            started_at_utc=STARTED_AT,
+        )
+        original_attempt = state["videos"][VIDEO_ID]["event_source_research"][
+            "additional_source_search_attempts"
+        ][0]
+        self.assertEqual(first_run["new_video_ids"], [VIDEO_ID])
+        self.assertEqual(len(failed_searches), 1)
+        self.assertEqual(original_attempt["status"], "failed")
+        self.assertEqual(original_attempt["error"], "GDELT HTTP 429")
+        self.assertEqual(original_attempt["run_url"], RUN_URL)
+        self.assertTrue(original_attempt["started_at_utc"])
+        self.assertTrue(original_attempt["completed_at_utc"])
+
+        retry_state, retry_run = run_monitor(
+            state=state,
+            run_id="124",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {"entries": [{"id": VIDEO_ID, "title": "Changed title"}]},
+            page_researcher=lambda *_: self.fail("retry must not revisit the video page"),
+            source_researcher=source_research,
+            started_at_utc="2026-10-16T12:05:00+00:00",
+        )
+
+        record = retry_state["videos"][VIDEO_ID]
+        event_research = record["event_source_research"]
+        attempts = event_research["additional_source_search_attempts"]
+        self.assertEqual(retry_run["new_video_ids"], [])
+        self.assertEqual(retry_run["retried_video_ids"], [VIDEO_ID])
+        self.assertEqual(retry_run["retry_video_records"][VIDEO_ID], record)
+        self.assertEqual(len(attempts), 2)
+        self.assertEqual(attempts[0], original_attempt)
+        self.assertEqual(attempts[1]["status"], "completed_with_candidates")
+        self.assertIsNone(attempts[1]["error"])
+        self.assertEqual(attempts[1]["run_id"], "124")
+        self.assertEqual(attempts[1]["run_url"], RUN_URL)
+        self.assertTrue(attempts[1]["started_at_utc"])
+        self.assertTrue(attempts[1]["completed_at_utc"])
+        self.assertEqual(
+            event_research["additional_source_search"]["status"],
+            "completed_with_candidates",
+        )
+        self.assertEqual(event_research["status"], "completed_with_unverified_leads")
+        self.assertNotIn(
+            "successful GDELT additional-source metadata search",
+            event_research["missing_items"],
+        )
+        self.assertIn(
+            "Source-search retries: 1; deferred failures: 0",
+            format_run_summary(retry_run),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / "state.json"
+            run_path = Path(directory) / "run.json"
+            write_json(state_path, retry_state)
+            write_json(run_path, retry_run)
+            persisted_state = load_state(state_path)
+            run_provenance = json.loads(run_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            persisted_state["videos"][VIDEO_ID]["event_source_research"][
+                "additional_source_search_attempts"
+            ],
+            attempts,
+        )
+        self.assertEqual(
+            run_provenance["retry_video_records"][VIDEO_ID]["event_source_research"][
+                "additional_source_search_attempts"
+            ],
+            attempts,
+        )
+
+    def test_failed_source_search_retries_are_oldest_first_and_batch_bounded(self):
+        video_ids = [f"rtry{index:07d}" for index in range(1, 8)]
+
+        state, _ = run_monitor(
+            state=empty_state(),
+            run_id="123",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {
+                "entries": [{"id": video_id, "title": video_id} for video_id in video_ids]
+            },
+            page_researcher=page_research,
+            source_researcher=lambda title, researched_at_utc: {
+                "status": "failed",
+                "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+                "query": f'"{title}"',
+                "researched_at_utc": researched_at_utc,
+                "candidate_count": 0,
+                "candidates": [],
+                "error": "GDELT HTTP 429",
+            },
+            started_at_utc=STARTED_AT,
+        )
+        for index, video_id in enumerate(video_ids):
+            attempts = state["videos"][video_id]["event_source_research"][
+                "additional_source_search_attempts"
+            ]
+            attempts[0]["started_at_utc"] = f"2026-10-16T11:{index:02d}:00+00:00"
+
+        searched_titles = []
+
+        def fail_retry(title, researched_at_utc):
+            searched_titles.append(title)
+            return {
+                "status": "failed",
+                "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+                "query": f'"{title}"',
+                "researched_at_utc": researched_at_utc,
+                "candidate_count": 0,
+                "candidates": [],
+                "error": "GDELT HTTP 429",
+            }
+
+        listed_video_ids = [video_ids[-1]]
+        retry_state, run = run_monitor(
+            state=state,
+            run_id="124",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {
+                "entries": [
+                    {"id": video_id, "title": "Still listed"}
+                    for video_id in listed_video_ids
+                ]
+            },
+            page_researcher=lambda *_: self.fail("retry must not revisit video pages"),
+            source_researcher=fail_retry,
+            started_at_utc="2026-10-16T12:05:00+00:00",
+        )
+
+        self.assertEqual(run["retry_batch_limit"], 5)
+        self.assertEqual(run["retry_candidate_count"], 7)
+        self.assertEqual(run["retried_video_ids"], video_ids[:5])
+        self.assertEqual(run["deferred_retry_video_ids"], video_ids[5:])
+        self.assertEqual(searched_titles, video_ids[:5])
+        self.assertNotIn(video_ids[0], listed_video_ids)
+        self.assertEqual(len(run["retry_video_records"]), 5)
+        self.assertEqual(
+            len(
+                retry_state["videos"][video_ids[0]]["event_source_research"][
+                    "additional_source_search_attempts"
+                ]
+            ),
+            2,
+        )
+        self.assertEqual(
+            len(
+                retry_state["videos"][video_ids[5]]["event_source_research"][
+                    "additional_source_search_attempts"
+                ]
+            ),
+            1,
+        )
+
+    def test_new_video_source_search_concurrency_is_capped_at_two(self):
+        video_ids = [f"conc{index:07d}" for index in range(1, 5)]
+        lock = threading.Lock()
+        both_started = threading.Event()
+        active = 0
+        max_active = 0
+
+        def source_search(_title, researched_at_utc):
+            nonlocal active, max_active
+            with lock:
+                active += 1
+                max_active = max(max_active, active)
+                if active == 2:
+                    both_started.set()
+            both_started.wait(timeout=1)
+            with lock:
+                active -= 1
+            return {
+                "status": "completed_no_results",
+                "researched_at_utc": researched_at_utc,
+                "candidate_count": 0,
+                "candidates": [],
+            }
+
+        _, run = run_monitor(
+            state=empty_state(),
+            run_id="123",
+            run_url=RUN_URL,
+            trigger="schedule",
+            poller=lambda: {
+                "entries": [{"id": video_id, "title": video_id} for video_id in video_ids]
+            },
+            page_researcher=page_research,
+            source_researcher=source_search,
+            started_at_utc=STARTED_AT,
+        )
+
+        self.assertEqual(run["new_video_ids"], video_ids)
+        self.assertEqual(max_active, 2)
 
     def test_missing_title_records_source_search_blocker(self):
         result = research_related_source_metadata("", STARTED_AT)
