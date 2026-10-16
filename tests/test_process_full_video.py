@@ -1,4 +1,5 @@
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -636,6 +637,124 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
                 self.assertEqual(
                     readability["caption_overflow_exceptions"]["cues"],
                     overflow_records,
+                )
+
+    def test_rose_garden_render_continues_with_overflow_at_cues_15_and_50(self):
+        font_zh, font_en, *_ = _rose_garden_wrap_limits(1920, 1080)
+        cues = []
+        for cue_index in range(1, 51):
+            if cue_index <= 14:
+                start = 142 + (cue_index - 1) * 2
+            elif cue_index == 15:
+                start = 180.030
+            elif cue_index < 50:
+                start = 185 + (cue_index - 16) * 3
+            else:
+                start = 290.450
+            if cue_index in {15, 50}:
+                english = " ".join(["unbroken phrase"] * 24)
+                chinese = "没有对应标点的中文长句" * 12
+            else:
+                english = f"Ordinary caption {cue_index}."
+                chinese = f"普通字幕{cue_index}。"
+            cues.append(Cue(start, start + 1.5, english, chinese))
+
+        overflow_records = []
+        reflowed = reflow_rose_garden_cues(
+            cues,
+            safe_width=round(1920 * 0.68),
+            chinese_font=font_zh,
+            english_font=font_en,
+            overflow_records=overflow_records,
+        )
+
+        self.assertEqual(reflowed, cues)
+        self.assertEqual(
+            [
+                (
+                    record["source_cue_index"],
+                    record["start_seconds"],
+                    record["review_status"],
+                )
+                for record in overflow_records
+            ],
+            [
+                (15, 180.03, "manual_review_required"),
+                (50, 290.45, "manual_review_required"),
+            ],
+        )
+        for index in (14, 49):
+            self.assertEqual(reflowed[index], cues[index])
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            write_ass(
+                path,
+                reflowed,
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_overflow_records=overflow_records,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), len(cues))
+        for cue_index in (15, 50):
+            cue = cues[cue_index - 1]
+            event = rendered.events[cue_index - 1]
+            self.assertEqual(event.start, round(cue.start * 1000))
+            self.assertEqual(event.end, round(cue.end * 1000))
+            plain_text = re.sub(r"(?<!\\)\{[^}]*\}", "", event.text)
+            plain_text = (
+                plain_text.replace(r"\N", "\n")
+                .replace(r"\{", "{")
+                .replace(r"\}", "}")
+                .replace(r"\\", "\\")
+            )
+            lines = plain_text.splitlines()
+            record = overflow_records[0 if cue_index == 15 else 1]
+            english_line_count = record["english_lines_required"]
+            self.assertEqual(
+                " ".join(lines[:english_line_count]),
+                cue.english,
+            )
+            self.assertEqual(
+                "".join(lines[english_line_count:]),
+                cue.chinese,
+            )
+
+        report = verify_cues(
+            reflowed,
+            duration=300,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="top",
+            caption_overflow_records=overflow_records,
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["status"], "manual_review_required")
+        self.assertEqual(
+            readability["caption_overflow_exceptions"]["cues"],
+            overflow_records,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "cannot fit completely"):
+                write_ass(
+                    Path(directory) / "unrecorded-overflow.ass",
+                    [
+                        Cue(
+                            1,
+                            5,
+                            " ".join(["unbroken phrase"] * 24),
+                            "没有对应标点的中文长句" * 12,
+                        )
+                    ],
+                    1920,
+                    1080,
+                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                    caption_overflow_records=overflow_records,
                 )
 
     def test_rose_garden_caption_mask_rejects_content_that_cannot_fit(self):
