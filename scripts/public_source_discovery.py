@@ -13,6 +13,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import urllib.robotparser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
@@ -70,6 +71,19 @@ def attempt(service: str, query: str, url: str) -> tuple[dict[str, Any], str | N
         record["status"] = "unavailable_or_failed"
         record["error"] = f"{type(error).__name__}: {error}"
     return record, None
+
+
+def robots_allows(url: str) -> tuple[bool | None, str | None]:
+    parsed = urllib.parse.urlparse(url)
+    robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
+    try:
+        body, _ = request_public(robots_url)
+        parser = urllib.robotparser.RobotFileParser()
+        parser.set_url(robots_url)
+        parser.parse(body.splitlines())
+        return parser.can_fetch(USER_AGENT, url), None
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError) as error:
+        return None, f"{type(error).__name__}: {error}"
 
 
 def html_results(body: str) -> list[dict[str, Any]]:
@@ -351,14 +365,45 @@ def run_lane(lane: str, query: str, run_url: str) -> dict[str, Any]:
     for index, (service, url) in enumerate(endpoints(query)[lane]):
         if index:
             time.sleep(1)
+        if service in {"google-web", "google-scholar"}:
+            allowed, robots_error = robots_allows(url)
+            if allowed is not True:
+                attempt_record = {
+                    "service": service,
+                    "query": query,
+                    "request_url": url,
+                    "attempted_at_utc": now_utc(),
+                    "status": "robots_disallowed"
+                    if allowed is False
+                    else "robots_unavailable_not_attempted",
+                    "http_status": None,
+                    "error": robots_error
+                    or "robots.txt disallows this URL; search request was not made.",
+                    "result_count": 0,
+                }
+                attempts.append(attempt_record)
+                continue
         attempt_record, body = attempt(service, query, url)
         parsed = []
         if body is not None:
-            try:
-                parsed = parse(service, body)
-            except (ET.ParseError, json.JSONDecodeError, TypeError, KeyError) as error:
-                attempt_record["status"] = "parse_failed"
-                attempt_record["error"] = f"{type(error).__name__}: {error}"
+            if service in {"google-web", "google-scholar"} and re.search(
+                r"captcha|unusual traffic|automated queries", body, flags=re.I
+            ):
+                attempt_record["status"] = "blocked_or_captcha"
+                attempt_record["error"] = (
+                    "Search endpoint returned a challenge/interstitial; not bypassed."
+                )
+            else:
+                try:
+                    parsed = parse(service, body)
+                except (
+                    ET.ParseError,
+                    json.JSONDecodeError,
+                    TypeError,
+                    KeyError,
+                ) as error:
+                    attempt_record["status"] = "parse_failed"
+                    attempt_record["error"] = f"{type(error).__name__}: {error}"
         attempt_record["result_count"] = len(parsed)
         attempts.append(attempt_record)
         for item in parsed:

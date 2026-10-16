@@ -109,6 +109,23 @@ class PublicSourceDiscoveryTests(unittest.TestCase):
         self.assertTrue({"google-web", "google-scholar"} <= services)
         self.assertTrue({"bluesky", "reddit", "hacker-news"} <= services)
 
+    def test_google_search_is_not_fetched_when_robots_disallows_it(self):
+        with (
+            patch.object(discovery, "robots_allows", return_value=(False, None)),
+            patch.object(discovery, "attempt") as request,
+            patch.object(discovery.time, "sleep"),
+        ):
+            report = discovery.run_lane(
+                "google-search",
+                "Katie Zacharia White House briefing 2026-10-13",
+                "https://github.com/example/repo/actions/runs/123",
+            )
+        request.assert_not_called()
+        self.assertEqual(report["status"], "unavailable_or_blocked")
+        self.assertTrue(
+            all(item["status"] == "robots_disallowed" for item in report["attempts"])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
