@@ -49,10 +49,87 @@ on:
         required: true
         default: false
       rights_evidence_url:
-        description: Optional HTTPS rights-evidence URL; independent rights review remains pending
+        description: Source-specific HTTPS reuse-rights evidence required before processing
         type: string
-        required: false
+        required: true
         default: ""
+      reuse_rights_confirmed:
+        description: Confirm the supplied source-specific evidence establishes reuse rights for this exact video
+        type: boolean
+        required: true
+        default: false
+      event_identity_evidence_url:
+        description: HTTPS evidence establishing the event identity
+        type: string
+        required: true
+        default: ""
+      exact_event_match_confirmed:
+        description: Confirm the selected source depicts this exact event
+        type: boolean
+        required: true
+        default: false
+      event_match_evidence_url:
+        description: HTTPS evidence for exact source/event content match
+        type: string
+        required: true
+        default: ""
+      event_time_timezone_evidence_url:
+        description: HTTPS evidence for exact event time and timezone
+        type: string
+        required: true
+        default: ""
+      source_lineage_evidence_url:
+        description: HTTPS evidence for source URL to uploaded release asset lineage
+        type: string
+        required: true
+        default: ""
+      source_frame_review_record_json:
+        description: Structured authorized cloud frame/BBox review evidence, required only for the Rose masking exception; non-occluding layouts keep frame review pending
+        type: string
+        required: true
+        default: "{}"
+      source_frame_review_signature:
+        description: Base64 OpenSSH signature of the canonical frame-review JSON from an allowlisted reviewer key
+        type: string
+        required: true
+        default: ""
+      frame_review_mode:
+        description: Draft mode uses the fixed still estimate and keeps all frame/BBox review pending; trusted mode requires an allowlisted signed source-frame review
+        type: choice
+        options:
+          - unverified-review-draft
+          - trusted-signed-review
+        required: true
+        default: unverified-review-draft
+      caption_position:
+        description: Selected caption area; defaults to the requested Rose lower-third mask
+        type: choice
+        options:
+          - top
+          - center
+          - mask-lower-third
+        required: true
+        default: mask-lower-third
+      caption_safe_region_reviewed:
+        description: Confirm the source graphics BBoxes and selected caption position were visually reviewed
+        type: boolean
+        required: true
+        default: false
+      source_graphics_regions_json:
+        description: Actual source graphic BBoxes; masking requires a human-verified source lower-third BBox
+        type: string
+        required: true
+        default: "[]"
+      rose_mask_authorized:
+        description: Confirm use of the user-authorized Rose-only lower-third masking exception
+        type: boolean
+        required: true
+        default: true
+      mask_padding_px_per_edge:
+        description: Implementation-selected outward mask expansion per edge (1–5 output pixels; default 2)
+        type: number
+        required: true
+        default: 2
 
 permissions:
   contents: read
@@ -97,8 +174,22 @@ jobs:
           SOURCE_ASSET: ${{ inputs.source_asset }}
           SOURCE_SHA256: ${{ inputs.source_sha256 }}
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
           PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
           PUBLICATION_AUTHORIZED: ${{ inputs.requester_authorized_publication }}
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
         run: |
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "This production workflow may only run from main." >&2
@@ -117,7 +208,41 @@ jobs:
             --source-release-tag "$SOURCE_RELEASE_TAG" \
             --source-asset "$SOURCE_ASSET" \
             --source-sha256 "$SOURCE_SHA256" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
+            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
+            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
+          layout_args=(
+            --validate-layout-inputs
+            --caption-position "$CAPTION_POSITION"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            layout_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            layout_args+=(--rose-mask-authorized)
+          fi
+          python scripts/verify_rose_garden_review.py "${layout_args[@]}"
+          review_args=(
+            --validate-review-gates
+            --caption-position "$CAPTION_POSITION"
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL"
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL"
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON"
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
+            --dispatch-actor "$GITHUB_ACTOR"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
+          )
+          python scripts/verify_rose_garden_review.py "${review_args[@]}"
           python - "$RUNNER_TEMP/rose-garden-diagnostics/run-context.txt" <<'PY'
           import json
           import os
@@ -197,12 +322,38 @@ jobs:
 
       - name: Transcribe, translate, and burn bilingual captions
         id: render_video
+        env:
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
+          DISPATCH_ACTOR: ${{ github.actor }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
         run: |
           set -o pipefail
-          python scripts/process_full_video.py \
+          render_args=(
             --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
             --asset-prefix RoseGardenLunch-IySF_8OArvw \
+            --subtitle-layout rose-garden-source-aware-bilingual \
+            --caption-position "$CAPTION_POSITION" \
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON" \
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE" \
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON" \
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE" \
+            --frame-review-mode "$FRAME_REVIEW_MODE" \
+            --dispatch-actor "$DISPATCH_ACTOR"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            render_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            render_args+=(--occlusion-exception-authorized)
+          fi
+          python scripts/process_full_video.py "${render_args[@]}" \
             2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/render.log"
         shell: bash
 
@@ -218,17 +369,30 @@ jobs:
         id: finalize_manifest
         env:
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
         run: |
           python scripts/verify_rose_garden_review.py \
             --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
-            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
+            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
+            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
         shell: bash
 
       - name: Require nonempty MP4, manifest, and operation audit
         id: validate_bundle
         run: |
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
+          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass"
           test -s "$RUNNER_TEMP/rose-garden-output/manifest.json"
           test -s "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
         shell: bash
@@ -244,6 +408,7 @@ jobs:
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass
             ${{ runner.temp }}/rose-garden-output/manifest.json
             ${{ runner.temp }}/rose-garden-output/operation-audit.json
           if-no-files-found: error
@@ -287,7 +452,7 @@ jobs:
           fi
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
           tag="rose-garden-lunch-review"
-          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. Independent rights, source-frame, source/event match, ASR, and translation review remain pending; this is not final approval."
+          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. The source-aware caption region and any Rose-only banner mask are described with exact source/mask BBoxes, per-edge padding, and output resolution in the manifest. A mask, when selected, covers only the human-verified source lower-third BBox plus the recorded 1-5px per edge; the original source remains unchanged and the derivative is masked_not_clean. Independent rights, source-frame, source/event match, source URL-to-release lineage, ASR, and translation review remain pending; this is not final approval."
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release edit "$tag" \
               --repo "$GITHUB_REPOSITORY" \
@@ -308,6 +473,7 @@ jobs:
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt" \
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt" \
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass" \
             "$RUNNER_TEMP/rose-garden-output/manifest.json" \
             "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
             --repo "$GITHUB_REPOSITORY" \
@@ -344,6 +510,18 @@ jobs:
               )
           print(f"Public release MP4: {asset['name']} ({asset['size']} bytes)")
           print(f"Public release MP4 SHA-256: {rendered['sha256']}")
+          ass_name = manifest["subtitle_ass_file"]
+          ass_asset = next((item for item in assets if item["name"] == ass_name), None)
+          expected_ass_digest = f"sha256:{manifest['subtitle_ass_sha256']}"
+          if (
+              ass_asset is None
+              or ass_asset["size"] <= 0
+              or ass_asset["digest"] != expected_ass_digest
+          ):
+              raise SystemExit(
+                  "Public release is missing the manifest-verified caption ASS."
+              )
+          print(f"Public release ASS: {ass_name} ({ass_asset['size']} bytes)")
           PY
         shell: bash
 

@@ -1,12 +1,22 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import pysubs2
 
 from scripts.process_full_video import (
     Cue,
     KATIE_SUBTITLE_LAYOUT,
+    ROSE_GARDEN_SUBTITLE_LAYOUT,
+    _estimated_text_width,
+    _rose_caption_geometry,
+    _rose_garden_wrap_limits,
+    _wrap_chinese,
+    _wrap_chinese_to_width,
+    _wrap_english,
+    _wrap_english_to_width,
     _katie_wrap_limits,
     _wrap_katie_chinese,
     _wrap_katie_english,
@@ -20,6 +30,10 @@ from scripts.process_full_video import (
     srt_text,
     timestamp,
     validate_asset_prefix,
+    parse_source_graphics_regions,
+    require_trusted_mask_review,
+    rose_caption_region,
+    validate_rose_caption_placement,
     validate_release_asset_size,
     vtt_from_bilingual_srt,
     verify_cues,
@@ -29,6 +43,59 @@ from scripts.spoken_word_highlighting import TimedWord
 
 
 class FullVideoSubtitleTests(unittest.TestCase):
+    ROSE_SOURCE_GRAPHICS = [
+        {
+            "label": "synthetic-source-lower-third-test-fixture",
+            "human_verified": True,
+            "x": 0.10,
+            "y": 0.68,
+            "width": 0.80,
+            "height": 0.30,
+        }
+    ]
+
+    def test_unverified_still_draft_bypasses_signature_but_not_fixed_source_checks(self):
+        with patch(
+            "scripts.verify_rose_garden_review.file_sha256_and_size",
+            return_value=(
+                "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+                1_030_142_647,
+            ),
+        ):
+            result = require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json="{}",
+                source_frame_review_signature="",
+                source_graphics_regions_json="[]",
+                dispatch_actor="publisher",
+                frame_review_mode="unverified-review-draft",
+            )
+        self.assertEqual(
+            result,
+            {
+                "source_frame_review": "pending",
+                "production_bbox_input": "false",
+                "measurement_status": "unverified_still_estimate",
+            },
+        )
+        with self.assertRaisesRegex(RuntimeError, "fixed user-still estimate"):
+            require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json="{}",
+                source_frame_review_signature="",
+                source_graphics_regions_json=json.dumps(self.ROSE_SOURCE_GRAPHICS),
+                dispatch_actor="publisher",
+                frame_review_mode="unverified-review-draft",
+            )
+
     def test_release_asset_size_guard_accepts_limit_and_rejects_oversize(self):
         validate_release_asset_size(1_950_000_000)
         with self.assertRaisesRegex(RuntimeError, "too large for a GitHub Release asset"):
@@ -95,6 +162,308 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(rendered.styles["Chinese"].fontsize, 56)
         self.assertEqual(len(rendered.events), 1)
         self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
+
+    def test_default_wrapping_fails_closed_instead_of_merging_or_truncating(self):
+        with self.assertRaisesRegex(ValueError, "more than 2 lines"):
+            _wrap_english("one two three four five six", 8)
+        with self.assertRaisesRegex(ValueError, "token exceeds"):
+            _wrap_english("unbrokenverylongtoken", 8)
+        with self.assertRaisesRegex(ValueError, "more than 2 lines"):
+            _wrap_chinese("甲乙丙丁戊己庚辛壬癸子丑寅卯", 4)
+
+    def test_rose_garden_tight_mask_records_exact_bbox_and_complete_text(self):
+        cue = Cue(
+            1,
+            5,
+            "The President welcomed every guest in the Rose Garden.",
+            "总统欢迎玫瑰园的每一位来宾，并在午餐会上致辞。",
+        )
+        chinese_font, english_font, _max_chinese, _max_english = (
+            _rose_garden_wrap_limits(1920, 1080)
+        )
+        mask = rose_caption_region(
+            1920, 1080, "mask-lower-third", self.ROSE_SOURCE_GRAPHICS, 2
+        )
+        self.assertEqual(
+            (mask["left"], mask["top"], mask["right"], mask["bottom"]),
+            (190, 732, 1730, 1060),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
+            )
+            content = path.read_text(encoding="utf-8")
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertIn("WrapStyle: 2", content)
+        self.assertEqual(len(rendered.events), 2)
+        self.assertIn(r"\p1", rendered.events[0].text)
+        self.assertIn(r"\1a&H00&", rendered.events[0].text)
+        self.assertIn(f"\\pos({mask['left']},{mask['top']})", rendered.events[0].text)
+        self.assertIn(
+            f"l {mask['width']} {mask['height']}",
+            rendered.events[0].text,
+        )
+        self.assertIn(r"\pos(960,", rendered.events[1].text)
+        self.assertTrue(
+            all(word in rendered.events[1].text for word in cue.english.split())
+        )
+        self.assertTrue(
+            all(character in rendered.events[1].text for character in cue.chinese)
+        )
+        self.assertGreaterEqual(english_font / chinese_font, 1.20)
+        self.assertEqual(rendered.styles["English"].fontsize, english_font)
+        self.assertEqual(rendered.styles["Chinese"].fontsize, chinese_font)
+        english_lines = _wrap_english_to_width(
+            cue.english,
+            min(round(1920 * 0.68), mask["width"] - 4),
+            english_font,
+        )
+        chinese_lines = _wrap_chinese_to_width(
+            cue.chinese,
+            min(round(1920 * 0.68), mask["width"] - 4),
+            chinese_font,
+        )
+        self.assertLessEqual(len(english_lines), 2)
+        self.assertLessEqual(len(chinese_lines), 2)
+        geometry = _rose_caption_geometry(
+            english_lines,
+            chinese_lines,
+            width=1920,
+            height=1080,
+            english_font=english_font,
+            chinese_font=chinese_font,
+            position="mask-lower-third",
+            source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
+            mask_padding_px_per_edge=2,
+        )
+        self.assertLessEqual(
+            max(_estimated_text_width(line, english_font) for line in english_lines),
+            mask["width"] - 4,
+        )
+        self.assertLessEqual(
+            max(_estimated_text_width(line, chinese_font) for line in chinese_lines),
+            mask["width"] - 4,
+        )
+        self.assertLessEqual(
+            geometry["estimated_text_height"],
+            geometry["region_height"],
+        )
+        report = verify_cues(
+            [cue],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            caption_safe_region_reviewed=True,
+            source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["layout_configuration"], "passed")
+        self.assertEqual(readability["caption_region_validation"], "not_verified")
+        self.assertEqual(readability["caption_position_review"], "pending")
+        self.assertEqual(readability["source_graphics_review"]["status"], "not_verified")
+        self.assertEqual(readability["source_graphics_review"]["review_status"], "pending")
+        self.assertFalse(readability["source_graphics_review"]["production_bbox_input"])
+        self.assertEqual(readability["caption_region_height_percent"], 30.4)
+        self.assertEqual(readability["horizontal_safe_width_percent"], 68)
+        self.assertEqual(readability["max_lines_per_language"], 2)
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
+        self.assertEqual(readability["caption_band_occlusion"]["visual_review"], "pending")
+        self.assertEqual(
+            readability["caption_band_occlusion"]["source_banner_bbox_px"],
+            {"left": 192, "top": 734, "right": 1728, "bottom": 1058, "width": 1536, "height": 324},
+        )
+        self.assertEqual(
+            readability["caption_band_occlusion"]["padding_px_per_edge"], 2
+        )
+        self.assertEqual(
+            readability["caption_band_occlusion"]["status_label"],
+            "masked_not_clean",
+        )
+        self.assertEqual(readability["rose_source_evidence"]["event_match"], "pending")
+
+    def test_rose_garden_caption_mask_rejects_content_that_cannot_fit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            with self.assertRaisesRegex(ValueError, "cannot fit completely"):
+                write_ass(
+                    path,
+                    [
+                        Cue(
+                            1,
+                            5,
+                            " ".join(["unbreakabletoken"] * 100),
+                            "中文内容",
+                        )
+                    ],
+                    1920,
+                    1080,
+                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                    caption_position="mask-lower-third",
+                    source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
+                    occlusion_exception_authorized=True,
+                    mask_padding_px_per_edge=2,
+                )
+
+    def test_rose_nonmask_layout_is_computable_without_bbox_but_stays_unreviewed(self):
+        report = verify_cues(
+            [Cue(1, 3, "Hello, everybody.", "大家好。")],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="top",
+            caption_safe_region_reviewed=False,
+            source_graphics_regions=[],
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["caption_region_validation"], "not_verified")
+        self.assertEqual(readability["caption_position_review"], "pending")
+        self.assertEqual(readability["source_graphics_review"]["status"], "not_verified")
+        self.assertEqual(readability["source_graphics_review"]["review_status"], "pending")
+        self.assertFalse(readability["source_graphics_review"]["production_bbox_input"])
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
+        self.assertEqual(
+            readability["caption_band_occlusion"]["status"],
+            "non_mask_layout_selected",
+        )
+
+    def test_rose_source_graphics_bbox_and_authorization_fail_closed(self):
+        with self.assertRaisesRegex(ValueError, "no defaults"):
+            parse_source_graphics_regions("[]")
+        with self.assertRaisesRegex(ValueError, "human-verified"):
+            parse_source_graphics_regions(json.dumps([
+                {
+                    "label": "source-lower-third",
+                    "x": 0.1,
+                    "y": 0.8,
+                    "width": 0.8,
+                    "height": 0.1,
+                }
+            ]))
+        regions = parse_source_graphics_regions(
+            __import__("json").dumps(self.ROSE_SOURCE_GRAPHICS)
+        )
+        for padding in (1, 2, 5):
+            region = rose_caption_region(
+                1920, 1080, "mask-lower-third", regions, padding
+            )
+            self.assertEqual(
+                (region["left"], region["top"], region["right"], region["bottom"]),
+                (192 - padding, 734 - padding, 1728 + padding, 1058 + padding),
+            )
+        for padding in (0, 6):
+            with self.subTest(padding=padding), self.assertRaisesRegex(
+                ValueError, "1-5 px"
+            ):
+                rose_caption_region(
+                    1920, 1080, "mask-lower-third", regions, padding
+                )
+        for position, reviewed, authorized, graphics, expected in (
+            ("mask-lower-third", True, False, regions, "explicit Rose Garden"),
+            ("mask-lower-third", False, True, [], "lower-third/ticker box"),
+        ):
+            with self.subTest(position=position, authorized=authorized), self.assertRaisesRegex(
+                ValueError, expected
+            ):
+                validate_rose_caption_placement(
+                    width=1920,
+                    height=1080,
+                    position=position,
+                    safe_region_reviewed=reviewed,
+                    source_graphics_regions=graphics,
+                    occlusion_exception_authorized=authorized,
+                    mask_padding_px_per_edge=2,
+                )
+        overlapping = [
+            *regions,
+            {
+                "label": "logo",
+                "human_verified": True,
+                "x": 0.2,
+                "y": 0.1,
+                "width": 0.2,
+                "height": 0.1,
+            },
+        ]
+        self.assertEqual(
+            validate_rose_caption_placement(
+                width=1920,
+                height=1080,
+                position="top",
+                safe_region_reviewed=False,
+                source_graphics_regions=overlapping,
+            ),
+            rose_caption_region(1920, 1080, "top"),
+        )
+
+    def test_untrusted_claimed_bbox_cannot_enter_production_mask_render(self):
+        claimed_region = json.dumps(self.ROSE_SOURCE_GRAPHICS)
+        self.assertTrue(
+            parse_source_graphics_regions(claimed_region)[0]["human_verified"]
+        )
+        frame_review = {
+            "reviewer_identity": "claimed-reviewer",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
+            },
+            "evidence_ref": "https://example.org/review",
+            "source_sha256": "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+        }
+        with (
+            patch(
+                "scripts.verify_rose_garden_review.file_sha256_and_size",
+                return_value=(
+                    "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+                    1,
+                ),
+            ),
+            self.assertRaisesRegex(RuntimeError, "base64 OpenSSH signature"),
+        ):
+            require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json=json.dumps(frame_review),
+                source_frame_review_signature="",
+                source_graphics_regions_json=claimed_region,
+                dispatch_actor="publisher",
+            )
+        out_of_frame = [
+            {
+                "label": "source-lower-third",
+                "human_verified": True,
+                "x": 0.1,
+                "y": 0.001,
+                "width": 0.8,
+                "height": 0.1,
+            }
+        ]
+        with self.assertRaisesRegex(ValueError, "exceed the source frame"):
+            rose_caption_region(
+                1920, 1080, "mask-lower-third", out_of_frame, 2
+            )
 
     def test_default_layout_highlights_words_without_changing_phrase_timing(self):
         cue = Cue(1, 3, "Hello, world.", "你好，世界。")
