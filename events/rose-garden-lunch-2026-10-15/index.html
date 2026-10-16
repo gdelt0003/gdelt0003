@@ -9,43 +9,69 @@
 </head>
 <body>
   <main class="page review-page">
-    <nav class="main-video-detail-nav" aria-label="页面导航">
+    <nav class="main-video-detail-nav review-breadcrumb" aria-label="页面导航">
       <a href="../../">返回主页</a>
     </nav>
     <header class="panel review-header" aria-labelledby="review-title">
-      <p class="eyebrow">PUBLIC · EXTERNAL REVIEW DRAFT · PENDING</p>
-      <h1 id="review-title">Rose Garden Lunch · 外部审查草稿</h1>
+      <p class="eyebrow">PUBLIC · EXTERNAL REVIEW DRAFT</p>
+      <h1 id="review-title">Rose Garden Lunch<span class="review-title-subline">公开外部审查草稿</span></h1>
+      <div class="review-status-row" role="group" aria-label="当前状态">
+        <span class="review-status review-status-pending">待外部审查</span>
+        <span class="review-status">尚未获发布批准</span>
+        <span class="review-status">来源与事件未核验</span>
+        <span class="review-status">ASR/翻译未人工核验</span>
+        <span class="review-status">权利/许可待独立审查</span>
+      </div>
       <p class="review-warning"><strong>公开提示：</strong>此 Pages 页面任何人都可以访问，不限于质量检查部门；链接本身不提供访问控制。</p>
-      <p>本页是公开外部审查草稿，不是完成的制作成品，不代表发布批准，也不构成权利或许可判断。来源、权利与内容核验状态逐项如实记录；待审或未核验状态不会阻止已获授权的草稿发布，也不会被表述为通过。</p>
-      <p>事件标题、日期（2026-10-15）及地点（White House Rose Garden）来自提交信息，尚未独立核实。原视频与所述事件的匹配、音频/字幕、中文翻译均未核验。</p>
-      <p>提交者已授权对指定视频进行云端处理并公开为外部审查稿；此操作授权不等于独立法律审查，也不代表已核验所有潜在第三方片段或肖像事项。</p>
+      <details class="review-disclosures">
+        <summary>审查范围、来源状态与授权说明 <span>包含未核验事项</span></summary>
+        <div class="review-disclosures-content">
+          <p>本页是公开外部审查草稿，不是完成的制作成品，不代表发布批准，也不构成权利或许可判断。来源、权利与内容核验状态逐项如实记录；待审或未核验状态不会阻止已获授权的草稿发布，也不会被表述为通过。</p>
+          <p>事件标题、日期（2026-10-15）及地点（White House Rose Garden）来自提交信息，尚未独立核实。原视频与所述事件的匹配、音频/字幕、中文翻译均未核验。</p>
+          <p>提交者已授权对指定视频进行云端处理并公开为外部审查稿；此操作授权不等于独立法律审查，也不代表已核验所有潜在第三方片段或肖像事项。</p>
+        </div>
+      </details>
     </header>
 
-    <section class="panel review-section" aria-labelledby="source-heading">
-      <h2 id="source-heading">双语烧录审查视频</h2>
-      <p><strong>标题（提交者提供，未核实）：</strong>President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026</p>
-      <p><strong>视频 ID：</strong><code>IySF_8OArvw</code></p>
-      <p class="meta">以下为公开预发布版中的双语烧录视频，不是原始来源或最终批准版本。</p>
-      <div class="review-video">
-        <video controls preload="none" playsinline aria-label="Rose Garden Lunch 双语烧录外部审查稿">
-          <source src="https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4" type="video/mp4">
-          您的浏览器不支持 HTML5 视频播放。
-        </video>
+    <section class="panel review-section review-source-section" aria-labelledby="source-heading">
+      <div class="review-section-heading">
+        <p class="eyebrow">REVIEW VIDEO · NOT APPROVED</p>
+        <h2 id="source-heading">双语烧录审查视频</h2>
       </div>
-      <p><a href="https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4">直接打开双语烧录审查视频</a></p>
-      <p><a href="https://www.youtube.com/watch?v=IySF_8OArvw" rel="noopener noreferrer">查看提交的 YouTube 原始来源（次要来源链接）</a></p>
-      <p class="meta">派生审查视频由 GitHub 公开预发布版托管，不在 Pages 部署包中包含大型 MP4；原始视频没有被重新托管。</p>
+      <div class="review-video-layout">
+        <div class="review-video">
+          <video controls preload="none" playsinline aria-label="Rose Garden Lunch 双语烧录外部审查稿">
+            <source src="https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4" type="video/mp4">
+            您的浏览器不支持 HTML5 视频播放。
+          </video>
+        </div>
+        <aside class="review-video-info" aria-label="审查视频信息">
+          <p class="review-video-title"><strong>标题（提交者提供，未核实）</strong><span>President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026</span></p>
+          <dl class="review-video-meta">
+            <div><dt>视频 ID</dt><dd><code>IySF_8OArvw</code></dd></div>
+            <div><dt>版本</dt><dd>公开预发布审查稿，非原始来源或最终批准版本</dd></div>
+          </dl>
+          <div class="review-links">
+            <a href="https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4">直接打开双语烧录审查视频</a>
+            <a href="https://www.youtube.com/watch?v=IySF_8OArvw" rel="noopener noreferrer">查看提交的 YouTube 原始来源（次要来源链接）</a>
+          </div>
+          <p class="meta">派生审查视频由 GitHub 公开预发布版托管，不在 Pages 部署包中包含大型 MP4；原始视频没有被重新托管。</p>
+        </aside>
+      </div>
     </section>
 
-    <section class="panel review-section" aria-labelledby="pending-heading">
-      <h2 id="pending-heading">外部审查清单</h2>
+    <section class="panel review-section review-checklist-section" aria-labelledby="pending-heading">
+      <div class="review-section-heading">
+        <p class="eyebrow">REVIEW CHECKLIST · ALL ITEMS PENDING</p>
+        <h2 id="pending-heading">外部审查清单</h2>
+      </div>
       <p>以下项目显示本次记录的来源、权利与内容核验状态；状态记录本身不是发布门槛，也不代表独立认证。</p>
       <ul class="review-checklist" aria-label="待审项目">
-        <li data-review-category="source_event_match"><label><input type="checkbox" disabled> 来源与事件匹配 <span data-review-status>待审</span></label></li>
-        <li data-review-category="clean_source_frames"><label><input type="checkbox" disabled> 原片画面及嵌入图文检查 <span data-review-status>待审</span></label></li>
-        <li data-review-category="english_asr"><label><input type="checkbox" disabled> 原片音频及英语 ASR 准确性 <span data-review-status>待审</span></label></li>
-        <li data-review-category="chinese_translation"><label><input type="checkbox" disabled> 中文翻译忠实度与可读性 <span data-review-status>待审</span></label></li>
-        <li data-review-category="reuse_rights"><label><input type="checkbox" disabled> 独立权利/许可及潜在第三方内容审查 <span data-review-status>待审</span></label></li>
+        <li data-review-category="source_event_match"><label><input type="checkbox" disabled> 来源与事件匹配</label><span data-review-status>待审</span></li>
+        <li data-review-category="clean_source_frames"><label><input type="checkbox" disabled> 原片画面及嵌入图文检查</label><span data-review-status>待审</span></li>
+        <li data-review-category="english_asr"><label><input type="checkbox" disabled> 原片音频及英语 ASR 准确性</label><span data-review-status>待审</span></li>
+        <li data-review-category="chinese_translation"><label><input type="checkbox" disabled> 中文翻译忠实度与可读性</label><span data-review-status>待审</span></li>
+        <li data-review-category="reuse_rights"><label><input type="checkbox" disabled> 独立权利/许可及潜在第三方内容审查</label><span data-review-status>待审</span></li>
       </ul>
       <p><span id="review-verification-link">记录链接将在发布时填入。</span></p>
       <p class="review-warning"><strong>仅供外部审查：</strong>ASR 与机器翻译未经人工核验；该页面和公开预发布资产均不代表字幕准确性或最终发布批准。</p>
