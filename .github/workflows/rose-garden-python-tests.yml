@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/rose-garden-python-tests.yml'
       - '.github/workflows/publish-rose-garden-review.yml'
+      - '.github/workflows/render-rose-garden-private.yml'
       - '.github/workflows/smartsub-ass-geometry-probe.yml'
       - 'docs/rose-garden-caption-layout.md'
       - 'README.md'
@@ -21,6 +22,7 @@ on:
     paths:
       - '.github/workflows/rose-garden-python-tests.yml'
       - '.github/workflows/publish-rose-garden-review.yml'
+      - '.github/workflows/render-rose-garden-private.yml'
       - '.github/workflows/smartsub-ass-geometry-probe.yml'
       - 'docs/rose-garden-caption-layout.md'
       - 'README.md'

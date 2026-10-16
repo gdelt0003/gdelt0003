@@ -361,9 +361,16 @@ def validate_caption_layout(
         or not isinstance(chinese_size, (int, float))
         or isinstance(chinese_size, bool)
         or chinese_size <= 0
-        or english_size / chinese_size < 1.20
+        or not math.isclose(
+            english_size / chinese_size,
+            0.80,
+            rel_tol=0,
+            abs_tol=0.02,
+        )
     ):
-        raise RuntimeError("Rose Garden English captions are not 20% larger than Chinese.")
+        raise RuntimeError(
+            "Rose Garden English captions must be 0.8x the Chinese font size."
+        )
     occlusion = readability.get("caption_band_occlusion")
     if not isinstance(occlusion, dict):
         raise RuntimeError("Caption overlap/occlusion disclosure is missing.")

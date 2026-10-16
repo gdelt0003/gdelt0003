@@ -24,6 +24,7 @@ WORKFLOW = (
     / "workflows"
     / "publish-rose-garden-review.yml"
 )
+PRIVATE_RENDER_WORKFLOW = WORKFLOW.with_name("render-rose-garden-private.yml")
 
 
 class RoseGardenReviewWorkflowTests(unittest.TestCase):
@@ -202,7 +203,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("needs.render.result == 'success'", preview)
         self.assertIn("prepare_rose_garden_review_preview.py", preview)
         self.assertIn("Five distinct post-build HTTPS evidence URLs", preview)
-        self.assertIn("contents: read", workflow)
+        self.assertIn("contents: write", workflow)
         self.assertIn("--event-identity-evidence-url", render)
         self.assertIn("--event-match-evidence-url", render)
         self.assertIn("--event-time-timezone-evidence-url", render)
@@ -262,6 +263,46 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("rose-garden-review-run-${{ github.run_id }}", render)
         self.assertIn("Failure/blocker:", render)
         self.assertIn("private Actions artifact plus a separate public Pages review preview", render)
+
+    def test_private_render_dispatch_only_uploads_artifact_and_never_publishes(self):
+        workflow = PRIVATE_RENDER_WORKFLOW.read_text(encoding="utf-8")
+        lower = workflow.lower()
+
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("github.ref == 'refs/heads/main'", workflow)
+        self.assertIn("GITHUB_REF", workflow)
+        self.assertIn("--validate-dispatch-inputs", workflow)
+        self.assertIn("--validate-review-gates", workflow)
+        self.assertIn("requester_authorized_processing", workflow)
+        self.assertNotIn("requester_authorized_publication", workflow)
+        for field in (
+            "inputs.event_id",
+            "inputs.event_title",
+            "inputs.event_date",
+            "inputs.source_url",
+            "inputs.source_release_tag",
+            "inputs.source_asset",
+            "inputs.source_sha256",
+            "inputs.rights_evidence_url",
+            "inputs.reuse_rights_confirmed",
+            "inputs.event_identity_evidence_url",
+            "inputs.exact_event_match_confirmed",
+            "inputs.event_match_evidence_url",
+            "inputs.source_frame_review_record_json",
+            "inputs.source_frame_review_signature",
+            "inputs.frame_review_mode",
+        ):
+            with self.subTest(field=field):
+                self.assertIn(field, workflow)
+        self.assertIn("contents: write", workflow)
+        self.assertIn("actions/upload-artifact@v4", workflow)
+        self.assertIn("retention-days: 30", workflow)
+        self.assertNotIn("actions/deploy-pages", lower)
+        self.assertNotIn("upload-pages-artifact", lower)
+        self.assertNotIn("pages: write", lower)
+        self.assertNotIn("gh release", lower)
+        self.assertNotIn("create release", lower)
+        self.assertNotIn("deploy-pages", lower)
 
     def test_optional_evidence_inputs_can_be_omitted_from_workflow_dispatch(self):
         inputs = WORKFLOW.read_text(encoding="utf-8").split("\njobs:", maxsplit=1)[0]
@@ -1333,7 +1374,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         mutations = (
             ("default profile", "layout_profile", "default", "required Rose Garden"),
             ("wrong width", "horizontal_safe_width_percent", 78, "68%"),
-            ("small English font", "english_font_px", 40, "20% larger"),
+            ("wrong English font ratio", "english_font_px", 40, "0.8x"),
             ("missing occlusion record", "caption_band_occlusion", None, "occlusion"),
         )
         for label, field, value, message in mutations:
