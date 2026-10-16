@@ -115,12 +115,10 @@ class OfficialVideoMonitorTests(unittest.TestCase):
             self.assertEqual(record["full_research"]["run_url"], RUN_URL)
             self.assertEqual(
                 record["full_research"]["status"],
-                "full_research_blocked_waiting_for_authorization_and_rights",
+                "not_started_blocked_waiting_for_authorization_and_rights",
             )
-            self.assertEqual(
-                record["full_research"]["started_status"],
-                "full_media_source_research_started",
-            )
+            self.assertNotIn("started_at_utc", record["full_research"])
+            self.assertTrue(record["full_research"]["blocked_at_utc"])
 
     def test_full_research_is_truthfully_blocked_without_exact_video_authorization(self):
         state, run = run_monitor(
@@ -148,7 +146,10 @@ class OfficialVideoMonitorTests(unittest.TestCase):
             full_research["missing_items"],
         )
         summary = format_run_summary(run)
-        self.assertIn("Full event/media research: **waiting; not complete**.", summary)
+        self.assertIn(
+            "Full event/media research: **not started; blocked pending authorization and rights**.",
+            summary,
+        )
         self.assertIn(f"Research notice: {VIDEO_ID}", summary)
         self.assertIn("GitHub Actions may queue or delay scheduled runs", summary)
         self.assertNotIn("fully researched", summary.lower())

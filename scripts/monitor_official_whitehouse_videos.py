@@ -205,9 +205,8 @@ def record_new_video(
         },
         "official_source_page_research": page_research,
         "full_research": {
-            "started_status": "full_media_source_research_started",
-            "status": "full_research_blocked_waiting_for_authorization_and_rights",
-            "started_at_utc": metadata_completed_at_utc,
+            "status": "not_started_blocked_waiting_for_authorization_and_rights",
+            "blocked_at_utc": metadata_completed_at_utc,
             "run_id": run_id,
             "run_url": run_url,
             "missing_items": missing_items,
@@ -247,7 +246,7 @@ def format_run_summary(run: dict[str, Any]) -> str:
                 f"- Metadata discovery: **{record['metadata_discovery']['status']}**.",
                 "- Official source-page metadata: "
                 f"**{record['official_source_page_research']['status']}**.",
-                "- Full event/media research: **waiting; not complete**.",
+                "- Full event/media research: **not started; blocked pending authorization and rights**.",
                 "- Missing items:",
             )
         )
