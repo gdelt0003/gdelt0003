@@ -574,6 +574,7 @@ def reflow_rose_garden_cues(
     safe_width: int,
     chinese_font: int,
     english_font: int,
+    safe_height: int | None = None,
     overflow_records: list[dict[str, object]] | None = None,
 ) -> list[Cue]:
     reflowed: list[Cue] = []
@@ -583,11 +584,37 @@ def reflow_rose_garden_cues(
             reflowed.append(cue)
             continue
         try:
-            _wrap_english_to_width(cue.english, safe_width, english_font)
-            _wrap_chinese_to_width(cue.chinese, safe_width, chinese_font)
+            english_lines = _wrap_english_to_width(
+                cue.english, safe_width, english_font
+            )
+            chinese_lines = _wrap_chinese_to_width(
+                cue.chinese, safe_width, chinese_font
+            )
         except ValueError:
             pass
         else:
+            estimated_height = sum(
+                round(font * 1.2) * len(lines)
+                for font, lines in (
+                    (english_font, english_lines),
+                    (chinese_font, chinese_lines),
+                )
+            )
+            if safe_height is not None and estimated_height > safe_height:
+                if overflow_records is not None:
+                    overflow_records.append(
+                        _rose_overflow_record(
+                            cue_index,
+                            cue,
+                            reason="bilingual_caption_exceeds_safe_region_height",
+                            english_font=english_font,
+                            chinese_font=chinese_font,
+                            safe_width=safe_width,
+                            safe_height=safe_height,
+                        )
+                    )
+                reflowed.append(cue)
+                continue
             reflowed.append(cue)
             continue
         clauses = _split_aligned_clauses(
@@ -606,6 +633,7 @@ def reflow_rose_garden_cues(
                         english_font=english_font,
                         chinese_font=chinese_font,
                         safe_width=safe_width,
+                        safe_height=safe_height,
                     )
                 )
             reflowed.append(cue)
@@ -613,8 +641,19 @@ def reflow_rose_garden_cues(
         aligned_fit = True
         for english, chinese in clauses:
             try:
-                _wrap_english_to_width(english, safe_width, english_font)
-                _wrap_chinese_to_width(chinese, safe_width, chinese_font)
+                english_lines = _wrap_english_to_width(
+                    english, safe_width, english_font
+                )
+                chinese_lines = _wrap_chinese_to_width(
+                    chinese, safe_width, chinese_font
+                )
+                clause_height = (
+                    round(english_font * 1.2) * len(english_lines)
+                    + round(chinese_font * 1.2) * len(chinese_lines)
+                )
+                if safe_height is not None and clause_height > safe_height:
+                    aligned_fit = False
+                    break
             except ValueError:
                 aligned_fit = False
                 break
@@ -624,10 +663,11 @@ def reflow_rose_garden_cues(
                     _rose_overflow_record(
                         cue_index,
                         cue,
-                        reason="aligned_clauses_still_exceed_safe_width",
+                        reason="aligned_clauses_still_exceed_safe_region",
                         english_font=english_font,
                         chinese_font=chinese_font,
                         safe_width=safe_width,
+                        safe_height=safe_height,
                     )
                 )
             reflowed.append(cue)
@@ -643,6 +683,7 @@ def reflow_rose_garden_cues(
                         english_font=english_font,
                         chinese_font=chinese_font,
                         safe_width=safe_width,
+                        safe_height=safe_height,
                     )
                 )
             reflowed.append(cue)
@@ -670,7 +711,28 @@ def _rose_overflow_record(
     english_font: int,
     chinese_font: int,
     safe_width: int,
+    safe_height: int | None = None,
 ) -> dict[str, object]:
+    english_lines = _wrap_english_to_width(
+        cue.english,
+        safe_width,
+        english_font,
+        max_lines=None,
+        allow_oversized_tokens=True,
+    )
+    chinese_lines = _wrap_chinese_to_width(
+        cue.chinese,
+        safe_width,
+        chinese_font,
+        max_lines=None,
+    )
+    estimated_text_height = sum(
+        round(font * 1.2) * len(lines)
+        for font, lines in (
+            (english_font, english_lines),
+            (chinese_font, chinese_lines),
+        )
+    )
     return {
         "source_cue_index": cue_index,
         "start_seconds": round(cue.start, 3),
@@ -678,23 +740,10 @@ def _rose_overflow_record(
         "reason": reason,
         "fallback": "preserved_complete_bilingual_cue; render_with_overflow",
         "safe_width_px": safe_width,
-        "english_lines_required": len(
-            _wrap_english_to_width(
-                cue.english,
-                safe_width,
-                english_font,
-                max_lines=None,
-                allow_oversized_tokens=True,
-            )
-        ),
-        "chinese_lines_required": len(
-            _wrap_chinese_to_width(
-                cue.chinese,
-                safe_width,
-                chinese_font,
-                max_lines=None,
-            )
-        ),
+        "english_lines_required": len(english_lines),
+        "chinese_lines_required": len(chinese_lines),
+        "estimated_text_height_px": estimated_text_height,
+        "safe_height_px": safe_height,
     }
 
 
@@ -776,6 +825,22 @@ def _rose_garden_wrap_limits(
     max_chinese_chars = max(1, int(safe_width / chinese_font))
     max_english_chars = max(1, int(safe_width / (english_font * 0.68)))
     return chinese_font, english_font, max_chinese_chars, max_english_chars
+
+
+def _rose_garden_font_sizes_for_region(
+    chinese_font: int,
+    english_font: int,
+    region_height: int,
+) -> tuple[int, int]:
+    while (
+        round(chinese_font * 1.2) * 2
+        + round(english_font * 1.2) * 2
+        > region_height
+        and chinese_font > 18
+    ):
+        chinese_font -= 1
+        english_font = max(15, round(chinese_font * 0.8))
+    return chinese_font, english_font
 
 
 def _pixel_region(
@@ -1288,6 +1353,12 @@ def _write_rose_garden_source_aware_ass(
         mask_padding_px_per_edge=mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
     )
+    if caption_position == "mask-lower-third":
+        chinese_font, english_font = _rose_garden_font_sizes_for_region(
+            chinese_font,
+            english_font,
+            caption_region["height"],
+        )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
         caption_region["width"]
@@ -1487,6 +1558,12 @@ def _verify_rose_garden_ass(
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
     )
+    if has_mask:
+        chinese_font, english_font = _rose_garden_font_sizes_for_region(
+            chinese_font,
+            english_font,
+            region["height"],
+        )
     expected_position = (
         f"\\pos({round(width / 2)},{region['top']})"
         if caption_position == "top"
@@ -1836,6 +1913,20 @@ def write_ass(
         ]
     elif layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT:
         _chinese_font, english_font, *_ = _rose_garden_wrap_limits(width, height)
+        caption_region = rose_caption_region(
+            width,
+            height,
+            caption_position,
+            source_graphics_regions or [],
+            mask_padding_px_per_edge,
+            allow_unverified_estimate=allow_unverified_estimate,
+        )
+        if caption_position == "mask-lower-third":
+            _chinese_font, english_font = _rose_garden_font_sizes_for_region(
+                _chinese_font,
+                english_font,
+                caption_region["height"],
+            )
         safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
         wrapped_lines = []
         for cue_index, cue in enumerate(cues, start=1):
@@ -2072,6 +2163,12 @@ def verify_cues(
             mask_padding_px_per_edge=mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
         )
+        if caption_position == "mask-lower-third":
+            chinese_font, english_font = _rose_garden_font_sizes_for_region(
+                chinese_font,
+                english_font,
+                caption_region["height"],
+            )
         safe_width = min(
             round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
             caption_region["width"]
@@ -2964,6 +3061,12 @@ def main() -> None:
                 args.mask_padding_px_per_edge,
                 allow_unverified_estimate=allow_unverified_estimate,
             )
+            if args.caption_position == "mask-lower-third":
+                chinese_font, english_font = _rose_garden_font_sizes_for_region(
+                    chinese_font,
+                    english_font,
+                    caption_region["height"],
+                )
             safe_width = min(
                 round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
                 caption_region["width"]
@@ -2974,6 +3077,7 @@ def main() -> None:
                 safe_width=safe_width,
                 chinese_font=chinese_font,
                 english_font=english_font,
+                safe_height=caption_region["height"],
                 overflow_records=caption_overflow_records,
             )
         else:

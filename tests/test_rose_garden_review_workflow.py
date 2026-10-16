@@ -12,10 +12,13 @@ from scripts import verify_rose_garden_review as review
 from scripts.process_full_video import (
     Cue,
     ROSE_GARDEN_SUBTITLE_LAYOUT,
+    reflow_rose_garden_cues,
     require_trusted_mask_review,
+    srt_text,
     verify_cues,
     write_ass,
 )
+from scripts.verify_rose_garden_review import user_still_source_graphics_regions
 
 
 WORKFLOW = (
@@ -58,6 +61,56 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 offset = (y * width + x) * 3
                 pixels[offset:offset + 3] = bytes((255, 255, 255))
         return bytes(pixels)
+
+    def build_caption_ass_manifest(self, root, cues, overflow_records):
+        regions = user_still_source_graphics_regions(1920, 1080)
+        readability = verify_cues(
+            cues,
+            duration=400,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            source_graphics_regions=regions,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
+            allow_unverified_estimate=True,
+            caption_overflow_records=overflow_records,
+        )["subtitle_readability"]
+        ass_name = f"{review.ASSET_PREFIX}.en-zh.ass"
+        write_ass(
+            root / ass_name,
+            cues,
+            1920,
+            1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            source_graphics_regions=regions,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
+            allow_unverified_estimate=True,
+            caption_overflow_records=overflow_records,
+        )
+        (root / f"{review.ASSET_PREFIX}.en.srt").write_text(
+            srt_text(cues, "en"),
+            encoding="utf-8",
+        )
+        (root / f"{review.ASSET_PREFIX}.zh-Hans.srt").write_text(
+            srt_text(cues, "zh"),
+            encoding="utf-8",
+        )
+        return {
+            "subtitle_ass_file": ass_name,
+            "subtitle_ass_sha256": hashlib.sha256(
+                (root / ass_name).read_bytes()
+            ).hexdigest(),
+            "resolution": "1920x1080",
+            "frame_review_mode": "unverified-review-draft",
+            "subtitle_overflow_exceptions": overflow_records,
+            "quality_checks": {
+                "subtitle_readability": readability,
+            },
+        }
 
     @staticmethod
     def sign_frame_review(frame_record, directory):
@@ -1409,6 +1462,101 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             }
             with self.assertRaisesRegex(RuntimeError, "SHA-256"):
                 review.validate_caption_ass(manifest, root)
+
+    def test_caption_ass_keeps_recorded_cue_50_overflow_manual_and_checks_other_cues(self):
+        ordinary = Cue(1, 3, "A complete English sentence.", "完整的中文句子。")
+        overflow = Cue(
+            290.45,
+            296.45,
+            " ".join(["unbroken phrase"] * 24),
+            "没有对应标点的中文长句" * 12,
+        )
+        record = {
+            "source_cue_index": 50,
+            "start_seconds": 290.45,
+            "end_seconds": 296.45,
+            "reason": "bilingual_caption_exceeds_safe_region_height",
+            "fallback": "preserved_complete_bilingual_cue; render_with_overflow",
+            "safe_width_px": 1306,
+            "english_lines_required": 3,
+            "chinese_lines_required": 3,
+            "estimated_text_height_px": 207,
+            "safe_height_px": 139,
+        }
+        cues = [ordinary, overflow]
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = self.build_caption_ass_manifest(root, cues, [record])
+            region = manifest["quality_checks"]["subtitle_readability"][
+                "caption_region_box_px"
+            ]
+            frame = self.synthetic_caption_frame(1920, 1080, region)
+            with patch(
+                "scripts.verify_rose_garden_review.render_caption_geometry_frame",
+                return_value=frame,
+            ) as render_frame:
+                result = review.validate_caption_ass(manifest, root)
+
+            self.assertEqual(result["status"], "manual_review_required")
+            self.assertEqual(
+                result["synthetic_libass_geometry_render"],
+                "passed_with_recorded_overflow",
+            )
+            self.assertEqual(result["caption_overflow_exception_count"], 1)
+            self.assertEqual(
+                manifest["quality_checks"]["subtitle_readability"][
+                    "caption_overflow_exceptions"
+                ]["cues"],
+                [record],
+            )
+            render_frame.assert_called_once()
+            self.assertEqual(render_frame.call_args.args[-1], ordinary.start)
+
+            spilled_frame = bytearray(frame)
+            offset = (region["bottom"] * 1920 + 960) * 3
+            spilled_frame[offset:offset + 3] = bytes((255, 255, 255))
+            with patch(
+                "scripts.verify_rose_garden_review.render_caption_geometry_frame",
+                return_value=bytes(spilled_frame),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "caption region"):
+                    review.validate_caption_ass(manifest, root)
+
+    def test_caption_ass_with_only_recorded_overflow_stays_manual_without_sampling(self):
+        cue = Cue(
+            290.45,
+            296.45,
+            " ".join(["unbroken phrase"] * 24),
+            "没有对应标点的中文长句" * 12,
+        )
+        record = {
+            "source_cue_index": 50,
+            "start_seconds": 290.45,
+            "end_seconds": 296.45,
+            "reason": "bilingual_caption_exceeds_safe_region_height",
+            "fallback": "preserved_complete_bilingual_cue; render_with_overflow",
+            "safe_width_px": 1306,
+            "english_lines_required": 3,
+            "chinese_lines_required": 3,
+            "estimated_text_height_px": 207,
+            "safe_height_px": 139,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = self.build_caption_ass_manifest(root, [cue], [record])
+            with patch(
+                "scripts.verify_rose_garden_review.render_caption_geometry_frame"
+            ) as render_frame:
+                result = review.validate_caption_ass(manifest, root)
+
+        self.assertEqual(result["status"], "manual_review_required")
+        self.assertEqual(
+            result["synthetic_libass_geometry_render"],
+            "not_sampled_all_cues_recorded_overflow",
+        )
+        self.assertIsNone(result["rendered_text_bounds_px"])
+        render_frame.assert_not_called()
 
     def test_rendered_caption_bounds_validate_exact_mask_and_reject_spill(self):
         width = height = 20
