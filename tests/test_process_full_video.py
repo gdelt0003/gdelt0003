@@ -367,6 +367,22 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
         )
         self.assertEqual(readability["rose_source_evidence"]["event_match"], "pending")
 
+    def test_rose_garden_ass_geometry_allows_centisecond_timestamp_rounding(self):
+        cue = Cue(1.234, 3.456, "A complete English sentence.", "完整的一句话。")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(rendered.events[0].start, 1230)
+        self.assertEqual(rendered.events[0].end, 3460)
+
     def test_user_still_mask_adapts_font_to_fit_two_bilingual_lines(self):
         source_regions = user_still_source_graphics_regions(1920, 1080)
         region = rose_caption_region(
