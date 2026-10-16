@@ -83,11 +83,13 @@ def prepare_preview(*, artifact_dir: Path, site_dir: Path, render_run_id: str) -
     new_asset = preview_relative_path.as_posix()
     if html.count(old_asset) != 2:
         raise RuntimeError("Expected exactly two legacy review-video URLs on the page.")
-    pending_label = "PUBLIC · EXTERNAL REVIEW DRAFT · PENDING"
-    if html.count(pending_label) != 1:
+    pending_status = (
+        '<span class="review-status review-status-pending">待外部审查</span>'
+    )
+    if html.count(pending_status) != 1:
         raise RuntimeError("The source Pages page is not in its pending review state.")
     old_media_note = (
-        "以下为公开预发布版中的双语烧录视频，不是原始来源或最终批准版本。"
+        "公开预发布审查稿，非原始来源或最终批准版本"
     )
     new_media_note = (
         f"当前为公开 Pages 评审预览（render run {render_run_id}）；"
@@ -101,13 +103,13 @@ def prepare_preview(*, artifact_dir: Path, site_dir: Path, render_run_id: str) -
         "本预览仅供公开外部评审，尚未通过五项产物复核，不是正式 Release；"
         "MP4 由本次 Pages 预览托管，原始视频没有被重新托管。"
     )
-    old_artifact_links = (
-        '<p><a href="https://www.youtube.com/watch?v=IySF_8OArvw" '
-        'rel="noopener noreferrer">查看提交的 YouTube 原始来源（次要来源链接）</a></p>'
+    old_artifact_link = (
+        '<a href="https://www.youtube.com/watch?v=IySF_8OArvw" '
+        'rel="noopener noreferrer">查看提交的 YouTube 原始来源（次要来源链接）</a>'
     )
     if html.count(old_media_note) != 1 or html.count(old_host_note) != 1:
         raise RuntimeError("The pending Pages preview copy did not match expected text.")
-    if html.count(old_artifact_links) != 1:
+    if html.count(old_artifact_link) != 1:
         raise RuntimeError("The source link anchor for review artifacts was not found.")
     preview_dir = preview_relative_path.parent.as_posix()
     review_files = ["manifest.json", "operation-audit.json", *subtitle_files]
@@ -117,12 +119,13 @@ def prepare_preview(*, artifact_dir: Path, site_dir: Path, render_run_id: str) -
         for filename in dict.fromkeys(review_files)
     )
     artifact_links = (
-        f'<p>本次构建的复核文件：{review_links}</p>\n      {old_artifact_links}'
+        f'<p class="review-artifact-links">本次构建的复核文件：'
+        f'{review_links}</p>\n            {old_artifact_link}'
     )
     html = html.replace(old_asset, new_asset)
     html = html.replace(old_media_note, new_media_note)
     html = html.replace(old_host_note, new_host_note)
-    html = html.replace(old_artifact_links, artifact_links)
+    html = html.replace(old_artifact_link, artifact_links)
     page_path.write_text(html, encoding="utf-8")
     return preview_path
 
