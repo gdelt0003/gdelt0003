@@ -1,0 +1,50 @@
+name: Public source discovery matrix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-source-lanes:
+    name: public-source-lane-${{ matrix.lane }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        lane:
+          - news
+          - newspapers
+          - social
+          - forums
+          - internet-archive
+          - library-catalog
+          - google-search
+          - scholarly-metadata
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run public source lane probe
+        run: |
+          python scripts/public_source_discovery.py \
+            --lane "${{ matrix.lane }}" \
+            --query "Katie Zacharia White House briefing 2026-10-13" \
+            --output "artifacts/${{ matrix.lane }}.json" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Upload lane artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-source-discovery-${{ matrix.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/${{ matrix.lane }}.json
+          if-no-files-found: warn
