@@ -18,6 +18,7 @@ from scripts.verify_rose_garden_publication_review import (
     validate_publication_review,
 )
 from scripts.update_rose_garden_review_page import update_review_page
+from scripts.update_rose_garden_main_video_catalog import update_main_video_catalog
 from scripts.prepare_rose_garden_review_preview import prepare_preview
 
 
@@ -178,6 +179,61 @@ class RoseGardenPublicationReviewTests(unittest.TestCase):
             updated,
         )
 
+    def test_catalog_registers_per_render_release_with_attestation_limited_status(self):
+        catalog_path = Path(self.temp.name) / "main-videos.json"
+        original_video = {"id": "existing", "event_date": "2026-10-16"}
+        catalog_path.write_text(
+            json.dumps({"schema_version": 1, "videos": [original_video]}),
+            encoding="utf-8",
+        )
+
+        update_main_video_catalog(
+            catalog_path,
+            "rose-garden-lunch-review-123456789",
+            "123456789",
+        )
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        self.assertEqual(catalog["videos"][0], original_video)
+        rose = catalog["videos"][1]
+        release_url = (
+            "https://github.com/gdelt0003/gdelt0003/releases/download/"
+            "rose-garden-lunch-review-123456789"
+        )
+        self.assertEqual(rose["event_date"], "2026-10-15")
+        self.assertEqual(
+            rose["video_url"],
+            f"{release_url}/RoseGardenLunch-IySF_8OArvw-bilingual.mp4",
+        )
+        self.assertIn("五项复核声明已记录", rose["homepage_status"])
+        self.assertIn("不代表最终发布批准", rose["review_status"])
+        self.assertEqual(len(rose["subtitles"]), 5)
+        self.assertTrue(
+            all(subtitle["url"].startswith(release_url) for subtitle in rose["subtitles"])
+        )
+
+        update_main_video_catalog(
+            catalog_path,
+            "rose-garden-lunch-review-123456789",
+            "123456789",
+        )
+        repeated = json.loads(catalog_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            [video["id"] for video in repeated["videos"]].count(
+                "rose-garden-lunch-review-123456789"
+            ),
+            1,
+        )
+
+    def test_catalog_rejects_release_tag_not_bound_to_render_run(self):
+        catalog_path = Path(self.temp.name) / "main-videos.json"
+        catalog_path.write_text('{"videos": []}\n', encoding="utf-8")
+        with self.assertRaisesRegex(RuntimeError, "match the reviewed render run"):
+            update_main_video_catalog(
+                catalog_path,
+                "rose-garden-lunch-review-123456789",
+                "123456788",
+            )
+
     def test_pending_pages_preview_is_not_the_release_and_retains_pending_labels(self):
         with tempfile.TemporaryDirectory() as temp:
             site_dir = Path(temp) / "site"
@@ -232,6 +288,11 @@ class RoseGardenPublicationReviewTests(unittest.TestCase):
         self.assertNotIn("--clobber", publish_workflow)
         self.assertIn("actions/deploy-pages@v4", publish_workflow)
         self.assertIn("update_rose_garden_review_page.py", publish_workflow)
+        self.assertIn("update_rose_garden_main_video_catalog.py", publish_workflow)
+        self.assertLess(
+            publish_workflow.index("update_rose_garden_main_video_catalog.py"),
+            publish_workflow.index("actions/upload-pages-artifact@v3"),
+        )
 
 
 class RoseGardenDraftSourceAssetTests(unittest.TestCase):

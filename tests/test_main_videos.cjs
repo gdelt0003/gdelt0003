@@ -35,6 +35,15 @@ async function main() {
   const payload = {
     videos: [
       {
+        id: 'rose-garden-review',
+        title: 'Rose Garden Lunch · 外部审查草稿',
+        event_date: '2026-10-15',
+        homepage_status: '外部审查草稿 · 五项复核声明已记录',
+        video_url: 'https://cdn.example.test/rose-garden.mp4',
+        source_details_url: 'events/rose-garden-lunch-2026-10-15/',
+        source_url: 'https://source.example.test/rose-garden',
+      },
+      {
         id: 'older',
         title: 'Older event',
         event_date: '2026-10-06',
@@ -77,16 +86,24 @@ async function main() {
   );
   await new Promise((resolve) => setImmediate(resolve));
 
-  assert.equal(videos.children.length, 2, 'render all safe main videos');
-  assert.equal(status.textContent, '2 条主视频', 'count only playable catalog entries');
-  assert.equal(videos.children[0].children[1].children[0].textContent, 'Newer event');
-  assert.equal(videos.children[1].children[1].children[0].textContent, 'Older event');
+  assert.equal(videos.children.length, 3, 'render all safe main videos');
+  assert.equal(status.textContent, '3 条主视频', 'count only playable catalog entries');
+  assert.equal(
+    videos.children[0].children[1].children[0].textContent,
+    'Rose Garden Lunch · 外部审查草稿',
+  );
+  assert.equal(videos.children[1].children[1].children[0].textContent, 'Newer event');
+  assert.equal(videos.children[2].children[1].children[0].textContent, 'Older event');
   assert.equal(
     videos.children[0].children[0].children[0].src,
+    'https://cdn.example.test/rose-garden.mp4',
+  );
+  assert.equal(
+    videos.children[1].children[0].children[0].src,
     'https://cdn.example.test/newer.mp4',
   );
 
-  const newestContent = videos.children[0].children[1];
+  const newestContent = videos.children[1].children[1];
   assert.equal(newestContent.children.length, 4, 'homepage cards keep only concise details');
   assert.equal(newestContent.children[1].textContent, '2026-10-13 · White House · 1920x1080 · 14 分钟');
   assert.equal(newestContent.children[2].textContent, '机器生成预览 · 未经人工核验');
