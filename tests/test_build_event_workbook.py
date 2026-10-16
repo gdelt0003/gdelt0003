@@ -28,7 +28,15 @@ class EventWorkbookTests(unittest.TestCase):
 
         self.assertEqual(
             workbook.sheetnames,
-            ["Events", "Sources", "Source Directory", "Read me", "User Instructions"],
+            [
+                "Events",
+                "Sources",
+                "Source Directory",
+                "Candidate Review",
+                "Read me",
+                "User Instructions",
+                "Search Coverage",
+            ],
         )
         events = list(workbook["Events"].values)
         headers = events[0]
@@ -63,6 +71,470 @@ class EventWorkbookTests(unittest.TestCase):
         self.assertEqual(ap[source_headers.index("Video resolution")], "1920x1080 (HD1080 player decode)")
         self.assertEqual(ap[source_headers.index("Clean-source status")], "failed")
         self.assertIn("not watermark-free", ap[source_headers.index("Evidence and limitations")])
+
+        candidate_rows = list(workbook["Candidate Review"].values)
+        candidate_headers = candidate_rows[0]
+        self.assertEqual(len(candidate_headers), len(set(candidate_headers)))
+        self.assertTrue(
+            all(len(row) == len(candidate_headers) for row in candidate_rows)
+        )
+        columbus_candidates = [
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Event title")]
+            == "President Trump Hosts a Columbus Day Celebration"
+        ]
+        self.assertGreater(len(columbus_candidates), 0)
+        white_house_anchor = next(
+            row
+            for row in columbus_candidates
+            if row[candidate_headers.index("Publisher")] == "The White House"
+        )
+        self.assertIn(
+            "embedded graphics reported, not a clean editing source",
+            white_house_anchor[candidate_headers.index("Current source path")],
+        )
+        self.assertEqual(
+            white_house_anchor[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            white_house_anchor[
+                candidate_headers.index("Difference from official runtime (seconds)")
+            ],
+            0,
+        )
+        self.assertIn(
+            "not quality rank",
+            candidate_headers[candidate_headers.index("Category display slot (evidence order; not quality rank)")],
+        )
+        user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=rQlpuY2tj-4"
+        )
+        self.assertIsNone(user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            user_lead[candidate_headers.index("Category display slot (evidence order; not quality rank)")],
+            "pending",
+        )
+        self.assertIn(
+            "Do not mix with the October 13 Katie event",
+            user_lead[candidate_headers.index("Current source path")],
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Same-event evidence")],
+            "pending_manual_review",
+        )
+        self.assertEqual(user_lead[candidate_headers.index("Duration (seconds)")], None)
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Embedded graphics / occlusion review")],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Reuse rights review")],
+            "pending_rights_review",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User-provided observation (internal note; unverified)")
+            ],
+            "这个源可以 更长 干净 高清 可信源,全体通报学习",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            90,
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("User angle opinion (not verified)")
+            ],
+            "打90分...此角度视频典范,还可以增补其它角度",
+        )
+        self.assertEqual(
+            user_lead[candidate_headers.index("Camera location")], "unknown"
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("Media-seat annotation")
+            ],
+            "pending_verified_position",
+        )
+        self.assertEqual(
+            user_lead[
+                candidate_headers.index("Camera verification status")
+            ],
+            "pending",
+        )
+        second_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=UgIivPOerNc"
+        )
+        self.assertIsNone(second_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            second_user_lead[candidate_headers.index("Category display slot (evidence order; not quality rank)")],
+            "pending",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            50,
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Repeated/static-scene review")
+            ],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Source credibility review")
+            ],
+            "pending_source_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Independent camera review")
+            ],
+            "pending_source_lineage_review",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("Cross-lead angle/lineage comparison")
+            ],
+            "pending_exact_event_angle_and_lineage_confirmation",
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index("User-provided observation (internal note; unverified)")
+            ],
+            "此链接50 分 虽然长 但是台标信号凑数 不变风景凑 还有logo 还有横幅遮挡",
+        )
+        third_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=Uya88MLbHV0"
+        )
+        self.assertIsNone(third_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            third_user_lead[candidate_headers.index("Category display slot (evidence order; not quality rank)")],
+            "pending",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            50,
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index(
+                    "User feature score (not independent; rubric unspecified)"
+                )
+            ],
+            10,
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("User-provided observation (internal note; unverified)")
+            ],
+            "此时长一版 和白宫官方类似 横幅过大 但是特色是由不同角度 整体50分 其中特色分10分",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("Same-event evidence")
+            ],
+            "pending_exact_event_and_time_match",
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index("Cross-lead angle/lineage comparison")
+            ],
+            "pending_exact_event_match_people_stage_background_audio_continuity_and_source_lineage_review",
+        )
+        fourth_user_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=h30qlVplAsE"
+        )
+        self.assertIsNone(fourth_user_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Category display slot (evidence order; not quality rank)")],
+            "pending",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            30,
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User-proposed role (not verified)")
+            ],
+            "user_proposed_background_reference_and_backup_candidate_only; not approved for production",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("User-provided observation (internal note; unverified)")
+            ],
+            "此链接比官方还短 还有logo 30分,但是也可以作为背景 参考 剋有看看有没有不同角度 不同花絮,作为备选片子",
+        )
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Same-event evidence")],
+            "pending_exact_event_and_time_match",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index("Repeated/static-scene review")
+            ],
+            "pending_direct_frame_review",
+        )
+        self.assertEqual(
+            fourth_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            fourth_user_lead[candidate_headers.index("Reuse rights review")],
+            "pending_rights_review",
+        )
+        self.assertIn(
+            "genuinely different camera angles",
+            fourth_user_lead[
+                candidate_headers.index("User-requested follow-up (pending)")
+            ],
+        )
+        low_score_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=rDw_no4Rjk8"
+        )
+        self.assertIsNone(low_score_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            low_score_lead[
+                candidate_headers.index("User discovery classification (not verified)")
+            ],
+            "under_20_low_score_discovery; user classification, not verified score",
+        )
+        self.assertEqual(
+            low_score_lead[
+                candidate_headers.index("User subjective rating (not independent score)")
+            ],
+            None,
+        )
+        self.assertEqual(
+            low_score_lead[
+                candidate_headers.index("User-proposed role (not verified)")
+            ],
+            "discovery for checking same-event new angles and b-roll only; not a credibility finding and not production-ready",
+        )
+        self.assertFalse(
+            low_score_lead[candidate_headers.index("Production-ready status")]
+        )
+        self.assertEqual(
+            low_score_lead[
+                candidate_headers.index("User-provided observation (internal note; unverified)")
+            ],
+            "shorter than official; few subscribers; logo/junk marks",
+        )
+        self.assertEqual(
+            low_score_lead[
+                candidate_headers.index("Neutral public wording if later verified")
+            ],
+            "publisher branding/station bug/graphics",
+        )
+        for url, expected_publisher, expected_title in (
+            (
+                "https://apnews.com/video/14-minutes-3-news-outlets-trumps-new-press-secretary-makes-abrupt-debut-93ce596f6efd415ead20d54aefdcf14f",
+                "AP News",
+                "14 minutes: 3 news outlets: Trump's new press secretary makes abrupt debut",
+            ),
+            (
+                "https://www.kcentv.com/video/news/nation-world/first-briefing-from-new-white-house-press-secretary-katie-zacharia/507-3abb494f-a706-4bbd-b111-2e5283dcb981",
+                "KCEN",
+                "First briefing from new White House press secretary Katie Zacharia",
+            ),
+        ):
+            supplementary = next(
+                row
+                for row in candidate_rows[1:]
+                if row[candidate_headers.index("Source URL")] == url
+            )
+            self.assertIsNone(supplementary[candidate_headers.index("Event ID")])
+            self.assertEqual(
+                supplementary[candidate_headers.index("Publisher")],
+                expected_publisher,
+            )
+            self.assertEqual(
+                supplementary[candidate_headers.index("Candidate title")],
+                expected_title,
+            )
+            self.assertEqual(
+                supplementary[candidate_headers.index("Duration (seconds)")],
+                None,
+            )
+            self.assertEqual(
+                supplementary[
+                    candidate_headers.index(
+                        "Observed stream resolution (not thumbnail/source-master resolution)"
+                    )
+                ],
+                "unknown",
+            )
+            self.assertEqual(
+                supplementary[candidate_headers.index("Production-ready status")],
+                False,
+            )
+        self.assertEqual(
+            third_user_lead[candidate_headers.index("Duration (seconds)")], None
+        )
+        self.assertEqual(
+            third_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        self.assertEqual(
+            second_user_lead[candidate_headers.index("Duration (seconds)")], None
+        )
+        self.assertEqual(
+            second_user_lead[
+                candidate_headers.index(
+                    "Observed stream resolution (not thumbnail/source-master resolution)"
+                )
+            ],
+            "unknown",
+        )
+        news_leads = [
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Event title")]
+            == "Katie Zacharia briefing (Google News search leads; event and topic match unverified)"
+        ]
+        self.assertEqual(len(news_leads), 10)
+        self.assertTrue(
+            all(row[candidate_headers.index("Candidate category")] == "news" for row in news_leads)
+        )
+        self.assertEqual(
+            {row[candidate_headers.index("Category display slot (evidence order; not quality rank)")] for row in news_leads},
+            set(range(1, 11)),
+        )
+        video_search_leads = [
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Event title")]
+            == "Oct 13 Katie briefing (search leads; event/source match unverified)"
+            and row[candidate_headers.index("Candidate category")] == "video"
+        ]
+        self.assertEqual(len(video_search_leads), 10)
+        self.assertTrue(
+            all(
+                row[candidate_headers.index("Top-10 display slot (not a result cap)")]
+                == "Slots 1-10"
+                for row in news_leads
+            )
+        )
+        social_leads = [
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Event title")]
+            == "Katie briefing social search leads (event/source match unverified)"
+        ]
+        self.assertEqual(len(social_leads), 10)
+        self.assertTrue(
+            all(row[candidate_headers.index("Candidate category")] == "social" for row in social_leads)
+        )
+        cspan_event_page = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Publisher")] == "C-SPAN"
+            and row[candidate_headers.index("Source URL")]
+            == "https://www.c-span.org/event/white-house-event/white-house-press-secretary-katie-zacharia-holds-first-briefing/448203"
+        )
+        cspan_facebook = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.facebook.com/CSPAN/videos/white-house-press-secretary-katie-zacharia-told-reporters-on-tuesday-during-a-pr/1509770514326571/"
+        )
+        self.assertIsNone(cspan_event_page[candidate_headers.index("Event ID")])
+        self.assertIsNone(cspan_facebook[candidate_headers.index("Event ID")])
+        self.assertIn(
+            "not reviewed",
+            cspan_event_page[candidate_headers.index("Evidence and limitations")],
+        )
+
+        unlinked_report = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Candidate title")]
+            == "User-described screenshot; source unresolved"
+        )
+        self.assertIsNone(unlinked_report[candidate_headers.index("Source URL")])
+        self.assertIsNone(unlinked_report[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            unlinked_report[candidate_headers.index("Time marker present/status")],
+            "user-reported; candidate unresolved",
+        )
+        self.assertEqual(
+            unlinked_report[candidate_headers.index("Exact on-screen marker text")],
+            "9:44 AM ET",
+        )
+        self.assertIsNone(
+            unlinked_report[candidate_headers.index("Verified event time")]
+        )
+        self.assertEqual(
+            unlinked_report[candidate_headers.index("Player chrome text (not event time)")],
+            "0:10 / 14:07",
+        )
+        self.assertEqual(
+            unlinked_report[candidate_headers.index("Unlinked screenshot overall score")],
+            60,
+        )
+        self.assertEqual(
+            unlinked_report[candidate_headers.index("Unlinked screenshot feature score")],
+            15,
+        )
+        coverage_rows = list(workbook["Search Coverage"].values)
+        coverage_headers = coverage_rows[0]
+        coverage = {
+            row[coverage_headers.index("Attempt ID")]: row
+            for row in coverage_rows[1:]
+        }
+        self.assertEqual(len(coverage), 3)
+        news_attempt = coverage["google-news-katie-briefing-2026-10-15"]
+        self.assertEqual(news_attempt[coverage_headers.index("Results retained")], 10)
+        self.assertIn(
+            "not exhaustive",
+            news_attempt[coverage_headers.index("Coverage limitations")],
+        )
         for row in source_rows[1:]:
             local_time = row[source_headers.index("Page-published local display (not event time)")]
             timestamp = row[source_headers.index("Published metadata (UTC; not event time)")]
@@ -156,6 +628,155 @@ class EventWorkbookTests(unittest.TestCase):
         self.assertIsNone(lead[headers.index("Event ID")])
         self.assertEqual(lead[headers.index("Evidence status")], "article_metadata_only")
         self.assertIn("not verify event occurrence", lead[headers.index("Source/search limitations")])
+        workbook.close()
+
+    def test_candidate_review_selects_only_a_verified_same_moment_alternate(self):
+        catalog = {
+            "events": [
+                {
+                    "event_id": "evt-example",
+                    "identity": {"title": "Example event"},
+                    "official_reference": {
+                        "duration_seconds": 100,
+                        "video_url": "https://www.youtube.com/watch?v=official",
+                    },
+                    "sources": [
+                        {
+                            "publisher": "The White House",
+                            "source_role": "official_event_anchor",
+                            "url": "https://www.youtube.com/watch?v=official",
+                            "match_status": "verified_event_anchor",
+                            "clean_source_status": "failed",
+                            "video_resolution": "1280x720",
+                            "duration_seconds": 100,
+                            "evidence": "Embedded graphics visible.",
+                        },
+                        {
+                            "publisher": "Example News",
+                            "source_role": "same_event_source_lead",
+                            "url": "https://www.youtube.com/watch?v=alternate",
+                            "match_status": "same_speech_moment_observed",
+                            "clean_source_status": "passed",
+                            "video_resolution": "1920x1080",
+                            "duration_seconds": 105,
+                            "independence_status": "independent_publisher",
+                            "evidence": "Same speech moment directly matched.",
+                        },
+                        {
+                            "publisher": "Unverified Lead",
+                            "source_role": "same_event_search_lead",
+                            "url": "https://www.youtube.com/watch?v=lead",
+                            "match_status": "unverified",
+                            "clean_source_status": "unverified",
+                            "video_resolution": "unknown",
+                            "duration_seconds": 100,
+                        },
+                    ],
+                }
+            ],
+            "matching_rule": "event evidence",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "candidate-review.xlsx"
+            build_workbook(catalog, output)
+            workbook = load_workbook(output, read_only=False, data_only=True)
+
+        rows = list(workbook["Candidate Review"].values)
+        headers = rows[0]
+        alternate = next(
+            row
+            for row in rows[1:]
+            if row[headers.index("Publisher")] == "Example News"
+        )
+        anchor = next(
+            row
+            for row in rows[1:]
+            if row[headers.index("Publisher")] == "The White House"
+        )
+        self.assertEqual(alternate[headers.index("Category display slot (evidence order; not quality rank)")], 2)
+        self.assertIn(
+            "Preferred alternate",
+            alternate[headers.index("Current source path")],
+        )
+        self.assertIn(
+            "Another candidate meets",
+            anchor[headers.index("Current source path")],
+        )
+        workbook.close()
+
+    def test_candidate_review_is_uncapped_and_top_ten_is_category_specific(self):
+        sources = [
+            {
+                "publisher": "The White House",
+                "source_role": "official_event_anchor",
+                "source_category": "video",
+                "url": "https://www.youtube.com/watch?v=official",
+                "match_status": "verified_event_anchor",
+                "clean_source_status": "failed",
+                "video_resolution": "1920x1080",
+                "duration_seconds": 100,
+            }
+        ]
+        for category in ("video", "news"):
+            for index in range(12):
+                sources.append(
+                    {
+                        "publisher": f"{category} publisher {index}",
+                        "source_role": "same_event_search_lead",
+                        "source_category": category,
+                        "url": f"https://example.com/{category}/{index}",
+                        "match_status": "same_event_context_only",
+                        "clean_source_status": "unverified",
+                        "video_resolution": "unknown",
+                    }
+                )
+        catalog = {
+            "events": [
+                {
+                    "event_id": "evt-many",
+                    "identity": {"title": "Many source leads"},
+                    "official_reference": {"duration_seconds": 100},
+                    "sources": sources,
+                }
+            ],
+            "matching_rule": "event evidence",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "many-candidates.xlsx"
+            build_workbook(catalog, output)
+            workbook = load_workbook(output, read_only=False, data_only=True)
+
+        rows = list(workbook["Candidate Review"].values)
+        headers = rows[0]
+        for category in ("video", "news"):
+            category_rows = [
+                row
+                for row in rows[1:]
+                if row[headers.index("Candidate category")] == category
+            ]
+            expected_count = 13 if category == "video" else 12
+            self.assertEqual(len(category_rows), expected_count)
+            ranks = {
+                row[headers.index("Category display slot (evidence order; not quality rank)")]
+                for row in category_rows
+            }
+            self.assertEqual(ranks, set(range(1, expected_count + 1)))
+            self.assertEqual(
+                sum(
+                    row[headers.index("Top-10 display slot (not a result cap)")]
+                    == "Slots 1-10"
+                    for row in category_rows
+                ),
+                10,
+            )
+            self.assertEqual(
+                sum(
+                    row[headers.index("Top-10 display slot (not a result cap)")]
+                    == "Additional result"
+                    for row in category_rows
+                ),
+                expected_count - 10,
+            )
         workbook.close()
 
 

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -79,6 +81,690 @@ SOURCE_DIRECTORY_HEADERS = [
     "User-provided URL (verbatim)",
     "User annotation on this source (verbatim)",
 ]
+VIDEO_CANDIDATE_HEADERS = [
+    "Event ID",
+    "Event title",
+    "Candidate category",
+    "Category display slot (evidence order; not quality rank)",
+    "Top-10 display slot (not a result cap)",
+    "Ranking basis (not a trust score)",
+    "Current source path",
+    "Publisher",
+    "Candidate title",
+    "Source URL",
+    "Same-event evidence",
+    "Clean-source status",
+    "Observed stream resolution (not thumbnail/source-master resolution)",
+    "Duration (seconds)",
+    "Difference from official runtime (seconds)",
+    "Source provenance / lineage (reported)",
+    "Embedded graphics / occlusion review",
+    "Reuse rights review",
+    "User-provided observation (internal note; unverified)",
+    "Publisher popularity metadata (not a credibility measure)",
+    "User subjective rating (not independent score)",
+    "Unlinked screenshot overall score",
+    "User discovery classification (not verified)",
+    "User feature score (not independent; rubric unspecified)",
+    "Unlinked screenshot feature score",
+    "Search snippet runtime (unverified; not measured)",
+    "User-proposed role (not verified)",
+    "User-requested follow-up (pending)",
+    "Page publication metadata (not event time)",
+    "Production-ready status",
+    "Neutral public wording if later verified",
+    "User angle opinion (not verified)",
+    "Camera/event-time match",
+    "Camera location",
+    "Camera coordinates WGS84",
+    "Camera azimuth (degrees)",
+    "Camera height (meters)",
+    "Camera pitch (degrees)",
+    "Camera equipment",
+    "Media/camera department",
+    "Publicly confirmed professional crew",
+    "Media-seat annotation",
+    "Camera evidence URL",
+    "Camera method",
+    "Camera uncertainty/error",
+    "Camera confidence",
+    "Camera verification status",
+    "Repeated/static-scene review",
+    "Source credibility review",
+    "Independent camera review",
+    "Cross-lead angle/lineage comparison",
+    "Evidence and limitations",
+    "Time marker present/status",
+    "Exact on-screen marker text",
+    "Marker on-frame location",
+    "Marker frame timecode",
+    "Marker claimed date",
+    "Marker claimed timezone",
+    "Marker evidence frame URL",
+    "Marker authorized runner run URL",
+    "Marker review status",
+    "Player chrome text (not event time)",
+    "Verified event date",
+    "Verified event time",
+    "Verified event timezone",
+    "Verified event-time precision",
+    "Verified event-time evidence URL",
+    "Signed delta: marker minus verified event time",
+    "Delta unit",
+    "Delta conversion",
+    "Delta method",
+    "Delta computation status",
+    "Near threshold (not configured)",
+    "Near-threshold note",
+    "Unlinked report scores and evidence note",
+]
+
+_MATCH_EVIDENCE_ORDER = (
+    "same_speech_moment_observed",
+    "same_event_contiguous_speech_observed",
+    "same_event_scene_verified",
+    "same_event_context_only",
+    "verified_event_anchor",
+)
+_CLEAN_STATUS_ORDER = {"passed": 0, "unverified": 1, "failed": 2}
+_SOURCE_DIRECTNESS_ORDER = {
+    "official_event_anchor": 0,
+    "same_event_verified_source": 1,
+    "same_event_source_lead": 2,
+    "same_event_search_lead": 3,
+    "same_event_syndicated_source_lead": 4,
+    "related_event_coverage": 5,
+}
+_TIME_MARKER_FIELDS = (
+    "marker_present",
+    "exact_on_screen_text",
+    "on_frame_location",
+    "frame_timecode",
+    "claimed_date",
+    "claimed_timezone",
+    "evidence_frame_url",
+    "runner_run_url",
+    "review_status",
+    "player_chrome_text",
+    "verified_event_date",
+    "verified_event_time",
+    "verified_event_timezone",
+    "verified_event_time_precision",
+    "verified_event_time_evidence_url",
+    "signed_delta_marker_minus_event_time",
+    "delta_unit",
+    "delta_conversion",
+    "delta_method",
+    "delta_status",
+    "near_threshold",
+    "near_threshold_note",
+    "report_scores_and_evidence_note",
+)
+_TIME_MARKER_HEADER_FIELDS = dict(
+    zip(
+        (
+            "Time marker present/status",
+            "Exact on-screen marker text",
+            "Marker on-frame location",
+            "Marker frame timecode",
+            "Marker claimed date",
+            "Marker claimed timezone",
+            "Marker evidence frame URL",
+            "Marker authorized runner run URL",
+            "Marker review status",
+            "Player chrome text (not event time)",
+            "Verified event date",
+            "Verified event time",
+            "Verified event timezone",
+            "Verified event-time precision",
+            "Verified event-time evidence URL",
+            "Signed delta: marker minus verified event time",
+            "Delta unit",
+            "Delta conversion",
+            "Delta method",
+            "Delta computation status",
+            "Near threshold (not configured)",
+            "Near-threshold note",
+            "Unlinked report scores and evidence note",
+        ),
+        _TIME_MARKER_FIELDS,
+    )
+)
+
+
+def _candidate_row(
+    values: dict[str, Any], time_marker: dict[str, Any] | None = None
+) -> list[Any]:
+    defaults = {header: "" for header in VIDEO_CANDIDATE_HEADERS}
+    defaults.update(values)
+    if time_marker:
+        for header, field in _TIME_MARKER_HEADER_FIELDS.items():
+            defaults[header] = time_marker.get(field, "")
+    row = [defaults[header] for header in VIDEO_CANDIDATE_HEADERS]
+    return row
+
+
+def _candidate_category(record: dict[str, Any]) -> str:
+    category = record.get("candidate_category") or record.get("source_category")
+    if isinstance(category, str) and category.strip():
+        return category.strip().casefold()
+    url = str(record.get("url", "")).casefold()
+    if "youtube.com" in url or "youtu.be" in url:
+        return "video"
+    return "other"
+
+
+def _lead_order(lead: dict[str, Any]) -> tuple[Any, ...]:
+    role = str(lead.get("source_role", "")).casefold()
+    directness_rank = _SOURCE_DIRECTNESS_ORDER.get(role, 6)
+    match_status = str(lead.get("event_match_status", "")).casefold()
+    match_rank = next(
+        (
+            rank
+            for rank, evidence in enumerate(_MATCH_EVIDENCE_ORDER)
+            if evidence in match_status
+        ),
+        len(_MATCH_EVIDENCE_ORDER),
+    )
+    direct_url_rank = (
+        0
+        if isinstance(lead.get("url"), str) and lead["url"]
+        else 1
+    )
+    timestamp = lead.get("published_timestamp_unix")
+    recency_rank = (
+        -timestamp
+        if isinstance(timestamp, (int, float)) and not isinstance(timestamp, bool)
+        else math.inf
+    )
+    return (
+        directness_rank,
+        match_rank,
+        direct_url_rank,
+        recency_rank,
+        str(lead.get("publisher", "")).casefold(),
+        str(lead.get("url", "")).casefold(),
+    )
+
+
+def _video_resolution_pixels(value: Any) -> int | None:
+    if not isinstance(value, str):
+        return None
+    match = re.search(r"(?<!\d)(\d{3,5})\s*[x×]\s*(\d{3,5})(?!\d)", value)
+    if not match:
+        return None
+    width, height = (int(part) for part in match.groups())
+    return width * height if width > 0 and height > 0 else None
+
+
+def _positive_duration(value: Any) -> float | None:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or value <= 0
+    ):
+        return None
+    return float(value)
+
+
+def _candidate_order(
+    source: dict[str, Any], official_duration: float | None
+) -> tuple[Any, ...]:
+    match_status = str(source.get("match_status", "")).casefold()
+    match_rank = next(
+        (
+            rank
+            for rank, evidence in enumerate(_MATCH_EVIDENCE_ORDER)
+            if evidence in match_status
+        ),
+        len(_MATCH_EVIDENCE_ORDER),
+    )
+    directness_rank = _SOURCE_DIRECTNESS_ORDER.get(
+        str(source.get("source_role", "")).casefold(), 6
+    )
+    clean_rank = _CLEAN_STATUS_ORDER.get(
+        str(source.get("clean_source_status", "unverified")).casefold(), 1
+    )
+    resolution_pixels = _video_resolution_pixels(source.get("video_resolution"))
+    duration = _positive_duration(source.get("duration_seconds"))
+    published_timestamp = source.get("published_timestamp_unix")
+    recency_key = (
+        -published_timestamp
+        if isinstance(published_timestamp, (int, float))
+        and not isinstance(published_timestamp, bool)
+        else math.inf
+    )
+    duration_delta = (
+        abs(duration - official_duration)
+        if duration is not None and official_duration is not None
+        else math.inf
+    )
+    return (
+        directness_rank,
+        match_rank,
+        clean_rank,
+        -(resolution_pixels or 0),
+        recency_key,
+        duration_delta,
+        str(source.get("publisher", "")).casefold(),
+        str(source.get("url", "")).casefold(),
+    )
+
+
+def _has_observed_embedded_graphics(source: dict[str, Any]) -> bool:
+    graphics = ("banner", "logo", "emblem", "qr code", "lower-third", "watermark", "ticker")
+    observations = ("visible", "present", "observed", "shows", "seen")
+    for clause in re.split(r"[.;]", str(source.get("evidence", "")).casefold()):
+        if re.search(r"\b(?:no|not|never|absent)\b", clause):
+            continue
+        if any(term in clause for term in graphics) and any(
+            term in clause for term in observations
+        ):
+            return True
+    return False
+
+
+def _candidate_path(
+    candidate: dict[str, Any],
+    anchor: dict[str, Any] | None,
+    selected_alternate: dict[str, Any] | None,
+) -> str:
+    if selected_alternate is candidate:
+        return (
+            "Preferred alternate: same speech moment, clean status passed, and "
+            "stream resolution observed; reuse rights and source lineage still "
+            "require review."
+        )
+    if selected_alternate is not None:
+        return (
+            "Another candidate meets the same-moment, clean-status, and observed-"
+            "resolution checks; this row is a comparator."
+        )
+    if anchor is None:
+        return "No official video anchor recorded; manual review required."
+    if candidate is anchor:
+        if _has_observed_embedded_graphics(anchor):
+            return (
+                "Use White House YouTube event anchor for identity; embedded "
+                "graphics reported, not a clean editing source."
+            )
+        if str(anchor.get("clean_source_status", "")).casefold() == "failed":
+            return (
+                "Use White House YouTube event anchor for identity; it failed "
+                "the clean-source check and is not a clean editing source."
+            )
+        return (
+            "Use White House YouTube event anchor for identity; cleanliness is "
+            "unverified, do not call it clean."
+        )
+    return "No suitable alternate verified; this row remains a review lead."
+
+
+def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
+    rows = []
+    for event in catalog["events"]:
+        identity = event.get("identity") or {}
+        event_title = identity.get("title", "")
+        event_id = event.get("event_id") or ""
+        official_reference = event.get("official_reference") or {}
+        official_duration = _positive_duration(
+            official_reference.get("duration_seconds")
+        )
+        sources = [
+            source
+            for source in event.get("sources") or []
+            if isinstance(source, dict)
+            and isinstance(source.get("url"), str)
+            and source.get("url")
+            and (
+                source.get("source_role") == "official_event_anchor"
+                or str(source.get("source_role", "")).startswith("same_event_")
+            )
+        ]
+        anchor = next(
+            (source for source in sources if source.get("source_role") == "official_event_anchor"),
+            None,
+        )
+        ordered = sorted(
+            sources,
+            key=lambda source: _candidate_order(source, official_duration),
+        )
+        selected_alternate = next(
+            (
+                source
+                for source in ordered
+                if source is not anchor
+                and source.get("match_status") == "same_speech_moment_observed"
+                and source.get("clean_source_status") == "passed"
+                and _video_resolution_pixels(source.get("video_resolution"))
+                is not None
+            ),
+            None,
+        )
+        category_ranks: dict[str, int] = {}
+        for source in ordered:
+            category = _candidate_category(source)
+            category_ranks[category] = category_ranks.get(category, 0) + 1
+            rank = category_ranks[category]
+            duration = _positive_duration(source.get("duration_seconds"))
+            duration_delta = (
+                round(abs(duration - official_duration), 3)
+                if duration is not None and official_duration is not None
+                else ""
+            )
+            rows.append(
+                _candidate_row(
+                    {
+                        "Event ID": event_id,
+                        "Event title": event_title,
+                        "Candidate category": category,
+                        "Category display slot (evidence order; not quality rank)": rank,
+                        "Top-10 display slot (not a result cap)": (
+                            "Slots 1-10" if rank <= 10 else "Additional result"
+                        ),
+                        "Current source path": _candidate_path(
+                            source, anchor, selected_alternate
+                        ),
+                        "Publisher": source.get("publisher", ""),
+                        "Candidate title": source.get("title", ""),
+                        "Source URL": source.get("url", ""),
+                        "Same-event evidence": source.get(
+                            "match_status", "unverified"
+                        ),
+                        "Clean-source status": source.get(
+                            "clean_source_status", "unverified"
+                        ),
+                        "Observed stream resolution (not thumbnail/source-master resolution)": source.get(
+                            "video_resolution", "unknown"
+                        ),
+                        "Duration (seconds)": source.get("duration_seconds")
+                        if source.get("duration_seconds") is not None
+                        else "",
+                        "Difference from official runtime (seconds)": duration_delta,
+                        "Source provenance / lineage (reported)": source.get(
+                            "independence_status", "unverified"
+                        ),
+                        "Embedded graphics / occlusion review": source.get(
+                            "graphics_occlusion_status",
+                            source.get(
+                                "frame_review_status", "pending_direct_frame_review"
+                            ),
+                        ),
+                        "Reuse rights review": source.get(
+                            "reuse_rights_status", "pending_rights_review"
+                        ),
+                        "User-provided observation (internal note; unverified)": source.get(
+                            "user_claims_verbatim"
+                        )
+                        or source.get("user_observations_verbatim", ""),
+                        "Publisher popularity metadata (not a credibility measure)": source.get(
+                            "publisher_popularity_metadata", ""
+                        ),
+                        "User subjective rating (not independent score)": source.get(
+                            "user_rating", ""
+                        ),
+                        "Unlinked screenshot overall score": "",
+                        "User discovery classification (not verified)": source.get(
+                            "user_rating_category", ""
+                        ),
+                        "User feature score (not independent; rubric unspecified)": source.get(
+                            "user_feature_rating", ""
+                        ),
+                        "Unlinked screenshot feature score": "",
+                        "Search snippet runtime (unverified; not measured)": source.get(
+                            "search_snippet_runtime", ""
+                        ),
+                        "User-proposed role (not verified)": source.get(
+                            "intended_use", ""
+                        ),
+                        "User-requested follow-up (pending)": source.get(
+                            "user_requested_follow_up", ""
+                        ),
+                        "Page publication metadata (not event time)": source.get(
+                            "page_published_metadata", ""
+                        ),
+                        "Production-ready status": source.get(
+                            "production_ready", ""
+                        ),
+                        "Neutral public wording if later verified": source.get(
+                            "neutral_public_wording_if_verified", ""
+                        ),
+                        "User angle opinion (not verified)": source.get(
+                            "user_angle_opinion_verbatim", ""
+                        ),
+                        "Camera/event-time match": "",
+                        "Camera location": "",
+                        "Camera coordinates WGS84": "",
+                        "Camera azimuth (degrees)": "",
+                        "Camera height (meters)": "",
+                        "Camera pitch (degrees)": "",
+                        "Camera equipment": "",
+                        "Media/camera department": "",
+                        "Publicly confirmed professional crew": "",
+                        "Media-seat annotation": "",
+                        "Camera evidence URL": "",
+                        "Camera method": "",
+                        "Camera uncertainty/error": "",
+                        "Camera confidence": "",
+                        "Camera verification status": "",
+                        "Repeated/static-scene review": source.get(
+                            "repeat_or_static_scene_review",
+                            "pending_direct_frame_review",
+                        ),
+                        "Source credibility review": source.get(
+                            "credibility_review", "pending_source_review"
+                        ),
+                        "Independent camera review": source.get(
+                            "camera_independence_status",
+                            "pending_source_lineage_review",
+                        ),
+                        "Cross-lead angle/lineage comparison": source.get(
+                            "comparison_with_other_user_leads",
+                            "pending_exact_event_angle_and_lineage_confirmation",
+                        ),
+                        "Evidence and limitations": source.get("evidence", ""),
+                    },
+                    source.get("time_marker_review"),
+                )
+            )
+    category_ranks: dict[tuple[str, str], int] = {}
+    leads = catalog.get("unassigned_source_leads")
+    if leads is None:
+        leads = catalog.get("unassigned_video_leads", [])
+    ordered_leads = sorted(
+        (lead for lead in leads if isinstance(lead, dict)),
+        key=_lead_order,
+    )
+    for lead in ordered_leads:
+        camera = lead.get("camera_position_review") or {}
+        category = _candidate_category(lead)
+        group = str(lead.get("candidate_event_group") or "Unassigned discovery")
+        if lead.get("event_id") or lead.get("candidate_event_group"):
+            rank_key = (group, category)
+            category_ranks[rank_key] = category_ranks.get(rank_key, 0) + 1
+            rank: Any = category_ranks[rank_key]
+            display_group = "Slots 1-10" if rank <= 10 else "Additional result"
+        else:
+            rank = "pending"
+            display_group = "Event/category ranking pending"
+        rows.append(
+            _candidate_row(
+                {
+                    "Event ID": lead.get("event_id") or "",
+                    "Event title": group,
+                    "Candidate category": category,
+                    "Category display slot (evidence order; not quality rank)": rank,
+                    "Top-10 display slot (not a result cap)": display_group,
+                    "Ranking basis (not a trust score)": (
+                        "source directness, exact-event evidence, direct-URL "
+                        "availability, recency when known, then publisher/URL; "
+                        "popularity is excluded"
+                    ),
+                    "Current source path": lead.get(
+                        "review_scope",
+                        "Unassigned lead only; exact event and time require independent match.",
+                    ),
+                    "Publisher": lead.get("publisher", "not reviewed"),
+                    "Candidate title": lead.get(
+                        "title", "User-provided source lead (title not reviewed)"
+                    ),
+                    "Source URL": lead.get("url") or "",
+                    "Same-event evidence": lead.get(
+                        "event_match_status", "pending_manual_review"
+                    ),
+                    "Clean-source status": lead.get(
+                        "clean_source_status", "unverified"
+                    ),
+                    "Observed stream resolution (not thumbnail/source-master resolution)": lead.get(
+                        "video_resolution", "unknown"
+                    ),
+                    "Duration (seconds)": lead.get("duration_seconds")
+                    if lead.get("duration_seconds") is not None
+                    else "",
+                    "Source provenance / lineage (reported)": lead.get(
+                        "provenance_independence_status",
+                        "pending_source_provenance_review",
+                    ),
+                    "Embedded graphics / occlusion review": lead.get(
+                        "graphics_occlusion_status", "pending_direct_frame_review"
+                    ),
+                    "Reuse rights review": lead.get(
+                        "reuse_rights_status", "pending_rights_review"
+                    ),
+                    "User-provided observation (internal note; unverified)": lead.get(
+                        "user_claims_verbatim"
+                    )
+                    or lead.get("user_observations_verbatim_internal")
+                    or lead.get("user_observations_verbatim", ""),
+                    "Publisher popularity metadata (not a credibility measure)": lead.get(
+                        "publisher_popularity_metadata", ""
+                    ),
+                    "User subjective rating (not independent score)": lead.get(
+                        "user_rating", ""
+                    ),
+                    "Unlinked screenshot overall score": "",
+                    "User discovery classification (not verified)": lead.get(
+                        "user_rating_category", ""
+                    ),
+                    "User feature score (not independent; rubric unspecified)": lead.get(
+                        "user_feature_rating", ""
+                    ),
+                    "Unlinked screenshot feature score": "",
+                    "Search snippet runtime (unverified; not measured)": lead.get(
+                        "search_snippet_runtime", ""
+                    ),
+                    "User-proposed role (not verified)": lead.get(
+                        "intended_use", ""
+                    ),
+                    "User-requested follow-up (pending)": lead.get(
+                        "user_requested_follow_up", ""
+                    ),
+                    "Page publication metadata (not event time)": lead.get(
+                        "page_published_metadata", ""
+                    ),
+                    "Production-ready status": lead.get("production_ready", ""),
+                    "Neutral public wording if later verified": lead.get(
+                        "neutral_public_wording_if_verified", ""
+                    ),
+                    "User angle opinion (not verified)": lead.get(
+                        "user_angle_opinion_verbatim", ""
+                    ),
+                    "Camera/event-time match": camera.get(
+                        "event_time_match_status",
+                        "pending_exact_event_and_time_match",
+                    ),
+                    "Camera location": camera.get("location", "unknown"),
+                    "Camera coordinates WGS84": camera.get(
+                        "coordinates_wgs84", "unknown"
+                    ),
+                    "Camera azimuth (degrees)": camera.get(
+                        "azimuth_degrees", "unknown"
+                    ),
+                    "Camera height (meters)": camera.get("height_meters", "unknown"),
+                    "Camera pitch (degrees)": camera.get("pitch_degrees", "unknown"),
+                    "Camera equipment": camera.get("equipment", "unknown"),
+                    "Media/camera department": camera.get(
+                        "media_camera_department", "unknown"
+                    ),
+                    "Publicly confirmed professional crew": camera.get(
+                        "publicly_confirmed_crew", "unknown"
+                    ),
+                    "Media-seat annotation": camera.get(
+                        "media_seat_annotation", "pending_verified_position"
+                    ),
+                    "Camera evidence URL": camera.get("evidence_url") or "",
+                    "Camera method": camera.get("method", "not_assessed"),
+                    "Camera uncertainty/error": camera.get(
+                        "uncertainty_or_error", "unknown"
+                    ),
+                    "Camera confidence": camera.get("confidence", "unknown"),
+                    "Camera verification status": camera.get(
+                        "verification_status", "pending"
+                    ),
+                    "Repeated/static-scene review": lead.get(
+                        "repeat_or_static_scene_review",
+                        "pending_direct_frame_review",
+                    ),
+                    "Source credibility review": lead.get(
+                        "credibility_review", "pending_source_review"
+                    ),
+                    "Independent camera review": lead.get(
+                        "camera_independence_status",
+                        "pending_source_lineage_review",
+                    ),
+                    "Cross-lead angle/lineage comparison": lead.get(
+                        "comparison_with_other_user_leads",
+                        "pending_exact_event_angle_and_lineage_confirmation",
+                    ),
+                    "Evidence and limitations": lead.get(
+                        "evidence", "Evidence not yet reviewed."
+                    ),
+                },
+                lead.get("time_marker_review"),
+            )
+        )
+    for report in catalog.get("unassigned_time_marker_reports", []):
+        if not isinstance(report, dict):
+            continue
+        rows.append(
+            _candidate_row(
+            {
+                "Event title": "Unassigned screenshot/time-marker report",
+                "Candidate category": "unassigned screenshot",
+                "Category display slot (evidence order; not quality rank)": "pending",
+                "Top-10 display slot (not a result cap)": "Identity unresolved",
+                "Current source path": (
+                    "No video ID or source URL supplied. Keep this display report "
+                    "separate from all candidate videos until the user identifies it."
+                ),
+                "Candidate title": "User-described screenshot; source unresolved",
+                "Source URL": report.get("source_url") or "",
+                "Same-event evidence": "unassigned",
+                "Clean-source status": "unverified",
+                "Observed stream resolution (not thumbnail/source-master resolution)": "unknown",
+                "User discovery classification (not verified)": (
+                    "Unlinked screenshot-only report; scores are not assigned "
+                    "to a video candidate."
+                ),
+                "Unlinked screenshot overall score": report.get(
+                    "user_overall_score", ""
+                ),
+                "Unlinked screenshot feature score": report.get(
+                    "user_feature_score", ""
+                ),
+                "Evidence and limitations": report.get("evidence_note", ""),
+            },
+            {
+                **report,
+                "report_scores_and_evidence_note": (
+                    "User overall score 60 and feature score 15; unassigned and not "
+                    "attached to any candidate. " + str(report.get("evidence_note", ""))
+                ),
+            },
+            )
+        )
+    return rows
 
 
 def published_at_utc(timestamp: Any) -> str | None:
@@ -157,6 +843,8 @@ def build_workbook(
     sources_sheet.append(SOURCE_HEADERS)
     source_directory_sheet = workbook.create_sheet("Source Directory")
     source_directory_sheet.append(SOURCE_DIRECTORY_HEADERS)
+    candidate_review_sheet = workbook.create_sheet("Candidate Review")
+    candidate_review_sheet.append(VIDEO_CANDIDATE_HEADERS)
     notes_sheet = workbook.create_sheet("Read me")
     instructions_sheet = workbook.create_sheet("User Instructions")
     instructions_sheet.append(["Item", "User-provided text (verbatim)"])
@@ -347,6 +1035,88 @@ def build_workbook(
             "rehosting or publishing any video."
         ]
     )
+    notes_sheet.append(
+        [
+            "Candidate Review keeps all retained leads and shows a top-10 display "
+            "group separately for each topic/event and source category; it has no "
+            "hard result cap and never invents padding. Video, news, social, and "
+            "other are separate categories. Ranking basis is source directness, "
+            "exact-event evidence, source-page review status, recency when known, "
+            "and publisher/URL tie-breaks; popularity is not a credibility proxy. "
+            "Runtime is not sufficient evidence. An alternate is selected only "
+            "when same-speech-moment evidence, passed clean-source status, and "
+            "observed stream resolution are all recorded. Otherwise the White "
+            "House YouTube anchor remains the event reference and is not called clean."
+        ]
+    )
+    notes_sheet.append(
+        [
+            "Search Coverage logs each reported query/pass, topic/category, search "
+            "surface, attempt date, result count, coverage limitation, pagination "
+            "status, and run URL when known. A logged pass is measurable but does "
+            "not claim exhaustive internet coverage."
+        ]
+    )
+    coverage_sheet = workbook.create_sheet("Search Coverage")
+    coverage_headers = [
+        "Attempt ID",
+        "Topic",
+        "Source category",
+        "Search surface",
+        "Attempt date",
+        "Query",
+        "Results retained",
+        "Pagination / coverage",
+        "Coverage limitations",
+        "Run URL",
+    ]
+    coverage_sheet.append(coverage_headers)
+    for attempt in catalog.get("discovery_attempts", []):
+        if not isinstance(attempt, dict):
+            continue
+        coverage_sheet.append(
+            [
+                attempt.get("attempt_id", ""),
+                attempt.get("topic", ""),
+                attempt.get("category", ""),
+                attempt.get("search_surface", ""),
+                attempt.get("attempted_date", ""),
+                attempt.get("query", ""),
+                attempt.get("results_retained", ""),
+                attempt.get("pagination_or_coverage", ""),
+                attempt.get("coverage_note", ""),
+                attempt.get("run_url", "") or "",
+            ]
+        )
+    notes_sheet.append(
+        [
+            "User-submitted video leads without an exact event/time match appear "
+            "as unassigned rows. User claims and subjective ratings are not "
+            "verification. Camera location, coordinates, azimuth, height, pitch, "
+            "equipment, department, publicly confirmed crew, and media-seat "
+            "annotations require direct evidence, method, uncertainty, confidence, "
+            "and a verification status; unknowns remain unknown. Do not infer "
+            "private identities or mix an unassigned lead into a named event."
+        ]
+    )
+    notes_sheet.append(
+        [
+            "Do not rank a source as superior based on runtime alone. Assess "
+            "repeated/static scenes, embedded logos/banners, actual stream "
+            "resolution, exact event/time match, source credibility, independent "
+            "camera status, and source lineage separately. Comparing two "
+            "user-submitted links requires first confirming the same event/time "
+            "and then checking angle and lineage; neither same-event nor "
+            "different-angle status is assumed."
+        ]
+    )
+    for row in _candidate_review_rows(catalog):
+        candidate_review_sheet.append(row)
+        link_cell = candidate_review_sheet.cell(candidate_review_sheet.max_row, 9)
+        if link_cell.value:
+            link_cell.hyperlink = link_cell.value
+            link_cell.style = "Hyperlink"
+    style_sheet(coverage_sheet, [38, 42, 18, 34, 16, 72, 18, 42, 86, 68])
     if discovery is not None:
         discovery_sheet = workbook.create_sheet("New White House leads")
         discovery_sheet.append(
@@ -457,6 +1227,14 @@ def build_workbook(
     style_sheet(
         source_directory_sheet,
         [28, 24, 42, 74, 14, 24, 18, 28, 24, 30, 18, 84, 74, 74, 82],
+    )
+    style_sheet(
+        candidate_review_sheet,
+        [
+            28, 46, 24, 16, 28, 64, 32, 64, 70, 40, 22, 48, 20, 38, 42, 36, 28, 58,
+            32, 24, 58, 40, 42, 28, 24, 24, 24, 24, 30, 30, 38, 34, 70, 28, 34,
+            30, 24, 30, 38, 34, 24, 20, 46, 30, 30, 44, 68, 92, 100,
+        ],
     )
     style_sheet(instructions_sheet, [40, 150])
     notes_sheet["A1"].font = Font(bold=True, color="FFFFFF")
