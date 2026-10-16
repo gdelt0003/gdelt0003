@@ -918,18 +918,12 @@ def require_trusted_mask_review(
 ) -> dict[str, str] | None:
     if position != "mask-lower-third":
         return None
-    from scripts.verify_rose_garden_review import (
-        validate_trusted_frame_review_for_render,
-    )
+    if __package__:
+        from . import verify_rose_garden_review
+    else:
+        import verify_rose_garden_review
 
     if frame_review_mode == "unverified-review-draft":
-        from scripts.verify_rose_garden_review import (
-            file_sha256_and_size,
-            user_still_source_graphics_regions,
-            SOURCE_SHA256,
-            SOURCE_SIZE_BYTES,
-        )
-
         if source_frame_review_record_json not in {"", "{}"} or source_frame_review_signature:
             raise RuntimeError(
                 "Unverified review drafts cannot claim or carry a trusted frame review."
@@ -942,12 +936,19 @@ def require_trusted_mask_review(
             raise RuntimeError(
                 "Unverified still-estimate masking requires the actual 1920x1080 source."
             )
-        source_sha256, source_size = file_sha256_and_size(source_path)
-        if source_sha256 != SOURCE_SHA256 or source_size != SOURCE_SIZE_BYTES:
+        source_sha256, source_size = verify_rose_garden_review.file_sha256_and_size(
+            source_path
+        )
+        if (
+            source_sha256 != verify_rose_garden_review.SOURCE_SHA256
+            or source_size != verify_rose_garden_review.SOURCE_SIZE_BYTES
+        ):
             raise RuntimeError(
                 "Unverified draft source does not match the pinned release asset."
             )
-        user_still_source_graphics_regions(source_width, source_height)
+        verify_rose_garden_review.user_still_source_graphics_regions(
+            source_width, source_height
+        )
         return {
             "source_frame_review": "pending",
             "production_bbox_input": "false",
@@ -955,7 +956,7 @@ def require_trusted_mask_review(
         }
     if frame_review_mode != "trusted-signed-review":
         raise RuntimeError("Unsupported frame review mode.")
-    return validate_trusted_frame_review_for_render(
+    return verify_rose_garden_review.validate_trusted_frame_review_for_render(
         source_path=source_path,
         source_width=source_width,
         source_height=source_height,

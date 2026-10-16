@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -95,6 +97,43 @@ class FullVideoSubtitleTests(unittest.TestCase):
                 dispatch_actor="publisher",
                 frame_review_mode="unverified-review-draft",
             )
+
+    def test_direct_script_import_can_load_rose_review_validator(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        script = """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
+import process_full_video
+import verify_rose_garden_review
+verify_rose_garden_review.SOURCE_SHA256 = "expected"
+verify_rose_garden_review.SOURCE_SIZE_BYTES = 1
+verify_rose_garden_review.file_sha256_and_size = lambda _: ("expected", 1)
+verify_rose_garden_review.user_still_source_graphics_regions = lambda *_: []
+result = process_full_video.require_trusted_mask_review(
+    "mask-lower-third",
+    source_path=Path("fixture.mp4"),
+    source_width=1920,
+    source_height=1080,
+    source_duration=1.0,
+    source_frame_review_record_json="{}",
+    source_frame_review_signature="",
+    source_graphics_regions_json="[]",
+    dispatch_actor="test",
+    frame_review_mode="unverified-review-draft",
+)
+assert result["source_frame_review"] == "pending"
+assert result["production_bbox_input"] == "false"
+"""
+        with tempfile.TemporaryDirectory() as temp:
+            result = subprocess.run(
+                [sys.executable, "-c", script, str(repo_root)],
+                cwd=temp,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_release_asset_size_guard_accepts_limit_and_rejects_oversize(self):
         validate_release_asset_size(1_950_000_000)
