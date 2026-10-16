@@ -559,6 +559,9 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 "frame_review_mode": "unverified-review-draft",
                 "source_frame_measurement": still_measurement
                 | {"review_status": "pending"},
+                "user_estimated_banner_bbox": still_measurement[
+                    "user_estimated_banner_bbox"
+                ],
                 "resolution": "1920x1080",
                 "subtitle_ass_file": ass_name,
                 "subtitle_ass_sha256": hashlib.sha256(
@@ -1396,10 +1399,21 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertEqual(source_review["status"], "user_provided_still_estimate")
         self.assertEqual(source_review["review_status"], "pending")
         self.assertFalse(source_review["production_bbox_input"])
+        expected_bbox = {
+            "source_values_xyxy_px": [68, 885, 1850, 1020],
+            "padding_px_per_edge": 2,
+            "derived_mask_values_xyxy_px": [66, 883, 1852, 1022],
+            "measurement_status": "unverified_still_estimate",
+            "source_frame_review_record": False,
+            "production_bbox_input": False,
+        }
+        self.assertEqual(measurement["user_estimated_banner_bbox"], expected_bbox)
+        self.assertEqual(source_review["user_estimated_banner_bbox"], expected_bbox)
         manifest = {
             "resolution": "1920x1080",
             "frame_review_mode": "unverified-review-draft",
             "source_frame_measurement": {**measurement, "review_status": "pending"},
+            "user_estimated_banner_bbox": expected_bbox,
             "quality_checks": {"subtitle_readability": readability},
         }
         review.validate_caption_layout(

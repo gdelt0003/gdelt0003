@@ -1,4 +1,4 @@
-"""Validate post-render review evidence before public Rose Garden publication."""
+"""Validate truthful review-state records and bind them to the rendered artifact."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ REVIEW_CATEGORIES = (
     "english_asr",
     "chinese_translation",
 )
+REVIEW_STATUSES = ("pending", "unverified", "passed", "failed")
 EVENT_ID = "rose-garden-lunch-2026-10-15"
 SOURCE_ASSET = "RoseGardenLunch-IySF_8OArvw.mp4"
 RENDERED_ASSET = "RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
@@ -114,19 +115,20 @@ def validate_publication_review(
     if not isinstance(source_graphics, dict):
         raise RuntimeError("The artifact manifest has no source-frame/graphics state.")
 
-    seen_urls: set[tuple[str, str, str]] = set()
-    evidence: dict[str, dict[str, str]] = {}
+    seen_urls: set[tuple[str, str, int | None, str, tuple[tuple[str, str], ...]]] = set()
+    evidence: dict[str, dict[str, Any]] = {}
     for category in REVIEW_CATEGORIES:
         check = checks[category]
         if (
             not isinstance(check, dict)
-            or check.get("reviewed") is not True
-            or check.get("status") != "passed"
+            or not isinstance(check.get("reviewed"), bool)
+            or check.get("status") not in REVIEW_STATUSES
         ):
-            raise RuntimeError(
-                f"{category} must be explicitly reviewed and marked passed."
-            )
-        if category == "clean_source_frames" and (
+            raise RuntimeError(f"{category} must record a recognized status and reviewed flag.")
+        status = check["status"]
+        if status in {"passed", "failed"} and check["reviewed"] is not True:
+            raise RuntimeError(f"{category} cannot be {status} unless it was reviewed.")
+        if category == "clean_source_frames" and status == "passed" and (
             source_graphics.get("status_label") == "masked_not_clean"
             or source_graphics.get("caption_band_masks_source_lower_third_in_derivative")
             is True
@@ -135,11 +137,18 @@ def validate_publication_review(
                 "A derivative labeled masked_not_clean cannot pass clean_source_frames."
             )
         url = check.get("evidence_url")
-        url_key = _https_url(url, category)
-        if url_key in seen_urls:
-            raise RuntimeError("The five review checks must use distinct HTTPS evidence URLs.")
-        seen_urls.add(url_key)
-        evidence[category] = {"status": "passed", "evidence_url": url}
+        if url:
+            url_key = _https_url(url, category)
+            if url_key in seen_urls:
+                raise RuntimeError("Provided review evidence URLs must be distinct.")
+            seen_urls.add(url_key)
+        elif status == "passed":
+            raise RuntimeError(f"{category} marked passed must include an HTTPS evidence URL.")
+        evidence[category] = {
+            "status": status,
+            "reviewed": check["reviewed"],
+            "evidence_url": url,
+        }
 
     return {
         "render_run_id": render_run_id,
@@ -148,7 +157,8 @@ def validate_publication_review(
         "reviewed_by": reviewed_by,
         "verification_method": "operator_attestation_not_independent_proof",
         "reviewed_checks": evidence,
-        "release_approval": "approved_for_public_review_only",
+        "publication_status": "pending_external_review_draft",
+        "review_statuses_are_publication_gates": False,
     }
 
 

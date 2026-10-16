@@ -80,7 +80,7 @@ function renderMainVideos(payload) {
     const links = document.createElement('p');
     links.className = 'main-video-links';
     addLink(links, item.source_url, '来源视频');
-    addLink(links, item.source_details_url, '来源与版本信心详情');
+    addLink(links, item.source_details_url, '视频源与视频本身可信度详情');
     addLink(links, item.video_url, '下载 MP4');
     content.append(links);
 

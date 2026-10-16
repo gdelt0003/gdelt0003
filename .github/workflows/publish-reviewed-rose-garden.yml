@@ -94,7 +94,7 @@ jobs:
           run-id: ${{ inputs.render_run_id }}
           github-token: ${{ github.token }}
 
-      - name: Validate five post-build reviews and bind them to the MP4
+      - name: Validate truthful review-state record and bind it to the MP4
         env:
           REVIEW_RECORD_JSON: ${{ inputs.review_record_json }}
           RENDER_RUN_ID: ${{ inputs.render_run_id }}
@@ -135,6 +135,7 @@ jobs:
       contents: write
     outputs:
       release_tag: ${{ steps.release.outputs.release_tag }}
+      render_run_id: ${{ needs.validate-review.outputs.render_run_id }}
     steps:
       - name: Download validated review bundle
         uses: actions/download-artifact@v4
@@ -170,8 +171,8 @@ jobs:
             "$bundle/publication-review-verification.json" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$RENDER_SHA" \
-            --title "Rose Garden Lunch reviewed external-review draft (${RENDER_RUN_ID})" \
-            --notes "New, per-render public external-review draft. Its five post-build review attestations and distinct HTTPS evidence URLs are bound to the MP4 SHA-256 in publication-review-verification.json. This remains an external-review draft, not final publication approval. The pre-existing rose-garden-lunch-review release is unchanged." \
+            --title "Rose Garden Lunch external-review draft (${RENDER_RUN_ID})" \
+            --notes "New, per-render public external-review draft. Review states are recorded in publication-review-verification.json and bound to the MP4 SHA-256. Pending, unverified, failed, or passed review states do not block this draft publication and are not independent certification or final publication approval. Production source-selection, authorization, and processing safety checks remain separate requirements. The pre-existing rose-garden-lunch-review release is unchanged." \
             --prerelease
           echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
         shell: bash
@@ -196,10 +197,16 @@ jobs:
       - name: Update the Rose Garden page to the reviewed release
         env:
           RELEASE_TAG: ${{ needs.publish-release.outputs.release_tag }}
+          RENDER_RUN_ID: ${{ needs.publish-release.outputs.render_run_id }}
         run: |
           python scripts/update_rose_garden_review_page.py \
             --page events/rose-garden-lunch-2026-10-15/index.html \
-            --release-tag "$RELEASE_TAG"
+            --release-tag "$RELEASE_TAG" \
+            --review-verification "$RUNNER_TEMP/rose-garden-release/publication-review-verification.json"
+          python scripts/update_rose_garden_main_video_catalog.py \
+            --main-videos outputs/main-videos.json \
+            --release-tag "$RELEASE_TAG" \
+            --render-run-id "$RENDER_RUN_ID"
         shell: bash
 
       - name: Upload Pages artifact
