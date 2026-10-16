@@ -100,10 +100,11 @@
 落实及边界（记录者归纳）：
 
 - 新增 `config/event-discovery-sources.json`，逐字收录用户列出的 12 个来源 URL；来源可通过事件工作簿的 `Source Directory` sheet 手工增补，定时工作流会导入该 sheet、记下来源状态并重新生成 Excel/Pages。
-- 将用户后来举例的 `https://www.forth.news/lists/trumpts` 作为第 13 个用户提议来源登记；页面可用性、覆盖、许可和可信度未独立核实，未接入自动抓取。
-- 当前只有 White House YouTube 频道接入每日 metadata-only 自动 collector。Roll Call、Truth Social、GDELT Explorer、Polymarket、Kalshi、Forth、C-SPAN、X 与 stats 来源仅登记为待人工核验；没有声称已接入抓取、访问成功或许可审查。
+- 将用户后来举例的 `https://www.forth.news/lists/trumpts` 作为第 13 个用户提议来源登记。此前只登记未检查；当前访问尝试、错误和覆盖边界以该 source-attempt workflow 的逐次 Actions artifact 为准，不代表许可或来源可信度已核验。
+- 事件发现源目录中的每日自动采集仍限于 White House YouTube 上传元数据和 GDELT article metadata API；其它源不作为事件事实采集器。下方 Rose Garden source-attempt follow-up 是独立的逐 URL 可达性/HTML 元数据尝试，不等同于持续数据连接。
+- Follow-up source-research workflow: `.github/workflows/research-rose-garden-source-attempts.yml` attempts all 13 exact user-listed inventory URLs separately and runs additional media/news/social/congress/think-tank/archive search queries. Per-run UTC timestamps, access/result/error state, extracted URLs with provenance, and explicit coverage limits are retained in its Actions artifact. This is page/search metadata only: URLs are unverified leads, inaccessible pages are not evidence of source absence, and no media or event facts are verified.
 - `Events` 和 `New White House leads` 工作表预留事件日期/时间/地点、总统实际出席分钟数、演讲词数及语言/统计方法、来源支持的话题、发现/核验时间、来源数量、置信度和用户注解等列。没有来源支撑的字段为空或标未核实。不能从上传日期、页面标题、预测市场活动或视频时长推定实际出席/发言数据。
-- 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。此次只完成本地代码和数据结构的实现/验证，没有运行在线抓取、周期 workflow 或 Pages 部署。
+- 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。逐源可达性/HTML 元数据检查与按源类别的网页搜索由独立工作流执行；其 Actions artifact 才是每次运行尝试及覆盖范围的依据，不能据此推断已完成事件内容核验或 Pages 部署。
 
 ## V0.03 单例发布范围与验收状态（2026-10-14）
 
