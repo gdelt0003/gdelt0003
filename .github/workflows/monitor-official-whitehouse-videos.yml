@@ -63,7 +63,7 @@ jobs:
             exit "$lookup_status"
           fi
 
-      - name: Poll and research each newly discovered official page
+      - name: Poll and research each new video
         id: poll
         continue-on-error: true
         run: |

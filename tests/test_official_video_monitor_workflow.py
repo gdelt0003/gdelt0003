@@ -37,7 +37,7 @@ class OfficialVideoMonitorWorkflowTests(unittest.TestCase):
         for forbidden in ("ffmpeg", "download_full_source", "deploy-pages", "create Release"):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, workflow)
-        self.assertIn("research each newly discovered official page", workflow)
+        self.assertIn("research each new video", workflow)
 
 
 if __name__ == "__main__":
