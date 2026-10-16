@@ -68,41 +68,16 @@ on:
         type: boolean
         required: true
         default: false
-      exact_event_time_timezone_confirmed:
-        description: Confirm the event date/time/timezone are established by the linked HTTPS evidence
-        type: boolean
-        required: true
-        default: false
-      independent_rights_review_passed:
-        description: Operator attestation only; does not change pending review status or block this authorized draft
-        type: boolean
-        required: true
-        default: false
-      event_match_review_passed:
-        description: Operator attestation only; event match remains pending in the public draft
-        type: boolean
-        required: true
-        default: false
       event_match_evidence_url:
         description: HTTPS evidence for exact source/event content match
         type: string
         required: true
         default: ""
-      event_time_timezone_review_passed:
-        description: Operator attestation only; event time/timezone remain pending in the public draft
-        type: boolean
-        required: true
-        default: false
       event_time_timezone_evidence_url:
         description: HTTPS evidence for exact event time and timezone
         type: string
         required: true
         default: ""
-      source_lineage_review_passed:
-        description: Operator attestation only; YouTube-to-release lineage remains pending in the public draft
-        type: boolean
-        required: true
-        default: false
       source_lineage_evidence_url:
         description: HTTPS evidence for source URL to uploaded release asset lineage
         type: string
@@ -204,7 +179,6 @@ jobs:
           EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
           EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
-          EXACT_EVENT_TIME_TIMEZONE_CONFIRMED: ${{ inputs.exact_event_time_timezone_confirmed }}
           REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
           PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
           PUBLICATION_AUTHORIZED: ${{ inputs.requester_authorized_publication }}
@@ -213,12 +187,8 @@ jobs:
           SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
           ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
           MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
-          INDEPENDENT_RIGHTS_REVIEW_PASSED: ${{ inputs.independent_rights_review_passed }}
-          EVENT_MATCH_REVIEW_PASSED: ${{ inputs.event_match_review_passed }}
           EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
-          EVENT_TIMEZONE_REVIEW_PASSED: ${{ inputs.event_time_timezone_review_passed }}
           EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
-          SOURCE_LINEAGE_REVIEW_PASSED: ${{ inputs.source_lineage_review_passed }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
           SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
           SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
@@ -247,7 +217,6 @@ jobs:
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
             --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
             --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
-            --exact-event-time-timezone-confirmed "$EXACT_EVENT_TIME_TIMEZONE_CONFIRMED" \
             --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
           layout_args=(
             --validate-layout-inputs
@@ -276,18 +245,6 @@ jobs:
             --dispatch-actor "$GITHUB_ACTOR"
             --frame-review-mode "$FRAME_REVIEW_MODE"
           )
-          if [[ "$INDEPENDENT_RIGHTS_REVIEW_PASSED" == "true" ]]; then
-            review_args+=(--independent-rights-review-passed)
-          fi
-          if [[ "$EVENT_MATCH_REVIEW_PASSED" == "true" ]]; then
-            review_args+=(--event-match-review-passed)
-          fi
-          if [[ "$EVENT_TIMEZONE_REVIEW_PASSED" == "true" ]]; then
-            review_args+=(--event-time-timezone-review-passed)
-          fi
-          if [[ "$SOURCE_LINEAGE_REVIEW_PASSED" == "true" ]]; then
-            review_args+=(--source-lineage-review-passed)
-          fi
           python scripts/verify_rose_garden_review.py "${review_args[@]}"
           python - "$RUNNER_TEMP/rose-garden-diagnostics/run-context.txt" <<'PY'
           import json
@@ -420,7 +377,6 @@ jobs:
           EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
           EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
-          EXACT_EVENT_TIME_TIMEZONE_CONFIRMED: ${{ inputs.exact_event_time_timezone_confirmed }}
           REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
         run: |
           python scripts/verify_rose_garden_review.py \
@@ -432,7 +388,6 @@ jobs:
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
             --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
             --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
-            --exact-event-time-timezone-confirmed "$EXACT_EVENT_TIME_TIMEZONE_CONFIRMED" \
             --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
         shell: bash
 

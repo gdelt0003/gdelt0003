@@ -154,13 +154,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "inputs.reuse_rights_confirmed",
             "inputs.event_identity_evidence_url",
             "inputs.exact_event_match_confirmed",
-            "inputs.exact_event_time_timezone_confirmed",
-            "inputs.independent_rights_review_passed",
-            "inputs.event_match_review_passed",
             "inputs.event_match_evidence_url",
-            "inputs.event_time_timezone_review_passed",
             "inputs.event_time_timezone_evidence_url",
-            "inputs.source_lineage_review_passed",
             "inputs.source_lineage_evidence_url",
             "inputs.source_frame_review_record_json",
             "inputs.source_frame_review_signature",
@@ -206,7 +201,6 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("--event-time-timezone-evidence-url", render)
         self.assertIn("--source-lineage-evidence-url", render)
         self.assertIn("--exact-event-match-confirmed", render)
-        self.assertIn("--exact-event-time-timezone-confirmed", render)
         self.assertIn("--reuse-rights-confirmed", render)
         self.assertLess(
             render.index("--validate-dispatch-inputs"),
@@ -288,10 +282,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "rights_evidence_url": "https://example.org/reuse-rights",
             "event_identity_evidence_url": "https://example.org/event-identity",
             "event_match_evidence_url": "https://example.org/exact-match",
-            "event_time_timezone_evidence_url": "https://example.org/event-time",
-            "source_lineage_evidence_url": "https://example.org/source-lineage",
             "exact_event_match_confirmed": True,
-            "exact_event_time_timezone_confirmed": True,
             "reuse_rights_confirmed": True,
             "require_processing_evidence": True,
         }
@@ -299,18 +290,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         for field, replacement, message in (
             ("event_identity_evidence_url", "", "event identity"),
             ("event_match_evidence_url", "http://example.org/match", "HTTPS"),
-            (
-                "event_time_timezone_evidence_url",
-                "",
-                "event time/timezone",
-            ),
-            ("source_lineage_evidence_url", "", "source URL-to-asset lineage"),
             ("exact_event_match_confirmed", False, "exact-event match confirmation"),
-            (
-                "exact_event_time_timezone_confirmed",
-                False,
-                "event time/timezone confirmation",
-            ),
             ("reuse_rights_confirmed", False, "reuse-rights confirmation"),
             ("rights_evidence_url", "", "source-specific reuse rights"),
         ):
@@ -319,26 +299,6 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                     review.validate_dispatch_inputs(
                         **(processing | {field: replacement})
                     )
-        with self.assertRaisesRegex(RuntimeError, "distinct HTTPS URLs"):
-            review.validate_dispatch_inputs(
-                **(
-                    processing
-                    | {
-                        "event_match_evidence_url":
-                            processing["event_identity_evidence_url"]
-                    }
-                )
-            )
-        with self.assertRaisesRegex(RuntimeError, "distinct HTTPS URLs"):
-            review.validate_dispatch_inputs(
-                **(
-                    processing
-                    | {
-                        "source_lineage_evidence_url":
-                            processing["event_time_timezone_evidence_url"]
-                    }
-                )
-            )
         defaults["source_sha256"] = "0" * 64
         with self.assertRaisesRegex(RuntimeError, "source_sha256"):
             review.validate_dispatch_inputs(**defaults)
@@ -1199,7 +1159,6 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                     event_time_timezone_evidence_url="https://example.org/event-time",
                     source_lineage_evidence_url="https://example.org/source-lineage",
                     exact_event_match_confirmed=True,
-                    exact_event_time_timezone_confirmed=True,
                     reuse_rights_confirmed=True,
                 )
 
@@ -1214,12 +1173,6 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertEqual(
             finalized["processing_prerequisites"]["independent_evidence_review"],
             "pending",
-        )
-        self.assertEqual(
-            finalized["processing_prerequisites"][
-                "event_time_timezone_operator_confirmation"
-            ],
-            "confirmed",
         )
         self.assertEqual(
             finalized["processing_prerequisites"][

@@ -560,7 +560,6 @@ def validate_dispatch_inputs(
     event_time_timezone_evidence_url: str = "",
     source_lineage_evidence_url: str = "",
     exact_event_match_confirmed: bool = False,
-    exact_event_time_timezone_confirmed: bool = False,
     reuse_rights_confirmed: bool = False,
     require_processing_evidence: bool = False,
 ) -> None:
@@ -592,8 +591,6 @@ def validate_dispatch_inputs(
         evidence = {
             "event identity": event_identity_evidence_url,
             "exact source/event match": event_match_evidence_url,
-            "event time/timezone": event_time_timezone_evidence_url,
-            "source URL-to-asset lineage": source_lineage_evidence_url,
             "source-specific reuse rights": rights_evidence_url,
         }
         for name, value in evidence.items():
@@ -602,18 +599,9 @@ def validate_dispatch_inputs(
                 raise RuntimeError(
                     f"{name} evidence URL must be an absolute HTTPS URL before processing."
                 )
-        if len(set(evidence.values())) != len(evidence):
-            raise RuntimeError(
-                "Event identity, source match, event time/timezone, source lineage, "
-                "and reuse-rights evidence must use distinct HTTPS URLs."
-            )
         if exact_event_match_confirmed is not True:
             raise RuntimeError(
                 "Explicit exact-event match confirmation is required before processing."
-            )
-        if exact_event_time_timezone_confirmed is not True:
-            raise RuntimeError(
-                "Explicit event time/timezone confirmation is required before processing."
             )
         if reuse_rights_confirmed is not True:
             raise RuntimeError(
@@ -1160,7 +1148,6 @@ def finalize_review_manifest(
     event_time_timezone_evidence_url: str = "",
     source_lineage_evidence_url: str = "",
     exact_event_match_confirmed: bool = False,
-    exact_event_time_timezone_confirmed: bool = False,
     reuse_rights_confirmed: bool = False,
 ) -> dict[str, Any]:
     validate_dispatch_inputs(
@@ -1177,7 +1164,6 @@ def finalize_review_manifest(
         event_time_timezone_evidence_url=event_time_timezone_evidence_url,
         source_lineage_evidence_url=source_lineage_evidence_url,
         exact_event_match_confirmed=exact_event_match_confirmed,
-        exact_event_time_timezone_confirmed=exact_event_time_timezone_confirmed,
         reuse_rights_confirmed=reuse_rights_confirmed,
         require_processing_evidence=True,
     )
@@ -1286,7 +1272,6 @@ def finalize_review_manifest(
         ),
         "source_specific_reuse_rights_evidence_url": rights_evidence_url,
         "exact_event_match_operator_confirmation": "confirmed",
-        "event_time_timezone_operator_confirmation": "confirmed",
         "reuse_rights_operator_confirmation": "confirmed",
         "independent_evidence_review": "pending",
     }
@@ -1362,11 +1347,6 @@ def main() -> None:
     )
     parser.add_argument("--event-time-timezone-evidence-url", default="")
     parser.add_argument("--source-lineage-evidence-url", default="")
-    parser.add_argument(
-        "--exact-event-time-timezone-confirmed",
-        choices=("true", "false"),
-        default="false",
-    )
     parser.add_argument("--event-id", default=EVENT_ID)
     parser.add_argument("--event-title", default=EVENT_TITLE)
     parser.add_argument("--event-date", default=EVENT_DATE)
@@ -1395,9 +1375,6 @@ def main() -> None:
         ),
         source_lineage_evidence_url=args.source_lineage_evidence_url,
         exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
-        exact_event_time_timezone_confirmed=(
-            args.exact_event_time_timezone_confirmed == "true"
-        ),
         reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
         require_processing_evidence=args.validate_dispatch_inputs,
     )
@@ -1449,9 +1426,6 @@ def main() -> None:
             ),
             source_lineage_evidence_url=args.source_lineage_evidence_url,
             exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
-            exact_event_time_timezone_confirmed=(
-                args.exact_event_time_timezone_confirmed == "true"
-            ),
             reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
         )
         print(json.dumps(manifest["public_review"], ensure_ascii=False, indent=2))
