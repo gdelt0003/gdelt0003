@@ -717,8 +717,13 @@ def _candidate_review_rows(catalog: dict[str, Any]) -> list[list[Any]]:
                         "comparison_with_other_user_leads",
                         "pending_exact_event_angle_and_lineage_confirmation",
                     ),
-                    "Evidence and limitations": lead.get(
-                        "evidence", "Evidence not yet reviewed."
+                    "Evidence and limitations": " ".join(
+                        value
+                        for value in (
+                            lead.get("evidence", "Evidence not yet reviewed."),
+                            lead.get("latest_production_status", ""),
+                        )
+                        if value
                     ),
                 },
                 lead.get("time_marker_review"),

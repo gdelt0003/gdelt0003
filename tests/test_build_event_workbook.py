@@ -41,6 +41,13 @@ class EventWorkbookTests(unittest.TestCase):
         events = list(workbook["Events"].values)
         headers = events[0]
         columbus = next(row for row in events[1:] if row[2] == "President Trump Hosts a Columbus Day Celebration")
+        self.assertFalse(
+            any(
+                row[2]
+                == "President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026"
+                for row in events[1:]
+            )
+        )
         self.assertIsNone(columbus[headers.index("Event date")])
         self.assertIsNone(columbus[headers.index("Event local time")])
         self.assertEqual(columbus[headers.index("Identity status")], "incomplete")
@@ -181,6 +188,66 @@ class EventWorkbookTests(unittest.TestCase):
             ],
             "pending",
         )
+        rose_lead = next(
+            row
+            for row in candidate_rows[1:]
+            if row[candidate_headers.index("Source URL")]
+            == "https://www.youtube.com/watch?v=IySF_8OArvw"
+        )
+        self.assertIsNone(rose_lead[candidate_headers.index("Event ID")])
+        self.assertEqual(
+            rose_lead[
+                candidate_headers.index(
+                    "Category display slot (evidence order; not quality rank)"
+                )
+            ],
+            "pending",
+        )
+        self.assertEqual(
+            rose_lead[candidate_headers.index("Same-event evidence")],
+            "official_video_page_title_and_date_claim; exact event/content/time match unverified",
+        )
+        self.assertEqual(
+            rose_lead[candidate_headers.index("Source provenance / lineage (reported)")],
+            "pending_source_provenance_review",
+        )
+        self.assertEqual(
+            rose_lead[candidate_headers.index("Reuse rights review")],
+            "pending_rights_review",
+        )
+        rose_evidence = rose_lead[
+            candidate_headers.index("Evidence and limitations")
+        ]
+        self.assertIn(
+            "User processing/publication authorization = confirmed",
+            rose_evidence,
+        )
+        self.assertIn(
+            "do not establish source-specific reuse rights",
+            rose_evidence,
+        )
+        self.assertIn(
+            "source lineage is unverified",
+            rose_evidence,
+        )
+        self.assertIn("identify The White House and the title/date claim", rose_evidence)
+        self.assertIn("do not establish direct-frame/audio content match, exact event time, or timezone", rose_evidence)
+        self.assertIn("production_bbox_input=false", rose_evidence)
+        self.assertIn("Current status (2026-10-16)", rose_evidence)
+        self.assertIn("PR #50 merged as head 690c5b0 and merge commit 4613166", rose_evidence)
+        self.assertIn("all six frontend, Python, and fixture-probe CI checks passed", rose_evidence)
+        self.assertIn("Current main is 775c90e8", rose_evidence)
+        self.assertIn("Production run 38868029978 used main SHA c6f3931", rose_evidence)
+        self.assertIn("English cue 15 at 180.030s", rose_evidence)
+        self.assertIn("Audit, finalization, artifact upload, and Pages deployment were skipped", rose_evidence)
+        self.assertIn("Private artifact-only run 38895767927 on current main 775c90e8", rose_evidence)
+        self.assertIn("render was in progress and artifact upload pending at last read", rose_evidence)
+        self.assertIn("does not require the event-time/timezone or source-lineage URLs", rose_evidence)
+        self.assertIn("logged both as empty and still passed validation", rose_evidence)
+        self.assertIn("general https://www.whitehouse.gov/copyright/ page, not verified source-specific reuse evidence", rose_evidence)
+        self.assertIn("operator confirmation do not establish source-specific reuse rights", rose_evidence)
+        self.assertIn("source timecode/provenance=not_verified", rose_evidence)
+        self.assertIn("No new successful artifact or production release is verified; production remains incomplete", rose_evidence)
         second_user_lead = next(
             row
             for row in candidate_rows[1:]
