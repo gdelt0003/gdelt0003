@@ -203,6 +203,7 @@ jobs:
             --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
             --asset-prefix RoseGardenLunch-IySF_8OArvw \
+            --subtitle-layout rose-garden-fixed-caption-band \
             2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/render.log"
         shell: bash
 
@@ -229,6 +230,7 @@ jobs:
         id: validate_bundle
         run: |
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
+          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass"
           test -s "$RUNNER_TEMP/rose-garden-output/manifest.json"
           test -s "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
         shell: bash
@@ -244,6 +246,7 @@ jobs:
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt
             ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass
             ${{ runner.temp }}/rose-garden-output/manifest.json
             ${{ runner.temp }}/rose-garden-output/operation-audit.json
           if-no-files-found: error
@@ -287,7 +290,7 @@ jobs:
           fi
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
           tag="rose-garden-lunch-review"
-          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. Independent rights, source-frame, source/event match, ASR, and translation review remain pending; this is not final approval."
+          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. The derived video uses a fixed opaque bilingual caption band that masks source lower-third graphics; the original source remains unchanged. Independent rights, source-frame, source/event match, ASR, translation, and visual review remain pending; this is not final approval."
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release edit "$tag" \
               --repo "$GITHUB_REPOSITORY" \
@@ -308,6 +311,7 @@ jobs:
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt" \
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt" \
             "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt" \
+            "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass" \
             "$RUNNER_TEMP/rose-garden-output/manifest.json" \
             "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
             --repo "$GITHUB_REPOSITORY" \
@@ -344,6 +348,18 @@ jobs:
               )
           print(f"Public release MP4: {asset['name']} ({asset['size']} bytes)")
           print(f"Public release MP4 SHA-256: {rendered['sha256']}")
+          ass_name = manifest["subtitle_ass_file"]
+          ass_asset = next((item for item in assets if item["name"] == ass_name), None)
+          expected_ass_digest = f"sha256:{manifest['subtitle_ass_sha256']}"
+          if (
+              ass_asset is None
+              or ass_asset["size"] <= 0
+              or ass_asset["digest"] != expected_ass_digest
+          ):
+              raise SystemExit(
+                  "Public release is missing the manifest-verified caption ASS."
+              )
+          print(f"Public release ASS: {ass_name} ({ass_asset['size']} bytes)")
           PY
         shell: bash
 

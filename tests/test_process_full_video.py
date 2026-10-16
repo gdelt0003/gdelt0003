@@ -7,6 +7,14 @@ import pysubs2
 from scripts.process_full_video import (
     Cue,
     KATIE_SUBTITLE_LAYOUT,
+    ROSE_GARDEN_SUBTITLE_LAYOUT,
+    _estimated_text_width,
+    _rose_caption_geometry,
+    _rose_garden_wrap_limits,
+    _wrap_chinese,
+    _wrap_chinese_to_width,
+    _wrap_english,
+    _wrap_english_to_width,
     _katie_wrap_limits,
     _wrap_katie_chinese,
     _wrap_katie_english,
@@ -95,6 +103,123 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertEqual(rendered.styles["Chinese"].fontsize, 56)
         self.assertEqual(len(rendered.events), 1)
         self.assertIn(r"{\rEnglish\fs84\1c&H00FFFFFF&}", rendered.events[0].text)
+
+    def test_default_wrapping_fails_closed_instead_of_merging_or_truncating(self):
+        with self.assertRaisesRegex(ValueError, "more than 2 lines"):
+            _wrap_english("one two three four five six", 8)
+        with self.assertRaisesRegex(ValueError, "token exceeds"):
+            _wrap_english("unbrokenverylongtoken", 8)
+        with self.assertRaisesRegex(ValueError, "more than 2 lines"):
+            _wrap_chinese("甲乙丙丁戊己庚辛壬癸子丑寅卯", 4)
+
+    def test_rose_garden_caption_band_has_bounded_geometry_and_complete_text(self):
+        cue = Cue(
+            1,
+            5,
+            "The President welcomed every guest in the Rose Garden.",
+            "总统欢迎玫瑰园的每一位来宾，并在午餐会上致辞。",
+        )
+        (
+            chinese_font,
+            english_font,
+            _max_chinese,
+            _max_english,
+            band_height,
+            _top_padding,
+            _bottom_padding,
+        ) = _rose_garden_wrap_limits(1920, 1080)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            )
+            content = path.read_text(encoding="utf-8")
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertIn("WrapStyle: 2", content)
+        self.assertEqual(len(rendered.events), 2)
+        self.assertIn(r"\p1", rendered.events[0].text)
+        self.assertIn(r"\1a&H00&", rendered.events[0].text)
+        self.assertIn(f"l 1920 {band_height}", rendered.events[0].text)
+        self.assertIn(r"\pos(960,", rendered.events[1].text)
+        self.assertTrue(
+            all(word in rendered.events[1].text for word in cue.english.split())
+        )
+        self.assertTrue(
+            all(character in rendered.events[1].text for character in cue.chinese)
+        )
+        self.assertGreaterEqual(english_font / chinese_font, 1.20)
+        self.assertEqual(rendered.styles["English"].fontsize, english_font)
+        self.assertEqual(rendered.styles["Chinese"].fontsize, chinese_font)
+        english_lines = _wrap_english_to_width(
+            cue.english, round(1920 * 0.78), english_font
+        )
+        chinese_lines = _wrap_chinese_to_width(
+            cue.chinese, round(1920 * 0.78), chinese_font
+        )
+        self.assertLessEqual(len(english_lines), 2)
+        self.assertLessEqual(len(chinese_lines), 2)
+        geometry = _rose_caption_geometry(
+            english_lines,
+            chinese_lines,
+            width=1920,
+            height=1080,
+            english_font=english_font,
+            chinese_font=chinese_font,
+            band_height=band_height,
+            top_padding=_top_padding,
+            bottom_padding=_bottom_padding,
+        )
+        self.assertLessEqual(
+            max(_estimated_text_width(line, english_font) for line in english_lines),
+            round(1920 * 0.78),
+        )
+        self.assertLessEqual(
+            max(_estimated_text_width(line, chinese_font) for line in chinese_lines),
+            round(1920 * 0.78),
+        )
+        self.assertLessEqual(
+            geometry["estimated_text_height"],
+            geometry["available_text_height"],
+        )
+        report = verify_cues(
+            [cue],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["layout_configuration"], "passed")
+        self.assertEqual(readability["caption_region_validation"], "passed")
+        self.assertEqual(readability["caption_region_height_percent"], 30)
+        self.assertEqual(readability["horizontal_safe_width_percent"], 78)
+        self.assertEqual(readability["max_lines_per_language"], 2)
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
+        self.assertEqual(readability["caption_band_occlusion"]["visual_review"], "pending")
+
+    def test_rose_garden_caption_band_rejects_content_that_cannot_fit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            with self.assertRaisesRegex(ValueError, "cannot fit completely"):
+                write_ass(
+                    path,
+                    [
+                        Cue(
+                            1,
+                            5,
+                            " ".join(["unbreakabletoken"] * 100),
+                            "中文内容",
+                        )
+                    ],
+                    1920,
+                    1080,
+                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                )
 
     def test_default_layout_highlights_words_without_changing_phrase_timing(self):
         cue = Cue(1, 3, "Hello, world.", "你好，世界。")

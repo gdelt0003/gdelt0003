@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import platform
 import re
 import shutil
 import subprocess
+import unicodedata
 from dataclasses import dataclass
 from importlib.metadata import version as package_version
 from pathlib import Path
@@ -51,6 +53,11 @@ ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
 KATIE_CHINESE_TO_ENGLISH_FONT_RATIO = 1.25
 DEFAULT_SUBTITLE_LAYOUT = "default"
 KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
+ROSE_GARDEN_SUBTITLE_LAYOUT = "rose-garden-fixed-caption-band"
+ROSE_CAPTION_BAND_HEIGHT_PERCENT = 30
+ROSE_CAPTION_BAND_TOP_PADDING_PERCENT = 2
+ROSE_CAPTION_BAND_BOTTOM_PADDING_PERCENT = 4
+ROSE_CAPTION_SAFE_WIDTH_PERCENT = 78
 
 
 @dataclass(frozen=True)
@@ -416,6 +423,10 @@ def _wrap_english(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
     lines = []
     current = ""
     for word in text.split():
+        if len(word) > max_chars:
+            raise ValueError(
+                "English subtitle token exceeds the caption safe width."
+            )
         candidate = f"{current} {word}".strip()
         if current and len(candidate) > max_chars:
             lines.append(current)
@@ -425,12 +436,11 @@ def _wrap_english(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
     if current:
         lines.append(current)
     if len(lines) > max_lines:
-        midpoint = (len(lines) + max_lines - 1) // max_lines
-        lines = [
-            " ".join(lines[index:index + midpoint])
-            for index in range(0, len(lines), midpoint)
-        ]
-    return lines[:max_lines]
+        raise ValueError(
+            f"English subtitle needs more than {max_lines} lines; "
+            "reflow it into aligned phrase cues instead of overflowing."
+        )
+    return lines
 
 
 def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
@@ -455,12 +465,394 @@ def _wrap_chinese(text: str, max_chars: int, max_lines: int = 2) -> list[str]:
         lines.append("".join(characters[start:end]))
         start = end
     if len(lines) > max_lines:
-        midpoint = (len(lines) + max_lines - 1) // max_lines
-        lines = [
-            "".join(lines[index:index + midpoint])
-            for index in range(0, len(lines), midpoint)
+        raise ValueError(
+            f"Chinese subtitle needs more than {max_lines} lines; "
+            "reflow it into aligned phrase cues instead of overflowing."
+        )
+    return lines
+
+
+def _rose_garden_wrap_limits(
+    width: int,
+    height: int,
+) -> tuple[int, int, int, int, int, int, int]:
+    chinese_font = max(24, round(height * 0.032))
+    english_font = max(29, round(chinese_font * 1.25))
+    safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+    max_chinese_chars = max(1, int(safe_width / chinese_font))
+    max_english_chars = max(1, int(safe_width / (english_font * 0.75)))
+    band_height = round(height * ROSE_CAPTION_BAND_HEIGHT_PERCENT / 100)
+    top_padding = round(height * ROSE_CAPTION_BAND_TOP_PADDING_PERCENT / 100)
+    bottom_padding = round(height * ROSE_CAPTION_BAND_BOTTOM_PADDING_PERCENT / 100)
+    return (
+        chinese_font,
+        english_font,
+        max_chinese_chars,
+        max_english_chars,
+        band_height,
+        top_padding,
+        bottom_padding,
+    )
+
+
+def _estimated_text_width(text: str, font_size: int) -> float:
+    width_units = 0.0
+    for character in text:
+        if character.isspace():
+            width_units += 0.34
+        elif unicodedata.east_asian_width(character) in {"W", "F"}:
+            width_units += 1.0
+        elif character.isalnum():
+            width_units += 0.68
+        elif unicodedata.category(character).startswith("P"):
+            width_units += 0.55
+        else:
+            width_units += 0.9
+    return width_units * font_size
+
+
+def _wrap_english_to_width(
+    text: str,
+    max_width: int,
+    font_size: int,
+    max_lines: int = 2,
+) -> list[str]:
+    lines: list[str] = []
+    current = ""
+    for word in text.split():
+        if _estimated_text_width(word, font_size) > max_width:
+            raise ValueError(
+                "English subtitle token exceeds the caption safe width."
+            )
+        candidate = f"{current} {word}".strip()
+        if current and _estimated_text_width(candidate, font_size) > max_width:
+            lines.append(current)
+            current = word
+        else:
+            current = candidate
+    if current:
+        lines.append(current)
+    if len(lines) > max_lines:
+        raise ValueError(
+            f"English subtitle needs more than {max_lines} lines; "
+            "reflow it into aligned phrase cues instead of overflowing."
+        )
+    return lines
+
+
+def _wrap_chinese_to_width(
+    text: str,
+    max_width: int,
+    font_size: int,
+    max_lines: int = 2,
+) -> list[str]:
+    lines: list[str] = []
+    current = ""
+    for character in text.strip():
+        candidate = current + character
+        if current and _estimated_text_width(candidate, font_size) > max_width:
+            lines.append(current)
+            current = character
+        else:
+            current = candidate
+    if current:
+        lines.append(current)
+    if len(lines) > max_lines:
+        raise ValueError(
+            f"Chinese subtitle needs more than {max_lines} lines; "
+            "reflow it into aligned phrase cues instead of overflowing."
+        )
+    return lines
+
+
+def _rose_caption_geometry(
+    english_lines: list[str],
+    chinese_lines: list[str],
+    *,
+    width: int,
+    height: int,
+    english_font: int,
+    chinese_font: int,
+    band_height: int,
+    top_padding: int,
+    bottom_padding: int,
+) -> dict[str, int]:
+    if len(english_lines) > 2 or len(chinese_lines) > 2:
+        raise ValueError("Caption language exceeds the two-line layout limit.")
+    safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+    for language, lines, font_size in (
+        ("English", english_lines, english_font),
+        ("Chinese", chinese_lines, chinese_font),
+    ):
+        for line in lines:
+            if _estimated_text_width(line, font_size) > safe_width:
+                raise ValueError(
+                    f"{language} subtitle line exceeds the caption safe width."
+                )
+    line_count = len(english_lines) + len(chinese_lines)
+    text_height = sum(
+        round(font_size * 1.2) + 12
+        for font_size, count in (
+            (english_font, len(english_lines)),
+            (chinese_font, len(chinese_lines)),
+        )
+        for _ in range(count)
+    )
+    band_top = height - band_height
+    available_height = band_height - top_padding - bottom_padding
+    if band_top < 0 or available_height <= 0 or text_height > available_height:
+        raise ValueError(
+            "Bilingual subtitle text and background exceed the fixed caption "
+            "band height."
+        )
+    return {
+        "band_top": band_top,
+        "band_height": band_height,
+        "available_text_height": available_height,
+        "estimated_text_height": text_height,
+        "text_top": height - bottom_padding - text_height,
+        "text_bottom": height - bottom_padding,
+        "safe_width": safe_width,
+        "line_count": line_count,
+    }
+
+
+def _write_rose_garden_caption_band_ass(
+    path: Path,
+    cues: list[Cue],
+    width: int,
+    height: int,
+    word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
+) -> bool:
+    (
+        chinese_font,
+        english_font,
+        _max_chinese_chars,
+        _max_english_chars,
+        band_height,
+        top_padding,
+        bottom_padding,
+    ) = _rose_garden_wrap_limits(width, height)
+    safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+    band_top = height - band_height
+    english_lines_by_cue = []
+    chinese_lines_by_cue = []
+    for index, cue in enumerate(cues, start=1):
+        try:
+            english_lines = _wrap_english_to_width(
+                cue.english, safe_width, english_font
+            )
+            chinese_lines = _wrap_chinese_to_width(
+                cue.chinese, safe_width, chinese_font
+            )
+            _rose_caption_geometry(
+                english_lines,
+                chinese_lines,
+                width=width,
+                height=height,
+                english_font=english_font,
+                chinese_font=chinese_font,
+                band_height=band_height,
+                top_padding=top_padding,
+                bottom_padding=bottom_padding,
+            )
+        except ValueError as error:
+            raise ValueError(
+                f"Rose Garden caption cue {index} at {cue.start:.3f}s cannot "
+                "fit completely inside the fixed safe caption band."
+            ) from error
+        if not english_lines or not chinese_lines:
+            raise ValueError(f"Rose Garden caption cue {index} is missing a language.")
+        english_lines_by_cue.append(english_lines)
+        chinese_lines_by_cue.append(chinese_lines)
+
+    subtitles = pysubs2.SSAFile()
+    subtitles.info.update(
+        {
+            "ScriptType": "v4.00+",
+            "PlayResX": str(width),
+            "PlayResY": str(height),
+            "WrapStyle": "2",
+            "ScaledBorderAndShadow": "yes",
+        }
+    )
+    common_style = {
+        "fontname": "Noto Sans CJK SC",
+        "secondarycolor": pysubs2.Color(255, 0, 0),
+        "outlinecolor": pysubs2.Color(16, 16, 16),
+        "backcolor": pysubs2.Color(0, 0, 0, 0),
+        "bold": True,
+        "borderstyle": 1,
+        "outline": 2,
+        "shadow": 0,
+        "marginl": round(width * (100 - ROSE_CAPTION_SAFE_WIDTH_PERCENT) / 2 / 100),
+        "marginr": round(width * (100 - ROSE_CAPTION_SAFE_WIDTH_PERCENT) / 2 / 100),
+        "marginv": bottom_padding,
+        "encoding": 1,
+    }
+    subtitles.styles["English"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=english_font,
+        primarycolor=pysubs2.Color(255, 255, 255),
+        alignment=pysubs2.Alignment.BOTTOM_CENTER,
+    )
+    subtitles.styles["Chinese"] = pysubs2.SSAStyle(
+        **common_style,
+        fontsize=chinese_font,
+        primarycolor=pysubs2.Color(255, 216, 77),
+        alignment=pysubs2.Alignment.BOTTOM_CENTER,
+    )
+
+    for index, cue in enumerate(cues):
+        start = round(cue.start * 1000)
+        end = round(cue.end * 1000)
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                layer=0,
+                start=start,
+                end=end,
+                style="English",
+                text=(
+                    f"{{\\an7\\pos(0,{band_top})\\p1\\1c&H181818&\\1a&H00&}}"
+                    f"m 0 0 l {width} 0 l {width} {band_height} "
+                    f"l 0 {band_height}{{\\p0}}"
+                ),
+            )
+        )
+        english_lines = english_lines_by_cue[index]
+        chinese_lines = chinese_lines_by_cue[index]
+        english_text = r"\N".join(ass_escape(line) for line in english_lines)
+        if word_timings is not None:
+            word_offset = 0
+            highlighted_lines = []
+            cue_word_timings = word_timings[index]
+            for line in english_lines:
+                word_count = len(line.split())
+                highlighted = ass_highlighted_english_line(
+                    line,
+                    cue_word_timings[word_offset:word_offset + word_count],
+                    cue.start,
+                    english_font,
+                    ass_escape,
+                )
+                if highlighted is None:
+                    raise RuntimeError("Word highlighting preflight was inconsistent.")
+                highlighted_lines.append(highlighted)
+                word_offset += word_count
+            if word_offset != len(cue_word_timings):
+                raise RuntimeError("Word highlighting preflight was inconsistent.")
+            english_text = r"\N".join(highlighted_lines)
+        caption_lines = [
+            f"{{\\rEnglish\\fs{english_font}\\1c&H00FFFFFF&}}{english_text}",
+            (
+                f"{{\\rChinese\\fs{chinese_font}\\1c&H004DD8FF&}}"
+                + r"\N".join(
+                    ass_escape(line) for line in chinese_lines
+                )
+            ),
         ]
-    return lines[:max_lines]
+        subtitles.events.append(
+            pysubs2.SSAEvent(
+                layer=1,
+                start=start,
+                end=end,
+                style="English",
+                text=(
+                    f"{{\\an2\\pos({round(width / 2)},"
+                    f"{height - bottom_padding})}}"
+                    + r"\N".join(caption_lines)
+                ),
+            )
+        )
+    subtitles.save(str(path), format_="ass", encoding="utf-8")
+    _verify_rose_garden_ass(path, cues, width, height)
+    return word_timings is not None
+
+
+def _verify_rose_garden_ass(
+    path: Path,
+    cues: list[Cue],
+    width: int,
+    height: int,
+) -> None:
+    subtitles = pysubs2.load(str(path), encoding="utf-8")
+    if (
+        subtitles.info.get("WrapStyle") != "2"
+        or subtitles.info.get("PlayResX") != str(width)
+        or subtitles.info.get("PlayResY") != str(height)
+        or len(subtitles.events) != len(cues) * 2
+    ):
+        raise RuntimeError("Caption ASS geometry validation failed.")
+    (
+        _chinese_font,
+        _english_font,
+        _max_chinese,
+        _max_english,
+        band_height,
+        _top_padding,
+        bottom_padding,
+    ) = _rose_garden_wrap_limits(width, height)
+    band_top = height - band_height
+    expected_position = (
+        f"\\pos({round(width / 2)},{height - bottom_padding})"
+    )
+    chinese_font, english_font, *_ = _rose_garden_wrap_limits(width, height)
+    if (
+        english_font / chinese_font < 1.20
+        or subtitles.styles["English"].fontsize != english_font
+        or subtitles.styles["Chinese"].fontsize != chinese_font
+    ):
+        raise RuntimeError("Caption ASS font geometry validation failed.")
+    for index, cue in enumerate(cues):
+        panel, caption = subtitles.events[index * 2:index * 2 + 2]
+        english_lines = _wrap_english_to_width(
+            cue.english,
+            round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
+            english_font,
+        )
+        chinese_lines = _wrap_chinese_to_width(
+            cue.chinese,
+            round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
+            chinese_font,
+        )
+        _rose_caption_geometry(
+            english_lines,
+            chinese_lines,
+            width=width,
+            height=height,
+            english_font=english_font,
+            chinese_font=chinese_font,
+            band_height=band_height,
+            top_padding=_rose_garden_wrap_limits(width, height)[-2],
+            bottom_padding=bottom_padding,
+        )
+        if (
+            panel.layer != 0
+            or panel.start != round(cue.start * 1000)
+            or panel.end != round(cue.end * 1000)
+            or f"\\pos(0,{band_top})" not in panel.text
+            or "\\p1" not in panel.text
+            or f"l {width} {band_height}" not in panel.text
+            or r"\1a&H00&" not in panel.text
+            or caption.layer != 1
+            or caption.start != panel.start
+            or caption.end != panel.end
+            or expected_position not in caption.text
+        ):
+            raise RuntimeError(
+                f"Caption ASS geometry validation failed for cue {index + 1}."
+            )
+        plain_text = re.sub(r"(?<!\\)\{[^}]*\}", "", caption.text)
+        plain_text = (
+            plain_text.replace(r"\N", "\n")
+            .replace(r"\{", "{")
+            .replace(r"\}", "}")
+            .replace(r"\\", "\\")
+        )
+        if plain_text != "\n".join([*english_lines, *chinese_lines]):
+            raise RuntimeError(
+                f"Caption ASS line count or text completeness failed for cue {index + 1}."
+            )
 
 
 def _katie_wrap_limits(width: int, height: int) -> tuple[int, int, int, int]:
@@ -724,6 +1116,26 @@ def write_ass(
         wrapped_lines = [
             _wrap_english(cue.english, max_english) for cue in cues
         ]
+    elif layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT:
+        _chinese_font, english_font, *_ = _rose_garden_wrap_limits(
+            width, height
+        )
+        safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+        wrapped_lines = []
+        for cue_index, cue in enumerate(cues, start=1):
+            try:
+                wrapped_lines.append(
+                    _wrap_english_to_width(
+                        cue.english,
+                        safe_width,
+                        english_font,
+                    )
+                )
+            except ValueError as error:
+                raise ValueError(
+                    f"Rose Garden caption cue {cue_index} at {cue.start:.3f}s "
+                    "cannot fit completely inside the fixed safe caption band."
+                ) from error
     else:
         raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
 
@@ -738,6 +1150,14 @@ def write_ass(
         word_timings = None
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
         return _write_katie_lower_third_ass(
+            path,
+            cues,
+            width,
+            height,
+            word_timings,
+        )
+    if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT:
+        return _write_rose_garden_caption_band_ass(
             path,
             cues,
             width,
@@ -904,6 +1324,45 @@ def verify_cues(
                     f"Caption verification failed: cue {index} does not fit "
                     "the bounded Katie lower-third layout."
                 ) from error
+    elif layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT:
+        (
+            chinese_font,
+            english_font,
+            _max_chinese,
+            _max_english,
+            band_height,
+            top_padding,
+            bottom_padding,
+        ) = _rose_garden_wrap_limits(width, height)
+        safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+        for index, cue in enumerate(cues, start=1):
+            try:
+                english_lines = _wrap_english_to_width(
+                    cue.english,
+                    safe_width,
+                    english_font,
+                )
+                chinese_lines = _wrap_chinese_to_width(
+                    cue.chinese,
+                    safe_width,
+                    chinese_font,
+                )
+                _rose_caption_geometry(
+                    english_lines,
+                    chinese_lines,
+                    width=width,
+                    height=height,
+                    english_font=english_font,
+                    chinese_font=chinese_font,
+                    band_height=band_height,
+                    top_padding=top_padding,
+                    bottom_padding=bottom_padding,
+                )
+            except ValueError as error:
+                raise RuntimeError(
+                    f"Caption verification failed: Rose Garden cue {index} "
+                    "does not fit completely inside its fixed caption band."
+                ) from error
     elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
@@ -943,7 +1402,8 @@ def verify_cues(
                 if english_rate_flags
                 or chinese_rate_flags
                 or (
-                    layout_profile == KATIE_SUBTITLE_LAYOUT
+                    layout_profile
+                    in {KATIE_SUBTITLE_LAYOUT, ROSE_GARDEN_SUBTITLE_LAYOUT}
                     and visual.get("status") != "passed"
                 )
                 else "style_contract_passed"
@@ -951,7 +1411,10 @@ def verify_cues(
             "layout_profile": layout_profile,
             "layout_configuration": (
                 "passed"
-                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                if layout_profile in {
+                    KATIE_SUBTITLE_LAYOUT,
+                    ROSE_GARDEN_SUBTITLE_LAYOUT,
+                }
                 else "default"
             ),
             "english_font_px": english_font,
@@ -963,15 +1426,43 @@ def verify_cues(
                 chinese_font / english_font, 3
             ),
             "horizontal_safe_width_percent": (
-                82 if layout_profile == KATIE_SUBTITLE_LAYOUT else 78
+                82
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else ROSE_CAPTION_SAFE_WIDTH_PERCENT
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else 78
             ),
             "lower_margin_percent": (
-                0 if layout_profile == KATIE_SUBTITLE_LAYOUT
+                0
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else round(
+                    _rose_garden_wrap_limits(width, height)[-1] / height * 100
+                )
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
                 else CAPTION_LOWER_MARGIN_PERCENT
             ),
             "max_lines_per_language": 2,
             "caption_region_height_percent": (
-                20.5 if layout_profile == KATIE_SUBTITLE_LAYOUT else None
+                20.5
+                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                else ROSE_CAPTION_BAND_HEIGHT_PERCENT
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else None
+            ),
+            "caption_region_validation": (
+                "passed"
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else "not_applicable"
+            ),
+            "caption_band_occlusion": (
+                {
+                    "status": "source_lower_third_occluded_in_derivative",
+                    "background": "opaque",
+                    "original_source_unchanged": True,
+                    "visual_review": "pending",
+                }
+                if layout_profile == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else None
             ),
             "line_order": (
                 ["zh-Hans", "en"]
@@ -982,7 +1473,10 @@ def verify_cues(
                 "passed"
                 if visual.get("status") == "passed"
                 else "not_verified"
-                if layout_profile == KATIE_SUBTITLE_LAYOUT
+                if layout_profile in {
+                    KATIE_SUBTITLE_LAYOUT,
+                    ROSE_GARDEN_SUBTITLE_LAYOUT,
+                }
                 else "required"
             ),
             "english_reading_speed_over_20_cps_cues": english_rate_flags,
@@ -1246,11 +1740,16 @@ def main() -> None:
     )
     parser.add_argument(
         "--subtitle-layout",
-        choices=(DEFAULT_SUBTITLE_LAYOUT, KATIE_SUBTITLE_LAYOUT),
+        choices=(
+            DEFAULT_SUBTITLE_LAYOUT,
+            KATIE_SUBTITLE_LAYOUT,
+            ROSE_GARDEN_SUBTITLE_LAYOUT,
+        ),
         default=DEFAULT_SUBTITLE_LAYOUT,
         help=(
             "Subtitle layout profile. The Katie profile uses a fixed lower-third "
-            "panel with larger Chinese above smaller English."
+            "panel with larger Chinese above smaller English; the Rose Garden "
+            "profile uses a fixed bilingual caption band."
         ),
     )
     parser.add_argument(
@@ -1590,7 +2089,22 @@ def main() -> None:
             english_srt.name,
             chinese_srt.name,
             bilingual_srt.name,
+            *(
+                [ass_path.name]
+                if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
+                else []
+            ),
         ],
+        "subtitle_ass_file": (
+            ass_path.name
+            if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
+            else None
+        ),
+        "subtitle_ass_sha256": (
+            hashlib.sha256(ass_path.read_bytes()).hexdigest()
+            if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
+            else None
+        ),
         "subtitle_style": (
             (
                 "fixed opaque lower-third backing (20.5% frame height, full "
@@ -1608,6 +2122,21 @@ def main() -> None:
                 )
             )
             if args.subtitle_layout == KATIE_SUBTITLE_LAYOUT
+            else (
+                "fixed opaque bottom caption band (30% frame height, full "
+                "frame width) intentionally masks source lower-third graphics "
+                "in the derivative only; original source remains unchanged; "
+                "English is at least 1.20x Chinese font size; maximum two "
+                "explicitly wrapped lines per language; 78% text safe width; "
+                "libass automatic wrapping disabled; ASS geometry validation "
+                "passed; visual review remains pending"
+                + (
+                    "; reviewed audio-derived spoken-word emphasis"
+                    if word_highlighting["status"] == "enabled"
+                    else ""
+                )
+            )
+            if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
             else (
                 "gold Chinese above white English; English nominal font size is "
                 "1.50x Chinese; authored with pysubs2 "
@@ -1636,7 +2165,8 @@ def main() -> None:
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    ass_path.unlink(missing_ok=True)
+    if args.subtitle_layout != ROSE_GARDEN_SUBTITLE_LAYOUT:
+        ass_path.unlink(missing_ok=True)
     print(json.dumps(manifest, ensure_ascii=False, indent=2), flush=True)
 
 
