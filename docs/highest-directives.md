@@ -159,6 +159,20 @@ PVX 页面只提供一份明确标为未核验的 SmartSub 3.9.0 公开机器生
 - 用户报告私有 run `38895767927` 可与代码工作并行；本记录没有其完成状态或输出证据，因此不声称该 run 成功、失败或发布。
 - 未在开发者工作站下载或处理视频；本节不记录任何本地渲染或视频内容审查结论。
 
+## 最高指示文本、实现门槛与外部限制的区分
+
+用户最新更正（逐字）：
+
+> Please add this user's latest correction to PR #66/doc when feasible, verbatim, separating (a) exact highest-directive text, (b) implementation-added workflow gates, and (c) independently sourced legal/platform restrictions. Record the user's claim that extra gates lacking verbatim highest-directive support are “违法” as their claim, not as a verified legal conclusion. Do not make rendering a default unless the actual highest directive authorizes it; user's correction emphasizes direct textual basis.
+
+以下分类用于区分来源，不把操作归纳或实现选择写成用户原话：
+
+- **（a）最高指示逐字文本：**相关原话包括“走读下代码//你现在的输出短片 分辨率低//有横幅遮挡//无字幕//没有爆款的剪辑手法//没有详细中英文asr 和翻译//问题很多,同一时段可以多种剪辑手法,还要不同高亮时段,找一个超过30分钟 额最近白宫视频 重新做”，以及“如果你不会免登录下载视频 ,可以用D:\\MyDownload> yt-dlp --concurrent-fragments 50 --js-runtimes node --merge-output-format mp4 "https://www.youtube.com/watch?v=noI4BbQ2wZQ" 上传github作为原材料,进行创作,多种形式 同一事件 多源查找,形成excel,翻译中英文.刻录字幕且字幕上英文正在发音的单词变色变大描边等多种形式//克隆角色声音配音//成生爆款剪辑多种片段可参考当今爆款//包含不限于10种以上创作形式 挂到pages 采用容易欣赏 的页面结构 可参考当今业界最先进布局//形成技能 定时更新新事件发布pages cicd”。这些是原文记录的项目指示；是否适用于某个具体渲染任务，应依其原始上下文判断。
+- **渲染是否为默认：**上述具体创作/重制要求不自动授权所有事件、素材或运行默认渲染。本记录不设“默认渲染”；只有实际最高指示对相应任务有直接文本授权时，才按该授权范围执行，不以操作化解释扩张授权。
+- **（b）实现添加的工作流门槛：**仓库为来源、权利、内容、质量、运行安全或发布流程加入的检查，应逐项标明为实现/流程选择，并记录代码或 workflow 依据；它们不是用户最高指示的逐字要求，除非存在对应原文。若某门槛没有直接文本依据，不得伪装成用户命令或据此扩张其授权。
+- **（c）独立来源的法律/平台限制：**只有在引用并核实具体适用的法律条文、平台条款或官方政策后，才能将限制描述为外部要求；应附来源及适用范围，不与用户指示或仓库自设门槛混为一谈。本小节未提供或核验具体法律/平台条款，因此不据此断言任何特定外部法律结论。
+- 用户称缺乏最高指示逐字依据的额外门槛“违法”；这是用户的主张，不是本记录已核验的法律结论。
+
 ## UI 与云端监控最高指示及当前状态（2026-10-16）
 
 ### 用户逐字原话
