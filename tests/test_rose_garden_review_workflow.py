@@ -23,23 +23,30 @@ WORKFLOW = (
 
 
 class RoseGardenReviewWorkflowTests(unittest.TestCase):
+    SOURCE_GRAPHICS = [
+        {
+            "label": "synthetic-source-lower-third-test-fixture",
+            "human_verified": True,
+            "x": 0.1,
+            "y": 0.68,
+            "width": 0.8,
+            "height": 0.3,
+        }
+    ]
+
     @staticmethod
     def synthetic_caption_frame(width, height):
         pixels = bytearray([255, 0, 0] * width * height)
-        band_height = round(height * review.CAPTION_BAND_HEIGHT_PERCENT / 100)
-        band_top = height - band_height
-        for y in range(band_top, height):
-            for x in range(width):
+        mask = {"left": 190, "top": 732, "right": 1730, "bottom": 1060}
+        for y in range(mask["top"], mask["bottom"]):
+            for x in range(mask["left"], mask["right"]):
                 offset = (y * width + x) * 3
                 pixels[offset:offset + 3] = bytes((24, 24, 24))
-        top_padding = round(
-            height * review.CAPTION_BAND_TOP_PADDING_PERCENT / 100
-        )
-        text_top = band_top + top_padding + 2
+        text_top = mask["top"] + 20
         for y in range(text_top, text_top + 2):
             for x in range(width // 2 - 2, width // 2 + 2):
                 offset = (y * width + x) * 3
-                pixels[offset:offset + 3] = bytes((255, 216, 77))
+                pixels[offset:offset + 3] = bytes((255, 255, 255))
         return bytes(pixels)
 
     def test_workflow_pins_cloud_source_and_only_deploys_after_render(self):
@@ -62,6 +69,19 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "inputs.requester_authorized_processing",
             "inputs.requester_authorized_publication",
             "inputs.rights_evidence_url",
+            "inputs.independent_rights_review_passed",
+            "inputs.event_match_review_passed",
+            "inputs.event_match_evidence_url",
+            "inputs.event_time_timezone_review_passed",
+            "inputs.event_time_timezone_evidence_url",
+            "inputs.source_lineage_review_passed",
+            "inputs.source_lineage_evidence_url",
+            "inputs.source_frame_review_record_json",
+            "inputs.caption_position",
+            "inputs.caption_safe_region_reviewed",
+            "inputs.source_graphics_regions_json",
+            "inputs.rose_mask_authorized",
+            "inputs.mask_padding_px_per_edge",
         ):
             with self.subTest(field=field):
                 self.assertIn(field, render)
@@ -73,13 +93,31 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("process_full_video.py", render)
         self.assertIn("--asset-prefix RoseGardenLunch-IySF_8OArvw", render)
         self.assertIn(
-            "--subtitle-layout rose-garden-fixed-caption-band",
+            "--subtitle-layout rose-garden-source-aware-bilingual",
             render,
         )
+        for arg in (
+            "--caption-position",
+            "--source-graphics-regions-json",
+            "--mask-padding-px-per-edge",
+            "--occlusion-exception-authorized",
+            "--validate-layout-inputs",
+            "--validate-review-gates",
+            "--source-frame-review-record-json",
+        ):
+            self.assertIn(arg, render)
         self.assertIn("verify_operation_audit.py", render)
         self.assertIn("needs: render", workflow)
         self.assertIn("actions/deploy-pages@v4", workflow)
         self.assertIn("--prerelease", render)
+        self.assertLess(
+            render.index("--validate-review-gates"),
+            render.index("gh release download rose-garden-lunch-source-2026-10-15"),
+        )
+        rights_input = workflow.split("      rights_evidence_url:", maxsplit=1)[1].split(
+            "\n      independent_rights_review_passed:", maxsplit=1
+        )[0]
+        self.assertIn("required: true", rights_input)
         self.assertIn("test -s \"$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4\"", render)
         self.assertIn("test -s \"$RUNNER_TEMP/rose-garden-output/manifest.json\"", render)
         self.assertIn("test -s \"$RUNNER_TEMP/rose-garden-output/operation-audit.json\"", render)
@@ -143,6 +181,104 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         defaults["rights_evidence_url"] = "http://example.com/rights"
         with self.assertRaisesRegex(RuntimeError, "HTTPS"):
             review.validate_dispatch_inputs(**defaults)
+
+    def test_layout_dispatch_is_fail_closed_for_missing_bbox_review_or_mask_auth(self):
+        bbox = json.dumps(self.SOURCE_GRAPHICS)
+        valid = {
+            "caption_position": "mask-lower-third",
+            "caption_safe_region_reviewed": True,
+            "source_graphics_regions_json": bbox,
+            "rose_mask_authorized": True,
+            "mask_padding_px_per_edge": 2,
+        }
+        self.assertEqual(review.validate_layout_inputs(**valid), self.SOURCE_GRAPHICS)
+        failures = (
+            ({"source_graphics_regions_json": "[]"}, "no defaults"),
+            ({"caption_safe_region_reviewed": False}, "Human review"),
+            ({"rose_mask_authorized": False}, "explicit Rose exception"),
+            ({"mask_padding_px_per_edge": 0}, "integer from 1 to 5"),
+            ({"mask_padding_px_per_edge": 6}, "integer from 1 to 5"),
+            (
+                {
+                    "source_graphics_regions_json": bbox.replace(
+                        '"human_verified": true', '"human_verified": false'
+                    )
+                },
+                "not human-verified",
+            ),
+            (
+                {
+                    "source_graphics_regions_json": bbox.replace(
+                        '"x": 0.1', '"x": 0.9'
+                    )
+                },
+                "outside frame bounds",
+            ),
+        )
+        for mutation, message in failures:
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(
+                RuntimeError, message
+            ):
+                review.validate_layout_inputs(**(valid | mutation))
+
+    def test_review_gates_block_pending_and_untrusted_source_frame_evidence(self):
+        frame_record = {
+            "reviewer_identity": "reviewer@example.org",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 100,
+                "top": 740,
+                "right": 1820,
+                "bottom": 1040,
+            },
+            "evidence_ref": "https://example.org/review/123",
+        }
+        values = {
+            "independent_rights_review_passed": True,
+            "event_match_review_passed": True,
+            "event_time_timezone_review_passed": True,
+            "source_lineage_review_passed": True,
+            "source_frame_review_record_json": json.dumps(frame_record),
+            "dispatch_actor": "publisher",
+            "rights_evidence_url": "https://example.org/rights",
+            "event_match_evidence_url": "https://example.org/event-match",
+            "event_time_timezone_evidence_url": "https://example.org/event-time",
+            "source_lineage_evidence_url": "https://example.org/lineage",
+        }
+        pending = values | {"independent_rights_review_passed": False}
+        with self.assertRaisesRegex(RuntimeError, "independent_rights_review_passed"):
+            review.validate_review_gates(**pending)
+
+        missing = values | {"source_frame_review_record_json": "{}"}
+        with self.assertRaisesRegex(RuntimeError, "reviewer, timestamp"):
+            review.validate_review_gates(**missing)
+
+        with self.assertRaisesRegex(RuntimeError, "no approved controlled cloud"):
+            review.validate_review_gates(**values)
+
+        out_of_bounds = dict(frame_record)
+        out_of_bounds["source_banner_bbox_px"] = {
+            **frame_record["source_banner_bbox_px"],
+            "right": 2000,
+        }
+        with self.assertRaisesRegex(RuntimeError, "out of bounds"):
+            review.validate_review_gates(
+                **(values | {"source_frame_review_record_json": json.dumps(out_of_bounds)})
+            )
+
+        same_reviewer = dict(frame_record)
+        with self.assertRaisesRegex(RuntimeError, "other than the dispatcher"):
+            review.validate_review_gates(
+                **(
+                    values
+                    | {
+                        "source_frame_review_record_json": json.dumps(same_reviewer),
+                        "dispatch_actor": "reviewer@example.org",
+                    }
+                )
+            )
 
     def test_source_verification_checks_exact_asset_and_probe_requirements(self):
         self.assertEqual(review.SOURCE_SIZE_BYTES, 1_030_142_647)
@@ -221,6 +357,10 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 1920,
                 1080,
                 layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=self.SOURCE_GRAPHICS,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
             )
             subtitles = [
                 f"{review.ASSET_PREFIX}.en.srt",
@@ -243,6 +383,11 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 width=1920,
                 height=1080,
                 layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                caption_safe_region_reviewed=True,
+                source_graphics_regions=self.SOURCE_GRAPHICS,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
             )["subtitle_readability"]
             manifest = {
                 "source_video": review.SOURCE_ASSET,
@@ -336,19 +481,48 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "pending",
         )
         self.assertEqual(
+            finalized["source_graphics_occlusion"]["status_label"],
+            "masked_not_clean",
+        )
+        self.assertEqual(
+            finalized["source_graphics_occlusion"]["mask_bbox_px"],
+            {
+                "left": 190,
+                "top": 732,
+                "right": 1730,
+                "bottom": 1060,
+                "width": 1540,
+                "height": 328,
+                "mask_padding_px_per_edge": 2,
+            },
+        )
+        self.assertEqual(
+            finalized["source_event_evidence"]["source_url_to_release_lineage"],
+            "pending",
+        )
+        self.assertEqual(
+            finalized["source_provenance"]["url_to_release_lineage_review"],
+            "pending",
+        )
+        self.assertEqual(
             finalized["quality_checks"]["subtitle_readability"][
                 "caption_ass_validation"
             ]["synthetic_libass_geometry_render"],
             "passed",
         )
 
-    def test_caption_layout_gate_accepts_the_bounded_rose_profile(self):
+    def test_caption_layout_gate_accepts_the_tight_authorized_rose_mask(self):
         readability = verify_cues(
             [Cue(1, 3, "Hello, everybody.", "大家好。")],
             duration=10,
             width=1920,
             height=1080,
             layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            caption_safe_region_reviewed=True,
+            source_graphics_regions=self.SOURCE_GRAPHICS,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
         )["subtitle_readability"]
         review.validate_caption_layout(
             {"quality_checks": {"subtitle_readability": readability}}
@@ -361,10 +535,15 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             width=1920,
             height=1080,
             layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            caption_safe_region_reviewed=True,
+            source_graphics_regions=self.SOURCE_GRAPHICS,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
         )["subtitle_readability"]
         mutations = (
             ("default profile", "layout_profile", "default", "required Rose Garden"),
-            ("null band", "caption_region_height_percent", None, "height"),
+            ("wrong width", "horizontal_safe_width_percent", 78, "68%"),
             ("small English font", "english_font_px", 40, "20% larger"),
             ("missing occlusion record", "caption_band_occlusion", None, "occlusion"),
         )
@@ -388,6 +567,10 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 1920,
                 1080,
                 layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=self.SOURCE_GRAPHICS,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
             )
             manifest = {
                 "subtitle_ass_file": ass_name,
@@ -397,18 +580,34 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "SHA-256"):
                 review.validate_caption_ass(manifest, root)
 
-    def test_rendered_caption_bounds_reject_out_of_band_text(self):
-        frame = self.synthetic_caption_frame(20, 20)
-        bounds = review.inspect_caption_geometry_frame(frame, 20, 20)
-        self.assertEqual(bounds["band_top"], 14)
-        self.assertGreaterEqual(bounds["top"], bounds["band_top"])
-        self.assertEqual(bounds["bottom"], 17)
+    def test_rendered_caption_bounds_validate_exact_mask_and_reject_spill(self):
+        width = height = 20
+        mask = {"left": 4, "top": 4, "right": 16, "bottom": 16}
+        frame = bytearray([255, 0, 0] * width * height)
+        for y in range(mask["top"], mask["bottom"]):
+            for x in range(mask["left"], mask["right"]):
+                offset = (y * width + x) * 3
+                frame[offset:offset + 3] = bytes((24, 24, 24))
+        for y in (8, 9):
+            for x in (9, 10):
+                offset = (y * width + x) * 3
+                frame[offset:offset + 3] = bytes((255, 255, 255))
+        bounds = review.inspect_caption_geometry_frame(
+            bytes(frame), width, height, mask, mask
+        )
+        self.assertEqual(
+            (bounds["mask_left"], bounds["mask_top"],
+             bounds["mask_right"], bounds["mask_bottom"]),
+            (4, 4, 16, 16),
+        )
 
-        pixels = bytearray(frame)
-        offset = (10 * 20 + 1) * 3
-        pixels[offset:offset + 3] = bytes((255, 255, 255))
-        with self.assertRaisesRegex(RuntimeError, "safe band"):
-            review.inspect_caption_geometry_frame(bytes(pixels), 20, 20)
+        spill = bytearray(frame)
+        offset = (2 * width + 2) * 3
+        spill[offset:offset + 3] = bytes((255, 255, 255))
+        with self.assertRaisesRegex(RuntimeError, "caption region"):
+            review.inspect_caption_geometry_frame(
+                bytes(spill), width, height, mask, mask
+            )
 
 
 if __name__ == "__main__":

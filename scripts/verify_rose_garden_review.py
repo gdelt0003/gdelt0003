@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import math
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -22,11 +24,8 @@ SOURCE_URL = "https://www.youtube.com/watch?v=IySF_8OArvw"
 SOURCE_SIZE_BYTES = 1_030_142_647
 SOURCE_SHA256 = "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73"
 ASSET_PREFIX = "RoseGardenLunch-IySF_8OArvw"
-SUBTITLE_LAYOUT = "rose-garden-fixed-caption-band"
-CAPTION_BAND_HEIGHT_PERCENT = 30
-CAPTION_SAFE_WIDTH_PERCENT = 78
-CAPTION_BAND_TOP_PADDING_PERCENT = 2
-CAPTION_BAND_BOTTOM_PADDING_PERCENT = 4
+SUBTITLE_LAYOUT = "rose-garden-source-aware-bilingual"
+CAPTION_SAFE_WIDTH_PERCENT = 68
 
 
 def render_caption_geometry_frame(ass_path: Path, width: int, height: int, start: float) -> bytes:
@@ -70,15 +69,12 @@ def inspect_caption_geometry_frame(
     frame: bytes,
     width: int,
     height: int,
+    caption_region: dict[str, int],
+    mask_bbox: dict[str, int] | None = None,
 ) -> dict[str, int]:
     expected_size = width * height * 3
     if len(frame) != expected_size:
         raise RuntimeError("Caption geometry frame has an invalid RGB size.")
-    band_height = round(height * CAPTION_BAND_HEIGHT_PERCENT / 100)
-    band_top = height - band_height
-    top_padding = round(height * CAPTION_BAND_TOP_PADDING_PERCENT / 100)
-    bottom_padding = round(height * CAPTION_BAND_BOTTOM_PADDING_PERCENT / 100)
-    safe_margin = round(width * (100 - CAPTION_SAFE_WIDTH_PERCENT) / 2 / 100)
     min_x, min_y = width, height
     max_x = max_y = -1
     for y in range(height):
@@ -86,7 +82,7 @@ def inspect_caption_geometry_frame(
         for x in range(width):
             offset = row_offset + x * 3
             red, green, blue = frame[offset:offset + 3]
-            if red > 180 and green > 100 and blue > 40:
+            if red > 200 and green > 200 and blue > 200:
                 min_x = min(min_x, x)
                 max_x = max(max_x, x)
                 min_y = min(min_y, y)
@@ -94,32 +90,50 @@ def inspect_caption_geometry_frame(
     if max_x < 0:
         raise RuntimeError("Rendered caption text pixels were not detected.")
     if (
-        min_x < safe_margin
-        or max_x >= width - safe_margin
-        or min_y < band_top + top_padding
-        or max_y >= height - bottom_padding
+        min_x < caption_region["left"]
+        or min_y < caption_region["top"]
+        or max_x >= caption_region["right"]
+        or max_y >= caption_region["bottom"]
     ):
         raise RuntimeError(
-            "Rendered caption text pixels exceed the configured safe band: "
+            "Rendered caption text pixels exceed the reviewed caption region: "
             f"bbox=({min_x},{min_y})-({max_x},{max_y}), "
-            f"band_top={band_top}, width_margin={safe_margin}."
+            f"region={caption_region}."
         )
-    center_offset = ((band_top + top_padding) * width + width // 2) * 3
-    panel_rgb = frame[center_offset:center_offset + 3]
-    source_offset = ((band_top - 1) * width + width // 2) * 3
-    source_rgb = frame[source_offset:source_offset + 3]
-    if max(panel_rgb) > 80 or source_rgb[0] < 200 or max(source_rgb[1:]) > 80:
-        raise RuntimeError(
-            "Rendered caption panel is not opaque or its boundary is misplaced."
-        )
-    return {
+    result = {
         "left": min_x,
         "top": min_y,
         "right": max_x,
         "bottom": max_y,
-        "band_top": band_top,
-        "band_height": band_height,
     }
+    if mask_bbox is None:
+        return result
+
+    def pixel(x: int, y: int) -> tuple[int, int, int]:
+        offset = (y * width + x) * 3
+        return tuple(frame[offset:offset + 3])
+
+    for x, y in (
+        (mask_bbox["left"], mask_bbox["top"]),
+        (mask_bbox["right"] - 1, mask_bbox["top"]),
+        (mask_bbox["left"], mask_bbox["bottom"] - 1),
+        (mask_bbox["right"] - 1, mask_bbox["bottom"] - 1),
+    ):
+        if max(pixel(x, y)) > 80:
+            raise RuntimeError("Rendered opaque mask does not cover its exact BBox.")
+    for x, y in (
+        (mask_bbox["left"] - 1, mask_bbox["top"]),
+        (mask_bbox["right"], mask_bbox["top"]),
+        (mask_bbox["left"], mask_bbox["top"] - 1),
+        (mask_bbox["left"], mask_bbox["bottom"]),
+    ):
+        if 0 <= x < width and 0 <= y < height and pixel(x, y) != (255, 0, 0):
+            raise RuntimeError("Rendered opaque mask exceeds its exact BBox.")
+    result["mask_left"] = mask_bbox["left"]
+    result["mask_top"] = mask_bbox["top"]
+    result["mask_right"] = mask_bbox["right"]
+    result["mask_bottom"] = mask_bbox["bottom"]
+    return result
 
 
 def validate_caption_layout(manifest: dict[str, Any]) -> None:
@@ -133,10 +147,8 @@ def validate_caption_layout(manifest: dict[str, Any]) -> None:
         raise RuntimeError("Rose Garden caption layout configuration did not pass.")
     if readability.get("caption_region_validation") != "passed":
         raise RuntimeError("Rose Garden caption region geometry did not pass.")
-    if readability.get("caption_region_height_percent") != CAPTION_BAND_HEIGHT_PERCENT:
-        raise RuntimeError("Rose Garden caption band height is not the required 30%.")
     if readability.get("horizontal_safe_width_percent") != CAPTION_SAFE_WIDTH_PERCENT:
-        raise RuntimeError("Rose Garden captions do not use the required 78% safe width.")
+        raise RuntimeError("Rose Garden captions do not use the BBC-referenced 68% line width.")
     if readability.get("max_lines_per_language") != 2:
         raise RuntimeError("Rose Garden captions exceed the two-line language limit.")
     english_size = readability.get("english_font_px")
@@ -151,17 +163,81 @@ def validate_caption_layout(manifest: dict[str, Any]) -> None:
     ):
         raise RuntimeError("Rose Garden English captions are not 20% larger than Chinese.")
     occlusion = readability.get("caption_band_occlusion")
-    if (
-        not isinstance(occlusion, dict)
-        or occlusion.get("status") != "source_lower_third_occluded_in_derivative"
-        or occlusion.get("background") != "opaque"
+    if not isinstance(occlusion, dict):
+        raise RuntimeError("Caption overlap/occlusion disclosure is missing.")
+    if readability.get("caption_position") == "mask-lower-third":
+        source_bbox = occlusion.get("source_banner_bbox_px")
+        mask_bbox = occlusion.get("mask_bbox_px")
+        padding = occlusion.get("padding_px_per_edge")
+        source_graphics = readability.get("source_graphics_review")
+        dimensions = (
+            source_graphics.get("source_resolution_px")
+            if isinstance(source_graphics, dict)
+            else None
+        )
+        if (
+            occlusion.get("status") != "source_lower_third_occluded_in_derivative"
+            or occlusion.get("status_label") != "masked_not_clean"
+            or occlusion.get("background") != "opaque"
+            or occlusion.get("original_source_unchanged") is not True
+            or occlusion.get("user_authorized_rose_exception") is not True
+            or occlusion.get("visual_review") != "pending"
+            or occlusion.get("padding_selection")
+            != "implementation choice, not user-specified"
+            or not isinstance(source_bbox, dict)
+            or not isinstance(mask_bbox, dict)
+            or not isinstance(dimensions, dict)
+            or not isinstance(padding, int)
+            or isinstance(padding, bool)
+            or not 1 <= padding <= 5
+        ):
+            raise RuntimeError("Rose mask authorization, geometry, or pending disclosure is invalid.")
+        for edge, expected in (
+            ("left", source_bbox.get("left", -1) - padding),
+            ("top", source_bbox.get("top", -1) - padding),
+            ("right", source_bbox.get("right", -1) + padding),
+            ("bottom", source_bbox.get("bottom", -1) + padding),
+        ):
+            if mask_bbox.get(edge) != expected:
+                raise RuntimeError(
+                    f"Rose mask BBox is not exactly {padding}px outward at {edge}."
+                )
+        if (
+            mask_bbox.get("left", -1) < 0
+            or mask_bbox.get("top", -1) < 0
+            or mask_bbox.get("right", 0) > dimensions.get("width", 0)
+            or mask_bbox.get("bottom", 0) > dimensions.get("height", 0)
+            or occlusion.get("output_resolution_px") != dimensions
+            or occlusion.get("expansion_direction")
+            != "outward on each of four edges"
+        ):
+            raise RuntimeError("Rose mask BBox exceeds or mismatches the frame geometry.")
+    elif (
+        occlusion.get("status") != "no_source_graphic_occlusion_intended"
         or occlusion.get("original_source_unchanged") is not True
         or occlusion.get("visual_review") != "pending"
     ):
-        raise RuntimeError(
-            "Caption band occlusion must be explicitly recorded with source preservation "
-            "and visual review pending."
+        raise RuntimeError("Non-mask Rose layout has an invalid occlusion disclosure.")
+
+    source_evidence = readability.get("rose_source_evidence")
+    if (
+        not isinstance(source_evidence, dict)
+        or source_evidence.get("classification") != "official_event_anchor_only"
+        or source_evidence.get("whitehouse_search", {}).get("status")
+        != "no_verifiable_event_article_or_embedded_video_found"
+        or source_evidence.get("event_match") != "pending"
+        or source_evidence.get("exact_event_time_and_timezone") != "pending"
+        or source_evidence.get("source_url_to_release_lineage") != "pending"
+        or source_evidence.get("source_graphics_and_frame_review") != "pending"
+        or source_evidence.get("controlled_cloud_frame_review_route")
+        != "not_found_in_repository; confirmation_pending"
+        or source_evidence.get("independent_reuse_rights_review") != "pending"
+        or source_evidence.get("general_whitehouse_copyright_policy", {}).get(
+            "specific_video_clearance"
         )
+        != "not_established"
+    ):
+        raise RuntimeError("M2 event/source evidence must remain explicitly pending.")
 
 
 def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str, Any]:
@@ -191,19 +267,47 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         if abs(en[0] - zh[0]) > 0.01 or abs(en[1] - zh[1]) > 0.01:
             raise RuntimeError(f"Bilingual SRT timing mismatch at cue {index}.")
         cues.append(Cue(en[0], en[1], en[2].replace("\n", " "), zh[2].replace("\n", "")))
+    readability = manifest["quality_checks"]["subtitle_readability"]
+    position = readability.get("caption_position")
+    source_review = readability.get("source_graphics_review")
+    regions = (
+        [
+            {
+                "label": region["label"],
+                "human_verified": region.get("human_verified") is True,
+                **region["normalized_bbox"],
+            }
+            for region in source_review["regions"]
+        ]
+        if isinstance(source_review, dict)
+        and isinstance(source_review.get("regions"), list)
+        else []
+    )
+    occlusion = readability.get("caption_band_occlusion")
     try:
         _verify_rose_garden_ass(
             ass_path,
             cues,
             int(manifest["resolution"].split("x", maxsplit=1)[0]),
             int(manifest["resolution"].split("x", maxsplit=1)[1]),
+            position,
+            regions,
+            isinstance(occlusion, dict)
+            and occlusion.get("user_authorized_rose_exception") is True,
+            occlusion.get("padding_px_per_edge")
+            if isinstance(occlusion, dict)
+            else None,
         )
     except (KeyError, ValueError, RuntimeError) as error:
         raise RuntimeError(f"Generated ASS caption geometry is invalid: {error}") from error
     import pysubs2
 
     ass_subtitles = pysubs2.load(str(ass_path), encoding="utf-8")
-    caption_events = ass_subtitles.events[1::2]
+    caption_events = (
+        ass_subtitles.events[1::2]
+        if position == "mask-lower-third"
+        else ass_subtitles.events
+    )
     longest_event = max(caption_events, key=lambda event: event.text.count(r"\N"))
     frame = render_caption_geometry_frame(
         ass_path,
@@ -215,6 +319,12 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         frame,
         int(manifest["resolution"].split("x", maxsplit=1)[0]),
         int(manifest["resolution"].split("x", maxsplit=1)[1]),
+        readability["caption_region_box_px"],
+        (
+            readability["caption_band_occlusion"]["mask_bbox_px"]
+            if position == "mask-lower-third"
+            else None
+        ),
     )
     return {
         "status": "passed",
@@ -266,6 +376,180 @@ def validate_dispatch_inputs(
         parsed_url = urlparse(rights_evidence_url)
         if parsed_url.scheme != "https" or not parsed_url.netloc:
             raise RuntimeError("Rights evidence URL must be an absolute HTTPS URL.")
+
+
+def validate_layout_inputs(
+    *,
+    caption_position: str,
+    caption_safe_region_reviewed: bool,
+    source_graphics_regions_json: str,
+    rose_mask_authorized: bool,
+    mask_padding_px_per_edge: int,
+) -> list[dict[str, Any]]:
+    if caption_position not in {"top", "center", "mask-lower-third"}:
+        raise RuntimeError("caption_position is not a supported Rose layout.")
+    if caption_safe_region_reviewed is not True:
+        raise RuntimeError(
+            "Human review of source graphics and the caption region is required."
+        )
+    try:
+        regions = json.loads(source_graphics_regions_json)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(
+            "source_graphics_regions_json must be valid JSON."
+        ) from error
+    if not isinstance(regions, list) or not regions:
+        raise RuntimeError(
+            "Human-verified source graphics BBoxes are required; no defaults are inferred."
+        )
+    labels = set()
+    lower_third_count = 0
+    for index, region in enumerate(regions, start=1):
+        if not isinstance(region, dict):
+            raise RuntimeError(f"Source graphics region {index} must be an object.")
+        label = region.get("label")
+        if not isinstance(label, str) or not label.strip() or label in labels:
+            raise RuntimeError(f"Source graphics region {index} needs a unique label.")
+        labels.add(label)
+        if region.get("human_verified") is not True:
+            raise RuntimeError(f"Source graphics BBox {label!r} is not human-verified.")
+        coordinates = []
+        for key in ("x", "y", "width", "height"):
+            value = region.get(key)
+            if (
+                not isinstance(value, (int, float))
+                or isinstance(value, bool)
+                or not math.isfinite(value)
+            ):
+                raise RuntimeError(f"Source graphics BBox {label!r} has invalid {key}.")
+            coordinates.append(float(value))
+        x, y, box_width, box_height = coordinates
+        if (
+            x < 0
+            or y < 0
+            or box_width <= 0
+            or box_height <= 0
+            or x + box_width > 1
+            or y + box_height > 1
+        ):
+            raise RuntimeError(f"Source graphics BBox {label!r} is outside frame bounds.")
+        if "lower-third" in label.lower():
+            lower_third_count += 1
+    if lower_third_count != 1:
+        raise RuntimeError("Exactly one human-verified lower-third BBox is required.")
+    masking = caption_position == "mask-lower-third"
+    if masking != (rose_mask_authorized is True):
+        raise RuntimeError(
+            "Mask mode requires the explicit Rose exception authorization."
+        )
+    if (
+        not isinstance(mask_padding_px_per_edge, int)
+        or isinstance(mask_padding_px_per_edge, bool)
+        or not 1 <= mask_padding_px_per_edge <= 5
+    ):
+        raise RuntimeError("mask_padding_px_per_edge must be an integer from 1 to 5.")
+    return regions
+
+
+def validate_review_gates(
+    *,
+    independent_rights_review_passed: bool,
+    event_match_review_passed: bool,
+    event_time_timezone_review_passed: bool,
+    source_lineage_review_passed: bool,
+    source_frame_review_record_json: str,
+    dispatch_actor: str,
+    rights_evidence_url: str,
+    event_match_evidence_url: str,
+    event_time_timezone_evidence_url: str,
+    source_lineage_evidence_url: str,
+) -> dict[str, str]:
+    confirmations = {
+        "independent_rights_review_passed": independent_rights_review_passed,
+        "event_match_review_passed": event_match_review_passed,
+        "event_time_timezone_review_passed": event_time_timezone_review_passed,
+        "source_lineage_review_passed": source_lineage_review_passed,
+    }
+    incomplete = [name for name, confirmed in confirmations.items() if confirmed is not True]
+    if incomplete:
+        raise RuntimeError(
+            "Media workflow blocked; required independent review gates are not confirmed: "
+            + ", ".join(incomplete)
+        )
+    evidence = {
+        "independent_rights_review": rights_evidence_url,
+        "event_match_review": event_match_evidence_url,
+        "event_time_timezone_review": event_time_timezone_evidence_url,
+        "source_lineage_review": source_lineage_evidence_url,
+    }
+    for name, value in evidence.items():
+        parsed_url = urlparse(value)
+        if parsed_url.scheme != "https" or not parsed_url.netloc:
+            raise RuntimeError(
+                f"{name} requires an absolute HTTPS evidence URL before media processing."
+            )
+    try:
+        frame_review = json.loads(source_frame_review_record_json)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("source_frame_review_record_json must be valid JSON.") from error
+    required = {
+        "reviewer_identity",
+        "reviewed_at",
+        "source_timecode",
+        "source_resolution",
+        "source_banner_bbox_px",
+        "evidence_ref",
+    }
+    if not isinstance(frame_review, dict) or not required.issubset(frame_review):
+        raise RuntimeError(
+            "Source-frame review evidence must identify reviewer, timestamp, "
+            "source timecode, resolution, banner BBox, and evidence reference."
+        )
+    reviewer = frame_review["reviewer_identity"]
+    if not isinstance(reviewer, str) or not reviewer.strip() or reviewer == dispatch_actor:
+        raise RuntimeError(
+            "Source-frame BBox review must identify a reviewer other than the dispatcher."
+        )
+    try:
+        reviewed_at = datetime.fromisoformat(
+            str(frame_review["reviewed_at"]).replace("Z", "+00:00")
+        )
+    except ValueError as error:
+        raise RuntimeError("Source-frame review timestamp must be ISO-8601.") from error
+    if reviewed_at.tzinfo is None:
+        raise RuntimeError("Source-frame review timestamp must include a timezone.")
+    timecode = frame_review["source_timecode"]
+    if not isinstance(timecode, str) or not re.fullmatch(
+        r"\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?", timecode
+    ):
+        raise RuntimeError("Source-frame evidence needs an exact HH:MM:SS[.mmm] timecode.")
+    dimensions = frame_review["source_resolution"]
+    bbox = frame_review["source_banner_bbox_px"]
+    if (
+        not isinstance(dimensions, dict)
+        or type(dimensions.get("width")) is not int
+        or type(dimensions.get("height")) is not int
+        or dimensions["width"] < 1920
+        or dimensions["height"] < 1080
+        or not isinstance(bbox, dict)
+        or any(type(bbox.get(key)) is not int for key in ("left", "top", "right", "bottom"))
+        or bbox["left"] < 0
+        or bbox["top"] < 0
+        or bbox["right"] <= bbox["left"]
+        or bbox["bottom"] <= bbox["top"]
+        or bbox["right"] > dimensions["width"]
+        or bbox["bottom"] > dimensions["height"]
+    ):
+        raise RuntimeError("Source-frame review BBox/resolution is invalid or out of bounds.")
+    evidence_ref = frame_review["evidence_ref"]
+    parsed_ref = urlparse(evidence_ref) if isinstance(evidence_ref, str) else None
+    if parsed_ref is None or parsed_ref.scheme != "https" or not parsed_ref.netloc:
+        raise RuntimeError("Source-frame review requires an HTTPS evidence reference.")
+
+    raise RuntimeError(
+        "Production render blocked: no approved controlled cloud frame/BBox review "
+        "workflow or trusted evidence verifier is configured in this repository."
+    )
 
 
 def probe_media(path: Path) -> dict[str, Any]:
@@ -448,6 +732,7 @@ def finalize_review_manifest(
         "url": SOURCE_URL,
         "release_tag": SOURCE_RELEASE_TAG,
         "asset_name": SOURCE_ASSET,
+        "url_to_release_lineage_review": "pending",
         "size_bytes": source_details["size_bytes"],
         "sha256": source_details["sha256"],
         "duration_seconds": round(source_details["duration_seconds"], 3),
@@ -483,12 +768,18 @@ def finalize_review_manifest(
         "translation_review": "pending",
         "final_release_approval": "not_granted",
     }
+    readability = manifest["quality_checks"]["subtitle_readability"]
+    occlusion = readability["caption_band_occlusion"]
     manifest["source_graphics_occlusion"] = {
+        **occlusion,
         "source_graphics_review": "pending",
-        "caption_band_masks_source_lower_third_in_derivative": True,
+        "caption_band_masks_source_lower_third_in_derivative": (
+            readability["caption_position"] == "mask-lower-third"
+        ),
         "original_source_unchanged": True,
         "visual_review": "pending",
     }
+    manifest["source_event_evidence"] = readability["rose_source_evidence"]
     manifest_path.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -499,6 +790,29 @@ def finalize_review_manifest(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--validate-dispatch-inputs", action="store_true")
+    parser.add_argument("--validate-layout-inputs", action="store_true")
+    parser.add_argument("--validate-review-gates", action="store_true")
+    parser.add_argument(
+        "--caption-position",
+        choices=("top", "center", "mask-lower-third"),
+        default="top",
+    )
+    parser.add_argument(
+        "--caption-safe-region-reviewed",
+        action="store_true",
+    )
+    parser.add_argument("--source-graphics-regions-json", default="[]")
+    parser.add_argument("--rose-mask-authorized", action="store_true")
+    parser.add_argument("--mask-padding-px-per-edge", type=int, default=2)
+    parser.add_argument("--source-frame-review-record-json", default="{}")
+    parser.add_argument("--dispatch-actor", default="")
+    parser.add_argument("--independent-rights-review-passed", action="store_true")
+    parser.add_argument("--event-match-review-passed", action="store_true")
+    parser.add_argument("--event-time-timezone-review-passed", action="store_true")
+    parser.add_argument("--source-lineage-review-passed", action="store_true")
+    parser.add_argument("--event-match-evidence-url", default="")
+    parser.add_argument("--event-time-timezone-evidence-url", default="")
+    parser.add_argument("--source-lineage-evidence-url", default="")
     parser.add_argument("--event-id", default=EVENT_ID)
     parser.add_argument("--event-title", default=EVENT_TITLE)
     parser.add_argument("--event-date", default=EVENT_DATE)
@@ -522,6 +836,29 @@ def main() -> None:
         rights_evidence_url=args.rights_evidence_url,
     )
     if args.validate_dispatch_inputs:
+        return
+    if args.validate_layout_inputs:
+        validate_layout_inputs(
+            caption_position=args.caption_position,
+            caption_safe_region_reviewed=args.caption_safe_region_reviewed,
+            source_graphics_regions_json=args.source_graphics_regions_json,
+            rose_mask_authorized=args.rose_mask_authorized,
+            mask_padding_px_per_edge=args.mask_padding_px_per_edge,
+        )
+        return
+    if args.validate_review_gates:
+        validate_review_gates(
+            independent_rights_review_passed=args.independent_rights_review_passed,
+            event_match_review_passed=args.event_match_review_passed,
+            event_time_timezone_review_passed=args.event_time_timezone_review_passed,
+            source_lineage_review_passed=args.source_lineage_review_passed,
+            source_frame_review_record_json=args.source_frame_review_record_json,
+            dispatch_actor=args.dispatch_actor,
+            rights_evidence_url=args.rights_evidence_url,
+            event_match_evidence_url=args.event_match_evidence_url,
+            event_time_timezone_evidence_url=args.event_time_timezone_evidence_url,
+            source_lineage_evidence_url=args.source_lineage_evidence_url,
+        )
         return
     if args.source is None:
         parser.error("--source is required unless --validate-dispatch-inputs is used.")

@@ -49,10 +49,79 @@ on:
         required: true
         default: false
       rights_evidence_url:
-        description: Optional HTTPS rights-evidence URL; independent rights review remains pending
+        description: HTTPS evidence for completed independent reuse-rights review; processing is blocked while empty or pending
         type: string
-        required: false
+        required: true
         default: ""
+      independent_rights_review_passed:
+        description: Confirm independent reuse-rights review is complete and supported by the evidence URL
+        type: boolean
+        required: true
+        default: false
+      event_match_review_passed:
+        description: Confirm the source content has been matched to this exact event
+        type: boolean
+        required: true
+        default: false
+      event_match_evidence_url:
+        description: HTTPS evidence for exact source/event content match
+        type: string
+        required: true
+        default: ""
+      event_time_timezone_review_passed:
+        description: Confirm exact event time and timezone
+        type: boolean
+        required: true
+        default: false
+      event_time_timezone_evidence_url:
+        description: HTTPS evidence for exact event time and timezone
+        type: string
+        required: true
+        default: ""
+      source_lineage_review_passed:
+        description: Confirm independent YouTube-to-source-release acquisition lineage
+        type: boolean
+        required: true
+        default: false
+      source_lineage_evidence_url:
+        description: HTTPS evidence for source URL to uploaded release asset lineage
+        type: string
+        required: true
+        default: ""
+      source_frame_review_record_json:
+        description: Structured authorized cloud review evidence (reviewer, UTC timestamp, timecode, source resolution, pixel BBox, evidence reference); render remains blocked until a trusted review route is configured
+        type: string
+        required: true
+        default: "{}"
+      caption_position:
+        description: Human-reviewed clear caption area, or the explicitly authorized Rose banner mask
+        type: choice
+        options:
+          - top
+          - center
+          - mask-lower-third
+        required: true
+        default: top
+      caption_safe_region_reviewed:
+        description: Confirm the source graphics BBoxes and selected caption position were visually reviewed
+        type: boolean
+        required: true
+        default: false
+      source_graphics_regions_json:
+        description: Human-verified normalized source graphic BBoxes, including exactly one source lower-third
+        type: string
+        required: true
+        default: "[]"
+      rose_mask_authorized:
+        description: Confirm use of the user-authorized Rose-only lower-third masking exception
+        type: boolean
+        required: true
+        default: false
+      mask_padding_px_per_edge:
+        description: Implementation-selected outward mask expansion per edge (1–5 output pixels; default 2)
+        type: number
+        required: true
+        default: 2
 
 permissions:
   contents: read
@@ -99,6 +168,19 @@ jobs:
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
           PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
           PUBLICATION_AUTHORIZED: ${{ inputs.requester_authorized_publication }}
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
+          INDEPENDENT_RIGHTS_REVIEW_PASSED: ${{ inputs.independent_rights_review_passed }}
+          EVENT_MATCH_REVIEW_PASSED: ${{ inputs.event_match_review_passed }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_REVIEW_PASSED: ${{ inputs.event_time_timezone_review_passed }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_REVIEW_PASSED: ${{ inputs.source_lineage_review_passed }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
         run: |
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "This production workflow may only run from main." >&2
@@ -118,6 +200,41 @@ jobs:
             --source-asset "$SOURCE_ASSET" \
             --source-sha256 "$SOURCE_SHA256" \
             --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+          layout_args=(
+            --validate-layout-inputs
+            --caption-position "$CAPTION_POSITION"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            layout_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            layout_args+=(--rose-mask-authorized)
+          fi
+          python scripts/verify_rose_garden_review.py "${layout_args[@]}"
+          review_args=(
+            --validate-review-gates
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL"
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL"
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON"
+            --dispatch-actor "$GITHUB_ACTOR"
+          )
+          if [[ "$INDEPENDENT_RIGHTS_REVIEW_PASSED" == "true" ]]; then
+            review_args+=(--independent-rights-review-passed)
+          fi
+          if [[ "$EVENT_MATCH_REVIEW_PASSED" == "true" ]]; then
+            review_args+=(--event-match-review-passed)
+          fi
+          if [[ "$EVENT_TIMEZONE_REVIEW_PASSED" == "true" ]]; then
+            review_args+=(--event-time-timezone-review-passed)
+          fi
+          if [[ "$SOURCE_LINEAGE_REVIEW_PASSED" == "true" ]]; then
+            review_args+=(--source-lineage-review-passed)
+          fi
+          python scripts/verify_rose_garden_review.py "${review_args[@]}"
           python - "$RUNNER_TEMP/rose-garden-diagnostics/run-context.txt" <<'PY'
           import json
           import os
@@ -197,13 +314,30 @@ jobs:
 
       - name: Transcribe, translate, and burn bilingual captions
         id: render_video
+        env:
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
         run: |
           set -o pipefail
-          python scripts/process_full_video.py \
+          render_args=(
             --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
             --asset-prefix RoseGardenLunch-IySF_8OArvw \
-            --subtitle-layout rose-garden-fixed-caption-band \
+            --subtitle-layout rose-garden-source-aware-bilingual \
+            --caption-position "$CAPTION_POSITION" \
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON" \
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            render_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            render_args+=(--occlusion-exception-authorized)
+          fi
+          python scripts/process_full_video.py "${render_args[@]}" \
             2>&1 | tee "$RUNNER_TEMP/rose-garden-diagnostics/render.log"
         shell: bash
 
@@ -290,7 +424,7 @@ jobs:
           fi
           test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
           tag="rose-garden-lunch-review"
-          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. The derived video uses a fixed opaque bilingual caption band that masks source lower-third graphics; the original source remains unchanged. Independent rights, source-frame, source/event match, ASR, translation, and visual review remain pending; this is not final approval."
+          notes="Public external-review draft for the Rose Garden Lunch recording. The requester authorized processing and public review publication. The source-aware caption region and any Rose-only banner mask are described with exact source/mask BBoxes, per-edge padding, and output resolution in the manifest. A mask, when selected, covers only the human-verified source lower-third BBox plus the recorded 1-5px per edge; the original source remains unchanged and the derivative is masked_not_clean. Independent rights, source-frame, source/event match, source URL-to-release lineage, ASR, and translation review remain pending; this is not final approval."
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release edit "$tag" \
               --repo "$GITHUB_REPOSITORY" \
