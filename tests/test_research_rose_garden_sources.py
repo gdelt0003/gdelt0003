@@ -8,8 +8,11 @@ from unittest.mock import patch
 
 from scripts.research_rose_garden_sources import (
     EVENT_ID,
+    EVENT_REFERENCE_VIDEO_ID,
+    EVENT_TITLE,
     SEARCH_PROVIDERS,
     SEARCH_QUERIES,
+    TARGETED_SOURCE_DOMAINS,
     inspect_landing_page,
     research,
 )
@@ -87,6 +90,8 @@ class RoseGardenMetadataResearchTests(unittest.TestCase):
         self.assertIn("authorization and rights evidence", report["full_video_research_blocker"])
         self.assertEqual(report["search_providers"], list(SEARCH_PROVIDERS))
         self.assertEqual(report["search_query_count"], len(SEARCH_QUERIES) * 2)
+        self.assertEqual(len(report["targeted_source_domains"]), 10)
+        self.assertEqual(report["landing_page_metadata_error_count"], 0)
         self.assertEqual(saved["candidate_count"], 1)
         self.assertEqual(saved["lead_count"], 1)
         lead = saved["candidates"][0]
@@ -100,7 +105,7 @@ class RoseGardenMetadataResearchTests(unittest.TestCase):
         self.assertFalse(lead["media_frames_audio_inspected"])
         self.assertEqual(lead["page_title"], "President Trump Participates in a Rose Garden Lunch")
         self.assertEqual(lead["search_provider"], "duckduckgo_html")
-        self.assertEqual(len(lead["search_observations"]), 6)
+        self.assertEqual(len(lead["search_observations"]), len(SEARCH_QUERIES) * len(SEARCH_PROVIDERS))
         self.assertEqual(lead["page_description"], "Page summary")
         self.assertEqual(lead["site_name"], "Example News")
         self.assertEqual(lead["canonical_url"], "https://www.youtube.com/canonical")
@@ -108,6 +113,17 @@ class RoseGardenMetadataResearchTests(unittest.TestCase):
         self.assertIn("qualifying pages are unverified leads", summary.lower())
         self.assertIn("Human video-content review: not performed", summary)
         self.assertIn("not an exhaustive web census", report["search_coverage"])
+        self.assertIn("## Search queries run", summary)
+
+    def test_queries_cover_event_identity_and_publisher_domains(self):
+        queries = "\n".join(SEARCH_QUERIES)
+        self.assertIn(EVENT_TITLE, queries)
+        self.assertIn("October 15, 2026", queries)
+        self.assertIn(EVENT_REFERENCE_VIDEO_ID, queries)
+        self.assertIn("site:whitehouse.gov", queries)
+        self.assertIn("site:youtube.com", queries)
+        for domain in TARGETED_SOURCE_DOMAINS:
+            self.assertIn(f"site:{domain}", queries)
 
     def test_irrelevant_and_unavailable_results_are_not_candidates(self):
         results = [
