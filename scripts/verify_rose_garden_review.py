@@ -555,6 +555,14 @@ def validate_dispatch_inputs(
     source_asset: str,
     source_sha256: str,
     rights_evidence_url: str,
+    event_identity_evidence_url: str = "",
+    event_match_evidence_url: str = "",
+    event_time_timezone_evidence_url: str = "",
+    source_lineage_evidence_url: str = "",
+    exact_event_match_confirmed: bool = False,
+    exact_event_time_timezone_confirmed: bool = False,
+    reuse_rights_confirmed: bool = False,
+    require_processing_evidence: bool = False,
 ) -> None:
     expected = {
         "event_id": EVENT_ID,
@@ -580,7 +588,38 @@ def validate_dispatch_inputs(
                 f"Unexpected {name}; this workflow is pinned to {expected_value!r}."
             )
 
-    if rights_evidence_url:
+    if require_processing_evidence:
+        evidence = {
+            "event identity": event_identity_evidence_url,
+            "exact source/event match": event_match_evidence_url,
+            "event time/timezone": event_time_timezone_evidence_url,
+            "source URL-to-asset lineage": source_lineage_evidence_url,
+            "source-specific reuse rights": rights_evidence_url,
+        }
+        for name, value in evidence.items():
+            parsed_url = urlparse(value)
+            if parsed_url.scheme != "https" or not parsed_url.netloc:
+                raise RuntimeError(
+                    f"{name} evidence URL must be an absolute HTTPS URL before processing."
+                )
+        if len(set(evidence.values())) != len(evidence):
+            raise RuntimeError(
+                "Event identity, source match, event time/timezone, source lineage, "
+                "and reuse-rights evidence must use distinct HTTPS URLs."
+            )
+        if exact_event_match_confirmed is not True:
+            raise RuntimeError(
+                "Explicit exact-event match confirmation is required before processing."
+            )
+        if exact_event_time_timezone_confirmed is not True:
+            raise RuntimeError(
+                "Explicit event time/timezone confirmation is required before processing."
+            )
+        if reuse_rights_confirmed is not True:
+            raise RuntimeError(
+                "Explicit source-specific reuse-rights confirmation is required before processing."
+            )
+    elif rights_evidence_url:
         parsed_url = urlparse(rights_evidence_url)
         if parsed_url.scheme != "https" or not parsed_url.netloc:
             raise RuntimeError("Rights evidence URL must be an absolute HTTPS URL.")
@@ -1116,6 +1155,13 @@ def finalize_review_manifest(
     output_dir: Path,
     *,
     rights_evidence_url: str = "",
+    event_identity_evidence_url: str = "",
+    event_match_evidence_url: str = "",
+    event_time_timezone_evidence_url: str = "",
+    source_lineage_evidence_url: str = "",
+    exact_event_match_confirmed: bool = False,
+    exact_event_time_timezone_confirmed: bool = False,
+    reuse_rights_confirmed: bool = False,
 ) -> dict[str, Any]:
     validate_dispatch_inputs(
         event_id=EVENT_ID,
@@ -1126,6 +1172,14 @@ def finalize_review_manifest(
         source_asset=SOURCE_ASSET,
         source_sha256=SOURCE_SHA256,
         rights_evidence_url=rights_evidence_url,
+        event_identity_evidence_url=event_identity_evidence_url,
+        event_match_evidence_url=event_match_evidence_url,
+        event_time_timezone_evidence_url=event_time_timezone_evidence_url,
+        source_lineage_evidence_url=source_lineage_evidence_url,
+        exact_event_match_confirmed=exact_event_match_confirmed,
+        exact_event_time_timezone_confirmed=exact_event_time_timezone_confirmed,
+        reuse_rights_confirmed=reuse_rights_confirmed,
+        require_processing_evidence=True,
     )
     source_details = verify_source(source)
     manifest_path = output_dir / "manifest.json"
@@ -1223,6 +1277,19 @@ def finalize_review_manifest(
         "rights_evidence_url": rights_evidence_url or None,
         "independent_rights_review": "pending",
     }
+    manifest["processing_prerequisites"] = {
+        "event_identity_evidence_url": event_identity_evidence_url,
+        "exact_source_event_match_evidence_url": event_match_evidence_url,
+        "event_time_timezone_evidence_url": event_time_timezone_evidence_url,
+        "source_url_to_release_asset_lineage_evidence_url": (
+            source_lineage_evidence_url
+        ),
+        "source_specific_reuse_rights_evidence_url": rights_evidence_url,
+        "exact_event_match_operator_confirmation": "confirmed",
+        "event_time_timezone_operator_confirmation": "confirmed",
+        "reuse_rights_operator_confirmation": "confirmed",
+        "independent_evidence_review": "pending",
+    }
     manifest["public_review"] = {
         "status": "public_external_review_draft",
         "requester_authorization": "confirmed_for_this_run",
@@ -1282,8 +1349,24 @@ def main() -> None:
     parser.add_argument("--event-time-timezone-review-passed", action="store_true")
     parser.add_argument("--source-lineage-review-passed", action="store_true")
     parser.add_argument("--event-match-evidence-url", default="")
+    parser.add_argument("--event-identity-evidence-url", default="")
+    parser.add_argument(
+        "--exact-event-match-confirmed",
+        choices=("true", "false"),
+        default="false",
+    )
+    parser.add_argument(
+        "--reuse-rights-confirmed",
+        choices=("true", "false"),
+        default="false",
+    )
     parser.add_argument("--event-time-timezone-evidence-url", default="")
     parser.add_argument("--source-lineage-evidence-url", default="")
+    parser.add_argument(
+        "--exact-event-time-timezone-confirmed",
+        choices=("true", "false"),
+        default="false",
+    )
     parser.add_argument("--event-id", default=EVENT_ID)
     parser.add_argument("--event-title", default=EVENT_TITLE)
     parser.add_argument("--event-date", default=EVENT_DATE)
@@ -1305,6 +1388,18 @@ def main() -> None:
         source_asset=args.source_asset,
         source_sha256=args.source_sha256,
         rights_evidence_url=args.rights_evidence_url,
+        event_identity_evidence_url=args.event_identity_evidence_url,
+        event_match_evidence_url=args.event_match_evidence_url,
+        event_time_timezone_evidence_url=(
+            args.event_time_timezone_evidence_url
+        ),
+        source_lineage_evidence_url=args.source_lineage_evidence_url,
+        exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
+        exact_event_time_timezone_confirmed=(
+            args.exact_event_time_timezone_confirmed == "true"
+        ),
+        reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
+        require_processing_evidence=args.validate_dispatch_inputs,
     )
     if args.validate_dispatch_inputs:
         return
@@ -1347,6 +1442,17 @@ def main() -> None:
             args.source,
             args.output_dir,
             rights_evidence_url=args.rights_evidence_url,
+            event_identity_evidence_url=args.event_identity_evidence_url,
+            event_match_evidence_url=args.event_match_evidence_url,
+            event_time_timezone_evidence_url=(
+                args.event_time_timezone_evidence_url
+            ),
+            source_lineage_evidence_url=args.source_lineage_evidence_url,
+            exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
+            exact_event_time_timezone_confirmed=(
+                args.exact_event_time_timezone_confirmed == "true"
+            ),
+            reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
         )
         print(json.dumps(manifest["public_review"], ensure_ascii=False, indent=2))
 

@@ -132,18 +132,26 @@ evidence/approved-run reference. A supplied frame-review record or
 `human_verified` dispatch field alone is not trusted evidence. The renderer
 itself rejects production mask renders while that verifier is unavailable.
 Requester processing/publication authorization is a distinct confirmed
-operation authorization; rights, exact event/timezone match, and
-YouTube-to-release lineage remain pending review facts recorded in the draft,
-not preconditions for creating the authorized public review draft.
+operation authorization and does not establish source facts or reuse rights.
+Before any media processing, the cloud workflow requires distinct HTTPS
+evidence for event identity, exact source/event match, event time/timezone,
+source-URL-to-release-asset lineage, and source-specific reuse rights, plus
+explicit operator confirmations of the exact event match, event time/timezone,
+and reuse rights for this asset. These inputs do not constitute independent
+review or final approval; those review states remain pending in the public
+draft. Missing evidence or confirmations must fail before the runner downloads
+or processes the video.
 
 Process correction: the earlier unconditional production-render rejection for
 the missing trusted frame/BBox verifier was an implementation constraint, not
 a user-imposed authorization requirement. It was incorrectly described as a
 user requirement; requester processing/publication authorization is confirmed.
-No global review-route gate blocks the authorized draft for pending rights,
-event, time, or source-lineage facts. The separate mask-specific production
-block remains because no trusted BBox review route is configured; those
-operator-supplied facts are not treated as authorization or trusted evidence.
+The evidence and confirmation preflight above is a separate processing
+prerequisite, not a demand for an independent reviewer to grant operation
+authorization. Rights, event, time, and source-lineage review states remain
+pending after the preflight; the mask-specific production branch separately
+requires a trusted BBox review and cannot use a still estimate as production
+input.
 
 An optional CI-only SmartSub probe checks whether a pinned SmartSub CLI build
 can hard-burn a synthetic ASS fixture with this proposed mask geometry and
@@ -180,6 +188,6 @@ PR #50 is implementing a source-aware 68% caption layout and the opt-in,
 source-banner-only Rose masking exception above. It remains unmerged and has
 not been deployed. The prior public MP4 remains the old review asset; do not
 replace it on the strength of a successful encode or manifest alone. A future
-render may be labelled only as a public review draft while rights, event match,
-URL-to-release lineage, ASR, translation, and human frame/visual review remain
-pending.
+render may be labelled only as a public review draft after the processing
+evidence preflight passes; independent rights, event-match, ASR, translation,
+and human frame/visual review still remain pending.

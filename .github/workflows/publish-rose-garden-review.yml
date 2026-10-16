@@ -49,10 +49,30 @@ on:
         required: true
         default: false
       rights_evidence_url:
-        description: Optional HTTPS rights evidence; independent rights review remains pending in the public draft
+        description: Source-specific HTTPS reuse-rights evidence required before processing
         type: string
         required: true
         default: ""
+      reuse_rights_confirmed:
+        description: Confirm the supplied source-specific evidence establishes reuse rights for this exact video
+        type: boolean
+        required: true
+        default: false
+      event_identity_evidence_url:
+        description: HTTPS evidence establishing the event identity
+        type: string
+        required: true
+        default: ""
+      exact_event_match_confirmed:
+        description: Confirm the selected source depicts this exact event
+        type: boolean
+        required: true
+        default: false
+      exact_event_time_timezone_confirmed:
+        description: Confirm the event date/time/timezone are established by the linked HTTPS evidence
+        type: boolean
+        required: true
+        default: false
       independent_rights_review_passed:
         description: Operator attestation only; does not change pending review status or block this authorized draft
         type: boolean
@@ -179,6 +199,13 @@ jobs:
           SOURCE_ASSET: ${{ inputs.source_asset }}
           SOURCE_SHA256: ${{ inputs.source_sha256 }}
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          EXACT_EVENT_TIME_TIMEZONE_CONFIRMED: ${{ inputs.exact_event_time_timezone_confirmed }}
+          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
           PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
           PUBLICATION_AUTHORIZED: ${{ inputs.requester_authorized_publication }}
           CAPTION_POSITION: ${{ inputs.caption_position }}
@@ -214,7 +241,14 @@ jobs:
             --source-release-tag "$SOURCE_RELEASE_TAG" \
             --source-asset "$SOURCE_ASSET" \
             --source-sha256 "$SOURCE_SHA256" \
-            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
+            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
+            --exact-event-time-timezone-confirmed "$EXACT_EVENT_TIME_TIMEZONE_CONFIRMED" \
+            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
           layout_args=(
             --validate-layout-inputs
             --caption-position "$CAPTION_POSITION"
@@ -381,11 +415,25 @@ jobs:
         id: finalize_manifest
         env:
           RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          EXACT_EVENT_TIME_TIMEZONE_CONFIRMED: ${{ inputs.exact_event_time_timezone_confirmed }}
+          REUSE_RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
         run: |
           python scripts/verify_rose_garden_review.py \
             --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
             --output-dir "$RUNNER_TEMP/rose-garden-output" \
-            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
+            --exact-event-match-confirmed "$EXACT_EVENT_MATCH_CONFIRMED" \
+            --exact-event-time-timezone-confirmed "$EXACT_EVENT_TIME_TIMEZONE_CONFIRMED" \
+            --reuse-rights-confirmed "$REUSE_RIGHTS_CONFIRMED"
         shell: bash
 
       - name: Require nonempty MP4, manifest, and operation audit

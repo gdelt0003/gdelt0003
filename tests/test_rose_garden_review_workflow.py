@@ -151,6 +151,10 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "inputs.requester_authorized_processing",
             "inputs.requester_authorized_publication",
             "inputs.rights_evidence_url",
+            "inputs.reuse_rights_confirmed",
+            "inputs.event_identity_evidence_url",
+            "inputs.exact_event_match_confirmed",
+            "inputs.exact_event_time_timezone_confirmed",
             "inputs.independent_rights_review_passed",
             "inputs.event_match_review_passed",
             "inputs.event_match_evidence_url",
@@ -197,6 +201,25 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertIn("needs: render", workflow)
         self.assertIn("actions/deploy-pages@v4", workflow)
         self.assertIn("--prerelease", render)
+        self.assertIn("--event-identity-evidence-url", render)
+        self.assertIn("--event-match-evidence-url", render)
+        self.assertIn("--event-time-timezone-evidence-url", render)
+        self.assertIn("--source-lineage-evidence-url", render)
+        self.assertIn("--exact-event-match-confirmed", render)
+        self.assertIn("--exact-event-time-timezone-confirmed", render)
+        self.assertIn("--reuse-rights-confirmed", render)
+        self.assertLess(
+            render.index("--validate-dispatch-inputs"),
+            render.index("gh release download rose-garden-lunch-source-2026-10-15"),
+        )
+        self.assertLess(
+            render.index("--validate-dispatch-inputs"),
+            render.index("id: source_download"),
+        )
+        self.assertLess(
+            render.index("--validate-dispatch-inputs"),
+            render.index("id: render_video"),
+        )
         self.assertLess(
             render.index("--validate-review-gates"),
             render.index("gh release download rose-garden-lunch-source-2026-10-15"),
@@ -261,6 +284,61 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
         }
         review.validate_dispatch_inputs(**defaults)
+        processing = defaults | {
+            "rights_evidence_url": "https://example.org/reuse-rights",
+            "event_identity_evidence_url": "https://example.org/event-identity",
+            "event_match_evidence_url": "https://example.org/exact-match",
+            "event_time_timezone_evidence_url": "https://example.org/event-time",
+            "source_lineage_evidence_url": "https://example.org/source-lineage",
+            "exact_event_match_confirmed": True,
+            "exact_event_time_timezone_confirmed": True,
+            "reuse_rights_confirmed": True,
+            "require_processing_evidence": True,
+        }
+        review.validate_dispatch_inputs(**processing)
+        for field, replacement, message in (
+            ("event_identity_evidence_url", "", "event identity"),
+            ("event_match_evidence_url", "http://example.org/match", "HTTPS"),
+            (
+                "event_time_timezone_evidence_url",
+                "",
+                "event time/timezone",
+            ),
+            ("source_lineage_evidence_url", "", "source URL-to-asset lineage"),
+            ("exact_event_match_confirmed", False, "exact-event match confirmation"),
+            (
+                "exact_event_time_timezone_confirmed",
+                False,
+                "event time/timezone confirmation",
+            ),
+            ("reuse_rights_confirmed", False, "reuse-rights confirmation"),
+            ("rights_evidence_url", "", "source-specific reuse rights"),
+        ):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(RuntimeError, message):
+                    review.validate_dispatch_inputs(
+                        **(processing | {field: replacement})
+                    )
+        with self.assertRaisesRegex(RuntimeError, "distinct HTTPS URLs"):
+            review.validate_dispatch_inputs(
+                **(
+                    processing
+                    | {
+                        "event_match_evidence_url":
+                            processing["event_identity_evidence_url"]
+                    }
+                )
+            )
+        with self.assertRaisesRegex(RuntimeError, "distinct HTTPS URLs"):
+            review.validate_dispatch_inputs(
+                **(
+                    processing
+                    | {
+                        "source_lineage_evidence_url":
+                            processing["event_time_timezone_evidence_url"]
+                    }
+                )
+            )
         defaults["source_sha256"] = "0" * 64
         with self.assertRaisesRegex(RuntimeError, "source_sha256"):
             review.validate_dispatch_inputs(**defaults)
@@ -1112,7 +1190,18 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                     },
                 ),
             ):
-                finalized = review.finalize_review_manifest(source, output_dir)
+                finalized = review.finalize_review_manifest(
+                    source,
+                    output_dir,
+                    rights_evidence_url="https://example.org/reuse-rights",
+                    event_identity_evidence_url="https://example.org/event-identity",
+                    event_match_evidence_url="https://example.org/exact-match",
+                    event_time_timezone_evidence_url="https://example.org/event-time",
+                    source_lineage_evidence_url="https://example.org/source-lineage",
+                    exact_event_match_confirmed=True,
+                    exact_event_time_timezone_confirmed=True,
+                    reuse_rights_confirmed=True,
+                )
 
         self.assertEqual(
             finalized["source_provenance"]["sha256"],
@@ -1121,6 +1210,28 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         self.assertEqual(
             finalized["public_review"]["status"],
             "public_external_review_draft",
+        )
+        self.assertEqual(
+            finalized["processing_prerequisites"]["independent_evidence_review"],
+            "pending",
+        )
+        self.assertEqual(
+            finalized["processing_prerequisites"][
+                "event_time_timezone_operator_confirmation"
+            ],
+            "confirmed",
+        )
+        self.assertEqual(
+            finalized["processing_prerequisites"][
+                "source_specific_reuse_rights_evidence_url"
+            ],
+            "https://example.org/reuse-rights",
+        )
+        self.assertEqual(
+            finalized["processing_prerequisites"][
+                "source_url_to_release_asset_lineage_evidence_url"
+            ],
+            "https://example.org/source-lineage",
         )
         self.assertEqual(
             finalized["event_identity"]["review_status"],
