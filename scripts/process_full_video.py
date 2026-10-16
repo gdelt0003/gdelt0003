@@ -738,6 +738,7 @@ def _rose_overflow_record(
         "start_seconds": round(cue.start, 3),
         "end_seconds": round(cue.end, 3),
         "reason": reason,
+        "review_status": "manual_review_required",
         "fallback": "preserved_complete_bilingual_cue; render_with_overflow",
         "safe_width_px": safe_width,
         "english_lines_required": len(english_lines),
