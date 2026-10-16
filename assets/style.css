@@ -101,7 +101,7 @@ button {
 .camera-map-compass, .camera-map-height-axis { stroke: #e5edf9; stroke-width: 2; }
 .camera-map-arrowhead { fill: #e5edf9; }
 .camera-map-label { fill: #e5edf9; font: 12px Inter, Segoe UI, sans-serif; paint-order: stroke; stroke: #0b1020; stroke-width: 3px; stroke-linejoin: round; }
-.event-research-panel { margin-top: 24px; }
+.event-research-panel, .official-video-leads-panel { margin-top: 24px; }
 .workbook-link { color: var(--accent); font-weight: 700; text-decoration: none; }
 .workbook-link:hover { text-decoration: underline; }
 .event-catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 16px; margin-top: 18px; }
@@ -119,6 +119,26 @@ button {
 .discovery-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 24px; }
 .event-discovery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; margin-top: 10px; }
 .discovery-card p { line-height: 1.5; }
+.official-video-lead-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.official-video-lead {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(31,41,55,.72);
+}
+.official-video-lead h3 { margin: 0 0 8px; font-size: 1rem; line-height: 1.5; }
+.official-video-lead a { color: var(--text); overflow-wrap: anywhere; }
+.official-video-lead p { line-height: 1.5; }
+.official-video-lead-status { margin-bottom: 0; color: #fbbf24; font-size: .85rem; }
+.official-video-leads-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; }
+.official-video-more { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.official-video-leads-notice { line-height: 1.6; }
 .event-production-panel { margin-top: 24px; }
 .published-events { display: grid; gap: 20px; margin-top: 16px; }
 .published-event { padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(31,41,55,.62); }
@@ -251,7 +271,7 @@ button {
 .copilot-result-card a { display: block; width: fit-content; margin-top: 8px; color: var(--accent); }
 .copilot-results-note { margin: 16px 0 0; }
 .highlights-panel { scroll-margin-top: 84px; }
-.event-research-panel, .camera-map-panel, .event-production-panel, .main-videos-panel, .copilot-results-panel { scroll-margin-top: 84px; }
+.event-research-panel, .camera-map-panel, .event-production-panel, .main-videos-panel, .official-video-leads-panel, .copilot-results-panel { scroll-margin-top: 84px; }
 @media (max-width: 860px) {
   .main-video-grid { grid-template-columns: minmax(0, 1fr); }
 }
@@ -263,6 +283,7 @@ button {
   .hero { margin-bottom: 18px; }
   .panel { padding: 14px; }
   .highlights-heading { align-items: flex-start; flex-direction: column; }
+  .official-video-leads-actions { justify-content: flex-start; }
   .main-video-content { padding: 12px; }
 }
 
