@@ -2,6 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import pysubs2
 
@@ -52,6 +53,49 @@ class FullVideoSubtitleTests(unittest.TestCase):
             "height": 0.30,
         }
     ]
+
+    def test_unverified_still_draft_bypasses_signature_but_not_fixed_source_checks(self):
+        with patch(
+            "scripts.verify_rose_garden_review.file_sha256_and_size",
+            return_value=(
+                "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+                1_030_142_647,
+            ),
+        ):
+            result = require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json="{}",
+                source_frame_review_signature="",
+                source_graphics_regions_json="[]",
+                dispatch_actor="publisher",
+                frame_review_mode="unverified-review-draft",
+            )
+        self.assertEqual(
+            result,
+            {
+                "source_frame_review": "pending",
+                "production_bbox_input": "false",
+                "measurement_status": "unverified_still_estimate",
+            },
+        )
+        with self.assertRaisesRegex(RuntimeError, "fixed user-still estimate"):
+            require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json="{}",
+                source_frame_review_signature="",
+                source_graphics_regions_json=json.dumps(self.ROSE_SOURCE_GRAPHICS),
+                dispatch_actor="publisher",
+                frame_review_mode="unverified-review-draft",
+            )
+
     def test_release_asset_size_guard_accepts_limit_and_rejects_oversize(self):
         validate_release_asset_size(1_950_000_000)
         with self.assertRaisesRegex(RuntimeError, "too large for a GitHub Release asset"):
@@ -371,8 +415,41 @@ class FullVideoSubtitleTests(unittest.TestCase):
         self.assertTrue(
             parse_source_graphics_regions(claimed_region)[0]["human_verified"]
         )
-        with self.assertRaisesRegex(RuntimeError, "no trusted controlled-cloud"):
-            require_trusted_mask_review("mask-lower-third")
+        frame_review = {
+            "reviewer_identity": "claimed-reviewer",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
+            },
+            "evidence_ref": "https://example.org/review",
+            "source_sha256": "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+        }
+        with (
+            patch(
+                "scripts.verify_rose_garden_review.file_sha256_and_size",
+                return_value=(
+                    "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+                    1,
+                ),
+            ),
+            self.assertRaisesRegex(RuntimeError, "base64 OpenSSH signature"),
+        ):
+            require_trusted_mask_review(
+                "mask-lower-third",
+                source_path=Path("pinned-test-source.mp4"),
+                source_width=1920,
+                source_height=1080,
+                source_duration=2193.261,
+                source_frame_review_record_json=json.dumps(frame_review),
+                source_frame_review_signature="",
+                source_graphics_regions_json=claimed_region,
+                dispatch_actor="publisher",
+            )
         out_of_frame = [
             {
                 "label": "source-lower-third",

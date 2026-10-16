@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 from datetime import datetime
 import hashlib
 import json
 import math
 import re
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -34,6 +37,12 @@ USER_PROVIDED_STILL_BANNER_BBOX = {
 }
 USER_PROVIDED_STILL_RESOLUTION = {"width": 1920, "height": 1080}
 USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE = 2
+FRAME_REVIEW_SIGNATURE_NAMESPACE = "rose-garden-frame-review"
+FRAME_REVIEW_ALLOWED_SIGNERS = (
+    Path(__file__).resolve().parents[1]
+    / ".github"
+    / "rose-garden-frame-review-allowed-signers"
+)
 
 
 def user_provided_still_measurement() -> dict[str, Any]:
@@ -68,6 +77,27 @@ def user_provided_still_measurement() -> dict[str, Any]:
         "controlled_cloud_frame_review": "not_verified",
         "production_bbox_input": False,
     }
+
+
+def user_still_source_graphics_regions(width: int, height: int) -> list[dict[str, Any]]:
+    if (width, height) != (
+        USER_PROVIDED_STILL_RESOLUTION["width"],
+        USER_PROVIDED_STILL_RESOLUTION["height"],
+    ):
+        raise RuntimeError(
+            "The user still estimate is only defined for its 1920x1080 resolution."
+        )
+    bbox = USER_PROVIDED_STILL_BANNER_BBOX
+    return [
+        {
+            "label": "source-lower-third-user-still-estimate",
+            "human_verified": False,
+            "x": bbox["left"] / width,
+            "y": bbox["top"] / height,
+            "width": (bbox["right"] - bbox["left"]) / width,
+            "height": (bbox["bottom"] - bbox["top"]) / height,
+        }
+    ]
 
 
 def render_caption_geometry_frame(ass_path: Path, width: int, height: int, start: float) -> bytes:
@@ -178,7 +208,11 @@ def inspect_caption_geometry_frame(
     return result
 
 
-def validate_caption_layout(manifest: dict[str, Any]) -> None:
+def validate_caption_layout(
+    manifest: dict[str, Any],
+    *,
+    expected_source_sha256: str | None = None,
+) -> None:
     checks = manifest.get("quality_checks")
     readability = checks.get("subtitle_readability") if isinstance(checks, dict) else None
     if not isinstance(readability, dict):
@@ -194,16 +228,127 @@ def validate_caption_layout(manifest: dict[str, Any]) -> None:
     if readability.get("caption_position_review") != "pending":
         raise RuntimeError("Rose Garden caption-position review must remain pending.")
     source_graphics_review = readability.get("source_graphics_review")
+    if not isinstance(source_graphics_review, dict) or readability.get(
+        "visual_frame_review"
+    ) != "not_verified":
+        raise RuntimeError(
+            "Rose Garden source-frame or visual review state is invalid."
+        )
+    trusted_review = source_graphics_review.get("trusted_frame_review")
     if (
-        not isinstance(source_graphics_review, dict)
-        or source_graphics_review.get("status") != "not_verified"
+        source_graphics_review.get("status") == "trusted_bbox_verified"
+        and source_graphics_review.get("review_status") == "verified"
+        and source_graphics_review.get("production_bbox_input") is True
+        and isinstance(trusted_review, dict)
+        and isinstance(trusted_review.get("record"), dict)
+        and isinstance(trusted_review.get("signature_base64"), str)
+    ):
+        record = trusted_review["record"]
+        if (
+            expected_source_sha256 is None
+            or record.get("source_sha256") != expected_source_sha256
+            or record.get("source_resolution")
+            != {
+                "width": int(str(manifest.get("resolution", "0x0")).split("x")[0]),
+                "height": int(str(manifest.get("resolution", "0x0")).split("x")[1]),
+            }
+        ):
+            raise RuntimeError(
+                "Trusted BBox review does not match the verified source SHA/resolution."
+            )
+        regions = source_graphics_review.get("regions")
+        signed_regions = [
+            {
+                "label": region["label"],
+                "human_verified": region.get("human_verified") is True,
+                **region["normalized_bbox"],
+            }
+            for region in regions
+            if isinstance(region, dict)
+            and isinstance(region.get("normalized_bbox"), dict)
+        ] if isinstance(regions, list) else []
+        validate_review_gates(
+            caption_position="mask-lower-third",
+            independent_rights_review_passed=False,
+            event_match_review_passed=False,
+            event_time_timezone_review_passed=False,
+            source_lineage_review_passed=False,
+            source_frame_review_record_json=json.dumps(record),
+            source_frame_review_signature=trusted_review["signature_base64"],
+            source_graphics_regions_json=json.dumps(signed_regions),
+            dispatch_actor="",
+            rights_evidence_url="",
+            event_match_evidence_url="",
+            event_time_timezone_evidence_url="",
+            source_lineage_evidence_url="",
+        )
+    elif source_graphics_review.get("status") == "user_provided_still_estimate":
+        expected_measurement = user_provided_still_measurement()
+        source_measurement = manifest.get("source_frame_measurement")
+        expected_regions = user_still_source_graphics_regions(
+            USER_PROVIDED_STILL_RESOLUTION["width"],
+            USER_PROVIDED_STILL_RESOLUTION["height"],
+        )
+        bbox = USER_PROVIDED_STILL_BANNER_BBOX
+        expected_pixel_bbox = {
+            "left": bbox["left"],
+            "top": bbox["top"],
+            "right": bbox["right"],
+            "bottom": bbox["bottom"],
+            "width": bbox["right"] - bbox["left"],
+            "height": bbox["bottom"] - bbox["top"],
+        }
+        expected_manifest_regions = [
+            {
+                "label": region["label"],
+                "human_verified": False,
+                "bbox_px": expected_pixel_bbox,
+                "normalized_bbox": {
+                    key: region[key] for key in ("x", "y", "width", "height")
+                },
+            }
+            for region in expected_regions
+        ]
+        if (
+            manifest.get("frame_review_mode") != "unverified-review-draft"
+            or source_graphics_review.get("review_status") != "pending"
+            or source_graphics_review.get("measurement_source")
+            != "user_provided_still"
+            or source_graphics_review.get("measurement_status")
+            != "unverified_still_estimate"
+            or source_graphics_review.get("production_bbox_input") is not False
+            or source_graphics_review.get("source_timecode") != "not_verified"
+            or source_graphics_review.get("source_provenance") != "not_verified"
+            or source_graphics_review.get("source_frame_review") != "pending"
+            or source_graphics_review.get("visual_review") != "pending"
+            or source_graphics_review.get("source_resolution_px")
+            != USER_PROVIDED_STILL_RESOLUTION
+            or source_graphics_review.get("user_provided_still_measurement")
+            != expected_measurement
+            or not isinstance(source_measurement, dict)
+            or any(
+                source_measurement.get(key) != value
+                for key, value in expected_measurement.items()
+            )
+            or source_measurement.get("review_status") != "pending"
+        ):
+            raise RuntimeError(
+                "User-still estimate metadata must remain unverified, pending, "
+                "and excluded from production BBox input."
+            )
+        regions = source_graphics_review.get("regions")
+        if regions != expected_manifest_regions:
+            raise RuntimeError(
+                "Rendered user-still estimate BBox does not match the fixed unverified input."
+            )
+        if expected_measurement.get("production_bbox_input") is not False:
+            raise RuntimeError("Still estimate cannot be production BBox input.")
+    elif (
+        source_graphics_review.get("status") != "not_verified"
         or source_graphics_review.get("review_status") != "pending"
         or source_graphics_review.get("production_bbox_input") is not False
-        or readability.get("visual_frame_review") != "not_verified"
     ):
-        raise RuntimeError(
-            "Rose Garden source-frame and visual review must remain unverified."
-        )
+        raise RuntimeError("Untrusted source-frame review cannot be production input.")
     if readability.get("horizontal_safe_width_percent") != CAPTION_SAFE_WIDTH_PERCENT:
         raise RuntimeError("Rose Garden captions do not use the BBC-referenced 68% line width.")
     if readability.get("max_lines_per_language") != 2:
@@ -327,6 +472,11 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     readability = manifest["quality_checks"]["subtitle_readability"]
     position = readability.get("caption_position")
     source_review = readability.get("source_graphics_review")
+    allow_unverified_estimate = (
+        isinstance(source_review, dict)
+        and source_review.get("status") == "user_provided_still_estimate"
+        and manifest.get("frame_review_mode") == "unverified-review-draft"
+    )
     regions = (
         [
             {
@@ -354,6 +504,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
             occlusion.get("padding_px_per_edge")
             if isinstance(occlusion, dict)
             else None,
+            allow_unverified_estimate,
         )
     except (KeyError, ValueError, RuntimeError) as error:
         raise RuntimeError(f"Generated ASS caption geometry is invalid: {error}") from error
@@ -442,10 +593,41 @@ def validate_layout_inputs(
     source_graphics_regions_json: str,
     rose_mask_authorized: bool,
     mask_padding_px_per_edge: int,
+    frame_review_mode: str = "trusted-signed-review",
 ) -> list[dict[str, Any]]:
     if caption_position not in {"top", "center", "mask-lower-third"}:
         raise RuntimeError("caption_position is not a supported Rose layout.")
     masking = caption_position == "mask-lower-third"
+    if frame_review_mode not in {
+        "trusted-signed-review",
+        "unverified-review-draft",
+    }:
+        raise RuntimeError("frame_review_mode is not supported.")
+    if masking and frame_review_mode == "unverified-review-draft":
+        try:
+            regions = json.loads(source_graphics_regions_json)
+        except json.JSONDecodeError as error:
+            raise RuntimeError(
+                "source_graphics_regions_json must be valid JSON."
+            ) from error
+        if regions != []:
+            raise RuntimeError(
+                "Unverified draft mode uses only the fixed user-still estimate; "
+                "do not supply a dispatch BBox."
+            )
+        if caption_safe_region_reviewed or not rose_mask_authorized:
+            raise RuntimeError(
+                "Unverified draft mode must stay pending and use the authorized Rose mask."
+            )
+        if (
+            not isinstance(mask_padding_px_per_edge, int)
+            or isinstance(mask_padding_px_per_edge, bool)
+            or mask_padding_px_per_edge != USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE
+        ):
+            raise RuntimeError(
+                "Unverified still-estimate masking requires exactly 2 px padding."
+            )
+        return []
     if masking and caption_safe_region_reviewed is not True:
         raise RuntimeError("Mask mode requires human review of the source banner BBox.")
     try:
@@ -531,15 +713,22 @@ def validate_review_gates(
     event_time_timezone_review_passed: bool,
     source_lineage_review_passed: bool,
     source_frame_review_record_json: str,
+    source_frame_review_signature: str = "",
     source_graphics_regions_json: str,
     dispatch_actor: str,
     rights_evidence_url: str,
     event_match_evidence_url: str,
     event_time_timezone_evidence_url: str,
     source_lineage_evidence_url: str,
+    frame_review_mode: str = "trusted-signed-review",
 ) -> dict[str, str]:
     if caption_position not in {"top", "center", "mask-lower-third"}:
         raise RuntimeError("caption_position is not a supported Rose layout.")
+    if frame_review_mode not in {
+        "trusted-signed-review",
+        "unverified-review-draft",
+    }:
+        raise RuntimeError("frame_review_mode is not supported.")
 
     evidence = {
         "independent_rights_review": rights_evidence_url,
@@ -557,6 +746,23 @@ def validate_review_gates(
             )
 
     if caption_position != "mask-lower-third":
+        return {
+            "source_frame_review": "pending",
+            "production_bbox_input": "false",
+        }
+    if frame_review_mode == "unverified-review-draft":
+        if source_frame_review_record_json not in {"", "{}"}:
+            raise RuntimeError(
+                "Unverified draft mode must not include a claimed frame-review record."
+            )
+        if source_frame_review_signature:
+            raise RuntimeError(
+                "Unverified draft mode must not include a production review signature."
+            )
+        if json.loads(source_graphics_regions_json) != []:
+            raise RuntimeError(
+                "Unverified draft mode uses only the fixed user-still estimate."
+            )
         return {
             "source_frame_review": "pending",
             "production_bbox_input": "false",
@@ -581,7 +787,11 @@ def validate_review_gates(
             "source timecode, resolution, banner BBox, and evidence reference."
         )
     reviewer = frame_review["reviewer_identity"]
-    if not isinstance(reviewer, str) or not reviewer.strip() or reviewer == dispatch_actor:
+    if (
+        not isinstance(reviewer, str)
+        or not reviewer.strip()
+        or reviewer.casefold() == dispatch_actor.casefold()
+    ):
         raise RuntimeError(
             "Source-frame BBox review must identify a reviewer other than the dispatcher."
         )
@@ -667,9 +877,137 @@ def validate_review_gates(
             "Mask source BBox does not match the independent source-frame review record."
         )
 
-    raise RuntimeError(
-        "Mask exception blocked: the supplied frame/BBox record is only an operator "
-        "attestation; no trusted controlled-cloud verifier is configured to confirm it."
+    verify_frame_review_signature(
+        frame_review,
+        source_frame_review_signature,
+        FRAME_REVIEW_ALLOWED_SIGNERS,
+    )
+    return {
+        "source_frame_review": "verified_by_trusted_signature",
+        "production_bbox_input": "true",
+    }
+
+
+def canonical_frame_review_payload(frame_review: dict[str, Any]) -> bytes:
+    return json.dumps(
+        frame_review,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+
+
+def verify_frame_review_signature(
+    frame_review: dict[str, Any],
+    signature_base64: str,
+    allowed_signers_path: Path = FRAME_REVIEW_ALLOWED_SIGNERS,
+) -> None:
+    if not signature_base64:
+        raise RuntimeError(
+            "Trusted frame review requires a valid base64 OpenSSH signature."
+        )
+    reviewer = frame_review.get("reviewer_identity")
+    if not isinstance(reviewer, str) or not re.fullmatch(
+        r"[A-Za-z0-9][A-Za-z0-9._@+-]{0,99}", reviewer
+    ):
+        raise RuntimeError(
+            "Trusted frame review requires a reviewer identity usable as an SSH principal."
+        )
+    try:
+        signature = base64.b64decode(signature_base64, validate=True)
+    except (binascii.Error, ValueError) as error:
+        raise RuntimeError(
+            "Trusted frame review requires a valid base64 OpenSSH signature."
+        ) from error
+    if not allowed_signers_path.is_file():
+        raise RuntimeError(
+            "Trusted frame review is unavailable: the SSH allowed-signers file "
+            "has not been configured."
+        )
+    allowed_entries = [
+        line for line in allowed_signers_path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    if not allowed_entries:
+        raise RuntimeError(
+            "Trusted frame review is unavailable: no reviewer public keys are configured."
+        )
+
+    with tempfile.TemporaryDirectory(prefix="rose-frame-review-") as directory:
+        signature_path = Path(directory) / "frame-review.sig"
+        signature_path.write_bytes(signature)
+        result = subprocess.run(
+            [
+                "ssh-keygen",
+                "-Y",
+                "verify",
+                "-f",
+                str(allowed_signers_path),
+                "-I",
+                reviewer,
+                "-n",
+                FRAME_REVIEW_SIGNATURE_NAMESPACE,
+                "-s",
+                str(signature_path),
+            ],
+            input=canonical_frame_review_payload(frame_review),
+            check=False,
+            capture_output=True,
+        )
+    if result.returncode:
+        details = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(
+            "Trusted frame review signature is invalid or not signed by the "
+            f"allowlisted reviewer {reviewer!r}: {details}"
+        )
+
+
+def validate_trusted_frame_review_for_render(
+    *,
+    source_path: Path,
+    source_width: int,
+    source_height: int,
+    source_duration: float,
+    source_frame_review_record_json: str,
+    source_frame_review_signature: str,
+    source_graphics_regions_json: str,
+    dispatch_actor: str,
+) -> dict[str, str]:
+    source_sha256, _ = file_sha256_and_size(source_path)
+    if source_sha256 != SOURCE_SHA256:
+        raise RuntimeError(
+            "Trusted frame review is bound to a different source SHA-256."
+        )
+    try:
+        record = json.loads(source_frame_review_record_json)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("source_frame_review_record_json must be valid JSON.") from error
+    if not isinstance(record, dict) or record.get("source_resolution") != {
+        "width": source_width,
+        "height": source_height,
+    }:
+        raise RuntimeError(
+            "Trusted frame review resolution does not match the probed source stream."
+        )
+    hours, minutes, seconds = (
+        float(part) for part in record["source_timecode"].split(":")
+    )
+    if hours * 3600 + minutes * 60 + seconds > source_duration:
+        raise RuntimeError("Trusted frame review timecode exceeds the source duration.")
+    return validate_review_gates(
+        caption_position="mask-lower-third",
+        independent_rights_review_passed=False,
+        event_match_review_passed=False,
+        event_time_timezone_review_passed=False,
+        source_lineage_review_passed=False,
+        source_frame_review_record_json=source_frame_review_record_json,
+        source_frame_review_signature=source_frame_review_signature,
+        source_graphics_regions_json=source_graphics_regions_json,
+        dispatch_actor=dispatch_actor,
+        rights_evidence_url="",
+        event_match_evidence_url="",
+        event_time_timezone_evidence_url="",
+        source_lineage_evidence_url="",
     )
 
 
@@ -835,7 +1173,10 @@ def finalize_review_manifest(
         raise RuntimeError("Render manifest duration or resolution does not match source.")
     if manifest.get("languages") != ["en", "zh-Hans"]:
         raise RuntimeError("Render manifest does not describe English and Simplified Chinese.")
-    validate_caption_layout(manifest)
+    validate_caption_layout(
+        manifest,
+        expected_source_sha256=source_details["sha256"],
+    )
 
     subtitle_files = manifest.get("subtitle_files")
     if not isinstance(subtitle_files, list) or not subtitle_files:
@@ -929,7 +1270,13 @@ def main() -> None:
     parser.add_argument("--rose-mask-authorized", action="store_true")
     parser.add_argument("--mask-padding-px-per-edge", type=int, default=2)
     parser.add_argument("--source-frame-review-record-json", default="{}")
+    parser.add_argument("--source-frame-review-signature", default="")
     parser.add_argument("--dispatch-actor", default="")
+    parser.add_argument(
+        "--frame-review-mode",
+        choices=("trusted-signed-review", "unverified-review-draft"),
+        default="trusted-signed-review",
+    )
     parser.add_argument("--independent-rights-review-passed", action="store_true")
     parser.add_argument("--event-match-review-passed", action="store_true")
     parser.add_argument("--event-time-timezone-review-passed", action="store_true")
@@ -968,6 +1315,7 @@ def main() -> None:
             source_graphics_regions_json=args.source_graphics_regions_json,
             rose_mask_authorized=args.rose_mask_authorized,
             mask_padding_px_per_edge=args.mask_padding_px_per_edge,
+            frame_review_mode=args.frame_review_mode,
         )
         return
     if args.validate_review_gates:
@@ -978,12 +1326,14 @@ def main() -> None:
             event_time_timezone_review_passed=args.event_time_timezone_review_passed,
             source_lineage_review_passed=args.source_lineage_review_passed,
             source_frame_review_record_json=args.source_frame_review_record_json,
+            source_frame_review_signature=args.source_frame_review_signature,
             source_graphics_regions_json=args.source_graphics_regions_json,
             dispatch_actor=args.dispatch_actor,
             rights_evidence_url=args.rights_evidence_url,
             event_match_evidence_url=args.event_match_evidence_url,
             event_time_timezone_evidence_url=args.event_time_timezone_evidence_url,
             source_lineage_evidence_url=args.source_lineage_evidence_url,
+            frame_review_mode=args.frame_review_mode,
         )
         print(json.dumps(result, ensure_ascii=False))
         return

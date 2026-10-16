@@ -1,0 +1,3 @@
+# Add one authorized reviewer key per line through a reviewed change to main:
+# <GitHub-login> namespaces="rose-garden-frame-review" <SSH-public-key>
+# This file is intentionally empty until a maintainer approves a real reviewer key.

@@ -1,5 +1,7 @@
 import hashlib
+import base64
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,6 +11,7 @@ from scripts import verify_rose_garden_review as review
 from scripts.process_full_video import (
     Cue,
     ROSE_GARDEN_SUBTITLE_LAYOUT,
+    require_trusted_mask_review,
     verify_cues,
     write_ass,
 )
@@ -35,9 +38,14 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
     ]
 
     @staticmethod
-    def synthetic_caption_frame(width, height):
+    def synthetic_caption_frame(width, height, mask=None):
         pixels = bytearray([255, 0, 0] * width * height)
-        mask = {"left": 190, "top": 732, "right": 1730, "bottom": 1060}
+        mask = mask or {
+            "left": 190,
+            "top": 732,
+            "right": 1730,
+            "bottom": 1060,
+        }
         for y in range(mask["top"], mask["bottom"]):
             for x in range(mask["left"], mask["right"]):
                 offset = (y * width + x) * 3
@@ -48,6 +56,80 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 offset = (y * width + x) * 3
                 pixels[offset:offset + 3] = bytes((255, 255, 255))
         return bytes(pixels)
+
+    @staticmethod
+    def sign_frame_review(frame_record, directory):
+        root = Path(directory)
+        private_key = root / "reviewer"
+        subprocess.run(
+            ["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-f", str(private_key)],
+            check=True,
+            capture_output=True,
+        )
+        public_key = private_key.with_suffix(".pub").read_text(encoding="utf-8").split()
+        allowed_signers = root / "allowed_signers"
+        allowed_signers.write_text(
+            f'{frame_record["reviewer_identity"]} '
+            f'namespaces="{review.FRAME_REVIEW_SIGNATURE_NAMESPACE}" '
+            f"{public_key[0]} {public_key[1]}\n",
+            encoding="utf-8",
+        )
+        payload = root / "frame-review.json"
+        payload.write_bytes(review.canonical_frame_review_payload(frame_record))
+        subprocess.run(
+            [
+                "ssh-keygen",
+                "-Y",
+                "sign",
+                "-f",
+                str(private_key),
+                "-n",
+                review.FRAME_REVIEW_SIGNATURE_NAMESPACE,
+                str(payload),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        signature = base64.b64encode(Path(f"{payload}.sig").read_bytes()).decode("ascii")
+        return allowed_signers, signature
+
+    @staticmethod
+    def sign_frame_review(frame_record, directory):
+        root = Path(directory)
+        private_key = root / "reviewer"
+        subprocess.run(
+            ["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-f", str(private_key)],
+            check=True,
+            capture_output=True,
+        )
+        public_key = private_key.with_suffix(".pub").read_text(encoding="utf-8").split()
+        allowed_signers = root / "allowed_signers"
+        allowed_signers.write_text(
+            f'{frame_record["reviewer_identity"]} '
+            f'namespaces="{review.FRAME_REVIEW_SIGNATURE_NAMESPACE}" '
+            f"{public_key[0]} {public_key[1]}\n",
+            encoding="utf-8",
+        )
+        payload = root / "review.json"
+        payload.write_bytes(review.canonical_frame_review_payload(frame_record))
+        subprocess.run(
+            [
+                "ssh-keygen",
+                "-Y",
+                "sign",
+                "-f",
+                str(private_key),
+                "-n",
+                review.FRAME_REVIEW_SIGNATURE_NAMESPACE,
+                str(payload),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        return (
+            allowed_signers,
+            base64.b64encode(Path(f"{payload}.sig").read_bytes()).decode("ascii"),
+        )
 
     def test_workflow_pins_cloud_source_and_only_deploys_after_render(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
@@ -77,6 +159,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "inputs.source_lineage_review_passed",
             "inputs.source_lineage_evidence_url",
             "inputs.source_frame_review_record_json",
+            "inputs.source_frame_review_signature",
+            "inputs.frame_review_mode",
             "inputs.caption_position",
             "inputs.caption_safe_region_reviewed",
             "inputs.source_graphics_regions_json",
@@ -105,6 +189,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "--validate-review-gates",
             "--caption-position",
             "--source-frame-review-record-json",
+            "--source-frame-review-signature",
+            "--frame-review-mode",
         ):
             self.assertIn(arg, render)
         self.assertIn("verify_operation_audit.py", render)
@@ -222,6 +308,167 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             ):
                 review.validate_layout_inputs(**(valid | mutation))
 
+    def test_unverified_still_estimate_renders_pending_draft_without_signature(self):
+        layout = {
+            "caption_position": "mask-lower-third",
+            "caption_safe_region_reviewed": False,
+            "source_graphics_regions_json": "[]",
+            "rose_mask_authorized": True,
+            "mask_padding_px_per_edge": 2,
+            "frame_review_mode": "unverified-review-draft",
+        }
+        self.assertEqual(review.validate_layout_inputs(**layout), [])
+        with self.assertRaisesRegex(RuntimeError, "exactly 2 px"):
+            review.validate_layout_inputs(
+                **(layout | {"mask_padding_px_per_edge": 3})
+            )
+
+        review_inputs = {
+            "caption_position": "mask-lower-third",
+            "independent_rights_review_passed": False,
+            "event_match_review_passed": False,
+            "event_time_timezone_review_passed": False,
+            "source_lineage_review_passed": False,
+            "source_frame_review_record_json": "{}",
+            "source_frame_review_signature": "",
+            "source_graphics_regions_json": "[]",
+            "dispatch_actor": "publisher",
+            "rights_evidence_url": "",
+            "event_match_evidence_url": "",
+            "event_time_timezone_evidence_url": "",
+            "source_lineage_evidence_url": "",
+            "frame_review_mode": "unverified-review-draft",
+        }
+        pending_review = {
+            "source_frame_review": "pending",
+            "production_bbox_input": "false",
+        }
+        self.assertEqual(
+            review.validate_review_gates(**review_inputs),
+            pending_review,
+        )
+        with self.assertRaisesRegex(RuntimeError, "must not include"):
+            review.validate_review_gates(
+                **(review_inputs | {"source_frame_review_signature": "signature"})
+            )
+
+        with patch.object(
+            review,
+            "file_sha256_and_size",
+            return_value=(review.SOURCE_SHA256, review.SOURCE_SIZE_BYTES),
+        ):
+            self.assertEqual(
+                require_trusted_mask_review(
+                    "mask-lower-third",
+                    source_path=Path("pinned-source.mp4"),
+                    source_width=1920,
+                    source_height=1080,
+                    source_duration=2193.261,
+                    source_frame_review_record_json="{}",
+                    source_frame_review_signature="",
+                    source_graphics_regions_json="[]",
+                    dispatch_actor="publisher",
+                    frame_review_mode="unverified-review-draft",
+                ),
+                {
+                    "source_frame_review": "pending",
+                    "production_bbox_input": "false",
+                    "measurement_status": "unverified_still_estimate",
+                },
+            )
+
+        regions = review.user_still_source_graphics_regions(1920, 1080)
+        cue = Cue(1, 3, "Hello, everybody.", "大家好。")
+        with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            ass_name = f"{review.ASSET_PREFIX}.en-zh.ass"
+            ass_path = output_dir / ass_name
+            write_ass(
+                ass_path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=regions,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
+                allow_unverified_estimate=True,
+            )
+            readability = verify_cues(
+                [cue],
+                duration=10,
+                width=1920,
+                height=1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                caption_safe_region_reviewed=False,
+                source_graphics_regions=regions,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
+                allow_unverified_estimate=True,
+            )["subtitle_readability"]
+            still_measurement = review.user_provided_still_measurement()
+            manifest = {
+                "frame_review_mode": "unverified-review-draft",
+                "source_frame_measurement": still_measurement
+                | {"review_status": "pending"},
+                "resolution": "1920x1080",
+                "subtitle_ass_file": ass_name,
+                "subtitle_ass_sha256": hashlib.sha256(
+                    ass_path.read_bytes()
+                ).hexdigest(),
+                "quality_checks": {"subtitle_readability": readability},
+            }
+            review.validate_caption_layout(
+                manifest,
+                expected_source_sha256=review.SOURCE_SHA256,
+            )
+            (output_dir / f"{review.ASSET_PREFIX}.en.srt").write_text(
+                "1\n00:00:01,000 --> 00:00:03,000\nHello, everybody.\n",
+                encoding="utf-8",
+            )
+            (output_dir / f"{review.ASSET_PREFIX}.zh-Hans.srt").write_text(
+                "1\n00:00:01,000 --> 00:00:03,000\n大家好。\n",
+                encoding="utf-8",
+            )
+            mask = readability["caption_band_occlusion"]["mask_bbox_px"]
+            with patch.object(
+                review,
+                "render_caption_geometry_frame",
+                side_effect=lambda _path, width, height, _start: (
+                    self.synthetic_caption_frame(width, height, mask)
+                ),
+            ):
+                ass_validation = review.validate_caption_ass(
+                    manifest,
+                    output_dir,
+                )
+
+        self.assertEqual(ass_validation["visual_frame_review"], "pending")
+        source_review = readability["source_graphics_review"]
+        self.assertEqual(source_review["measurement_source"], "user_provided_still")
+        self.assertEqual(
+            source_review["measurement_status"],
+            "unverified_still_estimate",
+        )
+        self.assertIs(source_review["production_bbox_input"], False)
+        self.assertEqual(source_review["source_timecode"], "not_verified")
+        self.assertEqual(source_review["source_provenance"], "not_verified")
+        self.assertEqual(source_review["review_status"], "pending")
+        self.assertEqual(
+            readability["caption_band_occlusion"]["mask_bbox_px"],
+            {
+                "left": 66,
+                "top": 883,
+                "right": 1852,
+                "bottom": 1022,
+                "width": 1786,
+                "height": 139,
+                "mask_padding_px_per_edge": 2,
+            },
+        )
+
     def test_review_gates_allow_nonmask_layout_with_frame_review_pending(self):
         frame_record = {
             "reviewer_identity": "reviewer@example.org",
@@ -322,7 +569,7 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             review.validate_review_gates(**values)
 
         values["source_frame_review_record_json"] = json.dumps(frame_record)
-        with self.assertRaisesRegex(RuntimeError, "only an operator attestation"):
+        with self.assertRaisesRegex(RuntimeError, "base64 OpenSSH signature"):
             review.validate_review_gates(**values)
 
         out_of_bounds = dict(frame_record)
@@ -349,6 +596,292 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                     }
                 )
             )
+
+    def test_trusted_signed_review_passes_gate_and_mask_renderer(self):
+        frame_record = {
+            "reviewer_identity": "reviewer-login",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
+            },
+            "evidence_ref": "https://example.org/review/123",
+            "source_sha256": review.SOURCE_SHA256,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            allowed_signers, signature = self.sign_frame_review(
+                frame_record, temporary
+            )
+            values = {
+                "caption_position": "mask-lower-third",
+                "independent_rights_review_passed": False,
+                "event_match_review_passed": False,
+                "event_time_timezone_review_passed": False,
+                "source_lineage_review_passed": False,
+                "source_frame_review_record_json": json.dumps(frame_record),
+                "source_frame_review_signature": signature,
+                "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
+                "dispatch_actor": "publisher",
+                "rights_evidence_url": "",
+                "event_match_evidence_url": "",
+                "event_time_timezone_evidence_url": "",
+                "source_lineage_evidence_url": "",
+            }
+            expected = {
+                "source_frame_review": "verified_by_trusted_signature",
+                "production_bbox_input": "true",
+            }
+            with patch.object(review, "FRAME_REVIEW_ALLOWED_SIGNERS", allowed_signers):
+                self.assertEqual(review.validate_review_gates(**values), expected)
+                readability = verify_cues(
+                    [Cue(1, 3, "Hello, everybody.", "\u5927\u5bb6\u597d\u3002")],
+                    duration=10,
+                    width=1920,
+                    height=1080,
+                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                    caption_position="mask-lower-third",
+                    caption_safe_region_reviewed=True,
+                    source_graphics_regions=self.SOURCE_GRAPHICS,
+                    occlusion_exception_authorized=True,
+                    mask_padding_px_per_edge=2,
+                    trusted_frame_review={
+                        "record": frame_record,
+                        "signature_base64": signature,
+                    },
+                )["subtitle_readability"]
+                self.assertTrue(
+                    readability["source_graphics_review"]["production_bbox_input"]
+                )
+                self.assertEqual(
+                    readability["source_graphics_review"]["review_status"],
+                    "verified",
+                )
+                review.validate_caption_layout(
+                    {
+                        "resolution": "1920x1080",
+                        "quality_checks": {"subtitle_readability": readability},
+                    },
+                    expected_source_sha256=review.SOURCE_SHA256,
+                )
+                with patch.object(
+                    review,
+                    "file_sha256_and_size",
+                    return_value=(review.SOURCE_SHA256, 123),
+                ):
+                    self.assertEqual(
+                        require_trusted_mask_review(
+                            "mask-lower-third",
+                            source_path=Path(temporary) / review.SOURCE_ASSET,
+                            source_width=1920,
+                            source_height=1080,
+                            source_duration=2193.261,
+                            source_frame_review_record_json=json.dumps(frame_record),
+                            source_frame_review_signature=signature,
+                            source_graphics_regions_json=json.dumps(self.SOURCE_GRAPHICS),
+                            dispatch_actor="publisher",
+                        ),
+                        expected,
+                    )
+
+    def test_trusted_signature_rejects_tampering_bbox_mismatch_and_missing_key(self):
+        frame_record = {
+            "reviewer_identity": "reviewer-login",
+            "reviewed_at": "2026-10-16T02:00:00Z",
+            "source_timecode": "00:10:30.000",
+            "source_resolution": {"width": 1920, "height": 1080},
+            "source_banner_bbox_px": {
+                "left": 192,
+                "top": 734,
+                "right": 1728,
+                "bottom": 1058,
+            },
+            "evidence_ref": "https://example.org/review/123",
+            "source_sha256": review.SOURCE_SHA256,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            allowed_signers, signature = self.sign_frame_review(
+                frame_record, temporary
+            )
+            base = {
+                "caption_position": "mask-lower-third",
+                "independent_rights_review_passed": False,
+                "event_match_review_passed": False,
+                "event_time_timezone_review_passed": False,
+                "source_lineage_review_passed": False,
+                "source_frame_review_record_json": json.dumps(frame_record),
+                "source_frame_review_signature": signature,
+                "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
+                "dispatch_actor": "publisher",
+                "rights_evidence_url": "",
+                "event_match_evidence_url": "",
+                "event_time_timezone_evidence_url": "",
+                "source_lineage_evidence_url": "",
+            }
+            with patch.object(review, "FRAME_REVIEW_ALLOWED_SIGNERS", allowed_signers):
+                tampered_record = frame_record | {
+                    "source_timecode": "00:10:31.000"
+                }
+                with self.assertRaisesRegex(RuntimeError, "signature is invalid"):
+                    review.validate_review_gates(
+                        **(
+                            base
+                            | {
+                                "source_frame_review_record_json": json.dumps(
+                                    tampered_record
+                                )
+                            }
+                        )
+                    )
+                changed_regions = [
+                    self.SOURCE_GRAPHICS[0] | {"x": 0.11}
+                ]
+                with self.assertRaisesRegex(RuntimeError, "does not match"):
+                    review.validate_review_gates(
+                        **(
+                            base
+                            | {
+                                "source_graphics_regions_json": json.dumps(
+                                    changed_regions
+                                )
+                            }
+                        )
+                    )
+            with patch.object(
+                review,
+                "FRAME_REVIEW_ALLOWED_SIGNERS",
+                Path(temporary) / "not-configured",
+            ):
+                with self.assertRaisesRegex(RuntimeError, "has not been configured"):
+                    review.validate_review_gates(**base)
+
+    def test_allowlisted_signed_review_passes_mask_gate_and_renderer(self):
+        frame_record = {
+                    "reviewer_identity": "reviewer@example.org",
+                    "reviewed_at": "2026-10-16T02:00:00Z",
+                    "source_timecode": "00:10:30.000",
+                    "source_resolution": {"width": 1920, "height": 1080},
+                    "source_banner_bbox_px": {
+                        "left": 192,
+                        "top": 734,
+                        "right": 1728,
+                        "bottom": 1058,
+                    },
+                    "evidence_ref": "https://example.org/review/123",
+                    "source_sha256": review.SOURCE_SHA256,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+                    allowed_signers, signature = self.sign_frame_review(
+                        frame_record, temporary
+                    )
+                    values = {
+                        "caption_position": "mask-lower-third",
+                        "independent_rights_review_passed": False,
+                        "event_match_review_passed": False,
+                        "event_time_timezone_review_passed": False,
+                        "source_lineage_review_passed": False,
+                        "source_frame_review_record_json": json.dumps(frame_record),
+                        "source_frame_review_signature": signature,
+                        "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
+                        "dispatch_actor": "publisher",
+                        "rights_evidence_url": "",
+                        "event_match_evidence_url": "",
+                        "event_time_timezone_evidence_url": "",
+                        "source_lineage_evidence_url": "",
+                    }
+                    expected = {
+                        "source_frame_review": "verified_by_trusted_signature",
+                        "production_bbox_input": "true",
+                    }
+                    with patch.object(review, "FRAME_REVIEW_ALLOWED_SIGNERS", allowed_signers):
+                        self.assertEqual(review.validate_review_gates(**values), expected)
+                        with patch.object(
+                            review,
+                            "file_sha256_and_size",
+                            return_value=(review.SOURCE_SHA256, 1),
+                        ):
+                            self.assertEqual(
+                                require_trusted_mask_review(
+                                    "mask-lower-third",
+                                    source_path=Path(temporary) / review.SOURCE_ASSET,
+                                    source_width=1920,
+                                    source_height=1080,
+                                    source_duration=2193.261,
+                                    source_frame_review_record_json=json.dumps(frame_record),
+                                    source_frame_review_signature=signature,
+                                    source_graphics_regions_json=json.dumps(self.SOURCE_GRAPHICS),
+                                    dispatch_actor="publisher",
+                                ),
+                                expected,
+                            )
+
+    def test_signed_review_rejects_tampered_payload_bbox_mismatch_and_missing_key(self):
+        frame_record = {
+                    "reviewer_identity": "reviewer@example.org",
+                    "reviewed_at": "2026-10-16T02:00:00Z",
+                    "source_timecode": "00:10:30.000",
+                    "source_resolution": {"width": 1920, "height": 1080},
+                    "source_banner_bbox_px": {
+                        "left": 192,
+                        "top": 734,
+                        "right": 1728,
+                        "bottom": 1058,
+                    },
+                    "evidence_ref": "https://example.org/review/123",
+                    "source_sha256": review.SOURCE_SHA256,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+                    allowed_signers, signature = self.sign_frame_review(
+                        frame_record, temporary
+                    )
+                    base = {
+                        "caption_position": "mask-lower-third",
+                        "independent_rights_review_passed": False,
+                        "event_match_review_passed": False,
+                        "event_time_timezone_review_passed": False,
+                        "source_lineage_review_passed": False,
+                        "source_frame_review_record_json": json.dumps(frame_record),
+                        "source_frame_review_signature": signature,
+                        "source_graphics_regions_json": json.dumps(self.SOURCE_GRAPHICS),
+                        "dispatch_actor": "publisher",
+                        "rights_evidence_url": "",
+                        "event_match_evidence_url": "",
+                        "event_time_timezone_evidence_url": "",
+                        "source_lineage_evidence_url": "",
+                    }
+                    with patch.object(review, "FRAME_REVIEW_ALLOWED_SIGNERS", allowed_signers):
+                        tampered = frame_record | {"source_timecode": "00:10:31.000"}
+                        with self.assertRaisesRegex(RuntimeError, "signature is invalid"):
+                            review.validate_review_gates(
+                                **(
+                                    base
+                                    | {"source_frame_review_record_json": json.dumps(tampered)}
+                                )
+                            )
+                        changed_regions = [
+                            self.SOURCE_GRAPHICS[0] | {"x": 0.11}
+                        ]
+                        with self.assertRaisesRegex(RuntimeError, "does not match"):
+                            review.validate_review_gates(
+                                **(
+                                    base
+                                    | {
+                                        "source_graphics_regions_json": json.dumps(
+                                            changed_regions
+                                        )
+                                    }
+                                )
+                            )
+                    with patch.object(
+                        review,
+                        "FRAME_REVIEW_ALLOWED_SIGNERS",
+                        Path(temporary) / "missing-allowlist",
+                    ):
+                        with self.assertRaisesRegex(RuntimeError, "has not been configured"):
+                            review.validate_review_gates(**base)
 
     def test_user_still_bbox_is_recorded_as_unverified_and_not_production_input(self):
         measurement = review.user_provided_still_measurement()
@@ -386,6 +919,26 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 source_graphics_regions_json="[]",
                 rose_mask_authorized=True,
                 mask_padding_px_per_edge=2,
+            )
+        self.assertEqual(
+            review.validate_layout_inputs(
+                caption_position="mask-lower-third",
+                caption_safe_region_reviewed=False,
+                source_graphics_regions_json="[]",
+                rose_mask_authorized=True,
+                mask_padding_px_per_edge=2,
+                frame_review_mode="unverified-review-draft",
+            ),
+            [],
+        )
+        with self.assertRaisesRegex(RuntimeError, "only the fixed user-still estimate"):
+            review.validate_layout_inputs(
+                caption_position="mask-lower-third",
+                caption_safe_region_reviewed=False,
+                source_graphics_regions_json=json.dumps(self.SOURCE_GRAPHICS),
+                rose_mask_authorized=True,
+                mask_padding_px_per_edge=2,
+                frame_review_mode="unverified-review-draft",
             )
         with self.assertRaisesRegex(RuntimeError, "reviewer, timestamp"):
             review.validate_review_gates(
@@ -650,6 +1203,41 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
         review.validate_caption_layout(
             {"quality_checks": {"subtitle_readability": readability}}
         )
+
+    def test_user_still_estimate_draft_manifest_stays_pending_and_nonproduction(self):
+        regions = review.user_still_source_graphics_regions(1920, 1080)
+        measurement = review.user_provided_still_measurement()
+        readability = verify_cues(
+            [Cue(1, 3, "Hello, everybody.", "\u5927\u5bb6\u597d\u3002")],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            caption_safe_region_reviewed=False,
+            source_graphics_regions=regions,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
+            allow_unverified_estimate=True,
+        )["subtitle_readability"]
+        source_review = readability["source_graphics_review"]
+        self.assertEqual(source_review["status"], "user_provided_still_estimate")
+        self.assertEqual(source_review["review_status"], "pending")
+        self.assertFalse(source_review["production_bbox_input"])
+        manifest = {
+            "resolution": "1920x1080",
+            "frame_review_mode": "unverified-review-draft",
+            "source_frame_measurement": {**measurement, "review_status": "pending"},
+            "quality_checks": {"subtitle_readability": readability},
+        }
+        review.validate_caption_layout(
+            manifest,
+            expected_source_sha256=review.SOURCE_SHA256,
+        )
+
+        source_review["production_bbox_input"] = True
+        with self.assertRaisesRegex(RuntimeError, "pending"):
+            review.validate_caption_layout(manifest)
 
     def test_caption_layout_gate_rejects_missing_or_unsafe_contracts(self):
         valid = verify_cues(

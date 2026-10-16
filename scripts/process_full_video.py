@@ -647,6 +647,7 @@ def rose_caption_region(
     position: str,
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> dict[str, int]:
     if position in ROSE_CAPTION_POSITIONS:
         top_percent, bottom_percent = ROSE_CAPTION_POSITIONS[position]
@@ -675,7 +676,11 @@ def rose_caption_region(
     )
     if banner is None:
         raise ValueError("A human-reviewed lower-third/ticker box is required.")
-    if banner.get("human_verified") is not True:
+    if banner.get("human_verified") is not True and not (
+        allow_unverified_estimate
+        and banner.get("label") == "source-lower-third-user-still-estimate"
+        and banner.get("human_verified") is False
+    ):
         raise ValueError(
             "The source lower-third BBox must be explicitly human-verified."
         )
@@ -686,6 +691,10 @@ def rose_caption_region(
     ):
         raise ValueError(
             "Mask exception requires an explicit 1-5 px per-edge padding value."
+        )
+    if allow_unverified_estimate and mask_padding_px_per_edge != 2:
+        raise ValueError(
+            "The fixed user-still draft estimate requires exactly 2 px padding."
         )
     padding = mask_padding_px_per_edge
     left = round(float(banner["x"]) * width) - padding
@@ -816,6 +825,7 @@ def validate_rose_caption_placement(
     source_graphics_regions: list[dict[str, float | str]],
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> dict[str, int]:
     if position not in ROSE_CAPTION_POSITIONS and position != "mask-lower-third":
         raise ValueError(f"Unsupported Rose Garden caption position: {position!r}.")
@@ -830,10 +840,11 @@ def validate_rose_caption_placement(
         position,
         source_graphics_regions,
         mask_padding_px_per_edge,
+        allow_unverified_estimate=allow_unverified_estimate,
     )
     if not is_masking:
         return region
-    if safe_region_reviewed is not True:
+    if safe_region_reviewed is not True and not allow_unverified_estimate:
         raise ValueError(
             "Mask mode requires human review of the production source-banner BBox."
         )
@@ -846,8 +857,22 @@ def validate_rose_caption_placement(
             "Human-verified source graphics BBoxes, including exactly one "
             "lower-third, are required; fail closed without them."
         )
+    if allow_unverified_estimate and (
+        safe_region_reviewed is True
+        or lower_thirds[0].get("label") != "source-lower-third-user-still-estimate"
+        or lower_thirds[0].get("human_verified") is not False
+        or len(source_graphics_regions) != 1
+    ):
+        raise ValueError(
+            "Unverified draft masking accepts only the fixed user-still estimate "
+            "and cannot claim reviewed geometry."
+        )
     for protected in source_graphics_regions:
-        if protected.get("human_verified") is not True:
+        if protected.get("human_verified") is not True and not (
+            allow_unverified_estimate
+            and protected.get("label") == "source-lower-third-user-still-estimate"
+            and protected.get("human_verified") is False
+        ):
             raise ValueError(
                 f"Source graphic {protected['label']!r} lacks human verification."
             )
@@ -878,12 +903,68 @@ def validate_rose_caption_placement(
     return region
 
 
-def require_trusted_mask_review(position: str) -> None:
-    if position == "mask-lower-third":
-        raise RuntimeError(
-            "Mask production rendering is blocked: no trusted controlled-cloud "
-            "source-frame/BBox verifier is configured."
+def require_trusted_mask_review(
+    position: str,
+    *,
+    source_path: Path,
+    source_width: int,
+    source_height: int,
+    source_duration: float,
+    source_frame_review_record_json: str,
+    source_frame_review_signature: str,
+    source_graphics_regions_json: str,
+    dispatch_actor: str,
+    frame_review_mode: str = "trusted-signed-review",
+) -> dict[str, str] | None:
+    if position != "mask-lower-third":
+        return None
+    from scripts.verify_rose_garden_review import (
+        validate_trusted_frame_review_for_render,
+    )
+
+    if frame_review_mode == "unverified-review-draft":
+        from scripts.verify_rose_garden_review import (
+            file_sha256_and_size,
+            user_still_source_graphics_regions,
+            SOURCE_SHA256,
+            SOURCE_SIZE_BYTES,
         )
+
+        if source_frame_review_record_json not in {"", "{}"} or source_frame_review_signature:
+            raise RuntimeError(
+                "Unverified review drafts cannot claim or carry a trusted frame review."
+            )
+        if source_graphics_regions_json != "[]":
+            raise RuntimeError(
+                "Unverified review drafts use only the fixed user-still estimate."
+            )
+        if (source_width, source_height) != (1920, 1080):
+            raise RuntimeError(
+                "Unverified still-estimate masking requires the actual 1920x1080 source."
+            )
+        source_sha256, source_size = file_sha256_and_size(source_path)
+        if source_sha256 != SOURCE_SHA256 or source_size != SOURCE_SIZE_BYTES:
+            raise RuntimeError(
+                "Unverified draft source does not match the pinned release asset."
+            )
+        user_still_source_graphics_regions(source_width, source_height)
+        return {
+            "source_frame_review": "pending",
+            "production_bbox_input": "false",
+            "measurement_status": "unverified_still_estimate",
+        }
+    if frame_review_mode != "trusted-signed-review":
+        raise RuntimeError("Unsupported frame review mode.")
+    return validate_trusted_frame_review_for_render(
+        source_path=source_path,
+        source_width=source_width,
+        source_height=source_height,
+        source_duration=source_duration,
+        source_frame_review_record_json=source_frame_review_record_json,
+        source_frame_review_signature=source_frame_review_signature,
+        source_graphics_regions_json=source_graphics_regions_json,
+        dispatch_actor=dispatch_actor,
+    )
 
 
 def _estimated_text_width(text: str, font_size: int) -> float:
@@ -967,6 +1048,7 @@ def _rose_caption_geometry(
     position: str,
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> dict[str, int]:
     if len(english_lines) > 2 or len(chinese_lines) > 2:
         raise ValueError("Caption language exceeds the two-line layout limit.")
@@ -976,6 +1058,7 @@ def _rose_caption_geometry(
         position,
         source_graphics_regions,
         mask_padding_px_per_edge,
+        allow_unverified_estimate=allow_unverified_estimate,
     )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
@@ -1025,16 +1108,18 @@ def _write_rose_garden_source_aware_ass(
     occlusion_exception_authorized: bool,
     mask_padding_px_per_edge: int | None = None,
     word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> bool:
     chinese_font, english_font, *_ = _rose_garden_wrap_limits(width, height)
     caption_region = validate_rose_caption_placement(
         width=width,
         height=height,
         position=caption_position,
-        safe_region_reviewed=True,
+        safe_region_reviewed=not allow_unverified_estimate,
         source_graphics_regions=source_graphics_regions,
         occlusion_exception_authorized=occlusion_exception_authorized,
         mask_padding_px_per_edge=mask_padding_px_per_edge,
+        allow_unverified_estimate=allow_unverified_estimate,
     )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
@@ -1061,6 +1146,7 @@ def _write_rose_garden_source_aware_ass(
                 position=caption_position,
                 source_graphics_regions=source_graphics_regions,
                 mask_padding_px_per_edge=mask_padding_px_per_edge,
+                allow_unverified_estimate=allow_unverified_estimate,
             )
         except ValueError as error:
             raise ValueError(
@@ -1188,6 +1274,7 @@ def _write_rose_garden_source_aware_ass(
         source_graphics_regions,
         occlusion_exception_authorized,
         mask_padding_px_per_edge,
+        allow_unverified_estimate,
     )
     return word_timings is not None
 
@@ -1201,6 +1288,7 @@ def _verify_rose_garden_ass(
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> None:
     subtitles = pysubs2.load(str(path), encoding="utf-8")
     has_mask = caption_position == "mask-lower-third"
@@ -1219,6 +1307,7 @@ def _verify_rose_garden_ass(
         caption_position,
         source_graphics_regions,
         mask_padding_px_per_edge,
+        allow_unverified_estimate=allow_unverified_estimate,
     )
     expected_position = (
         f"\\pos({round(width / 2)},{region['top']})"
@@ -1271,6 +1360,7 @@ def _verify_rose_garden_ass(
             position=caption_position,
             source_graphics_regions=source_graphics_regions,
             mask_padding_px_per_edge=mask_padding_px_per_edge,
+            allow_unverified_estimate=allow_unverified_estimate,
         )
         if (
             caption.layer != (1 if has_mask else 0)
@@ -1527,6 +1617,7 @@ def write_ass(
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> bool:
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
         _chinese_font, _english_font, _max_chinese, max_english = (
@@ -1608,6 +1699,7 @@ def write_ass(
             occlusion_exception_authorized,
             mask_padding_px_per_edge,
             word_timings,
+            allow_unverified_estimate,
         )
 
     chinese_font = max(32, round(height * 0.052))
@@ -1720,8 +1812,10 @@ def verify_cues(
     caption_position: str = "top",
     caption_safe_region_reviewed: bool = False,
     source_graphics_regions: list[dict[str, float | str]] | None = None,
+    trusted_frame_review: dict[str, object] | None = None,
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
+    allow_unverified_estimate: bool = False,
 ) -> dict[str, object]:
     if not cues:
         raise RuntimeError("Caption verification failed: there are no cues.")
@@ -1785,6 +1879,7 @@ def verify_cues(
             source_graphics_regions=regions,
             occlusion_exception_authorized=occlusion_exception_authorized,
             mask_padding_px_per_edge=mask_padding_px_per_edge,
+            allow_unverified_estimate=allow_unverified_estimate,
         )
         safe_width = min(
             round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
@@ -1813,6 +1908,7 @@ def verify_cues(
                     position=caption_position,
                     source_graphics_regions=regions,
                     mask_padding_px_per_edge=mask_padding_px_per_edge,
+                    allow_unverified_estimate=allow_unverified_estimate,
                 )
             except ValueError as error:
                 raise RuntimeError(
@@ -1834,6 +1930,11 @@ def verify_cues(
         raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
     review = translation_review or {}
     visual = visual_review or {}
+    still_measurement = None
+    if allow_unverified_estimate:
+        from scripts.verify_rose_garden_review import user_provided_still_measurement
+
+        still_measurement = user_provided_still_measurement()
 
     def review_count(field: str) -> int:
         value = review.get(field, 0)
@@ -1925,12 +2026,62 @@ def verify_cues(
             ),
             "source_graphics_review": (
                 {
-                    "status": "not_verified",
-                    "review_status": "pending",
-                    "controlled_cloud_review_route": (
-                        "not_found_in_repository; confirmation_pending"
+                    "status": (
+                        "trusted_bbox_verified"
+                        if trusted_frame_review is not None
+                        else "user_provided_still_estimate"
+                        if allow_unverified_estimate
+                        else "not_verified"
                     ),
-                    "production_bbox_input": False,
+                    "review_status": (
+                        "verified"
+                        if trusted_frame_review is not None
+                        else "pending"
+                    ),
+                    "controlled_cloud_review_route": (
+                        "openssh_signature_allowlist"
+                        if trusted_frame_review is not None
+                        else "pending"
+                        if allow_unverified_estimate
+                        else "not_found_in_repository; confirmation_pending"
+                    ),
+                    "measurement_source": (
+                        "user_provided_still"
+                        if allow_unverified_estimate
+                        else (
+                            "trusted_frame_review"
+                            if trusted_frame_review is not None
+                            else "none"
+                        )
+                    ),
+                    "measurement_status": (
+                        "unverified_still_estimate"
+                        if allow_unverified_estimate
+                        else (
+                            "human_verified"
+                            if trusted_frame_review is not None
+                            else "not_verified"
+                        )
+                    ),
+                    "production_bbox_input": trusted_frame_review is not None,
+                    "trusted_frame_review": (
+                        trusted_frame_review
+                        if trusted_frame_review is not None
+                        else None
+                    ),
+                    "user_provided_still_measurement": (
+                        still_measurement
+                        if allow_unverified_estimate
+                        else None
+                    ),
+                    "source_timecode": (
+                        "not_verified" if allow_unverified_estimate else None
+                    ),
+                    "source_provenance": (
+                        "not_verified" if allow_unverified_estimate else None
+                    ),
+                    "source_frame_review": "pending",
+                    "visual_review": "pending",
                     "source_resolution_px": {
                         "width": width,
                         "height": height,
@@ -2313,6 +2464,14 @@ def main() -> None:
     )
     parser.add_argument("--caption-safe-region-reviewed", action="store_true")
     parser.add_argument("--source-graphics-regions-json", default="[]")
+    parser.add_argument("--source-frame-review-record-json", default="{}")
+    parser.add_argument("--source-frame-review-signature", default="")
+    parser.add_argument(
+        "--frame-review-mode",
+        choices=("trusted-signed-review", "unverified-review-draft"),
+        default="trusted-signed-review",
+    )
+    parser.add_argument("--dispatch-actor", default="")
     parser.add_argument("--occlusion-exception-authorized", action="store_true")
     parser.add_argument("--mask-padding-px-per-edge", type=int)
     parser.add_argument(
@@ -2329,12 +2488,17 @@ def main() -> None:
         help="Explicitly disable spoken-word highlighting.",
     )
     args = parser.parse_args()
-    require_trusted_mask_review(args.caption_position)
     source_graphics_regions = (
         parse_source_graphics_regions(
             args.source_graphics_regions_json,
-            require_human_verified=args.caption_position == "mask-lower-third",
-            allow_empty=args.caption_position != "mask-lower-third",
+            require_human_verified=(
+                args.caption_position == "mask-lower-third"
+                and args.frame_review_mode != "unverified-review-draft"
+            ),
+            allow_empty=(
+                args.caption_position != "mask-lower-third"
+                or args.frame_review_mode == "unverified-review-draft"
+            ),
         )
         if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT
         else []
@@ -2353,6 +2517,40 @@ def main() -> None:
     )
 
     duration, width, height = probe_video(source)
+    trusted_frame_review = require_trusted_mask_review(
+        args.caption_position,
+        source_path=source,
+        source_width=width,
+        source_height=height,
+        source_duration=duration,
+        source_frame_review_record_json=args.source_frame_review_record_json,
+        source_frame_review_signature=args.source_frame_review_signature,
+        source_graphics_regions_json=args.source_graphics_regions_json,
+        dispatch_actor=args.dispatch_actor,
+        frame_review_mode=args.frame_review_mode,
+    )
+    allow_unverified_estimate = (
+        args.caption_position == "mask-lower-third"
+        and args.frame_review_mode == "unverified-review-draft"
+    )
+    user_still_measurement = None
+    if allow_unverified_estimate:
+        from scripts.verify_rose_garden_review import (
+            user_provided_still_measurement,
+            user_still_source_graphics_regions,
+        )
+
+        user_still_measurement = user_provided_still_measurement()
+        source_graphics_regions = user_still_source_graphics_regions(width, height)
+    trusted_frame_review_evidence = (
+        {
+            "record": json.loads(args.source_frame_review_record_json),
+            "signature_base64": args.source_frame_review_signature,
+        }
+        if trusted_frame_review is not None
+        and trusted_frame_review.get("production_bbox_input") == "true"
+        else None
+    )
     if args.subtitle_layout == ROSE_GARDEN_SUBTITLE_LAYOUT:
         validate_rose_caption_placement(
             width=width,
@@ -2362,6 +2560,7 @@ def main() -> None:
             source_graphics_regions=source_graphics_regions,
             occlusion_exception_authorized=args.occlusion_exception_authorized,
             mask_padding_px_per_edge=args.mask_padding_px_per_edge,
+            allow_unverified_estimate=allow_unverified_estimate,
         )
     language_probability = None
     translation_models_used = (
@@ -2589,6 +2788,7 @@ def main() -> None:
             source_graphics_regions=source_graphics_regions,
             occlusion_exception_authorized=args.occlusion_exception_authorized,
             mask_padding_px_per_edge=args.mask_padding_px_per_edge,
+            allow_unverified_estimate=allow_unverified_estimate,
         )
         if (
             word_highlighting["status"] == "enabled"
@@ -2647,8 +2847,10 @@ def main() -> None:
         caption_position=args.caption_position,
         caption_safe_region_reviewed=args.caption_safe_region_reviewed,
         source_graphics_regions=source_graphics_regions,
+        trusted_frame_review=trusted_frame_review_evidence,
         occlusion_exception_authorized=args.occlusion_exception_authorized,
         mask_padding_px_per_edge=args.mask_padding_px_per_edge,
+        allow_unverified_estimate=allow_unverified_estimate,
     )
     quality_checks["word_highlighting"] = word_highlighting
 
@@ -2741,6 +2943,14 @@ def main() -> None:
                     else ""
                 )
             )
+        ),
+        "frame_review_mode": args.frame_review_mode,
+        "source_frame_measurement": (
+            {
+                **user_still_measurement,
+                "review_status": "pending",
+            }
+            if user_still_measurement is not None else None
         ),
         "render": {"word_highlighting": word_highlighting},
         "word_highlighting": word_highlighting,

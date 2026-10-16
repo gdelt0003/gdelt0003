@@ -93,6 +93,19 @@ on:
         type: string
         required: true
         default: "{}"
+      source_frame_review_signature:
+        description: Base64 OpenSSH signature of the canonical frame-review JSON from an allowlisted reviewer key
+        type: string
+        required: true
+        default: ""
+      frame_review_mode:
+        description: Draft mode uses the fixed still estimate and keeps all frame/BBox review pending; trusted mode requires an allowlisted signed source-frame review
+        type: choice
+        options:
+          - unverified-review-draft
+          - trusted-signed-review
+        required: true
+        default: unverified-review-draft
       caption_position:
         description: Selected caption area; defaults to the requested Rose lower-third mask
         type: choice
@@ -181,6 +194,8 @@ jobs:
           SOURCE_LINEAGE_REVIEW_PASSED: ${{ inputs.source_lineage_review_passed }}
           SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
           SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
         run: |
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "This production workflow may only run from main." >&2
@@ -205,6 +220,7 @@ jobs:
             --caption-position "$CAPTION_POSITION"
             --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
             --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
           )
           if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
             layout_args+=(--caption-safe-region-reviewed)
@@ -221,8 +237,10 @@ jobs:
             --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL"
             --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
             --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON"
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE"
             --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
             --dispatch-actor "$GITHUB_ACTOR"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
           )
           if [[ "$INDEPENDENT_RIGHTS_REVIEW_PASSED" == "true" ]]; then
             review_args+=(--independent-rights-review-passed)
@@ -320,6 +338,10 @@ jobs:
           CAPTION_POSITION: ${{ inputs.caption_position }}
           CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
           SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
+          DISPATCH_ACTOR: ${{ github.actor }}
           ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
           MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
         run: |
@@ -331,7 +353,11 @@ jobs:
             --subtitle-layout rose-garden-source-aware-bilingual \
             --caption-position "$CAPTION_POSITION" \
             --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON" \
-            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE" \
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON" \
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE" \
+            --frame-review-mode "$FRAME_REVIEW_MODE" \
+            --dispatch-actor "$DISPATCH_ACTOR"
           )
           if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
             render_args+=(--caption-safe-region-reviewed)
