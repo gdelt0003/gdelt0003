@@ -2378,6 +2378,11 @@ def verify_cues(
                         if allow_unverified_estimate
                         else None
                     ),
+                    "user_estimated_banner_bbox": (
+                        still_measurement["user_estimated_banner_bbox"]
+                        if allow_unverified_estimate
+                        else None
+                    ),
                     "source_timecode": (
                         "not_verified" if allow_unverified_estimate else None
                     ),
@@ -3295,6 +3300,11 @@ def main() -> None:
                 "review_status": "pending",
             }
             if user_still_measurement is not None else None
+        ),
+        "user_estimated_banner_bbox": (
+            user_still_measurement["user_estimated_banner_bbox"]
+            if user_still_measurement is not None
+            else None
         ),
         "render": {"word_highlighting": word_highlighting},
         "word_highlighting": word_highlighting,

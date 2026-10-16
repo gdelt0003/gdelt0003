@@ -35,7 +35,7 @@ async function main() {
   const payload = {
     videos: [
       {
-        id: 'rose-garden-review',
+        id: 'rose-garden-lunch-2026-10-15-review',
         title: 'Rose Garden Lunch · 外部审查草稿',
         event_date: '2026-10-15',
         homepage_status: '外部审查草稿 · 五项复核声明已记录',
@@ -109,7 +109,7 @@ async function main() {
   assert.equal(newestContent.children[2].textContent, '机器生成预览 · 未经人工核验');
   assert.equal(
     newestContent.children[3].children.map((link) => link.textContent).join(', '),
-    '来源视频, 来源与版本信心详情, 下载 MP4',
+    '来源视频, 视频源与视频本身可信度详情, 下载 MP4',
   );
   assert.ok(
     !newestContent.children.some((node) => node.className === 'main-video-sources'),

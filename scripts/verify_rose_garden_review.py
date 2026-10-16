@@ -48,18 +48,38 @@ FRAME_REVIEW_ALLOWED_SIGNERS = (
 def user_provided_still_measurement() -> dict[str, Any]:
     source_bbox = USER_PROVIDED_STILL_BANNER_BBOX
     padding = USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE
+    derived_mask_bbox = {
+        "left": source_bbox["left"] - padding,
+        "top": source_bbox["top"] - padding,
+        "right": source_bbox["right"] + padding,
+        "bottom": source_bbox["bottom"] + padding,
+    }
+    user_estimated_banner_bbox = {
+        "source_values_xyxy_px": [
+            source_bbox["left"],
+            source_bbox["top"],
+            source_bbox["right"],
+            source_bbox["bottom"],
+        ],
+        "padding_px_per_edge": padding,
+        "derived_mask_values_xyxy_px": [
+            derived_mask_bbox["left"],
+            derived_mask_bbox["top"],
+            derived_mask_bbox["right"],
+            derived_mask_bbox["bottom"],
+        ],
+        "measurement_status": "unverified_still_estimate",
+        "source_frame_review_record": False,
+        "production_bbox_input": False,
+    }
     return {
         "measurement_source": "user_provided_still",
         "evidence_type": "user_provided_still_measurement",
         "measurement_status": "unverified_still_estimate",
+        "user_estimated_banner_bbox": user_estimated_banner_bbox,
         "source_resolution_px": dict(USER_PROVIDED_STILL_RESOLUTION),
         "source_banner_bbox_px_half_open": dict(source_bbox),
-        "proposed_mask_bbox_px_half_open": {
-            "left": source_bbox["left"] - padding,
-            "top": source_bbox["top"] - padding,
-            "right": source_bbox["right"] + padding,
-            "bottom": source_bbox["bottom"] + padding,
-        },
+        "proposed_mask_bbox_px_half_open": derived_mask_bbox,
         "proposed_mask_dimensions_px": {
             "width": (
                 source_bbox["right"] - source_bbox["left"] + 2 * padding
@@ -325,6 +345,10 @@ def validate_caption_layout(
             != USER_PROVIDED_STILL_RESOLUTION
             or source_graphics_review.get("user_provided_still_measurement")
             != expected_measurement
+            or source_graphics_review.get("user_estimated_banner_bbox")
+            != expected_measurement["user_estimated_banner_bbox"]
+            or manifest.get("user_estimated_banner_bbox")
+            != expected_measurement["user_estimated_banner_bbox"]
             or not isinstance(source_measurement, dict)
             or any(
                 source_measurement.get(key) != value
