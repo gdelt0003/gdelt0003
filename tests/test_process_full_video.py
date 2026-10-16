@@ -14,6 +14,7 @@ from scripts.process_full_video import (
     ROSE_GARDEN_SUBTITLE_LAYOUT,
     _estimated_text_width,
     _rose_caption_geometry,
+    _rose_garden_font_sizes_for_region,
     _rose_garden_wrap_limits,
     _wrap_chinese,
     _wrap_chinese_to_width,
@@ -42,6 +43,7 @@ from scripts.process_full_video import (
     verify_cues,
     write_ass,
 )
+from scripts.verify_rose_garden_review import user_still_source_graphics_regions
 from scripts.spoken_word_highlighting import TimedWord
 
 
@@ -363,6 +365,88 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
             "masked_not_clean",
         )
         self.assertEqual(readability["rose_source_evidence"]["event_match"], "pending")
+
+    def test_user_still_mask_adapts_font_to_fit_two_bilingual_lines(self):
+        source_regions = user_still_source_graphics_regions(1920, 1080)
+        region = rose_caption_region(
+            1920,
+            1080,
+            "mask-lower-third",
+            source_regions,
+            2,
+            allow_unverified_estimate=True,
+        )
+        chinese_font, english_font = _rose_garden_font_sizes_for_region(
+            *_rose_garden_wrap_limits(1920, 1080)[:2],
+            region["height"],
+        )
+        self.assertEqual(
+            (
+                region["left"],
+                region["top"],
+                region["right"],
+                region["bottom"],
+                region["width"],
+                region["height"],
+            ),
+            (66, 883, 1852, 1022, 1786, 139),
+        )
+        self.assertEqual((chinese_font, english_font), (32, 26))
+        self.assertLessEqual(
+            round(chinese_font * 1.2) * 2
+            + round(english_font * 1.2) * 2,
+            region["height"],
+        )
+        self.assertAlmostEqual(english_font / chinese_font, 0.8, delta=0.02)
+
+        cue = Cue(
+            10,
+            14,
+            "The President welcomed guests from every state and territory "
+            "to the Rose Garden for lunch today, and thanked every member "
+            "of the team.",
+            "总统欢迎来自各州和地区的来宾来到玫瑰园共进午餐，"
+            "并感谢团队的每一位成员。",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-captions.ass"
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=source_regions,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
+                allow_unverified_estimate=True,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+        self.assertEqual(rendered.styles["Chinese"].fontsize, 32)
+        self.assertEqual(rendered.styles["English"].fontsize, 26)
+        self.assertEqual(len(rendered.events), 2)
+
+        report = verify_cues(
+            [cue],
+            duration=20,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="mask-lower-third",
+            source_graphics_regions=source_regions,
+            occlusion_exception_authorized=True,
+            mask_padding_px_per_edge=2,
+            allow_unverified_estimate=True,
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["chinese_font_px"], 32)
+        self.assertEqual(readability["english_font_px"], 26)
+        self.assertAlmostEqual(
+            readability["english_to_chinese_size_ratio"],
+            0.812,
+            delta=0.001,
+        )
 
     def test_rose_garden_reflows_overflow_at_aligned_punctuation(self):
         short = Cue(2, 2.4, "Thanks, everyone.", "谢谢大家。")

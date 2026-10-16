@@ -477,6 +477,27 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
             raise RuntimeError(f"Bilingual SRT timing mismatch at cue {index}.")
         cues.append(Cue(en[0], en[1], en[2].replace("\n", " "), zh[2].replace("\n", "")))
     readability = manifest["quality_checks"]["subtitle_readability"]
+    overflow_summary = readability.get("caption_overflow_exceptions")
+    overflow_records = (
+        overflow_summary.get("cues", [])
+        if isinstance(overflow_summary, dict)
+        else []
+    )
+    if not isinstance(overflow_records, list) or any(
+        not isinstance(record, dict) for record in overflow_records
+    ):
+        raise RuntimeError("Caption overflow diagnostics are malformed.")
+    if isinstance(overflow_summary, dict) and overflow_summary.get(
+        "count"
+    ) != len(overflow_records):
+        raise RuntimeError("Caption overflow diagnostic count is inconsistent.")
+    manifest_overflow_records = manifest.get("subtitle_overflow_exceptions")
+    if manifest_overflow_records is None and not overflow_records:
+        manifest_overflow_records = []
+    if manifest_overflow_records != overflow_records:
+        raise RuntimeError(
+            "Manifest subtitle overflow diagnostics do not match readability evidence."
+        )
     position = readability.get("caption_position")
     source_review = readability.get("source_graphics_review")
     allow_unverified_estimate = (
@@ -512,6 +533,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
             if isinstance(occlusion, dict)
             else None,
             allow_unverified_estimate,
+            overflow_records,
         )
     except (KeyError, ValueError, RuntimeError) as error:
         raise RuntimeError(f"Generated ASS caption geometry is invalid: {error}") from error
@@ -523,30 +545,73 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         if position == "mask-lower-third"
         else ass_subtitles.events
     )
-    longest_event = max(caption_events, key=lambda event: event.text.count(r"\N"))
-    frame = render_caption_geometry_frame(
-        ass_path,
-        int(manifest["resolution"].split("x", maxsplit=1)[0]),
-        int(manifest["resolution"].split("x", maxsplit=1)[1]),
-        longest_event.start / 1000,
-    )
-    rendered_bounds = inspect_caption_geometry_frame(
-        frame,
-        int(manifest["resolution"].split("x", maxsplit=1)[0]),
-        int(manifest["resolution"].split("x", maxsplit=1)[1]),
-        readability["caption_region_box_px"],
-        (
-            readability["caption_band_occlusion"]["mask_bbox_px"]
-            if position == "mask-lower-third"
-            else None
-        ),
-    )
+    from scripts.process_full_video import _has_rose_overflow
+
+    indexed_captions = list(zip(cues, caption_events, strict=True))
+    for record in overflow_records:
+        start = record.get("start_seconds")
+        end = record.get("end_seconds")
+        if (
+            not isinstance(start, (int, float))
+            or isinstance(start, bool)
+            or not isinstance(end, (int, float))
+            or isinstance(end, bool)
+            or len(
+                [
+                    cue
+                    for cue, _event in indexed_captions
+                    if abs(cue.start - start) < 0.001
+                    and abs(cue.end - end) < 0.001
+                ]
+            )
+            != 1
+        ):
+            raise RuntimeError(
+                "Caption overflow diagnostic does not identify exactly one cue."
+            )
+    non_overflow_captions = [
+        (cue, event)
+        for cue, event in indexed_captions
+        if not _has_rose_overflow(cue, overflow_records)
+    ]
+    rendered_bounds = None
+    if non_overflow_captions:
+        _cue, longest_event = max(
+            non_overflow_captions,
+            key=lambda pair: pair[1].text.count(r"\N"),
+        )
+        frame = render_caption_geometry_frame(
+            ass_path,
+            int(manifest["resolution"].split("x", maxsplit=1)[0]),
+            int(manifest["resolution"].split("x", maxsplit=1)[1]),
+            longest_event.start / 1000,
+        )
+        rendered_bounds = inspect_caption_geometry_frame(
+            frame,
+            int(manifest["resolution"].split("x", maxsplit=1)[0]),
+            int(manifest["resolution"].split("x", maxsplit=1)[1]),
+            readability["caption_region_box_px"],
+            (
+                readability["caption_band_occlusion"]["mask_bbox_px"]
+                if position == "mask-lower-third"
+                else None
+            ),
+        )
+    elif overflow_records:
+        readability["status"] = "manual_review_required"
+    if overflow_records:
+        readability["status"] = "manual_review_required"
     return {
-        "status": "passed",
+        "status": "manual_review_required" if overflow_records else "passed",
         "file": ass_name,
         "sha256": digest,
         "cue_count": len(cues),
-        "synthetic_libass_geometry_render": "passed",
+        "synthetic_libass_geometry_render": (
+            "not_sampled_all_cues_recorded_overflow"
+            if not non_overflow_captions and overflow_records
+            else "passed_with_recorded_overflow" if overflow_records else "passed"
+        ),
+        "caption_overflow_exception_count": len(overflow_records),
         "rendered_text_bounds_px": rendered_bounds,
         "visual_frame_review": "pending",
     }

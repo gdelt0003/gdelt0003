@@ -205,6 +205,12 @@ recorded exception cues bypass the two-line/safe-width geometry gate; all other
 cues remain subject to it. The report marks the output `manual_review_required`,
 not a layout pass, so the exception must be checked in the rendered video.
 Invalid cue timing and unrelated processing errors still stop the render.
+During artifact validation, the recorded exception list must exactly match
+the readability report, and each entry must identify exactly one cue by its
+shared start/end timing. The synthetic geometry sample uses the longest cue
+without a recorded exception; if every cue is excepted, geometry validation is
+reported as `manual_review_required` without sampling an exception cue. The
+exception does not weaken fit checks for any unrecorded cue.
 
 The **Render private Rose Garden artifact** workflow is the artifact-only
 dispatch path: it is available from `main`, preserves the pinned source and
