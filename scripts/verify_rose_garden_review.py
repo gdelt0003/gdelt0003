@@ -40,7 +40,9 @@ def user_provided_still_measurement() -> dict[str, Any]:
     source_bbox = USER_PROVIDED_STILL_BANNER_BBOX
     padding = USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE
     return {
+        "measurement_source": "user_provided_still",
         "evidence_type": "user_provided_still_measurement",
+        "measurement_status": "unverified_still_estimate",
         "source_resolution_px": dict(USER_PROVIDED_STILL_RESOLUTION),
         "source_banner_bbox_px_half_open": dict(source_bbox),
         "proposed_mask_bbox_px_half_open": {
@@ -58,6 +60,8 @@ def user_provided_still_measurement() -> dict[str, Any]:
             ),
         },
         "padding_px_per_edge": padding,
+        "source_timecode": "not_verified",
+        "source_provenance": "not_verified",
         "timecode_status": "not_verified",
         "provenance_status": "not_verified",
         "video_wide_position_stability": "not_verified",

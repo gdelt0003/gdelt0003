@@ -282,7 +282,9 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
 
     def test_user_still_bbox_is_recorded_as_unverified_and_not_production_input(self):
         measurement = review.user_provided_still_measurement()
+        self.assertEqual(measurement["measurement_source"], "user_provided_still")
         self.assertEqual(measurement["evidence_type"], "user_provided_still_measurement")
+        self.assertEqual(measurement["measurement_status"], "unverified_still_estimate")
         self.assertEqual(measurement["source_resolution_px"], {
             "width": 1920,
             "height": 1080,
@@ -300,6 +302,8 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             {"width": 1786, "height": 139},
         )
         self.assertEqual(measurement["padding_px_per_edge"], 2)
+        self.assertEqual(measurement["source_timecode"], "not_verified")
+        self.assertEqual(measurement["source_provenance"], "not_verified")
         self.assertEqual(measurement["timecode_status"], "not_verified")
         self.assertEqual(measurement["provenance_status"], "not_verified")
         self.assertEqual(measurement["video_wide_position_stability"], "not_verified")
@@ -312,6 +316,19 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 source_graphics_regions_json="[]",
                 rose_mask_authorized=True,
                 mask_padding_px_per_edge=2,
+            )
+        with self.assertRaisesRegex(RuntimeError, "reviewer, timestamp"):
+            review.validate_review_gates(
+                independent_rights_review_passed=True,
+                event_match_review_passed=True,
+                event_time_timezone_review_passed=True,
+                source_lineage_review_passed=True,
+                source_frame_review_record_json=json.dumps(measurement),
+                dispatch_actor="publisher",
+                rights_evidence_url="https://example.org/rights",
+                event_match_evidence_url="https://example.org/event",
+                event_time_timezone_evidence_url="https://example.org/time",
+                source_lineage_evidence_url="https://example.org/lineage",
             )
 
     def test_source_verification_checks_exact_asset_and_probe_requirements(self):

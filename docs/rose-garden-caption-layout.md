@@ -133,8 +133,9 @@ No evidence-provider responsibility is assigned by this profile.
 A user-provided still measurement currently reports a 1920x1080 frame and
 half-open banner BBox `[68, 885, 1850, 1020)`. At the implementation-selected
 2 px per edge, its proposed mask BBox is `[66, 883, 1852, 1022)` (1786x139).
-The manifest records this only as `user_provided_still_measurement`: its
-timecode and provenance are `not_verified`, it does not establish that the
+The manifest records this only with `measurement_source: user_provided_still`
+and `measurement_status: unverified_still_estimate`; its source timecode and
+provenance are `not_verified`. It does not establish that the
 banner remains in this position throughout the video, and it is not a
 controlled cloud frame-review record. It is not a production BBox input and
 cannot satisfy the source-frame review gate.
