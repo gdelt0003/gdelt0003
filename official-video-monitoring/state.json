@@ -1755,22 +1755,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:27+00:00",
-        "completed_at_utc": "2026-10-16T12:58:37+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T14:51:29+00:00",
+        "run_id": "38919104526",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 9, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:58:28+00:00",
+          "researched_at_utc": "2026-10-16T14:51:14+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:58:28+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T14:51:14+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -1787,7 +1787,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:58:28+00:00",
+            "completed_at_utc": "2026-10-16T12:58:37+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 9, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:58:28+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T14:51:14+00:00",
+            "completed_at_utc": "2026-10-16T14:51:29+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38919104526",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 9, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T14:51:14+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -1961,22 +2001,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:36+00:00",
-        "completed_at_utc": "2026-10-16T12:58:46+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T14:51:41+00:00",
+        "run_id": "38919104526",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 7, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:58:37+00:00",
+          "researched_at_utc": "2026-10-16T14:51:29+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:58:37+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T14:51:29+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -1993,7 +2033,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:58:37+00:00",
+            "completed_at_utc": "2026-10-16T12:58:46+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 7, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:58:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T14:51:29+00:00",
+            "completed_at_utc": "2026-10-16T14:51:41+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38919104526",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 7, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T14:51:29+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -2044,22 +2124,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:36+00:00",
-        "completed_at_utc": "2026-10-16T12:58:46+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T14:51:51+00:00",
+        "run_id": "38919104526",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:58:37+00:00",
+          "researched_at_utc": "2026-10-16T14:51:41+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:58:37+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T14:51:41+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2076,7 +2156,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:58:37+00:00",
+            "completed_at_utc": "2026-10-16T12:58:46+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:58:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T14:51:41+00:00",
+            "completed_at_utc": "2026-10-16T14:51:51+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38919104526",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T14:51:41+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -2127,22 +2247,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:36+00:00",
-        "completed_at_utc": "2026-10-16T12:58:47+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T14:52:02+00:00",
+        "run_id": "38919104526",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Arrival at the White House, Oct. 6, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:58:37+00:00",
+          "researched_at_utc": "2026-10-16T14:51:51+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:58:37+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T14:51:51+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2159,7 +2279,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:58:37+00:00",
+            "completed_at_utc": "2026-10-16T12:58:47+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Arrival at the White House, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:58:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T14:51:51+00:00",
+            "completed_at_utc": "2026-10-16T14:52:02+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "38919104526",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Arrival at the White House, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T14:51:51+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -2210,22 +2370,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:37+00:00",
-        "completed_at_utc": "2026-10-16T12:58:47+00:00",
-        "run_id": "38904287014",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+        "completed_at_utc": "2026-10-16T14:52:13+00:00",
+        "run_id": "38919104526",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 6, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-16T12:58:37+00:00",
+          "researched_at_utc": "2026-10-16T14:52:02+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-16T12:58:37+00:00",
+        "additional_source_search_started_at_utc": "2026-10-16T14:52:02+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2242,7 +2402,47 @@
         ],
         "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
         "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
-        "reuse_rights_evidence_urls": []
+        "reuse_rights_evidence_urls": [],
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-16T12:58:37+00:00",
+            "completed_at_utc": "2026-10-16T12:58:47+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38904287014",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T12:58:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-16T14:52:02+00:00",
+            "completed_at_utc": "2026-10-16T14:52:13+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "38919104526",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-16T14:52:02+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ]
       },
       "media_review_gate": {
         "status": "not_started_blocked_waiting_for_authorization_and_rights",
@@ -9047,10 +9247,10 @@
     }
   },
   "last_run": {
-    "run_id": "38913879117",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38913879117",
-    "started_at_utc": "2026-10-16T14:12:34+00:00",
-    "completed_at_utc": "2026-10-16T14:13:44+00:00",
+    "run_id": "38919104526",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38919104526",
+    "started_at_utc": "2026-10-16T14:51:13+00:00",
+    "completed_at_utc": "2026-10-16T14:52:13+00:00",
     "status": "success"
   }
 }
