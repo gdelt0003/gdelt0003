@@ -15,6 +15,7 @@ from scripts.process_full_video import (
     ROSE_GARDEN_SUBTITLE_LAYOUT,
     _estimated_text_width,
     _rose_caption_geometry,
+    _fit_rose_caption_lines,
     _rose_garden_font_sizes_for_region,
     _rose_garden_wrap_limits,
     _wrap_chinese,
@@ -773,46 +774,39 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
             overflow_records,
         )
 
-        with tempfile.TemporaryDirectory() as directory:
-            with self.assertRaisesRegex(ValueError, "cannot fit completely"):
-                write_ass(
-                    Path(directory) / "unrecorded-overflow.ass",
-                    [
-                        Cue(
-                            1,
-                            5,
-                            " ".join(["unbroken phrase"] * 24),
-                            "没有对应标点的中文长句" * 12,
-                        )
-                    ],
-                    1920,
-                    1080,
-                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
-                    caption_overflow_records=overflow_records,
-                )
-
-    def test_rose_garden_caption_mask_rejects_content_that_cannot_fit(self):
+    def test_rose_garden_caption_mask_records_outlier_and_continues(self):
+        overflow_records = []
+        cue = Cue(
+            1,
+            5,
+            " ".join(["unbreakabletoken"] * 100),
+            "中文内容",
+        )
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "rose-captions.ass"
-            with self.assertRaisesRegex(ValueError, "cannot fit completely"):
-                write_ass(
-                    path,
-                    [
-                        Cue(
-                            1,
-                            5,
-                            " ".join(["unbreakabletoken"] * 100),
-                            "中文内容",
-                        )
-                    ],
-                    1920,
-                    1080,
-                    layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
-                    caption_position="mask-lower-third",
-                    source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
-                    occlusion_exception_authorized=True,
-                    mask_padding_px_per_edge=2,
-                )
+            write_ass(
+                path,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_position="mask-lower-third",
+                source_graphics_regions=self.ROSE_SOURCE_GRAPHICS,
+                occlusion_exception_authorized=True,
+                mask_padding_px_per_edge=2,
+                caption_overflow_records=overflow_records,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), 2)
+        self.assertIn("unbreakabletoken", rendered.events[1].text)
+        self.assertIn("中文内容", rendered.events[1].text)
+        self.assertEqual(len(overflow_records), 1)
+        self.assertEqual(overflow_records[0]["source_cue_index"], 1)
+        self.assertEqual(overflow_records[0]["fit_status"], "unresolved")
+        self.assertIn(
+            "unbreakabletoken", overflow_records[0]["language_diagnostics"]["english"]["text"]
+        )
 
     def test_rose_nonmask_layout_is_computable_without_bbox_but_stays_unreviewed(self):
         report = verify_cues(
@@ -875,6 +869,137 @@ assert "from scripts." not in source.read_text(encoding="utf-8")
         center_x = round((applied_box[0] + applied_box[2]) / 2)
         center_y = round((applied_box[1] + applied_box[3]) / 2)
         self.assertIn(f"\\pos({center_x},{center_y})", rendered.events[0].text)
+
+    def test_user_caption_box_allows_explicitly_wrapped_bilingual_captions(self):
+        caption_box = map_caption_box(self.USER_CAPTION_BOX, 1920, 1080)
+        english = (
+            "The president spoke about economic opportunity, local communities, "
+            "and the shared responsibility to build a stronger future for every "
+            "American, with continued progress for families across the country."
+        )
+        chinese = "总统谈经济机遇与社区发展，并承诺将为每个家庭创造更美好的未来。"
+        self.assertEqual(len(chinese), 31)
+        cue = Cue(1, 4, english, chinese)
+        chinese_font, english_font, *_ = _rose_garden_wrap_limits(1920, 1080)
+        chinese_font, english_font = _rose_garden_font_sizes_for_region(
+            chinese_font,
+            english_font,
+            caption_box[3] - caption_box[1],
+        )
+        safe_width = min(round(1920 * 0.68), caption_box[2] - caption_box[0])
+        english_lines, chinese_lines = _fit_rose_caption_lines(
+            cue,
+            safe_width=safe_width,
+            safe_height=caption_box[3] - caption_box[1],
+            chinese_font=chinese_font,
+            english_font=english_font,
+        )
+        self.assertGreater(len(english_lines), 1)
+        self.assertEqual(len(chinese_lines), 1)
+        overflow_records = []
+        cues = reflow_rose_garden_cues(
+            [cue],
+            safe_width=safe_width,
+            chinese_font=chinese_font,
+            english_font=english_font,
+            safe_height=caption_box[3] - caption_box[1],
+            overflow_records=overflow_records,
+            caption_box=caption_box,
+        )
+        self.assertEqual(cues, [cue])
+        self.assertEqual(len(overflow_records), 1)
+        self.assertEqual(overflow_records[0]["fit_status"], "within_box")
+        self.assertEqual(overflow_records[0]["caption_box_px"], list(caption_box))
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-custom-box-wrapped.ass"
+            write_ass(
+                path,
+                cues,
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_overflow_records=overflow_records,
+                caption_box=caption_box,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), 1)
+        self.assertEqual(rendered.events[0].start, 1000)
+        self.assertEqual(rendered.events[0].end, 4000)
+        plain_text = re.sub(r"(?<!\\)\{[^}]*\}", "", rendered.events[0].text)
+        self.assertEqual(
+            plain_text.replace(r"\N", "\n").splitlines(),
+            [*english_lines, *chinese_lines],
+        )
+        self.assertTrue(
+            all(
+                _estimated_text_width(line, font) <= safe_width
+                for lines, font in (
+                    (english_lines, english_font),
+                    (chinese_lines, chinese_font),
+                )
+                for line in lines
+            )
+        )
+
+    def test_user_caption_box_outlier_is_recorded_without_aborting_render(self):
+        caption_box = map_caption_box(self.USER_CAPTION_BOX, 1920, 1080)
+        ordinary = Cue(0, 2, "An ordinary cue.", "普通字幕。")
+        outlier = Cue(
+            2,
+            7,
+            " ".join(["unbreakabletoken"] * 1000),
+            "中文内容" * 1000,
+        )
+        overflow_records = []
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rose-custom-box-overflow.ass"
+            write_ass(
+                path,
+                [ordinary, outlier],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_overflow_records=overflow_records,
+                caption_box=caption_box,
+            )
+            rendered = pysubs2.load(str(path), encoding="utf-8")
+
+        self.assertEqual(len(rendered.events), 2)
+        self.assertIn("unbreakabletoken", rendered.events[1].text)
+        self.assertIn("中文内容", rendered.events[1].text)
+        self.assertEqual(len(overflow_records), 1)
+        record = overflow_records[0]
+        self.assertEqual(record["source_cue_index"], 2)
+        self.assertEqual(record["fit_status"], "outside_box")
+        self.assertEqual(record["caption_box_px"], list(caption_box))
+        self.assertGreater(
+            record["required_dimensions_px"]["height"],
+            caption_box[3] - caption_box[1],
+        )
+        self.assertIn(
+            outlier.english,
+            record["language_diagnostics"]["english"]["text"],
+        )
+        self.assertIn(
+            outlier.chinese,
+            record["language_diagnostics"]["chinese"]["text"],
+        )
+        report = verify_cues(
+            [ordinary, outlier],
+            duration=8,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_box=caption_box,
+            caption_overflow_records=overflow_records,
+        )
+        readability = report["subtitle_readability"]
+        self.assertEqual(readability["caption_overflow_exceptions"]["count"], 1)
+        self.assertEqual(readability["caption_overflow_exceptions"]["cues"], overflow_records)
+        self.assertEqual(readability["status"], "manual_review_required")
+        self.assertEqual(readability["visual_frame_review"], "not_verified")
 
     def test_rose_source_graphics_bbox_and_authorization_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "no defaults"):
