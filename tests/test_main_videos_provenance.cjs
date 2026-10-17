@@ -142,7 +142,7 @@ async function main() {
   assert.ok(
     cards[0].children.some((child) => (
       child.className === 'main-video-source-evidence-score'
-      && child.textContent.includes('证据覆盖分数:')
+      && child.textContent.includes('记录字段覆盖度:')
       && /\d+\/100/.test(child.textContent)
     )),
     'render a transparent evidence-coverage score for every source',
@@ -236,10 +236,11 @@ async function main() {
   assert.ok(
     cards[0].children.some((child) => (
       child.className === 'main-video-source-trust-note'
-      && child.textContent.includes('来源可信度: 未评分（来源可信度口径未提供）')
-      && !child.textContent.includes('证据覆盖分')
+      && child.textContent.includes('视频源可信度: 未评估（没有记录评分口径）')
+      && child.textContent.includes('视频本身可信度: 未评估')
+      && !child.textContent.includes('100/100')
     )),
-    'source trust stays separately labeled as unrated, not confused with evidence coverage',
+    'source and video credibility remain separate and are not inferred from field coverage',
   );
   assert.ok(
     cards[0].children.some((child) => (
@@ -354,7 +355,7 @@ async function main() {
     path.join(root, 'events', 'katie-zacharia-2026-10-13', 'sources.html'),
     'utf8',
   );
-  assert.match(page, /来源与版本信心/);
+  assert.match(page, /视频源可信度与视频本身可信度/);
   assert.match(page, /不执行实时检索、夜间复核或自动验证/);
   assert.match(page, /证据覆盖分 0–100/);
   assert.match(page, /不等同于来源真实性、可信度或质量评估/);

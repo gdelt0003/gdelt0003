@@ -51,6 +51,7 @@ def normalize_articles(payload: dict[str, Any], checked_at: str) -> dict[str, An
         raise ValueError("GDELT returned no valid HTTPS article URLs.")
     return {
         "schema_version": 1,
+        "snapshot_status": "available",
         "checked_at_utc": checked_at,
         "source_url": (
             "https://gdelt.github.io/#api=doc&query=trump%20&contentmode="

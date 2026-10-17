@@ -21,6 +21,7 @@ on:
       - 'outputs/**/*.json'
       - 'tests/**'
       - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
       - '.github/workflows/publish-katie-zacharia-preview.yml'
       - '.github/workflows/frontend-checks.yml'
   pull_request:
@@ -43,6 +44,7 @@ on:
       - 'outputs/**/*.json'
       - 'tests/**'
       - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
       - '.github/workflows/publish-katie-zacharia-preview.yml'
       - '.github/workflows/frontend-checks.yml'
 
@@ -92,4 +94,5 @@ jobs:
           node tests/test_frontend_assets.cjs
           node tests/test_main_videos.cjs
           node tests/test_main_videos_provenance.cjs
+          node --test tests/test_rose_garden_review_page.cjs
           node --test tests/test_subtitle_comparison_page.cjs

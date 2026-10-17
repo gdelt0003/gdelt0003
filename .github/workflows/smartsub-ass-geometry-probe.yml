@@ -1,0 +1,67 @@
+name: SmartSub ASS geometry probe
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/smartsub-ass-geometry-probe.yml'
+      - 'scripts/smartsub_ass_geometry_probe.py'
+  push:
+    paths:
+      - '.github/workflows/smartsub-ass-geometry-probe.yml'
+      - 'scripts/smartsub_ass_geometry_probe.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-probe:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v4
+
+      - name: Check out pinned SmartSub source
+        uses: actions/checkout@v4
+        with:
+          repository: buxuku/SmartSub
+          ref: 607376a51a748602712145e2386b13e91bbc2e6d
+          path: SmartSub
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: npm
+          cache-dependency-path: SmartSub/package-lock.json
+
+      - name: Install Linux GUI and media dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            ffmpeg \
+            fonts-noto-cjk \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libgbm1 \
+            libgtk-3-0 \
+            libnss3 \
+            xvfb
+
+      - name: Install and build SmartSub
+        working-directory: SmartSub
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+
+      - name: Run pinned SmartSub automation checks
+        working-directory: SmartSub
+        run: xvfb-run -a npm run test:automation
+
+      - name: Burn synthetic ASS geometry through SmartSub CLI
+        run: |
+          xvfb-run -a python scripts/smartsub_ass_geometry_probe.py \
+            --smartsub-root SmartSub \
+            --work-dir "$RUNNER_TEMP/smartsub-ass-fixture"

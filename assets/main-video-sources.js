@@ -77,7 +77,7 @@ function renderSourceDetails(payload) {
   const video = videos.find((item) => item.id === requestedVideoId);
   if (!video || !video.provenance || !Array.isArray(video.provenance.sources)) {
     $sourceStatus.textContent = '未找到此事件的视频来源记录';
-    $sourceDetails.textContent = '来源与版本信心资料暂不可用。';
+    $sourceDetails.textContent = '视频源可信度与视频本身可信度资料暂不可用。';
     return;
   }
 
@@ -160,13 +160,13 @@ function renderSourceDetails(payload) {
       if (source.rights) addSourceText(card, 'span', 'source-rights', source.rights);
 
       const evidence = MainVideoRanking.evidenceScore(source);
-      const scoreText = `${MainVideoRanking.scoreDisplayLabel(source)} · 证据覆盖: ${evidence.basis || '无已记录项'}`;
-      addSourceText(card, 'p', 'main-video-source-evidence-score', `证据覆盖分数: ${scoreText}`);
+      const scoreText = `${MainVideoRanking.scoreDisplayLabel(source)} · 已记录字段: ${evidence.basis || '无已记录项'}`;
+      addSourceText(card, 'p', 'main-video-source-evidence-score', `记录字段覆盖度: ${scoreText}`);
       addSourceText(
         card,
         'p',
         'main-video-source-evidence-basis',
-        `评分口径: ${MainVideoRanking.scoreBasisLabel(source)}。未记录项以 unknown/unreviewed 明示，不补充。`,
+        `字段覆盖口径: ${MainVideoRanking.scoreBasisLabel(source)}。未记录项以 unknown/unreviewed 明示，不补充。`,
       );
 
       const subjective = MainVideoRanking.userSubjectiveScore(source);
@@ -178,7 +178,7 @@ function renderSourceDetails(payload) {
           `用户主观参考分: ${subjective.value}/100（${subjective.note}）`,
         );
       } else {
-        addSourceText(card, 'p', 'main-video-source-user-score', '用户主观参考分: 未记录；仅保留证据覆盖分，不将用户主观分混入来源评分。');
+        addSourceText(card, 'p', 'main-video-source-user-score', '用户主观参考分: 未记录；记录字段覆盖度与用户参考分分开，不混用。');
       }
 
       const duration = Number.isFinite(source.duration_seconds) && source.duration_seconds >= 0
@@ -236,11 +236,11 @@ function renderSourceDetails(payload) {
         card,
         'p',
         'main-video-source-trust-note',
-        `来源可信度: ${
+        `视频源可信度: ${
           Number.isFinite(source.source_trust_score)
-            ? `记录值 ${source.source_trust_score}（原记录评分口径未提供；与证据覆盖分不同）`
-            : '未评分（来源可信度口径未提供）'
-        }`,
+            ? `原记录值 ${source.source_trust_score}（评分口径未提供，不能据此作结论）`
+            : '未评估（没有记录评分口径）'
+        }；视频本身可信度: 未评估（候选元数据和字段覆盖度不能代替内容核验）`,
       );
 
       const captionProvenance = source.caption_provenance || {};
@@ -277,7 +277,7 @@ async function loadSourceDetails() {
   } catch (error) {
     console.error('Unable to load main video source details', error);
     $sourceStatus.textContent = '来源记录暂不可用';
-    $sourceDetails.textContent = '来源与版本信心资料暂不可用，请稍后重试。';
+    $sourceDetails.textContent = '视频源可信度与视频本身可信度资料暂不可用，请稍后重试。';
   }
 }
 
