@@ -206,9 +206,24 @@ def release_blockers(
         blockers.append("source resolution has not passed")
     if readability.get("status") != "style_contract_passed":
         blockers.append("subtitle readability checks have not passed")
-    ratio = readability.get("english_to_chinese_size_ratio")
-    if not isinstance(ratio, (int, float)) or ratio > 0.95 or ratio < 0.80:
-        blockers.append("English subtitle font is not at least 20% smaller than Chinese font")
+    layout_profile = readability.get("layout_profile")
+    if layout_profile == "katie-fixed-lower-third-zh-first":
+        ratio = readability.get("chinese_to_english_size_ratio")
+        if not isinstance(ratio, (int, float)) or ratio < 1.2:
+            blockers.append(
+                "Chinese subtitle font is less than 1.20x English font "
+                "for the Katie layout"
+            )
+    elif layout_profile == "rose-garden-source-aware-bilingual":
+        ratio = readability.get("english_to_chinese_size_ratio")
+        if not isinstance(ratio, (int, float)) or ratio > 0.95 or ratio < 0.80:
+            blockers.append(
+                "English subtitle font is not at least 20% smaller than Chinese font"
+            )
+    else:
+        ratio = readability.get("english_to_chinese_size_ratio")
+        if not isinstance(ratio, (int, float)) or ratio < 1.2:
+            blockers.append("English subtitle font is less than 1.20x Chinese font")
     if readability.get("visual_frame_review") != "passed":
         blockers.append("visual frame review has not passed")
     if readability.get("english_reading_speed_over_20_cps_cues"):

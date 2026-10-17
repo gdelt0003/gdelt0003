@@ -8,7 +8,10 @@ on:
       - 'assets/comparison.css'
       - 'assets/comparison.js'
       - 'assets/main-videos.js'
+      - 'assets/main-video-ranking.js'
+      - 'assets/main-video-sources.js'
       - 'assets/style.css'
+      - 'copilot-results.html'
       - 'events/**'
       - 'index.html'
       - 'requirements.txt'
@@ -18,6 +21,8 @@ on:
       - 'outputs/**/*.json'
       - 'tests/**'
       - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
+      - '.github/workflows/publish-katie-zacharia-preview.yml'
       - '.github/workflows/frontend-checks.yml'
   pull_request:
     paths:
@@ -26,7 +31,10 @@ on:
       - 'assets/comparison.css'
       - 'assets/comparison.js'
       - 'assets/main-videos.js'
+      - 'assets/main-video-ranking.js'
+      - 'assets/main-video-sources.js'
       - 'assets/style.css'
+      - 'copilot-results.html'
       - 'events/**'
       - 'index.html'
       - 'requirements.txt'
@@ -36,6 +44,8 @@ on:
       - 'outputs/**/*.json'
       - 'tests/**'
       - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/publish-rose-garden-review.yml'
+      - '.github/workflows/publish-katie-zacharia-preview.yml'
       - '.github/workflows/frontend-checks.yml'
 
 permissions:
@@ -73,11 +83,16 @@ jobs:
         run: |
           node --check assets/app.js
           node --check assets/main-videos.js
+          node --check assets/main-video-ranking.js
+          node --check assets/main-video-sources.js
           node --check assets/comparison.js
           node --check tests/test_main_videos.cjs
+          node --check tests/test_main_videos_provenance.cjs
 
       - name: Verify published clip playback paths and aspect ratios
         run: |
           node tests/test_frontend_assets.cjs
           node tests/test_main_videos.cjs
+          node tests/test_main_videos_provenance.cjs
+          node --test tests/test_rose_garden_review_page.cjs
           node --test tests/test_subtitle_comparison_page.cjs

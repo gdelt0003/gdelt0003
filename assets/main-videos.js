@@ -1,5 +1,10 @@
 const $mainVideos = document.getElementById('mainVideos');
 const $mainVideosStatus = document.getElementById('mainVideosStatus');
+const $mainVideosFilters = document.getElementById('mainVideosFilters');
+const $mainVideosSort = document.getElementById('mainVideosSort');
+let catalogVideos = [];
+let activeFilter = 'all';
+let activeSort = 'newest';
 
 function safeVideoUrl(value) {
   if (typeof value !== 'string' || !value.trim()) return null;
@@ -11,32 +16,52 @@ function safeVideoUrl(value) {
   }
 }
 
-function addText(parent, tagName, className, text) {
-  const element = document.createElement(tagName);
-  if (className) element.className = className;
-  element.textContent = text || '';
-  parent.append(element);
-  return element;
-}
-
-function addDownloadLink(parent, item) {
-  const url = safeVideoUrl(item.url);
+function addLink(parent, urlValue, label, className = '') {
+  const url = safeVideoUrl(urlValue);
   if (!url) return;
   const link = document.createElement('a');
   link.href = url;
-  link.textContent = item.label;
+  link.textContent = label;
+  if (className) link.className = className;
+  if (url.startsWith('https://') && !url.startsWith(document.baseURI)) {
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+  }
   parent.append(link);
 }
 
-function renderMainVideos(payload) {
-  const videos = Array.isArray(payload.videos) ? payload.videos : [];
-  const renderableVideos = videos.filter((item) => safeVideoUrl(item?.video_url));
+function eventTime(item) {
+  const time = Date.parse(`${item.event_date || ''}T00:00:00Z`);
+  return Number.isFinite(time) ? time : -1;
+}
+
+function matchesFilter(item) {
+  const isMachineGenerated = String(item.homepage_status || '').includes('机器生成');
+  return activeFilter === 'all'
+    || (activeFilter === 'machine' && isMachineGenerated)
+    || (activeFilter === 'other' && !isMachineGenerated);
+}
+
+function renderMainVideos() {
+  const renderableVideos = catalogVideos
+    .filter(({ item }) => matchesFilter(item))
+    .sort((left, right) => {
+      if (activeSort === 'title') {
+        return String(left.item.title || '').localeCompare(String(right.item.title || ''), 'zh-CN')
+          || left.index - right.index;
+      }
+      const dateOrder = activeSort === 'oldest'
+        ? eventTime(left.item) - eventTime(right.item)
+        : eventTime(right.item) - eventTime(left.item);
+      return dateOrder || left.index - right.index;
+    });
+
   $mainVideos.replaceChildren();
-  $mainVideosStatus.textContent = `${renderableVideos.length} 条主视频`;
+  $mainVideosStatus.textContent = activeFilter === 'all'
+    ? `${renderableVideos.length} 条主视频`
+    : `${renderableVideos.length} 条主视频 · 筛选结果`;
 
-  for (const item of renderableVideos) {
-    const videoUrl = safeVideoUrl(item.video_url);
-
+  for (const { item } of renderableVideos) {
     const card = document.createElement('article');
     card.className = 'main-video-card';
 
@@ -46,53 +71,81 @@ function renderMainVideos(payload) {
     player.preload = 'metadata';
     player.playsInline = true;
     const source = document.createElement('source');
-    source.src = videoUrl;
+    source.src = safeVideoUrl(item.video_url);
     source.type = 'video/mp4';
     player.append(source);
 
     const content = document.createElement('div');
     content.className = 'main-video-content';
-    addText(content, 'h3', 'main-video-title', item.title || '未命名主视频');
-    addText(
-      content,
-      'p',
-      'main-video-meta',
-      [item.event_date, item.publisher, item.resolution].filter(Boolean).join(' · '),
-    );
-    addText(content, 'p', 'main-video-review-status', item.review_status || '复核状态未登记');
-    addText(content, 'p', 'main-video-note meta', item.note || '');
+    const title = document.createElement('h3');
+    title.className = 'main-video-title';
+    title.textContent = item.title || '未命名主视频';
+    content.append(title);
+
+    const metadata = document.createElement('p');
+    metadata.className = 'main-video-meta';
+    metadata.textContent = [
+      item.event_date,
+      item.publisher,
+      item.resolution,
+      Number.isFinite(item.duration_seconds) ? `${Math.floor(item.duration_seconds / 60)} 分钟` : '',
+    ].filter(Boolean).join(' · ');
+    content.append(metadata);
+
+    const status = document.createElement('p');
+    status.className = 'main-video-review-status';
+    status.textContent = item.homepage_status || '复核状态未登记';
+    content.append(status);
 
     const links = document.createElement('p');
     links.className = 'main-video-links';
-    addDownloadLink(links, { url: item.video_url, label: '下载 MP4' });
-    for (const subtitle of Array.isArray(item.subtitles) ? item.subtitles : []) {
-      addDownloadLink(links, subtitle);
-    }
-    const sourceUrl = safeVideoUrl(item.source_url);
-    if (sourceUrl) {
-      const sourceLink = document.createElement('a');
-      sourceLink.href = sourceUrl;
-      sourceLink.textContent = '来源视频';
-      sourceLink.target = '_blank';
-      sourceLink.rel = 'noreferrer';
-      links.append(sourceLink);
-    }
+    addLink(links, item.source_url, '来源视频');
+    addLink(links, item.source_details_url, '视频源与视频本身可信度详情');
+    addLink(links, item.video_url, '下载 MP4');
     content.append(links);
+
     card.append(player, content);
     $mainVideos.append(card);
   }
 
   if ($mainVideos.children.length === 0) {
-    $mainVideosStatus.textContent = '暂无可播放主视频';
-    $mainVideos.textContent = '尚无已登记的主视频。';
+    $mainVideosStatus.textContent = '此筛选下暂无可播放主视频';
+    $mainVideos.textContent = '当前类别尚无已登记的主视频。';
   }
 }
+
+function loadMainVideoCatalog(payload) {
+  const videos = Array.isArray(payload.videos) ? payload.videos : [];
+  catalogVideos = videos
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => safeVideoUrl(item?.video_url));
+  renderMainVideos();
+}
+
+$mainVideosFilters?.addEventListener('click', (event) => {
+  const filter = event.target?.dataset?.mainVideoFilter;
+  if (!['all', 'machine', 'other'].includes(filter)) return;
+  activeFilter = filter;
+  for (const button of $mainVideosFilters.querySelectorAll('[data-main-video-filter]')) {
+    const selected = button.dataset.mainVideoFilter === activeFilter;
+    button.classList.toggle('is-active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  }
+  renderMainVideos();
+});
+
+$mainVideosSort?.addEventListener('change', () => {
+  activeSort = ['newest', 'oldest', 'title'].includes($mainVideosSort.value)
+    ? $mainVideosSort.value
+    : 'newest';
+  renderMainVideos();
+});
 
 async function loadMainVideos() {
   try {
     const response = await fetch('outputs/main-videos.json', { cache: 'no-store' });
     if (!response.ok) throw new Error(`Main video catalog HTTP ${response.status}`);
-    renderMainVideos(await response.json());
+    loadMainVideoCatalog(await response.json());
   } catch (error) {
     console.error('Unable to load the main video catalog', error);
     $mainVideosStatus.textContent = '主视频清单暂不可用';

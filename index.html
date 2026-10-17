@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>gdelt0003 | 事件视频资料</title>
     <meta name="description" content="按事件组织的来源证据、发现线索与经复核的视频作品。" />
-    <link rel="stylesheet" href="assets/style.css?v=whitehouse-5" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="assets/style.css?v=whitehouse-8" />
   </head>
   <body>
     <main class="page">
       <nav class="site-nav" aria-label="主要导航">
         <a class="site-brand" href="#top">GDELT · 事件视频</a>
         <div class="site-nav-links">
+          <a href="copilot-results.html">Copilot 成果</a>
+          <a href="events/rose-garden-lunch-2026-10-15/">外部审查草稿</a>
           <a href="#featured-video">主视频</a>
+          <a href="#official-whitehouse-videos">白宫最新线索</a>
           <a href="#highlights">短片</a>
           <a href="#event-research">事件与来源</a>
           <a href="#camera-map">机位证据</a>
@@ -23,7 +27,7 @@
         <p class="eyebrow">GITHUB ACTIONS · PAGES</p>
         <h1>事件视频资料与高光片段</h1>
         <p class="subtitle">全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态</p>
-        <p class="meta">页面视频按实际制作工具标注来源。pvX 公开预览由开源 SmartSub 3.9.0 渲染，未经人工核验；Copilot coding agent 的仓库工程贡献单独说明，不冒称为视频生成成果。历史视频同样不代表字幕准确性或画面质量验收通过。</p>
+        <p class="meta">本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。</p>
       </header>
       <section class="panel main-videos-panel" id="featured-video" aria-labelledby="main-videos-title">
         <div class="highlights-heading">
@@ -33,8 +37,43 @@
           </div>
           <span id="mainVideosStatus" class="meta" role="status" aria-live="polite">正在读取主视频清单…</span>
         </div>
-        <p class="meta main-videos-notice">每条主视频独立展示，可继续按事件添加；来源、字幕和复核状态跟随各自视频，不会被合并成单一焦点播放器。</p>
+        <div class="main-video-toolbar">
+          <div id="mainVideosFilters" class="main-video-filters" role="group" aria-label="按视频类型筛选">
+            <button type="button" class="main-video-filter is-active" data-main-video-filter="all" aria-pressed="true">全部视频</button>
+            <button type="button" class="main-video-filter" data-main-video-filter="machine" aria-pressed="false">机器生成</button>
+            <button type="button" class="main-video-filter" data-main-video-filter="other" aria-pressed="false">其他版本</button>
+          </div>
+          <label class="main-video-sort-label" for="mainVideosSort">排序
+            <select id="mainVideosSort">
+              <option value="newest">最新事件</option>
+              <option value="popular" disabled>热门（暂无观看量）</option>
+              <option value="oldest">最早事件</option>
+              <option value="title">标题 A–Z</option>
+            </select>
+          </label>
+        </div>
+        <p class="meta main-videos-notice">按类别筛选，或按事件日期、标题排序。当前目录没有各作品的可靠观看量，因此不提供误导性的热度排序；未核验信息不会被推定。</p>
         <div id="mainVideos" class="main-video-grid" aria-live="polite"></div>
+      </section>
+      <section class="panel official-video-leads-panel" id="official-whitehouse-videos" aria-labelledby="official-video-leads-title">
+        <div class="highlights-heading">
+          <div>
+            <p class="eyebrow">WHITE HOUSE · OFFICIAL CHANNEL METADATA</p>
+            <h2 id="official-video-leads-title">白宫官方频道 · 最新视频线索</h2>
+          </div>
+          <div class="official-video-leads-actions">
+            <span id="officialVideoLeadsStatus" class="meta" role="status" aria-live="polite">正在读取白宫频道元数据…</span>
+            <a class="official-video-more" href="https://www.youtube.com/@WhiteHouse/videos" target="_blank" rel="noreferrer">More · 打开白宫官方频道</a>
+          </div>
+        </div>
+        <p class="meta official-video-leads-notice">以下条目仅来自白宫官方频道上传元数据，不是经复核作品；事件、视频内容、上传日期（若未提供）和复用权利均未核实。日期显示为上传元数据或目录快照日期，不代表事件发生日期。此处不播放或重新发布视频。</p>
+        <div id="officialVideoLeads" class="official-video-lead-grid" aria-live="polite"></div>
+      </section>
+      <section class="panel review-draft-notice" aria-labelledby="review-draft-heading">
+        <p class="eyebrow">PUBLIC · EXTERNAL REVIEW DRAFT</p>
+        <h2 id="review-draft-heading">公开外部审查草稿 · 尚未审阅</h2>
+        <p>此页面仅用于审查，不是完成的制作成品，也不是权利/许可结论。页面对所有访问者公开，不限于质量检查部门。</p>
+        <p><a href="events/rose-garden-lunch-2026-10-15/">查看 2026-10-15 玫瑰园午餐审查草稿</a></p>
       </section>
       <section class="panel highlights-panel" id="highlights" aria-labelledby="highlights-title">
         <div class="highlights-heading">
@@ -48,10 +87,10 @@
         <p class="meta">保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。</p>
       </section>
       <section class="panel highlights-panel" aria-labelledby="subtitle-comparison-title">
-        <p class="eyebrow">SINGLE-EVENT COMPARISON</p>
-        <h2 id="subtitle-comparison-title">双语字幕方案对照</h2>
-        <p class="meta">同一事件的处理工具与 Microsoft/GitHub Copilot coding-agent 工程路径分开展示。已公开的 pvX 视频由开源 SmartSub 渲染；Copilot agent 的模型路由证据不等于它生成了这份视频。</p>
-        <p><a href="events/pvXbHQrIvTw/">打开 pvXbHQrIvTw 对照页</a></p>
+        <p class="eyebrow">DEDICATED PATHWAY COMPARISON</p>
+        <h2 id="subtitle-comparison-title">开源媒体工具 × Copilot 工程路线</h2>
+        <p class="meta">开源工具候选、实际媒体产物与 Copilot coding-agent 的仓库工程交付在专页分栏展示。只对同输入、同任务且有证据的结果作质量比较；未运行或未核验项不会冒充成绩。</p>
+        <p><a href="events/pvXbHQrIvTw/#pathways">打开 pvXbHQrIvTw 专属路线对比页</a></p>
       </section>
       <section class="panel event-research-panel" id="event-research" aria-labelledby="event-research-title">
         <div class="highlights-heading">
@@ -94,7 +133,9 @@
       </section>
     </main>
     <script src="assets/events.js?v=event-catalog-2"></script>
-    <script src="assets/main-videos.js?v=main-video-catalog-1"></script>
+    <script src="assets/main-video-ranking.js?v=main-video-ranking-1"></script>
+    <script src="assets/main-videos.js?v=main-video-catalog-3"></script>
+    <script src="assets/whitehouse-video-leads.js?v=metadata-leads-1"></script>
     <script src="assets/camera-map.js?v=camera-map-1"></script>
     <script src="assets/app.js?v=whitehouse-4"></script>
   </body>

@@ -13,6 +13,7 @@ import re
 import subprocess
 import tempfile
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 from urllib.parse import urlparse
 
@@ -453,11 +454,34 @@ def validate_caption_layout(
         raise RuntimeError("Non-mask Rose layout has an invalid occlusion disclosure.")
 
     source_evidence = readability.get("rose_source_evidence")
+    metadata_search = (
+        source_evidence.get("metadata_search")
+        if isinstance(source_evidence, dict)
+        else None
+    )
     if (
         not isinstance(source_evidence, dict)
-        or source_evidence.get("classification") != "official_event_anchor_only"
+        or source_evidence.get("classification") != "pinned_source_reference_only"
         or source_evidence.get("whitehouse_search", {}).get("status")
         != "no_verifiable_event_article_or_embedded_video_found"
+        or not isinstance(metadata_search, dict)
+        or metadata_search.get("run_url")
+        != "https://github.com/gdelt0003/gdelt0003/actions/runs/38915918932"
+        or metadata_search.get("public_search_providers") != 2
+        or metadata_search.get("queries") != 40
+        or metadata_search.get("raw_leads") != 18
+        or metadata_search.get("qualifying_event_relevant_video_page_leads") != 0
+        or metadata_search.get("landing_page_fetch_errors") != 7
+        or metadata_search.get("verified_candidates") != []
+        or metadata_search.get("raw_leads_promoted_to_video_candidates") is not False
+        or metadata_search.get("media_downloaded") is not False
+        or metadata_search.get("frames_or_audio_inspected") is not False
+        or metadata_search.get("rights_or_content_review") != "not_performed"
+        or metadata_search.get("coverage")
+        != "limited metadata search; not an exhaustive web census"
+        or not metadata_search.get("not_covered_examples")
+        or "does not establish that no sources exist"
+        not in metadata_search.get("interpretation", "")
         or source_evidence.get("event_match") != "pending"
         or source_evidence.get("exact_event_time_and_timezone") != "pending"
         or source_evidence.get("source_url_to_release_lineage") != "pending"
@@ -473,6 +497,56 @@ def validate_caption_layout(
         raise RuntimeError("M2 event/source evidence must remain explicitly pending.")
 
 
+def _process_full_video_module() -> ModuleType:
+    if __package__:
+        from . import process_full_video
+    else:
+        import process_full_video
+    return process_full_video
+
+
+def _manifest_caption_box(
+    manifest: dict[str, Any],
+    width: int,
+    height: int,
+) -> tuple[int, int, int, int] | None:
+    record = manifest.get("caption_box")
+    if record is None:
+        return None
+    if (
+        not isinstance(record, dict)
+        or record.get("coordinate_convention") != "half_open_xyxy"
+        or record.get("applied_source_resolution") != f"{width}x{height}"
+    ):
+        raise RuntimeError("Render manifest caption box metadata is invalid.")
+    bbox = record.get("applied_source_bbox_px")
+    if not isinstance(bbox, dict):
+        raise RuntimeError("Render manifest caption box coordinates are missing.")
+    coordinates = tuple(
+        bbox.get(name) for name in ("left", "top", "right", "bottom")
+    )
+    box_width = bbox.get("width")
+    box_height = bbox.get("height")
+    left, top, right, bottom = coordinates
+    if (
+        any(not isinstance(value, int) or isinstance(value, bool) for value in coordinates)
+        or not isinstance(box_width, int)
+        or isinstance(box_width, bool)
+        or not isinstance(box_height, int)
+        or isinstance(box_height, bool)
+        or left < 0
+        or top < 0
+        or right <= left
+        or bottom <= top
+        or right > width
+        or bottom > height
+        or box_width != right - left
+        or box_height != bottom - top
+    ):
+        raise RuntimeError("Render manifest caption box coordinates are invalid.")
+    return left, top, right, bottom
+
+
 def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     ass_name = manifest.get("subtitle_ass_file")
     expected_name = f"{ASSET_PREFIX}.en-zh.ass"
@@ -485,21 +559,23 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     if manifest.get("subtitle_ass_sha256") != digest:
         raise RuntimeError("ASS subtitle SHA-256 does not match the render manifest.")
 
-    from scripts.process_full_video import (
-        Cue,
-        _verify_rose_garden_ass,
-        read_srt,
-    )
-
-    english = read_srt(output_dir / f"{ASSET_PREFIX}.en.srt")
-    chinese = read_srt(output_dir / f"{ASSET_PREFIX}.zh-Hans.srt")
+    process_full_video = _process_full_video_module()
+    english = process_full_video.read_srt(output_dir / f"{ASSET_PREFIX}.en.srt")
+    chinese = process_full_video.read_srt(output_dir / f"{ASSET_PREFIX}.zh-Hans.srt")
     if not english or len(english) != len(chinese):
         raise RuntimeError("English and Chinese SRT cue counts do not match.")
     cues = []
     for index, (en, zh) in enumerate(zip(english, chinese, strict=True), start=1):
         if abs(en[0] - zh[0]) > 0.01 or abs(en[1] - zh[1]) > 0.01:
             raise RuntimeError(f"Bilingual SRT timing mismatch at cue {index}.")
-        cues.append(Cue(en[0], en[1], en[2].replace("\n", " "), zh[2].replace("\n", "")))
+        cues.append(
+            process_full_video.Cue(
+                en[0],
+                en[1],
+                en[2].replace("\n", " "),
+                zh[2].replace("\n", ""),
+            )
+        )
     readability = manifest["quality_checks"]["subtitle_readability"]
     overflow_summary = readability.get("caption_overflow_exceptions")
     overflow_records = (
@@ -543,12 +619,17 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         else []
     )
     occlusion = readability.get("caption_band_occlusion")
+    width, height = (
+        int(manifest["resolution"].split("x", maxsplit=1)[index])
+        for index in range(2)
+    )
+    caption_box = _manifest_caption_box(manifest, width, height)
     try:
-        _verify_rose_garden_ass(
+        process_full_video._verify_rose_garden_ass(
             ass_path,
             cues,
-            int(manifest["resolution"].split("x", maxsplit=1)[0]),
-            int(manifest["resolution"].split("x", maxsplit=1)[1]),
+            width,
+            height,
             position,
             regions,
             isinstance(occlusion, dict)
@@ -558,6 +639,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
             else None,
             allow_unverified_estimate,
             overflow_records,
+            caption_box,
         )
     except (KeyError, ValueError, RuntimeError) as error:
         raise RuntimeError(f"Generated ASS caption geometry is invalid: {error}") from error
@@ -569,8 +651,6 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         if position == "mask-lower-third"
         else ass_subtitles.events
     )
-    from scripts.process_full_video import _has_rose_overflow
-
     indexed_captions = list(zip(cues, caption_events, strict=True))
     for record in overflow_records:
         start = record.get("start_seconds")
@@ -596,7 +676,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     non_overflow_captions = [
         (cue, event)
         for cue, event in indexed_captions
-        if not _has_rose_overflow(cue, overflow_records)
+        if not process_full_video._has_rose_overflow(cue, overflow_records)
     ]
     rendered_bounds = None
     if non_overflow_captions:
@@ -650,6 +730,14 @@ def validate_dispatch_inputs(
     source_release_tag: str,
     source_asset: str,
     source_sha256: str,
+    rights_evidence_url: str,
+    event_identity_evidence_url: str = "",
+    event_match_evidence_url: str = "",
+    event_time_timezone_evidence_url: str = "",
+    source_lineage_evidence_url: str = "",
+    exact_event_match_confirmed: bool = False,
+    reuse_rights_confirmed: bool = False,
+    require_processing_evidence: bool = False,
 ) -> None:
     expected = {
         "event_id": EVENT_ID,
@@ -674,6 +762,42 @@ def validate_dispatch_inputs(
             raise RuntimeError(
                 f"Unexpected {name}; this workflow is pinned to {expected_value!r}."
             )
+
+    evidence = {
+        "event identity": event_identity_evidence_url,
+        "exact source/event match": event_match_evidence_url,
+        "source-specific reuse rights": rights_evidence_url,
+        "event time and timezone": event_time_timezone_evidence_url,
+        "source lineage": source_lineage_evidence_url,
+    }
+    if require_processing_evidence:
+        for name, value in evidence.items():
+            if not value:
+                continue
+            parsed_url = urlparse(value)
+            if parsed_url.scheme != "https" or not parsed_url.netloc:
+                raise RuntimeError(
+                    f"{name} evidence URL must be an absolute HTTPS URL."
+                )
+        for name in (
+            "event identity",
+            "exact source/event match",
+            "source-specific reuse rights",
+        ):
+            value = evidence[name]
+            if not value:
+                raise RuntimeError(
+                    f"{name} evidence URL is required before public release."
+                )
+        if exact_event_match_confirmed is not True:
+            raise RuntimeError(
+                "Explicit exact-event match confirmation is required before public release."
+            )
+        if reuse_rights_confirmed is not True:
+            raise RuntimeError(
+                "Explicit source-specific reuse-rights confirmation is required before public release."
+            )
+
 
 def validate_layout_inputs(
     *,
@@ -810,6 +934,7 @@ def validate_review_gates(
     event_time_timezone_evidence_url: str,
     source_lineage_evidence_url: str,
     frame_review_mode: str = "trusted-signed-review",
+    private_render: bool = False,
 ) -> dict[str, str]:
     if caption_position not in {"top", "center", "mask-lower-third"}:
         raise RuntimeError("caption_position is not a supported Rose layout.")
@@ -825,14 +950,15 @@ def validate_review_gates(
         "event_time_timezone_review": event_time_timezone_evidence_url,
         "source_lineage_review": source_lineage_evidence_url,
     }
-    for name, value in evidence.items():
-        if not value:
-            continue
-        parsed_url = urlparse(value)
-        if parsed_url.scheme != "https" or not parsed_url.netloc:
-            raise RuntimeError(
-                f"{name} evidence URL must be absolute HTTPS when provided."
-            )
+    if not private_render:
+        for name, value in evidence.items():
+            if not value:
+                continue
+            parsed_url = urlparse(value)
+            if parsed_url.scheme != "https" or not parsed_url.netloc:
+                raise RuntimeError(
+                    f"{name} evidence URL must be absolute HTTPS when provided."
+                )
 
     if caption_position != "mask-lower-third":
         return {
@@ -1211,6 +1337,7 @@ def finalize_review_manifest(
     source_lineage_evidence_url: str = "",
     exact_event_match_confirmed: bool = False,
     reuse_rights_confirmed: bool = False,
+    private_render: bool = False,
 ) -> dict[str, Any]:
     validate_dispatch_inputs(
         event_id=EVENT_ID,
@@ -1220,6 +1347,14 @@ def finalize_review_manifest(
         source_release_tag=SOURCE_RELEASE_TAG,
         source_asset=SOURCE_ASSET,
         source_sha256=SOURCE_SHA256,
+        rights_evidence_url=rights_evidence_url,
+        event_identity_evidence_url=event_identity_evidence_url,
+        event_match_evidence_url=event_match_evidence_url,
+        event_time_timezone_evidence_url=event_time_timezone_evidence_url,
+        source_lineage_evidence_url=source_lineage_evidence_url,
+        exact_event_match_confirmed=exact_event_match_confirmed,
+        reuse_rights_confirmed=reuse_rights_confirmed,
+        require_processing_evidence=not private_render,
     )
     source_details = verify_source(source)
     manifest_path = output_dir / "manifest.json"
@@ -1310,33 +1445,59 @@ def finalize_review_manifest(
         "sha256": video_sha256,
     }
     manifest["rights_review"] = {
-        "requester_authorization": "confirmed_for_private_processing",
-        "authorization_scope": "private cloud processing only",
+        "requester_authorization": "confirmed_for_this_run",
+        "authorization_scope": (
+            "cloud processing for this private artifact only"
+            if private_render
+            else "cloud processing and public external-review publication"
+        ),
         "rights_evidence_url": rights_evidence_url or None,
-        "status": "not_assessed",
-        "independent_rights_review": "not_performed",
+        "reuse_rights_assessment": (
+            "unassessed" if private_render else "evidence_submitted_for_review"
+        ),
+        "independent_rights_review": "pending",
     }
     manifest["processing_prerequisites"] = {
-        "event_identity_evidence_url": event_identity_evidence_url,
-        "exact_source_event_match_evidence_url": event_match_evidence_url,
-        "event_time_timezone_evidence_url": event_time_timezone_evidence_url,
+        "event_identity_evidence_url": event_identity_evidence_url or None,
+        "exact_source_event_match_evidence_url": event_match_evidence_url or None,
+        "event_time_timezone_evidence_url": event_time_timezone_evidence_url or None,
         "source_url_to_release_asset_lineage_evidence_url": (
-            source_lineage_evidence_url
+            source_lineage_evidence_url or None
         ),
-        "source_specific_reuse_rights_evidence_url": rights_evidence_url,
-        "event_match_status": "pinned source metadata; human content review pending",
-        "reuse_rights_status": "not_assessed",
+        "source_specific_reuse_rights_evidence_url": rights_evidence_url or None,
+        "exact_event_match_operator_confirmation": (
+            "pending" if private_render else "confirmed"
+        ),
+        "reuse_rights_operator_confirmation": (
+            "pending" if private_render else "confirmed"
+        ),
+        "independent_evidence_review": "pending",
     }
-    manifest["public_review"] = {
-        "status": "not_authorized_or_prepared_for_publication",
-        "requester_authorization": "private_processing_only",
-        "independent_rights_review": "not_performed",
-        "source_event_match_review": "pending",
-        "source_frame_review": "pending",
-        "source_audio_asr_review": "pending",
-        "translation_review": "pending",
-        "final_release_approval": "not_granted",
-    }
+    review_state = (
+        {
+            "status": "private_artifact_only",
+            "requester_authorization": "confirmed_for_this_run",
+            "event_identity_review": "pending",
+            "source_event_match_review": "pending",
+            "independent_rights_review": "pending",
+            "source_frame_review": "pending",
+            "source_audio_asr_review": "pending",
+            "translation_review": "pending",
+            "public_release": "not_authorized",
+        }
+        if private_render
+        else {
+            "status": "public_external_review_draft",
+            "requester_authorization": "confirmed_for_this_run",
+            "independent_rights_review": "pending",
+            "source_event_match_review": "pending",
+            "source_frame_review": "pending",
+            "source_audio_asr_review": "pending",
+            "translation_review": "pending",
+            "final_release_approval": "not_granted",
+        }
+    )
+    manifest["private_review" if private_render else "public_review"] = review_state
     readability = manifest["quality_checks"]["subtitle_readability"]
     occlusion = readability["caption_band_occlusion"]
     manifest["source_graphics_occlusion"] = {
@@ -1359,6 +1520,8 @@ def finalize_review_manifest(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--validate-dispatch-inputs", action="store_true")
+    parser.add_argument("--validate-private-dispatch-inputs", action="store_true")
+    parser.add_argument("--private-render", action="store_true")
     parser.add_argument("--validate-layout-inputs", action="store_true")
     parser.add_argument("--validate-review-gates", action="store_true")
     parser.add_argument(
@@ -1419,8 +1582,21 @@ def main() -> None:
         source_release_tag=args.source_release_tag,
         source_asset=args.source_asset,
         source_sha256=args.source_sha256,
+        rights_evidence_url=args.rights_evidence_url,
+        event_identity_evidence_url=args.event_identity_evidence_url,
+        event_match_evidence_url=args.event_match_evidence_url,
+        event_time_timezone_evidence_url=(
+            args.event_time_timezone_evidence_url
+        ),
+        source_lineage_evidence_url=args.source_lineage_evidence_url,
+        exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
+        reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
+        require_processing_evidence=(
+            args.validate_dispatch_inputs
+            and not args.validate_private_dispatch_inputs
+        ),
     )
-    if args.validate_dispatch_inputs:
+    if args.validate_dispatch_inputs or args.validate_private_dispatch_inputs:
         return
     if args.validate_layout_inputs:
         validate_layout_inputs(
@@ -1448,6 +1624,7 @@ def main() -> None:
             event_time_timezone_evidence_url=args.event_time_timezone_evidence_url,
             source_lineage_evidence_url=args.source_lineage_evidence_url,
             frame_review_mode=args.frame_review_mode,
+            private_render=args.private_render,
         )
         print(json.dumps(result, ensure_ascii=False))
         return
@@ -1469,8 +1646,10 @@ def main() -> None:
             source_lineage_evidence_url=args.source_lineage_evidence_url,
             exact_event_match_confirmed=args.exact_event_match_confirmed == "true",
             reuse_rights_confirmed=args.reuse_rights_confirmed == "true",
+            private_render=args.private_render,
         )
-        print(json.dumps(manifest["public_review"], ensure_ascii=False, indent=2))
+        review_key = "private_review" if args.private_render else "public_review"
+        print(json.dumps(manifest[review_key], ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

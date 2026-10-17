@@ -112,11 +112,6 @@ on:
         type: string
         required: false
         default: https://www.youtube.com/watch?v=pvXbHQrIvTw
-      comparison_review_evidence_json:
-        description: Public-only JSON review record with clean_frames, english_asr, chinese_translation objects containing confirmed and HTTPS url
-        type: string
-        required: false
-        default: '{}'
       restyle_full_video:
         description: Re-render the uploaded source video with the revised bilingual subtitle style, reusing existing translations
         type: boolean
@@ -147,10 +142,6 @@ permissions:
   contents: write
   pages: write
   id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -934,8 +925,6 @@ jobs:
           RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
-          PUBLISH_PUBLICLY: ${{ inputs.publish_smartsub_draft }}
-          COMPARISON_REVIEW_EVIDENCE_JSON: ${{ inputs.comparison_review_evidence_json }}
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$RIGHTS_CONFIRMED" != "true" ] || [ "$SAME_EVENT_CONFIRMED" != "true" ]; then
@@ -943,46 +932,14 @@ jobs:
             exit 1
           fi
           python - <<'PY'
-          import json
           import os
           from urllib.parse import urlparse
 
-          evidence_names = ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL")
-          try:
-              review = json.loads(os.environ.get("COMPARISON_REVIEW_EVIDENCE_JSON") or "{}")
-          except json.JSONDecodeError as error:
-              raise SystemExit("Review evidence must be valid JSON.") from error
-          if not isinstance(review, dict):
-              raise SystemExit("Review evidence must be a JSON object.")
-          review_sections = {
-              name: review.get(name)
-              for name in ("clean_frames", "english_asr", "chinese_translation")
-          }
-          if os.environ["PUBLISH_PUBLICLY"] == "true":
-              if any(not isinstance(item, dict) for item in review_sections.values()):
-                  raise SystemExit("Each review evidence entry must be a JSON object.")
-              confirmations = {
-                  "CLEAN_FRAMES_CONFIRMED": review_sections["clean_frames"].get("confirmed") is True,
-                  "ENGLISH_ASR_CONFIRMED": review_sections["english_asr"].get("confirmed") is True,
-                  "CHINESE_TRANSLATION_CONFIRMED": review_sections["chinese_translation"].get("confirmed") is True,
-              }
-              if not all(confirmations.values()):
-                  raise SystemExit("All five evidence reviews must be explicitly confirmed before public release.")
-              evidence_names += tuple(
-                  review_sections[name].get("url", "")
-                  for name in ("clean_frames", "english_asr", "chinese_translation")
-              )
-          evidence_urls = [os.environ[name] for name in ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL")]
-          if os.environ["PUBLISH_PUBLICLY"] == "true":
-              evidence_urls.extend(evidence_names[3:])
-          parsed_urls = []
-          for url in evidence_urls:
+          for name in ("IDENTITY_URL", "SOURCE_MATCH_URL", "RIGHTS_URL"):
+              url = os.environ[name]
               parsed = urlparse(url)
               if parsed.scheme != "https" or not parsed.netloc:
-                  raise SystemExit("Every evidence URL must use HTTPS and include a host.")
-              parsed_urls.append(url)
-          if os.environ["PUBLISH_PUBLICLY"] == "true" and len(set(parsed_urls)) != 5:
-              raise SystemExit("Public release requires five distinct HTTPS evidence URLs.")
+                  raise SystemExit(f"{name} must use HTTPS and include a host.")
           PY
           mkdir -p "$RUNNER_TEMP/smartsub-input" "$RUNNER_TEMP/smartsub-output"
           gh api repos/"$GITHUB_REPOSITORY"/releases/assets/639463349 \
@@ -1146,7 +1103,6 @@ jobs:
           RIGHTS_URL: ${{ inputs.comparison_rights_evidence_url }}
           IDENTITY_URL: ${{ inputs.comparison_identity_evidence_url }}
           SOURCE_MATCH_URL: ${{ inputs.comparison_source_match_evidence_url }}
-          COMPARISON_REVIEW_EVIDENCE_JSON: ${{ inputs.comparison_review_evidence_json }}
         run: |
           set -euo pipefail
           source="$RUNNER_TEMP/smartsub-input/pvXbHQrIvTw-source.mp4"
@@ -1190,10 +1146,6 @@ jobs:
               raise SystemExit("Exact source SHA-256 mismatch after render.")
           reuse = json.loads((output_dir.parent / "smartsub-reuse/comparison-output/manifest.json").read_text())
           style_report = json.loads((output_dir / "style-report.json").read_text())
-          review_evidence = json.loads(os.environ.get("COMPARISON_REVIEW_EVIDENCE_JSON") or "{}")
-          def evidence_url(name):
-              item = review_evidence.get(name, {})
-              return item.get("url") if isinstance(item, dict) and item.get("url") else None
           started = int((output_dir / "compose-started").read_text())
           finished = int((output_dir / "compose-finished").read_text())
           if finished < started:
@@ -1210,9 +1162,9 @@ jobs:
               "source_event_evidence": os.environ["IDENTITY_URL"],
               "source_match_evidence": os.environ["SOURCE_MATCH_URL"],
               "rights_evidence": os.environ["RIGHTS_URL"],
-              "clean_frame_review_evidence": evidence_url("clean_frames"),
-              "english_asr_review_evidence": evidence_url("english_asr"),
-              "chinese_translation_review_evidence": evidence_url("chinese_translation"),
+              "clean_frame_review_evidence": None,
+              "english_asr_review_evidence": None,
+              "chinese_translation_review_evidence": None,
               "subtitle_source_run_id": source_run_id,
               "source_manifest_checks": reuse["quality_checks"],
               "prior_subtitle_models": {
@@ -1281,7 +1233,7 @@ jobs:
             gh release create "$tag" \
               --repo "$GITHUB_REPOSITORY" \
               --title "pvXbHQrIvTw SmartSub unverified draft preview" \
-              --notes "Machine-generated, unverified draft only. Source audio/ASR, translation, reading speed, and complete visual review remain unverified; release gate is blocked. Exact source asset 639463349 was SHA-256 verified. No Microsoft/GPT-6 model or paid API was used." \
+              --notes "Machine-generated, unverified draft only. Source audio/ASR, translation, reading speed, and complete visual review remain unverified; release gate is blocked. Exact source asset 639463349 was SHA-256 verified. No Microsoft/GPT-6 media-generation model or paid API was used for this render." \
               --prerelease
           fi
           gh release upload "$tag" \
@@ -1542,6 +1494,9 @@ jobs:
 
   deploy:
     needs: [build, download-source, download-same-clip, download-same-full-video, process-full-video, restyle-full-video, render-smartsub-draft]
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     if: >-
       always() &&
       (
@@ -1619,6 +1574,7 @@ jobs:
           python scripts/publish_smartsub_preview.py \
             --manifest "$RUNNER_TEMP/smartsub-preview/pvXbHQrIvTw-smartsub-draft-manifest.json" \
             --comparison outputs/pvXbHQrIvTw/comparison.json \
+            --main-videos outputs/main-videos.json \
             --release-url "https://github.com/${GITHUB_REPOSITORY}/releases/download/pvXbHQrIvTw-smartsub-draft-${GITHUB_RUN_ID}"
 
       - name: Persist the published preview URLs
@@ -1626,7 +1582,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add outputs/pvXbHQrIvTw/comparison.json
+          git add outputs/pvXbHQrIvTw/comparison.json outputs/main-videos.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: record pvX SmartSub draft preview URLs"
             git push

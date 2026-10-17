@@ -2,6 +2,20 @@
 
 Use this checklist for every subtitle correction or replacement source. Do not mark a check passed from a plan, code change, search snippet, or inaccessible page alone.
 
+## V0.03 single-instance scope (2026-10-14)
+
+### 用户逐字原话
+
+> “长期还没实现的宏观规划 可以放到下一期做,当前完成V0.03版本,可以跑通一个个例”
+
+### 操作化归纳（非逐字）
+
+V0.03 is the single official White House recording `oW-PQlgw1wo`: cloud ASR/translation/burn-in, per-operation audit validation and retention, Release and Pages publication, and post-deployment live-output review. Deferring macro or multi-event work does not waive any source-audio, translation, synchronization, readability, visual-frame, render, or evidence requirement for this instance. The ten-model comparison, three independent judges, and three independent source cross-checks remain instance-level checks. Do not call billable services without explicit API/budget authorization; leave unavailable checks `not_verified` and blocking.
+
+For V0.03 only, the previously requested ten-publisher / alternate-angle survey is deferred under the explicit scope assumption that it is not needed to run this known source end to end. It remains incomplete, not passed; if an alternate source or angle is necessary to resolve a defect in this instance, bring it back as a V0.03 blocker. Multi-event discovery, recurring coverage, and generalized batch processing are next-phase work.
+
+Pages may deploy before the post-deployment gate. Deployment success and release acceptance are separate: a failed or `not_verified` post-deployment check leaves V0.03 unaccepted and requires correction, redeployment as needed, and a passing recheck.
+
 ## Acceptance scope
 
 - Use the White House's official 58:52 recording as the event/timing reference: [official event page](https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/) and [official YouTube recording](https://www.youtube.com/watch?v=oW-PQlgw1wo).
@@ -94,14 +108,17 @@ These page times are retained as publisher metadata and are not used to infer ev
 - [x] The subtitle and release-gate acceptance reports identify blockers. The footage audit opened direct video pages for White House, NBC News, CNBC, CNN-News18, Moneycontrol, NDTV Profit, The Hill, India Today Global, WMAR-2 News and New York Post, but most were not sampled at a matched event timestamp. Ten opened pages are not ten accepted sources. No post-deployment review sessions have been started.
 - [x] Footage-audit observations above distinguish in-picture source graphics from player CC and poster art; they are attributed to the independent audit rather than presented as a new local inspection.
 - [ ] No independent clean, unobstructed source or verified camera angle has been established; ten clean video sources and evidence-backed per-event camera coordinates have not been established. Publicly available venue-area information does not establish station coordinates, uncertainty, bearing, distance, lens height or pitch; do not create a 3D map from guesses.
-- [ ] No ten-model translation run, three-judge score, three-pass source-audio review, or visual review of a newly rendered cloud output has yet been completed.
-- [ ] PR #4 remains open; candidate synchronization/style/quality-gate changes have not been merged. Main has a newer restyled deployment, but independent review confirms its live VTT still contains the 8:14 mismatch; rendering changes did not verify translation or audio-level timing.
+- [ ] Run `38408560804` deployed the new cloud render, but its post-deployment quality gate failed. The ten-model/three-judge comparison was skipped; source-audio review and independent translation review remain not verified.
+- [ ] The live 8:14 English phrase is now one cue, but the paired Chinese `大家好!` omits the explicit “Good afternoon”; translation accuracy/audio alignment remain not verified. Readability remains `manual_review_required`, visual review is `required`, and English/Chinese reading-speed flags remain on 112/7 cues.
+- [ ] The run's Pages post-deployment gate validated the downloaded render manifest/evidence, not the live Pages endpoints. Live manifest/VTT were separately fetched and returned HTTP 200, but no rendered-frame review or post-deployment video probe was completed.
 - [ ] The repository has no configured `OPENROUTER_API_KEY` Actions secret. The existing benchmark workflow estimates about US$25.12 for all 971 cues and the 120-cue judge sample; confirm the spending ceiling before any billable run.
 - [x] The committed source manifest has no `quality_checks`; the candidate release verifier blocks it. The assertion-only weakness reported by acceptance is addressed in pushed commit `5b1cceb` with per-record evidence paths and content hashes; process/restyle jobs call the same verifier, and restyle copies reused review evidence into the output. Python tests cover missing records, missing/escaped/tampered evidence, and safe evidence copying. These controls validate manifest consistency, not the truth/authenticity of human or model review claims.
+- [x] Run `38408560804` (main SHA `496ad85`) completed cloud processing/burn-in at 15:38:57Z, operation-audit validation/preservation by 15:38:58Z, Release upload at 15:39:42Z, Pages artifact upload at 15:39:43Z, and deployment at 15:41:44Z (all 2026-10-13 UTC). The post-deployment gate failed at 15:41:55Z and the workflow concluded failure at 15:41:58Z. The live manifest/VTT returned HTTP 200 with `Last-Modified` 15:41:32Z/15:41:33Z; the manifest records task `38408560804.1`, 725 cues, 1920x1080, and 3532.021 seconds. The Release MP4 asset is 1,110,703,899 bytes; the Pages `.mp4` path returns 404 because video is published via Release.
+- [x] Earlier run `38393870553` rendered but failed caption style verification at 13:05:29Z on 2026-10-13; Release/Pages artifact steps were skipped and deploy was skipped at 13:05:33Z.
 
 ## Release decision
 
-Do not describe subtitles or footage as fully verified, and do not replace the published MP4/VTT, until every required release check above is passed with evidence. The live MP4/VTT have not been rebuilt with the latest cache and caption-layout fixes; the demonstrated synchronization defect therefore remains unresolved on the public page. A cloud rebuild and actual-frame review are required before claiming the fix is visible or accepted. Do not publish a purported clean-source result or populated camera map until direct source-frame and location/angle evidence is available.
+The single-instance processing, operation audit, Release upload, Pages artifact upload, and Pages deployment have run successfully, but V0.03 is **not accepted** because the post-deployment gate failed. Its blockers include audio-level alignment; readability and visual review; English/Chinese reading-speed flags; translation accuracy; fewer than ten translation models, three judges, and three source cross-checks; missing source-audio and independent translation reviews; missing evidence records/files; and incomplete opening/middle/ending visual evidence. The consolidated live greeting cue no longer has the old fragment split, but its Chinese omits “Good afternoon,” and has not been independently verified. Preserve those checks as failed or `not_verified`; do not infer acceptance from successful deployment. Do not publish a purported clean-source result or populated camera map until direct source-frame and location/angle evidence is available.
 
 ## Additional product scope recorded (not implemented)
 

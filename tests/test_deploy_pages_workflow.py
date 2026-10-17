@@ -1,5 +1,6 @@
 import re
 import unittest
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 
@@ -22,6 +23,14 @@ def job_body(workflow: str, name: str) -> str:
 
 
 class DeployPagesWorkflowTests(unittest.TestCase):
+    def test_pages_concurrency_serializes_deploy_without_blocking_render_jobs(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        deploy = job_body(workflow, "deploy")
+
+        self.assertNotRegex(workflow, r"(?m)^concurrency:")
+        self.assertIn("    concurrency:\n      group: pages", deploy)
+        self.assertIn("cancel-in-progress: false", deploy)
+
     def test_push_deploy_is_limited_to_published_site_content(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]
@@ -32,6 +41,14 @@ class DeployPagesWorkflowTests(unittest.TestCase):
                 self.assertIn(f"      - {path}", push)
         self.assertNotIn("'scripts/**'", push)
         self.assertNotIn("'docs/**'", push)
+
+    def test_copilot_results_page_is_in_the_push_deployment_path_filter(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        push = workflow.split("  workflow_dispatch:", maxsplit=1)[0]
+        html_path_pattern = "'*.html'"
+
+        self.assertIn(f"      - {html_path_pattern}", push)
+        self.assertTrue(fnmatchcase("copilot-results.html", html_path_pattern.strip("'")))
 
     def test_push_deploy_is_not_blocked_by_the_post_deploy_quality_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
@@ -160,7 +177,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn('"not_verified"', job)
         self.assertIn("release gate is blocked", job)
         self.assertIn("validate_release_asset_size", job)
-        self.assertIn("No Microsoft/GPT-6 model", job)
+        self.assertIn("No Microsoft/GPT-6 media-generation model or paid API was used", job)
         self.assertNotIn("pipeline run", job)
 
     def test_smartsub_preview_deploys_a_player_with_disclosed_release_links(self):
@@ -171,6 +188,7 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         self.assertIn("inputs.publish_smartsub_draft", deploy)
         self.assertIn("pvXbHQrIvTw-smartsub-preview-${{ github.run_id }}", deploy)
         self.assertIn("scripts/publish_smartsub_preview.py", deploy)
+        self.assertIn("--main-videos outputs/main-videos.json", deploy)
         self.assertIn("releases/download/pvXbHQrIvTw-smartsub-draft-", deploy)
         page = (WORKFLOW.parents[2] / "events" / "pvXbHQrIvTw" / "index.html").read_text(
             encoding="utf-8"
@@ -180,23 +198,26 @@ class DeployPagesWorkflowTests(unittest.TestCase):
         script = (WORKFLOW.parents[2] / "assets" / "comparison.js").read_text(
             encoding="utf-8"
         )
-        self.assertIn("preview_unverified", script)
+        self.assertIn("executed_unverified", script)
+        self.assertIn("已运行 · 草稿未通过人工核验", script)
 
-    def test_smartsub_can_render_privately_without_bypassing_publication_evidence(self):
+    def test_smartsub_publication_is_a_test_without_five_review_evidence_gate(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         render = job_body(workflow, "render-smartsub-draft")
         deploy = job_body(workflow, "deploy")
 
-        self.assertIn("comparison_review_evidence_json", workflow)
         self.assertIn("publish_smartsub_draft:\n        description:", workflow)
         self.assertIn("default: false", workflow.split("publish_smartsub_draft:", 1)[1].split(
             "smartsub_source_artifact_run_id:", 1
         )[0])
         self.assertIn("if: inputs.publish_smartsub_draft", render)
-        self.assertIn("five distinct HTTPS evidence URLs", render)
-        self.assertIn("CLEAN_FRAMES_CONFIRMED", render)
-        self.assertIn("ENGLISH_ASR_CONFIRMED", render)
-        self.assertIn("CHINESE_TRANSLATION_CONFIRMED", render)
+        self.assertNotIn("comparison_review_evidence_json", workflow)
+        self.assertNotIn("five distinct HTTPS evidence URLs", render)
+        self.assertNotIn("five evidence reviews", render)
+        self.assertIn("comparison_reuse_rights_confirmed", render)
+        self.assertIn("comparison_same_event_source_match_confirmed", render)
+        self.assertIn("source_audio_and_asr_accuracy", render)
+        self.assertIn('"not_verified"', render)
         self.assertIn("pvXbHQrIvTw-smartsub-draft.mp4", render.split(
             "- name: Upload rendered draft and private runner evidence", 1
         )[1])

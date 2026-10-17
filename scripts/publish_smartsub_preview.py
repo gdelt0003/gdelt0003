@@ -11,7 +11,12 @@ SOURCE_SIZE = 262338614
 SOURCE_SHA256 = "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171"
 
 
-def publish(manifest_path: Path, comparison_path: Path, release_url: str) -> None:
+def publish(
+    manifest_path: Path,
+    comparison_path: Path,
+    main_videos_path: Path,
+    release_url: str,
+) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if (
         manifest.get("input_size_bytes") != SOURCE_SIZE
@@ -98,14 +103,51 @@ def publish(manifest_path: Path, comparison_path: Path, release_url: str) -> Non
         encoding="utf-8",
     )
 
+    catalog = json.loads(main_videos_path.read_text(encoding="utf-8"))
+    videos = catalog.get("videos")
+    if not isinstance(videos, list):
+        raise ValueError("Main video catalog must contain a videos array.")
+    video_id = f"pvXbHQrIvTw-smartsub-draft-{manifest['workflow_run_id']}"
+    videos[:] = [video for video in videos if video.get("id") != video_id]
+    measurements = manifest.get("measurements") or {}
+    videos.append(
+        {
+            "id": video_id,
+            "title": "PVX · SmartSub 机器生成双语草稿（未经人工核验）",
+            "event_date": "2026-10-13",
+            "publisher": "GDELT · SmartSub 3.9.0",
+            "resolution": measurements.get("resolution"),
+            "video_url": comparison["smartsub_preview"]["video_url"],
+            "source_url": comparison["event"]["source_url"],
+            "review_status": (
+                "机器生成、未经人工核验；源音/ASR、翻译及完整画面/样式均未验证，"
+                "发布质量 gate 仍阻塞。"
+            ),
+            "note": (
+                f"独立草稿预览；来源 SHA-256 {SOURCE_SHA256}。"
+                "不代表字幕准确、画面干净或已通过发布审查；保留来源音轨与画面。"
+            ),
+            "subtitles": [
+                {"label": "English SRT · 未核验", "url": comparison["smartsub_preview"]["subtitles"]["english"]},
+                {"label": "简体中文 SRT · 未核验", "url": comparison["smartsub_preview"]["subtitles"]["chinese"]},
+                {"label": "中英双语 SRT · 未核验", "url": comparison["smartsub_preview"]["subtitles"]["bilingual"]},
+            ],
+        }
+    )
+    main_videos_path.write_text(
+        json.dumps(catalog, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--comparison", type=Path, required=True)
+    parser.add_argument("--main-videos", type=Path, required=True)
     parser.add_argument("--release-url", required=True)
     args = parser.parse_args()
-    publish(args.manifest, args.comparison, args.release_url)
+    publish(args.manifest, args.comparison, args.main_videos, args.release_url)
 
 
 if __name__ == "__main__":

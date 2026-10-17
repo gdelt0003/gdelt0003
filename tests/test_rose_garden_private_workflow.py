@@ -5,6 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "render-rose-garden-private.yml"
+REVIEW_SCRIPT = ROOT / "scripts" / "verify_rose_garden_review.py"
+PROCESS_SCRIPT = ROOT / "scripts" / "process_full_video.py"
 SKILL = (
     ROOT
     / ".github"
@@ -17,12 +19,17 @@ SKILL = (
 class RoseGardenPrivateWorkflowTests(unittest.TestCase):
     def test_workflow_uses_user_caption_box_without_added_rights_attestations(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
+        review_script = REVIEW_SCRIPT.read_text(encoding="utf-8")
+        process_script = PROCESS_SCRIPT.read_text(encoding="utf-8")
 
         self.assertIn('default: "66,883,1852,1022"', workflow)
         self.assertIn('--caption-box "$CAPTION_BOX"', workflow)
-        self.assertIn("reference_box_xyxy_half_open", workflow)
-        self.assertIn('"status": "not_assessed"', workflow)
-        self.assertNotIn("rights_evidence_url", workflow)
+        self.assertIn('"reference_bbox_px"', process_script)
+        self.assertIn('"applied_source_bbox_px"', process_script)
+        self.assertIn("--validate-private-dispatch-inputs", workflow)
+        self.assertIn('"reuse_rights_assessment"', review_script)
+        self.assertIn('"unassessed"', review_script)
+        self.assertIn('"public_release": "not_authorized"', review_script)
         self.assertNotIn("reuse_rights_confirmed", workflow)
         self.assertNotIn("exact_event_match_confirmed", workflow)
 
@@ -30,8 +37,8 @@ class RoseGardenPrivateWorkflowTests(unittest.TestCase):
         result = subprocess.run(
             [
                 sys.executable,
-                str(ROOT / "scripts" / "verify_rose_garden_review.py"),
-                "--validate-dispatch-inputs",
+                str(REVIEW_SCRIPT),
+                "--validate-private-dispatch-inputs",
             ],
             cwd=ROOT,
             capture_output=True,
