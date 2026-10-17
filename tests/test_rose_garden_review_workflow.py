@@ -3,6 +3,7 @@ import base64
 import json
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -61,6 +62,27 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 offset = (y * width + x) * 3
                 pixels[offset:offset + 3] = bytes((255, 255, 255))
         return bytes(pixels)
+
+    def test_validator_imports_as_script_and_package(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        script_path = repo_root / "scripts" / "verify_rose_garden_review.py"
+        script_result = subprocess.run(
+            [sys.executable, str(script_path), "--help"],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(script_result.returncode, 0, script_result.stderr)
+
+        package_result = subprocess.run(
+            [sys.executable, "-c", "import scripts.verify_rose_garden_review"],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(package_result.returncode, 0, package_result.stderr)
 
     def build_caption_ass_manifest(self, root, cues, overflow_records):
         regions = user_still_source_graphics_regions(1920, 1080)
