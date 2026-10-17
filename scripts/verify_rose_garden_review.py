@@ -16,6 +16,21 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+if __package__:
+    from .process_full_video import (
+        Cue,
+        _has_rose_overflow,
+        _verify_rose_garden_ass,
+        read_srt,
+    )
+else:
+    from process_full_video import (
+        Cue,
+        _has_rose_overflow,
+        _verify_rose_garden_ass,
+        read_srt,
+    )
+
 
 EVENT_ID = "rose-garden-lunch-2026-10-15"
 EVENT_TITLE = "President Trump Participates in a Rose Garden Lunch"
@@ -508,12 +523,6 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     if manifest.get("subtitle_ass_sha256") != digest:
         raise RuntimeError("ASS subtitle SHA-256 does not match the render manifest.")
 
-    from scripts.process_full_video import (
-        Cue,
-        _verify_rose_garden_ass,
-        read_srt,
-    )
-
     english = read_srt(output_dir / f"{ASSET_PREFIX}.en.srt")
     chinese = read_srt(output_dir / f"{ASSET_PREFIX}.zh-Hans.srt")
     if not english or len(english) != len(chinese):
@@ -592,8 +601,6 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         if position == "mask-lower-third"
         else ass_subtitles.events
     )
-    from scripts.process_full_video import _has_rose_overflow
-
     indexed_captions = list(zip(cues, caption_events, strict=True))
     for record in overflow_records:
         start = record.get("start_seconds")
