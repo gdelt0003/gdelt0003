@@ -1,0 +1,272 @@
+- generic [active] [ref=f14e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f14e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f14e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f14e8]:
+    - search [ref=f14e9]:
+      - generic [ref=f14e11]:
+        - link "Google 首页" [ref=f14e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQPHoECAYQBA
+        - generic [ref=f14e16]:
+          - generic [ref=f14e17]:
+            - combobox "搜索" [ref=f14e20]: White House press briefing October 13 2026 Katie Zacharia alternate camera angle b-roll video White House press briefing October 13 2026 Katie Zacharia alternate camera angle b-roll video
+            - generic [ref=f14e21]:
+              - button "清除" [ref=f14e23] [cursor=pointer]
+              - generic [ref=f14e28]:
+                - button "按语音搜索" [ref=f14e29] [cursor=pointer]
+                - button "按图搜索" [ref=f14e32] [cursor=pointer]
+          - button "搜索" [ref=f14e35] [cursor=pointer]
+    - generic [ref=f14e40]:
+      - button "设置" [ref=f14e42] [cursor=pointer]
+      - button "分享" [ref=f14e47] [cursor=pointer]
+      - generic [ref=f14e53]:
+        - button "Google 应用" [ref=f14e55] [cursor=pointer]
+        - link "登录" [ref=f14e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3DWhite%2BHouse%2Bpress%2Bbriefing%2BOctober%2B13%2B2026%2BKatie%2BZacharia%2Balternate%2Bcamera%2Bangle%2Bb-roll%2Bvideo&ec=futura_srp_og_si_72236_p
+  - generic [ref=f14e62]:
+    - navigation [ref=f14e68]:
+      - generic [ref=f14e74]:
+        - list [ref=f14e75]:
+          - listitem [ref=f14e76]:
+            - link "全部" [disabled] [ref=f14e77]
+          - listitem [ref=f14e80]:
+            - link "新闻" [ref=f14e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ0pQJegQIFhAB
+          - listitem [ref=f14e84]:
+            - link "视频" [ref=f14e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQtKgLegQIGRAB
+          - listitem [ref=f14e88]:
+            - link "图片" [ref=f14e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQtKgLegQIGBAB
+          - listitem [ref=f14e92]:
+            - link "短视频" [ref=f14e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQs6gLegQIFRAB
+          - listitem [ref=f14e96]:
+            - link "网页" [ref=f14e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQs6gLegQIEhAB
+          - listitem [ref=f14e100]:
+            - link "图书" [ref=f14e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ0pQJegQIFBAB
+          - listitem [ref=f14e104]:
+            - button [ref=f14e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f14e106]: 更多
+        - button "工具" [ref=f14e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f14e120]
+    - main [ref=f14e126]:
+      - generic [ref=f14e130]:
+        - generic [ref=f14e136]:
+          - generic [ref=f14e139]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ... The White House · The White House https://www.whitehouse.gov · 1天前" [ref=f14e141] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFcIuKGpuBHI7PwlblMLD14NWx3N6XCxROc2ghX6LCvVeakTCPyJ2NklZ0rw4jYjxWkps3_o2nrsT3-b_XPyvlapwQr_lltd8MOT7ILRSY5wYALmjUTfQj4MauKR3tU0JB3grAyJ61d_npmopZWMGVnqfvboYwhj34FvCKsW4lTJUVkEPS19xZgpn5I9vUTc5APmgOiGBYTU28X-y2ruhgw
+              - heading "Press Secretary Katie Zacharia Briefs Members of the Media, ..." [level=3] [ref=f14e142]
+              - generic [ref=f14e148]:
+                - generic [ref=f14e149]: The White House · The White House
+                - generic [ref=f14e151]: https://www.whitehouse.gov · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e157] [cursor=pointer]
+          - generic [ref=f14e162]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ...，由The White House上传到The White House上. 在The White House上播放." [ref=f14e163] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFcIuKGpuBHI7PwlblMLD14NWx3N6XCxROc2ghX6LCvVeakTCPyJ2NklZ0rw4jYjxWkps3_o2nrsT3-b_XPyvlapwQr_lltd8MOT7ILRSY5wYALmjUTfQj4MauKR3tU0JB3grAyJ61d_npmopZWMGVnqfvboYwhj34FvCKsW4lTJUVkEPS19xZgpn5I9vUTc5APmgOiGBYTU28X-y2ruhgw
+              - generic [ref=f14e164]: 直播
+            - generic [ref=f14e176]: Videos. Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026. October 13, 2026. Tap to unmute. Your browser can't play this video.
+          - generic [ref=f14e178]: 缺少字词： alternate ‎camera ‎angle ‎b-
+        - generic [ref=f14e186]:
+          - generic [ref=f14e189]:
+            - link "Katie Zacharia's VERBAL BLUNDER | The White House ... YouTube · The Financial Express 2200+ 次观看 · 1天前" [ref=f14e191] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV-GWRlCz3pwNKY6U5ZiOXODCyJAFkWyfsyoJT5E0TjQ4y_wS6nlb5ZVMRjEV8-YGDYNCiYTtRt279f5COPWVzF-X8VrqZtXKwkZ7FKvXOiSIybUeskTx20rh_6E3ANNaYWQ
+              - heading "Katie Zacharia's VERBAL BLUNDER | The White House ..." [level=3] [ref=f14e192]
+              - generic [ref=f14e198]:
+                - generic [ref=f14e199]: YouTube · The Financial Express
+                - generic [ref=f14e201]: 2200+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e207] [cursor=pointer]
+          - generic [ref=f14e212]:
+            - button "Katie Zacharia's VERBAL BLUNDER | The White House ...，由The Financial Express上传到YouTube上. 在 Google 上播放. 14:37" [ref=f14e213] [cursor=pointer]:
+              - generic [ref=f14e214]: 14:37
+            - generic [ref=f14e230]: White House Press Secretary Katie Zacharia has an awkward on-camera moment during the October 13, 2026, press briefing.
+          - generic [ref=f14e232]: 缺少字词： alternate ‎angle ‎b- ‎roll
+        - generic [ref=f14e240]:
+          - generic [ref=f14e243]:
+            - 'link "FULL: White House Press Briefing - Oct. 13, 2026 YouTube · FOX 5 New York 3.1万+ 次观看 · 1天前" [ref=f14e245] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVFesZTv3uyZNNzH0_3n0SDcpECXjnaiXNdtqzg5NjEzDdvYOVIQlFCAUIMQr3BMriB5dU8V7tDUrm4rE3DOU8e2wiUYUynlK5GjLFsy6zY5RhtaaIJ-GpxUjoVqGAxBbmUg
+              - 'heading "FULL: White House Press Briefing - Oct. 13, 2026" [level=3] [ref=f14e246]'
+              - generic [ref=f14e252]:
+                - generic [ref=f14e253]: YouTube · FOX 5 New York
+                - generic [ref=f14e255]: 3.1万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e261] [cursor=pointer]
+          - generic [ref=f14e266]:
+            - 'button "FULL: White House Press Briefing - Oct. 13, 2026，由FOX 5 New York上传到YouTube上. 在 Google 上播放. 14:34" [ref=f14e267] [cursor=pointer]':
+              - generic [ref=f14e268]: 14:34
+            - generic [ref=f14e284]: White House Press Secretary Katie Zacharia held a press briefing at the White House.
+          - generic [ref=f14e286]: 缺少字词： alternate ‎camera ‎angle ‎b- ‎roll
+        - generic [ref=f14e293]:
+          - generic [ref=f14e296]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ... YouTube · The White House 32万+ 次观看 · 1天前" [ref=f14e298] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVNWWF2kiMhKCwva6XgBDORBU2i7xIHwNgqnDrkcG4qjyDSMZTmB7cU13JbujZOpWjeGyaIMjtz2yIinN5yNZyXz6RftYsGijXFxFD0avY2nZfW5kjbeIGZnl74jKbIVw2dw
+              - heading "Press Secretary Katie Zacharia Briefs Members of the Media, ..." [level=3] [ref=f14e299]
+              - generic [ref=f14e305]:
+                - generic [ref=f14e306]: YouTube · The White House
+                - generic [ref=f14e308]: 32万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e314] [cursor=pointer]
+          - generic [ref=f14e319]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ...，由The White House上传到YouTube上. 在YouTube上播放. 43:20" [ref=f14e320] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVNWWF2kiMhKCwva6XgBDORBU2i7xIHwNgqnDrkcG4qjyDSMZTmB7cU13JbujZOpWjeGyaIMjtz2yIinN5yNZyXz6RftYsGijXFxFD0avY2nZfW5kjbeIGZnl74jKbIVw2dw
+              - generic [ref=f14e321]: 43:20
+            - generic [ref=f14e333]: Video unavailable. This content isn't available. The White House. Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026.
+          - generic [ref=f14e335]: 缺少字词： alternate ‎camera ‎angle ‎b- ‎roll
+        - generic [ref=f14e340]:
+          - generic [ref=f14e343]:
+            - link "Internet can't stop laughing at White House press ... The Independent https://www.independent.co.uk › us-politics" [ref=f14e345] [cursor=pointer]:
+              - /url: /goto?url=CAESugEB6zswFbHfYAIZbboZrdE7j-wPlkJ1tuIbtgBZTIk5SGkfRfBsUwht8MI_nALRljbIpXX1Dmdhc3ehWIcWKSmV1xBjC7Bo4jUJVssAr5NoLhFfatwouTtut14hfRaMpcnc4KkfSY3tEx4Qsjz7w1B9V4pkbOX8xHPazSsRuPgiHDzTBlngTjkFM-N5sjszTOwQJZIOOuj-Nu2f3BSL66YyA7LvaL9pRBXVImY1NbikjXXR9EqSvwGw9LI
+              - heading "Internet can't stop laughing at White House press ..." [level=3] [ref=f14e346]
+              - generic [ref=f14e352]:
+                - generic [ref=f14e353]: The Independent
+                - generic [ref=f14e355]: https://www.independent.co.uk › us-politics
+            - generic [ref=f14e357]:
+              - generic [ref=f14e358]: ·
+              - link "翻译此页" [ref=f14e359] [cursor=pointer]:
+                - /url: /goto?url=CAESigIB6zswFTEBdaegnaLlKcMmF4fyxtbLUdQtbhmFsF1y5Osz5T4BFCF4hTb9Vua6YLycstiIKZ9cDO9NQ_KBPU-9aDhASMKrf2ndoEs-B6dHiwZXMxV_6kmUCSfRhQl3nHcL6Z0XQTegPlsFMzhEpIx7WfduLOCfvZRxlzJOjjXpKisUzzpm_ZbXdphjh6DXJdiZnF3lhI-FYlJuSYUxYQlQ_qtyBsWJKwwWrgGFYzX4VXJbiIi0OG-VP4CgkBhUupafT2gTNwYc6n_cd5qh6cpanY4gfQzx30F_DeCjs4meVWJAZSOkv7s7UrEeZMm5P83dzIw-vPhCK6TgcErNyGCXAItixgfh9hMfIA
+            - button "关于这条结果的详细信息" [ref=f14e364] [cursor=pointer]
+          - generic [ref=f14e371]:
+            - emphasis [ref=f14e372]: Katie Zacharia
+            - text: ","
+            - emphasis [ref=f14e373]: Trump's
+            - text: new
+            - emphasis [ref=f14e374]: White House press
+            - text: secretary, pulled the plug on the
+            - emphasis [ref=f14e375]: briefing
+            - text: after 14 minutes.
+        - generic [ref=f14e379]:
+          - generic [ref=f14e382]:
+            - link "Katie Zacharia Delivers Powerful Inaugural Briefing as ... The White House (.gov) https://www.whitehouse.gov › ... › Releases" [ref=f14e384] [cursor=pointer]:
+              - /url: /goto?url=CAESwAEB6zswFbG0mSfo214XxJz8I9kULTB2c8tprMWOPBShsxjlGtQ5Ym2zFikg6DvUjeZoJQ75OHTZq6DvFJZkhvJ9l5Er7PcpzNu4FWXFmPkbNjoPi4od2Qxz0oh57dON6VP7l6am6HbuBqg7N5Lj-r4TmpTtE7jz2GmsWXDMSOTxFLzOCXSTtk_rwen4fexxnDK9WrgxZd5tEv7-rNhfky5OT620eluj7GsCjCydEPEhNzz_ANk4cBToUHXmGqxqedE
+              - heading "Katie Zacharia Delivers Powerful Inaugural Briefing as ..." [level=3] [ref=f14e385]
+              - generic [ref=f14e391]:
+                - generic [ref=f14e392]: The White House (.gov)
+                - generic [ref=f14e394]: https://www.whitehouse.gov › ... › Releases
+            - generic [ref=f14e396]:
+              - generic [ref=f14e397]: ·
+              - link "翻译此页" [ref=f14e398] [cursor=pointer]:
+                - /url: /goto?url=CAESjwIB6zswFUWNSQhiHKuJmk8MTUGNCGUcbWkNisJPgjO9RWuBKe0W--t4v-r1TgtYwrPdgkt1VoyUwKrk4dmkMhbHHrjUHOGD_mFhCR9rXKlw40e6ZbquOB6zmYUCKbWWzuVYujXpJO8LZecbHHbFJ3EHmOxjr8u5YFSyLSkfzphpisJwQ5-aUWcTpw6q9Wd1p3hsdx_XMHy_jStPZ2PyUYFcLL_6Wy3yvZKz8ctodxhIWAFNJvZT-jPZb2Ad2DyRH5dIP_tOIjBXkDBTnaky7XY8uUhVuE5qHp7CdUzX8KGgelYywBnnvDGt1iioMCqbk71GgVCjuR6RIyFSKCX4HHGCT5VmgOQrIvR2OyqJT42m
+            - button "关于这条结果的详细信息" [ref=f14e403] [cursor=pointer]
+          - generic [ref=f14e409]:
+            - generic [ref=f14e410]: 2天前 —
+            - generic [ref=f14e411]:
+              - text: Today,
+              - emphasis [ref=f14e412]: Katie Zacharia
+              - text: delivered a commanding inaugural
+              - emphasis [ref=f14e413]: press briefing
+              - text: as the 37th
+              - emphasis [ref=f14e414]: White House
+              - text: Press Secretary. The briefing, which generated ...
+          - generic [ref=f14e415]: 缺少字词： alternate ‎camera ‎angle ‎b-
+        - generic [ref=f14e422]:
+          - generic [ref=f14e425]:
+            - 'link "Watch: Katie Zacharia''s hosts first White House briefing BBC https://www.bbc.co.uk · 1天前" [ref=f14e427] [cursor=pointer]':
+              - /url: /goto?url=CAESagHrOzAVA92SM7tLfKAHOv12WZkjp0B5f7f2GWqPTs420xUmkXbkXyArSM2FNV33W_LIHKecG6sYfLujujvz2D0ogPiPwCsdboL1hy5YdGH1RQUBNTjzL_U6iCax1dhPpjuF6rUXyG48Sxk
+              - 'heading "Watch: Katie Zacharia''s hosts first White House briefing" [level=3] [ref=f14e428]'
+              - generic [ref=f14e434]:
+                - generic [ref=f14e435]: BBC
+                - generic [ref=f14e437]: https://www.bbc.co.uk · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e443] [cursor=pointer]
+          - generic [ref=f14e448]:
+            - 'link "BBC上的视频《Watch: Katie Zacharia''s hosts first White House briefing》. 在BBC上播放. 1:32" [ref=f14e449] [cursor=pointer]':
+              - /url: /goto?url=CAESagHrOzAVA92SM7tLfKAHOv12WZkjp0B5f7f2GWqPTs420xUmkXbkXyArSM2FNV33W_LIHKecG6sYfLujujvz2D0ogPiPwCsdboL1hy5YdGH1RQUBNTjzL_U6iCax1dhPpjuF6rUXyG48Sxk
+              - generic [ref=f14e450]: 1:32
+            - generic [ref=f14e459]: The BBC's Sarah Smith was in the room and describes Zacharia's performance and the moment she broke news about Kimberly Guilfoyle being asked to resign.
+        - generic [ref=f14e467]:
+          - generic [ref=f14e470]:
+            - 'link "FULL White House Press Briefing: October 13, 2026 YouTube · FOX 29 Philadelphia 2.5万+ 次观看 · 1天前" [ref=f14e472] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVELGs28suH4f7EQb_sDwQg2P1QJBOVqdQZwlMuoOmD7CycxeNgkgZhEDLMNqmY0oRZYH4DC-d3I7P2grL0rVeNI1RB4_2SYXfBsEfr7GYGXlAwbXaaNqlwz6eY-SF7J5RWA
+              - 'heading "FULL White House Press Briefing: October 13, 2026" [level=3] [ref=f14e473]'
+              - generic [ref=f14e479]:
+                - generic [ref=f14e480]: YouTube · FOX 29 Philadelphia
+                - generic [ref=f14e482]: 2.5万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f14e488] [cursor=pointer]
+          - generic [ref=f14e493]:
+            - 'button "FULL White House Press Briefing: October 13, 2026，由FOX 29 Philadelphia上传到YouTube上. 在 Google 上播放. 14:34" [ref=f14e494] [cursor=pointer]':
+              - generic [ref=f14e495]: 14:34
+            - generic [ref=f14e511]: Watch White House Press Secretary Katie Zacharia hold a press briefing at the White House.
+          - generic [ref=f14e513]: 缺少字词： alternate ‎camera ‎angle ‎b- ‎roll
+        - generic [ref=f14e520]:
+          - generic [ref=f14e523]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing C-SPAN · C-SPAN https://www.c-span.org · 2天前" [ref=f14e525] [cursor=pointer]:
+              - /url: /goto?url=CAESsAEB6zswFaGuh8IfcnWc-1RptYKf7DplVlNsc9Z97Wk-EfX7MAr4cGJNne7rantF-8QClR1J3i58tAHtLFYM5IC2IEPjgBdcqoLxA7P9OuVpAMZy5sXu0McpGZ6p9X5yf4e4wt7b98QTj2rmj6ERC2D6AaEC1xca8O9cSOgyNF_8ms6IWNneXPDcyyB-qD-hZtbJuODYd44vCJ-4gicv9TaLdfTMQMXaj9ux1SUa4BS3EQ
+              - heading "White House Press Secretary Katie Zacharia Holds First Briefing" [level=3] [ref=f14e526]
+              - generic [ref=f14e532]:
+                - generic [ref=f14e533]: C-SPAN · C-SPAN
+                - generic [ref=f14e535]: https://www.c-span.org · 2天前
+            - button "关于这条结果的详细信息" [ref=f14e541] [cursor=pointer]
+          - generic [ref=f14e546]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f14e547] [cursor=pointer]:
+              - /url: /goto?url=CAESsAEB6zswFaGuh8IfcnWc-1RptYKf7DplVlNsc9Z97Wk-EfX7MAr4cGJNne7rantF-8QClR1J3i58tAHtLFYM5IC2IEPjgBdcqoLxA7P9OuVpAMZy5sXu0McpGZ6p9X5yf4e4wt7b98QTj2rmj6ERC2D6AaEC1xca8O9cSOgyNF_8ms6IWNneXPDcyyB-qD-hZtbJuODYd44vCJ-4gicv9TaLdfTMQMXaj9ux1SUa4BS3EQ
+            - generic [ref=f14e555]: October 13, 2026 LIVE. White House Press Secretary Katie Zacharia Holds First Briefing. White House Press Secretary Katie Zacharia holds her first briefing.
+          - generic [ref=f14e557]: 缺少字词： alternate ‎angle ‎b- ‎roll
+        - generic [ref=f14e562]:
+          - generic [ref=f14e565]:
+            - link "The White House on Reels Facebook · The White House 1天前" [ref=f14e567] [cursor=pointer]:
+              - /url: /goto?url=CAESvwEB6zswFSUYSC1QfzoVGqIto1Y8XK4FQlcgwagLsTwP7dLTRBSyh9GnJG2VXzU5hrylk7pjR7k8xqnm7roqEc0MBf6l4_FKWI3yuiN33eqSJr_5PXzT4IUPzJQ1m1y7cF6zNr8ErwLx-G1S7LUoVBAlTGFTK92LyD0enS6stQ5H6krEocfgA_8LfiisymcHeb5hT8uN5V6JcXQkb2hocOHNVWnP5QgirhQuGJBC5HPek0ALPSVnn_jDjrT5d4mfzw
+              - heading "The White House on Reels" [level=3] [ref=f14e568]
+              - generic [ref=f14e574]:
+                - generic [ref=f14e575]: Facebook · The White House
+                - generic [ref=f14e577]: 1天前
+            - button "关于这条结果的详细信息" [ref=f14e583] [cursor=pointer]
+          - generic [ref=f14e590]:
+            - text: Video ·
+            - emphasis [ref=f14e591]: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026
+            - text: · More videos you may like · Related Pages.
+          - link [aria-hidden] [ref=f14e594] [cursor=pointer]:
+            - /url: /goto?url=CAESvwEB6zswFZHQr9Auy-2jIJQQgk-6vgAYs_yJ69NSJh-0EVMhbgOBE_L2OoMimq3rPdLzhvy0KlU0a_zzFHHSv6GuRIsIMntvuS_dBxlj_WRqgSym1Xbcg97Ixyoh2M_sp7amjEJkeGIoKgoI37TRh0b1wYeD1412vTPDZSHRX19tLJrgR81JvJsZQaiGNqQNfxchXgJzruUxOkX-2hNXXOxh5eRXv0YUv9-MEW5V1QTvjPx5lGZ9d-47O7otNBVoPA
+      - navigation [ref=f14e599]:
+        - heading "网页导航" [level=1] [ref=f14e600]
+        - text: "1"
+        - link "Page 2" [ref=f14e603] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=10&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAE
+          - text: "2"
+        - link "Page 3" [ref=f14e605] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=20&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAG
+          - text: "3"
+        - link "Page 4" [ref=f14e607] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=30&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAI
+          - text: "4"
+        - link "Page 5" [ref=f14e609] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=40&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAK
+          - text: "5"
+        - link "Page 6" [ref=f14e611] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=50&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAM
+          - text: "6"
+        - link "Page 7" [ref=f14e613] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=60&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAO
+          - text: "7"
+        - link "Page 8" [ref=f14e615] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=70&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAQ
+          - text: "8"
+        - link "Page 9" [ref=f14e617] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=80&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAS
+          - text: "9"
+        - link "Page 10" [ref=f14e619] [cursor=pointer]:
+          - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=90&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8tMDegQIGxAU
+          - text: "10"
+        - heading [level=2] [ref=f14e621]:
+          - link "下一页" [ref=f14e622] [cursor=pointer]:
+            - /url: /search?q=White+House+press+briefing+October+13+2026+Katie+Zacharia+alternate+camera+angle+b-roll+video&newwindow=1&sca_esv=9b409f63e8a1ac33&sxsrf=APpeQnvaPrU5rbaE_Vu6KHgEybXAnlqQgg:1792042490035&ei=-mXQapfnAaTfp84PvbncGQ&start=10&sa=N&sstk=AS6-VmIa9oe0b-KGFRwyanAzUuoOWobGyFhUb-4MUvRRwKLVt5DGtlttZWvdMRfIDMDA0JGJwQfDfv5TkHgvmOUtDXHGD6IT7aI4fQ&ved=2ahUKEwiXzKnApruXAxWk78kDHb0cNwMQ8NMDegQIGxAW
+      - navigation
+    - contentinfo [ref=f14e625]:
+      - heading "页脚链接" [level=1] [ref=f14e626]
+      - generic [ref=f14e630]:
+        - generic [ref=f14e634]:
+          - button "海口市 中国海南省 - 根据您的活动记录" [ref=f14e636] [cursor=pointer]:
+            - generic [ref=f14e637]: 海口市 中国海南省
+            - generic [ref=f14e639]:
+              - text: "-"
+              - generic [ref=f14e640]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f14e642] [cursor=pointer]
+        - generic [ref=f14e645]:
+          - link "帮助" [ref=f14e646] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f14e648] [cursor=pointer]
+          - link "隐私权" [ref=f14e650] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f14e651] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

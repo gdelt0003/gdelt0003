@@ -47,6 +47,11 @@ on:
         type: boolean
         required: false
         default: false
+      render_rose_garden_preview:
+        description: Render the supplied Rose Garden lunch source into a private review artifact (no public deployment)
+        type: boolean
+        required: false
+        default: false
       process_comparison_video:
         description: Process the exact uploaded pvXbHQrIvTw source on a cloud runner and save a review artifact
         type: boolean
@@ -498,6 +503,178 @@ jobs:
             ${{ runner.temp }}/full-video-output/manifest.json
           if-no-files-found: error
           retention-days: 30
+
+  render-rose-garden-preview:
+    if: github.event_name == 'workflow_dispatch' && inputs.render_rose_garden_preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download exact source from the draft intake release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-source"
+          gh release download rose-garden-lunch-source-2026-10-15 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'RoseGardenLunch-IySF_8OArvw.mp4' \
+            --dir "$RUNNER_TEMP/rose-garden-source"
+          source="$RUNNER_TEMP/rose-garden-source/RoseGardenLunch-IySF_8OArvw.mp4"
+          test -s "$source"
+          echo "source=$source" >> "$GITHUB_OUTPUT"
+        id: source
+
+      - name: Verify the source hash, video stream, audio, and event identity
+        run: |
+          source="${{ steps.source.outputs.source }}"
+          printf '%s  %s\n' \
+            'e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73' \
+            "$source" | sha256sum --check
+          ffprobe -v error -show_entries format=duration,size \
+            -show_streams -of json "$source" > "$RUNNER_TEMP/source-probe.json"
+          python - "$RUNNER_TEMP/source-probe.json" "$RUNNER_TEMP/source-verification.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          probe = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          video = next(
+              (stream for stream in probe.get("streams", []) if stream.get("codec_type") == "video"),
+              None,
+          )
+          audio = any(stream.get("codec_type") == "audio" for stream in probe.get("streams", []))
+          if video is None or video.get("width", 0) < 1920 or video.get("height", 0) < 1080:
+              raise SystemExit("Source is below 1920x1080; upscaling is prohibited.")
+          if not audio:
+              raise SystemExit("Source has no audio stream.")
+          metadata = {
+              "source_filename": "President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026 [IySF_8OArvw].mp4",
+              "source_sha256": "e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73",
+              "source_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
+              "event_date": "2026-10-15",
+              "event_time_local": None,
+              "time_precision": "day",
+              "timezone": None,
+              "location": "White House Rose Garden, Washington, D.C.",
+              "event_type": "Rose Garden lunch",
+              "title": "President Trump Participates in a Rose Garden Lunch",
+              "participants": ["President Donald Trump"],
+              "duration_seconds": float(probe["format"]["duration"]),
+              "resolution": f'{video["width"]}x{video["height"]}',
+              "audio_present": audio,
+              "source_match_review": "source ID and title identified; frame/audio match not human-reviewed",
+              "reuse_rights_review": "not verified for this exact source; private artifact only",
+          }
+          Path(sys.argv[2]).write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(
+              f"Verified source metadata: {metadata['duration_seconds']:.1f}s, "
+              f"{metadata['resolution']}, audio present"
+          )
+          PY
+
+      - name: Cache transcription and translation models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-rose-garden-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Install FFmpeg, CJK fonts, and inference dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+          ffmpeg -version
+
+      - name: Transcribe, translate, burn captions, and record provenance
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-output"
+          python scripts/process_full_video.py \
+            --input "${{ steps.source.outputs.source }}" \
+            --output-dir "$RUNNER_TEMP/rose-garden-output" \
+            --asset-prefix IySF_8OArvw
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/rose-garden-output/manifest.json"
+          python - "$RUNNER_TEMP/rose-garden-output/manifest.json" "$RUNNER_TEMP/source-verification.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest_path = Path(sys.argv[1])
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          source = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+          manifest["event_identity"] = {
+              key: source[key]
+              for key in (
+                  "event_date", "event_time_local", "time_precision", "timezone",
+                  "location", "event_type", "title", "participants",
+              )
+          }
+          manifest["event_id"] = "evt-20261015-rose-garden-lunch-IySF_8OArvw"
+          manifest["source_url"] = source["source_url"]
+          manifest["source_sha256"] = source["source_sha256"]
+          manifest["source_match_review"] = source["source_match_review"]
+          manifest["reuse_rights_review"] = source["reuse_rights_review"]
+          manifest["translation_review"] = "machine translation not reviewed"
+          manifest["source_frame_review"] = "not reviewed"
+          manifest["publication_status"] = "private review artifact; not deployed"
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Extract rendered review frames
+        run: |
+          mkdir -p "$RUNNER_TEMP/rose-garden-output/rendered-frames"
+          python - "$RUNNER_TEMP/rose-garden-output/manifest.json" "$RUNNER_TEMP/rose-garden-output/IySF_8OArvw-bilingual.mp4" "$RUNNER_TEMP/rose-garden-output/rendered-frames" <<'PY'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          video = Path(sys.argv[2])
+          output = Path(sys.argv[3])
+          duration = float(manifest["duration_seconds"])
+          for name, fraction in (
+              ("beginning", 0.02), ("quarter", 0.25), ("middle", 0.50),
+              ("three-quarter", 0.75), ("ending", 0.98),
+          ):
+              timestamp = min(duration * fraction, max(0, duration - 0.1))
+              target = output / f"{name}.jpg"
+              subprocess.run(
+                  ["ffmpeg", "-v", "error", "-y", "-ss", str(timestamp),
+                   "-i", str(video), "-frames:v", "1", "-q:v", "2", str(target)],
+                  check=True,
+              )
+              if not target.is_file() or target.stat().st_size == 0:
+                  raise SystemExit(f"Could not extract rendered frame {name}.")
+          PY
+
+      - name: Upload private render and review materials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-lunch-2026-10-15-preview-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/rose-garden-output/*.mp4
+            ${{ runner.temp }}/rose-garden-output/*.srt
+            ${{ runner.temp }}/rose-garden-output/*.vtt
+            ${{ runner.temp }}/rose-garden-output/manifest.json
+            ${{ runner.temp }}/rose-garden-output/operation-audit.json
+            ${{ runner.temp }}/rose-garden-output/rendered-frames/*
+            ${{ runner.temp }}/source-verification.json
+          if-no-files-found: warn
+          retention-days: 14
 
   process-comparison-video:
     if: github.event_name == 'workflow_dispatch' && inputs.process_comparison_video

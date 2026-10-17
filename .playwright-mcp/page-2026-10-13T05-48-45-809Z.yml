@@ -1,0 +1,235 @@
+- generic [ref=f39e3]:
+  - banner [ref=f39e4]:
+    - generic [ref=f39e5]:
+      - generic [ref=f39e6]:
+        - link [ref=f39e7] [cursor=pointer]:
+          - /url: /
+          - img "Brave logo" [ref=f39e8]
+        - generic [ref=f39e10]:
+          - textbox "Search" [ref=f39e11]:
+            - /placeholder: 随心提问 随心查询…
+            - text: "\"President Trump\" \"October 6, 2026\" shipyard remarks"
+          - generic [ref=f39e12]:
+            - button "晴朗" [ref=f39e13] [cursor=pointer]
+            - button "搜索" [ref=f39e17] [cursor=pointer]
+            - button "询问" [ref=f39e20] [cursor=pointer]
+      - generic [ref=f39e29]:
+        - button "重新排序" [ref=f39e30] [cursor=pointer]
+        - button "快速设置" [ref=f39e36] [cursor=pointer]
+  - navigation [ref=f39e42]:
+    - list [ref=f39e43]:
+      - listitem [ref=f39e44]:
+        - link "询问" [ref=f39e45] [cursor=pointer]:
+          - /url: /ask?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e47]:
+        - link "全部" [ref=f39e48] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e50]:
+        - link "图片" [ref=f39e51] [cursor=pointer]:
+          - /url: /images?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e53]:
+        - link "新闻" [ref=f39e54] [cursor=pointer]:
+          - /url: /news?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e56]:
+        - link "视频" [ref=f39e57] [cursor=pointer]:
+          - /url: /videos?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e59]:
+        - link "地图" [ref=f39e60] [cursor=pointer]:
+          - /url: /maps/search?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+      - listitem [ref=f39e62]:
+        - link "Goggles" [ref=f39e63] [cursor=pointer]:
+          - /url: /goggles?q=%22President+Trump%22+%22October+6%2C+2026%22+shipyard+remarks&source=web
+    - list [ref=f39e65]:
+      - button "筛选条件" [ref=f39e66] [cursor=pointer]
+  - main [ref=f39e70]:
+    - generic [ref=f39e75]:
+      - generic [ref=f39e76]:
+        - text: 查询包含
+        - link "搜索运算符" [ref=f39e77] [cursor=pointer]:
+          - /url: /help/operators
+      - link "忽略运算符" [ref=f39e79] [cursor=pointer]:
+        - /url: /search?q=%22President%20Trump%22%20%22October%206%2C%202026%22%20shipyard%20remarks&source=ignoreSiteOperators&keywords=0
+    - main [ref=f39e84]:
+      - generic [ref=f39e85]:
+        - generic [ref=f39e89]:
+          - link "🌐 Fox News foxnews.com › politics › trump-reveals-surprise-american-taxpayer-stake-new-6-6b-submarine-deal Inside Trump’s deal to give American taxpayers a massive stake in new $6.6B submarine deal" [ref=f39e90] [cursor=pointer]:
+            - /url: https://www.foxnews.com/politics/trump-reveals-surprise-american-taxpayer-stake-new-6-6b-submarine-deal
+            - generic [ref=f39e91]:
+              - img "🌐" [ref=f39e95]
+              - generic [ref=f39e96]:
+                - generic [ref=f39e97]: Fox News
+                - generic [ref=f39e98]: foxnews.com › politics › trump-reveals-surprise-american-taxpayer-stake-new-6-6b-submarine-deal
+            - generic "Inside Trump’s deal to give American taxpayers a massive stake in new $6.6B submarine deal" [ref=f39e100]
+          - generic [ref=f39e101]:
+            - link "05:10" [ref=f39e103] [cursor=pointer]:
+              - /url: https://www.foxnews.com/politics/trump-reveals-surprise-american-taxpayer-stake-new-6-6b-submarine-deal
+            - generic [ref=f39e108]:
+              - generic [ref=f39e109]:
+                - text: U.S. President Donald Trump appears ... Point, Maryland.
+                - strong [ref=f39e110]: President Trump announced a $3.7 billion investment by defense contractor Anduril Industries to build a new shipyard at Tradepoint Atlantic
+                - text: ", which will manufacture ..."
+              - generic [ref=f39e112]:
+                - strong [ref=f39e113]: "已发布:"
+                - text: 4天前
+        - generic [ref=f39e116]:
+          - generic [ref=f39e117]:
+            - 'link "🌐 The Gateway Pundit thegatewaypundit.com › home › news › watch live: president trump announces new navy shipyard in sparrows point, maryland – 4 pm et WATCH LIVE: President Trump Announces New Navy Shipyard in Sparrows Point, Maryland – 4 PM ET * The Gateway Pundit * by Jordan Conradson" [ref=f39e118] [cursor=pointer]':
+              - /url: https://www.thegatewaypundit.com/2026/10/watch-live-president-trump-delivers-remarks-sparrows-point/
+              - generic [ref=f39e119]:
+                - img "🌐" [ref=f39e123]
+                - generic [ref=f39e124]:
+                  - generic [ref=f39e125]: The Gateway Pundit
+                  - generic [ref=f39e126]: "thegatewaypundit.com › home › news › watch live: president trump announces new navy shipyard in sparrows point, maryland – 4 pm et"
+              - 'generic "WATCH LIVE: President Trump Announces New Navy Shipyard in Sparrows Point, Maryland – 4 PM ET * The Gateway Pundit * by Jordan Conradson" [ref=f39e128]'
+            - generic [ref=f39e129]: 1周前 - President Trump announces new shipyard at Tradepoint Atlantic in Sparrows Point, Maryland – October 6, 2026 (Photo by Jordan Conradson/TGP) President Trump will deliver a speech at Anduril Industries’ Tradepoint Atlantic facility in Sparrows Point, Maryland, this afternoon as the autonomous military technology company unveils plans to build a new shipyard near Baltimore. Anduril Industries CEO Brian Schimpf delivered remarks before Trump and announced the new shipyard and plans to work with the Naval Academy in Annapolis.
+          - link [ref=f39e132] [cursor=pointer]:
+            - /url: https://www.thegatewaypundit.com/2026/10/watch-live-president-trump-delivers-remarks-sparrows-point/
+        - generic [ref=f39e135]:
+          - generic [ref=f39e136]:
+            - link "🌐 C-SPAN c-span.org › program › white-house-event › president-trump-speaks-to-reporters › 686168 President Trump Speaks to Reporters | October 6, 2026 | Video | C-SPAN.org" [ref=f39e137] [cursor=pointer]:
+              - /url: https://www.c-span.org/program/white-house-event/president-trump-speaks-to-reporters/686168
+              - generic [ref=f39e138]:
+                - img "🌐" [ref=f39e142]
+                - generic [ref=f39e143]:
+                  - generic [ref=f39e144]: C-SPAN
+                  - generic [ref=f39e145]: c-span.org › program › white-house-event › president-trump-speaks-to-reporters › 686168
+              - generic "President Trump Speaks to Reporters | October 6, 2026 | Video | C-SPAN.org" [ref=f39e147]
+            - generic [ref=f39e149]:
+              - text: 1周前 - President Trump spoke to reporters as he departed the White House for the opening of a $3.7B shipyard in Baltimore County, MD.
+              - strong [ref=f39e150]: He took questions on several topics, including the war in Iran, taxpayer-funded ads, and the economy
+              - text: .
+          - link [ref=f39e152] [cursor=pointer]:
+            - /url: https://www.c-span.org/program/white-house-event/president-trump-speaks-to-reporters/686168
+        - generic [ref=f39e156]:
+          - link "🌐 The White House whitehouse.gov › home › past events › president trump delivers remarks, oct. 6, 2026 President Trump Delivers Remarks, Oct. 6, 2026 – The White House" [ref=f39e157] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/
+            - generic [ref=f39e158]:
+              - img "🌐" [ref=f39e162]
+              - generic [ref=f39e163]:
+                - generic [ref=f39e164]: The White House
+                - generic [ref=f39e165]: whitehouse.gov › home › past events › president trump delivers remarks, oct. 6, 2026
+            - generic "President Trump Delivers Remarks, Oct. 6, 2026 – The White House" [ref=f39e167]
+          - generic [ref=f39e168]:
+            - link "58:52" [ref=f39e170] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/
+            - generic [ref=f39e175]:
+              - generic [ref=f39e176]: Featured Official White House App 365 Days of Wins About President Trump About Vice President Vance 365 Days of Wins Official White House App The Great Healthcare Plan INVESTMENT ANNOUNCEMENTS White House Wire First Year in Office America's Founding East Wing Expansion View Full Video Contact The White House · X · Instagram · TikTok · Share Icon · Share Icon · Facebook · YouTube · Videos · October 6, 2026 ·
+              - generic [ref=f39e178]:
+                - strong [ref=f39e179]: "已发布:"
+                - text: 3天前
+        - generic [ref=f39e183]:
+          - 'link "🌐 YouTube youtube.com › watch FULL SPEECH: President Trump Makes Groundbreaking Announcement for American Shipbuilding - 10/06/26 - YouTube" [ref=f39e184] [cursor=pointer]':
+            - /url: https://www.youtube.com/watch?v=r2aQq6H7Zzc
+            - generic [ref=f39e185]:
+              - img "🌐" [ref=f39e189]
+              - generic [ref=f39e190]:
+                - generic [ref=f39e191]: YouTube
+                - generic [ref=f39e192]: youtube.com › watch
+            - 'generic "FULL SPEECH: President Trump Makes Groundbreaking Announcement for American Shipbuilding - 10/06/26 - YouTube" [ref=f39e194]'
+          - generic [ref=f39e195]:
+            - link "30:44" [ref=f39e197] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=r2aQq6H7Zzc
+            - generic [ref=f39e202]:
+              - generic [ref=f39e203]: President Trump Makes Groundbreaking Announcement for American ShipbuildingOctober 6, 2026Join this channel to get access to perks:https://www.youtube.com/ch...
+              - generic [ref=f39e205]:
+                - strong [ref=f39e206]: "已发布:"
+                - text: 1周前
+        - generic [ref=f39e210]:
+          - link "🌐 The White House whitehouse.gov › home › past events › the largest new shipyard in the united states. 🚢🇺🇸 The LARGEST new shipyard in the United States. 🚢🇺🇸" [ref=f39e211] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/videos/the-largest-new-shipyard-in-the-united-states-%F0%9F%9A%A2%F0%9F%87%BA%F0%9F%87%B8/
+            - generic [ref=f39e212]:
+              - img "🌐" [ref=f39e216]
+              - generic [ref=f39e217]:
+                - generic [ref=f39e218]: The White House
+                - generic [ref=f39e219]: whitehouse.gov › home › past events › the largest new shipyard in the united states. 🚢🇺🇸
+            - generic "The LARGEST new shipyard in the United States. 🚢🇺🇸" [ref=f39e221]
+          - generic [ref=f39e222]:
+            - link "02:12" [ref=f39e224] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/videos/the-largest-new-shipyard-in-the-united-states-%F0%9F%9A%A2%F0%9F%87%BA%F0%9F%87%B8/
+            - generic [ref=f39e229]:
+              - generic [ref=f39e230]: The LARGEST new shipyard in the United States. 🚢🇺🇸 “Less than two years ago, this national treasure was abandoned and it was totally forgotten. But it’s not forgotten any longer.” – President Donald J. Trump
+              - generic [ref=f39e232]:
+                - strong [ref=f39e233]: "已发布:"
+                - text: 2天前
+        - generic [ref=f39e237]:
+          - link "🌐 WKNO FM wknofm.org › 2026-10-06 › president-trump-delivers-remarks-oct-6-2026 President Trump Delivers Remarks, Oct. 6, 2026 | WKNO FM" [ref=f39e238] [cursor=pointer]:
+            - /url: https://www.wknofm.org/2026-10-06/president-trump-delivers-remarks-oct-6-2026?_amp=true
+            - generic [ref=f39e239]:
+              - img "🌐" [ref=f39e243]
+              - generic [ref=f39e244]:
+                - generic [ref=f39e245]: WKNO FM
+                - generic [ref=f39e246]: wknofm.org › 2026-10-06 › president-trump-delivers-remarks-oct-6-2026
+            - generic "President Trump Delivers Remarks, Oct. 6, 2026 | WKNO FM" [ref=f39e248]
+          - generic [ref=f39e249]: 1周前 - Watch as President Trump delivers remarks
+        - generic [ref=f39e254]:
+          - link "🌐 The White House whitehouse.gov › home › past events › president trump gaggles with press upon arrival at the white house, oct. 6, 2026 President Trump Gaggles with Press Upon Arrival at the White House, Oct. 6, 2026 – The White House" [ref=f39e255] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/videos/president-trump-gaggles-with-press-upon-arrival-at-the-white-house-oct-6-2026/
+            - generic [ref=f39e256]:
+              - img "🌐" [ref=f39e260]
+              - generic [ref=f39e261]:
+                - generic [ref=f39e262]: The White House
+                - generic [ref=f39e263]: whitehouse.gov › home › past events › president trump gaggles with press upon arrival at the white house, oct. 6, 2026
+            - generic "President Trump Gaggles with Press Upon Arrival at the White House, Oct. 6, 2026 – The White House" [ref=f39e265]
+          - generic [ref=f39e266]:
+            - link "03:26" [ref=f39e268] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/videos/president-trump-gaggles-with-press-upon-arrival-at-the-white-house-oct-6-2026/
+            - generic [ref=f39e273]:
+              - generic [ref=f39e274]: October 6, 2026 · 05:24 · October 6, 2026 · 01:51 · October 6, 2025 · 00:30 · May 15, 2026 · 03:14 · September 24, 2026 ·
+              - generic [ref=f39e276]:
+                - strong [ref=f39e277]: "已发布:"
+                - text: 6天前
+        - generic [ref=f39e279]:
+          - generic [ref=f39e280]: 在其他地方查找
+          - generic [ref=f39e284]:
+            - link "Google" [ref=f39e285] [cursor=pointer]:
+              - /url: /search?q=%22President%20Trump%22%20%22October%206%2C%202026%22%20shipyard%20remarks%20!g
+            - link "Bing" [ref=f39e286] [cursor=pointer]:
+              - /url: /search?q=%22President%20Trump%22%20%22October%206%2C%202026%22%20shipyard%20remarks%20!b
+            - link "Mojeek" [ref=f39e287] [cursor=pointer]:
+              - /url: /search?q=%22President%20Trump%22%20%22October%206%2C%202026%22%20shipyard%20remarks%20!mojeek
+        - button "下一页" [disabled] [ref=f39e290]
+  - contentinfo [ref=f39e294]:
+    - generic [ref=f39e297]:
+      - generic [ref=f39e298]:
+        - heading "资源" [level=6] [ref=f39e299]
+        - generic [ref=f39e300]:
+          - link "Brave 搜索高级版" [ref=f39e301] [cursor=pointer]:
+            - /url: https://account.brave.com/?intent=checkout&product=search
+          - link "Brave 搜索帮助" [ref=f39e302] [cursor=pointer]:
+            - /url: /help
+          - link "透明度报告" [ref=f39e303] [cursor=pointer]:
+            - /url: https://brave.com/transparency/
+          - link "举报安全问题" [ref=f39e304] [cursor=pointer]:
+            - /url: https://hackerone.com/brave
+          - link "状态" [ref=f39e305] [cursor=pointer]:
+            - /url: https://status.brave.app/
+      - generic [ref=f39e306]:
+        - heading "产品" [level=6] [ref=f39e307]
+        - generic [ref=f39e308]:
+          - link "Brave 浏览器" [ref=f39e309] [cursor=pointer]:
+            - /url: https://brave.com/download/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 搜索" [ref=f39e310] [cursor=pointer]:
+            - /url: https://search.brave.com
+          - link "Brave 钱包" [ref=f39e311] [cursor=pointer]:
+            - /url: https://brave.com/wallet/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 通话" [ref=f39e312] [cursor=pointer]:
+            - /url: https://talk.brave.com/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 防火墙+ VPN" [ref=f39e313] [cursor=pointer]:
+            - /url: https://brave.com/firewall-vpn/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 播放列表" [ref=f39e314] [cursor=pointer]:
+            - /url: https://brave.com/playlist/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 新闻" [ref=f39e315] [cursor=pointer]:
+            - /url: https://brave.com/brave-news/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 奖励" [ref=f39e316] [cursor=pointer]:
+            - /url: https://brave.com/brave-rewards/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 搜索 API" [ref=f39e317] [cursor=pointer]:
+            - /url: https://brave.com/search/api/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 广告" [ref=f39e318] [cursor=pointer]:
+            - /url: https://brave.com/brave-ads/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+      - generic [ref=f39e319]:
+        - heading "策略" [level=6] [ref=f39e320]
+        - generic [ref=f39e321]:
+          - link "隐私政策" [ref=f39e322] [cursor=pointer]:
+            - /url: /help/privacy-policy
+          - link "使用条款" [ref=f39e323] [cursor=pointer]:
+            - /url: https://brave.com/terms-of-use/

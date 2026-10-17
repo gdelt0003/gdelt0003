@@ -1,0 +1,247 @@
+- main [ref=e2]:
+  - navigation "页面导航" [ref=e3]:
+    - link "‹ 返回主页" [ref=e4] [cursor=pointer]:
+      - /url: ../../
+  - generic [ref=e5]:
+    - paragraph [ref=e6]: PUBLIC · EXTERNAL REVIEW DRAFT
+    - heading "Rose Garden Lunch 公开外部审查草稿" [level=1] [ref=e7]:
+      - text: Rose Garden Lunch
+      - generic [ref=e8]: 公开外部审查草稿
+    - group "当前状态" [ref=e9]:
+      - generic [ref=e10]: 待外部审查
+      - generic [ref=e11]: 尚未获发布批准
+      - generic [ref=e12]: 来源与事件未核验
+      - generic [ref=e13]: ASR/翻译未人工核验
+      - generic [ref=e14]: 权利/许可待独立审查
+    - paragraph [ref=e15]:
+      - strong [ref=e16]: 公开提示：
+      - text: 此 Pages 页面任何人都可以访问，不限于质量检查部门；链接本身不提供访问控制。
+    - group [ref=e17]:
+      - generic "审查范围、来源状态与授权说明 包含未核验事项" [ref=e18] [cursor=pointer]
+  - region [ref=e19]:
+    - generic [ref=e20]:
+      - paragraph [ref=e21]: REVIEW VIDEO · NOT APPROVED
+      - heading "双语烧录审查视频" [level=2] [ref=e22]
+    - generic [ref=e23]:
+      - generic "Rose Garden Lunch 双语烧录外部审查稿" [ref=e25]: 您的浏览器不支持 HTML5 视频播放。
+      - complementary "审查视频信息" [ref=e26]:
+        - paragraph [ref=e27]:
+          - strong [ref=e28]: 标题（提交者提供，未核实）
+          - generic [ref=e29]: President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - term [ref=e32]: 视频 ID
+            - definition [ref=e33]:
+              - code [ref=e34]: IySF_8OArvw
+          - generic [ref=e35]:
+            - term [ref=e36]: 版本
+            - definition [ref=e37]: 公开预发布审查稿，非原始来源或最终批准版本
+        - generic [ref=e38]:
+          - link "直接打开双语烧录审查视频" [ref=e39] [cursor=pointer]:
+            - /url: https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
+          - link "查看提交的 YouTube 原始来源（次要来源链接）" [ref=e40] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=IySF_8OArvw
+        - paragraph [ref=e41]: 派生审查视频由 GitHub 公开预发布版托管，不在 Pages 部署包中包含大型 MP4；原始视频没有被重新托管。
+  - region [ref=e42]:
+    - generic [ref=e43]:
+      - paragraph [ref=e44]: BOUNDED SOURCE SEARCH · NOT EXHAUSTIVE
+      - heading "来源检索尝试记录" [level=2] [ref=e45]
+    - paragraph [ref=e46]:
+      - text: 以下记录对应
+      - time [ref=e47]: 2026-10-16 UTC
+      - text: 完成的一次托管检索运行：已尝试 13/13 个登记 URL（未尝试 0 个），并运行 12 条 Bing RSS 查询。访问成功只表示相应页面可访问，不表示找到相关视频、来源可信或事件匹配；本次有限检索不是穷尽搜索。
+    - paragraph [ref=e48]:
+      - 'link "查看 GitHub Actions 运行 #38917473610" [ref=e49] [cursor=pointer]':
+        - /url: https://github.com/gdelt0003/gdelt0003/actions/runs/38917473610
+      - link "查看逐项 JSON / Markdown 报告（artifact 12052094454）" [ref=e50] [cursor=pointer]:
+        - /url: https://github.com/gdelt0003/gdelt0003/actions/runs/38917473610/artifacts/12052094454
+    - heading "登记 URL（逐项尝试）" [level=3] [ref=e51]
+    - region "登记 URL 的尝试结果，可横向滚动" [ref=e52]:
+      - table [ref=e53]:
+        - caption [ref=e54]: 每项均为有限页面访问尝试；不代表来源或内容已核验
+        - rowgroup [ref=e55]:
+          - row [ref=e56]:
+            - columnheader "登记项" [ref=e57]
+            - columnheader "直接 URL" [ref=e58]
+            - columnheader "结果" [ref=e59]
+            - columnheader "尝试时间（UTC）" [ref=e60]
+        - rowgroup [ref=e61]:
+          - row [ref=e62]:
+            - rowheader "White House YouTube" [ref=e63]
+            - cell [ref=e64]:
+              - link "https://www.youtube.com/@WhiteHouse" [ref=e65] [cursor=pointer]:
+                - /url: https://www.youtube.com/@WhiteHouse
+            - cell "HTTP 200 · 页面可访问" [ref=e66]
+            - cell [ref=e67]:
+              - time [ref=e68]: 2026-10-16 14:39:09.730854
+          - row [ref=e69]:
+            - rowheader "Roll Call Factba.se Trump calendar" [ref=e70]
+            - cell [ref=e71]:
+              - link "https://rollcall.com/factbase/trump/topic/calendar/" [ref=e72] [cursor=pointer]:
+                - /url: https://rollcall.com/factbase/trump/topic/calendar/
+            - cell "读取超时 · 未收到 HTTP 状态" [ref=e73]
+            - cell [ref=e74]:
+              - time [ref=e75]: 2026-10-16 14:39:09.731838
+          - row [ref=e76]:
+            - rowheader "Roll Call Factba.se Trump search" [ref=e77]
+            - cell [ref=e78]:
+              - link "https://rollcall.com/factbase/trump/search/" [ref=e79] [cursor=pointer]:
+                - /url: https://rollcall.com/factbase/trump/search/
+            - cell "读取超时 · 未收到 HTTP 状态" [ref=e80]
+            - cell [ref=e81]:
+              - time [ref=e82]: 2026-10-16 14:39:09.732081
+          - row [ref=e83]:
+            - rowheader "Roll Call Factba.se Trump social" [ref=e84]
+            - cell [ref=e85]:
+              - link "https://rollcall.com/factbase/trump/topic/social/?platform=all&sort=date&sort_order=desc&page=1" [ref=e86] [cursor=pointer]:
+                - /url: https://rollcall.com/factbase/trump/topic/social/?platform=all&sort=date&sort_order=desc&page=1
+            - cell "读取超时 · 未收到 HTTP 状态" [ref=e87]
+            - cell [ref=e88]:
+              - time [ref=e89]: 2026-10-16 14:39:09.732343
+          - row [ref=e90]:
+            - rowheader "Truth Social @realDonaldTrump" [ref=e91]
+            - cell [ref=e92]:
+              - link "https://truthsocial.com/@realDonaldTrump" [ref=e93] [cursor=pointer]:
+                - /url: https://truthsocial.com/@realDonaldTrump
+            - cell "HTTP 403 · Forbidden" [ref=e94]
+            - cell [ref=e95]:
+              - time [ref=e96]: 2026-10-16 14:39:09.732675
+          - row [ref=e97]:
+            - rowheader "GDELT Trump article search" [ref=e98]
+            - cell [ref=e99]:
+              - link "https://gdelt.github.io/#api=doc&query=trump%20&contentmode=ArtList&maxrecords=250&sort=DateDesc&format=html&timespan=1w" [ref=e100] [cursor=pointer]:
+                - /url: https://gdelt.github.io/#api=doc&query=trump%20&contentmode=ArtList&maxrecords=250&sort=DateDesc&format=html&timespan=1w
+            - cell "HTTP 200 · 页面可访问" [ref=e101]
+            - cell [ref=e102]:
+              - time [ref=e103]: 2026-10-16 14:39:09.732918
+          - row [ref=e104]:
+            - rowheader "Polymarket" [ref=e105]
+            - cell [ref=e106]:
+              - link "https://polymarket.com/zh" [ref=e107] [cursor=pointer]:
+                - /url: https://polymarket.com/zh
+            - cell "HTTP 200 · 页面可访问" [ref=e108]
+            - cell [ref=e109]:
+              - time [ref=e110]: 2026-10-16 14:39:09.864646
+          - row [ref=e111]:
+            - rowheader "Kalshi" [ref=e112]
+            - cell [ref=e113]:
+              - link "https://kalshi.com/" [ref=e114] [cursor=pointer]:
+                - /url: https://kalshi.com/
+            - cell "HTTP 429 · Too Many Requests" [ref=e115]
+            - cell [ref=e116]:
+              - time [ref=e117]: 2026-10-16 14:39:09.889709
+          - row [ref=e118]:
+            - rowheader "Forth White House pool" [ref=e119]
+            - cell [ref=e120]:
+              - link "https://www.forth.news/whpool" [ref=e121] [cursor=pointer]:
+                - /url: https://www.forth.news/whpool
+            - cell "HTTP 429 · Too Many Requests" [ref=e122]
+            - cell [ref=e123]:
+              - time [ref=e124]: 2026-10-16 14:39:09.928526
+          - row [ref=e125]:
+            - rowheader "Forth Trump social lists (user-proposed)" [ref=e126]
+            - cell [ref=e127]:
+              - link "https://www.forth.news/lists/trumpts" [ref=e128] [cursor=pointer]:
+                - /url: https://www.forth.news/lists/trumpts
+            - cell "HTTP 429 · Too Many Requests" [ref=e129]
+            - cell [ref=e130]:
+              - time [ref=e131]: 2026-10-16 14:39:09.936873
+          - row [ref=e132]:
+            - rowheader "C-SPAN Trump first 100 days live event" [ref=e133]
+            - cell [ref=e134]:
+              - link "https://www.c-span.org/liveEvent/?president-trump-first-100-days" [ref=e135] [cursor=pointer]:
+                - /url: https://www.c-span.org/liveEvent/?president-trump-first-100-days
+            - cell "HTTP 200 · 页面可访问" [ref=e136]
+            - cell [ref=e137]:
+              - time [ref=e138]: 2026-10-16 14:39:09.989372
+          - row [ref=e139]:
+            - rowheader "X Rapid Response 47" [ref=e140]
+            - cell [ref=e141]:
+              - link "https://x.com/RapidResponse47" [ref=e142] [cursor=pointer]:
+                - /url: https://x.com/RapidResponse47
+            - cell "HTTP 403 · Forbidden" [ref=e143]
+            - cell [ref=e144]:
+              - time [ref=e145]: 2026-10-16 14:39:09.990815
+          - row [ref=e146]:
+            - rowheader "Trump's Truth stats" [ref=e147]
+            - cell [ref=e148]:
+              - link "https://www.trumpstruth.org/stats" [ref=e149] [cursor=pointer]:
+                - /url: https://www.trumpstruth.org/stats
+            - cell "HTTP 200 · 页面可访问" [ref=e150]
+            - cell [ref=e151]:
+              - time [ref=e152]: 2026-10-16 14:39:10.029822
+    - paragraph [ref=e153]: 访问范围仅限每个登记 URL 的该页面及最多 262,144 字节 HTML 元数据；没有执行 JavaScript、登录、绕过访问控制或抓取链接页面，也未下载或检查任何视频、音频、图像或媒体流。HTTP 200 不代表页面中存在相关内容。
+    - heading "更广泛的查询覆盖（Bing RSS）" [level=3] [ref=e154]
+    - region "分类查询覆盖，可横向滚动" [ref=e155]:
+      - table [ref=e156]:
+        - caption [ref=e157]: 全部 12 条查询均返回可访问结果，每条报告 10 项；0 个候选页面 URL 通过事件词提取
+        - rowgroup [ref=e158]:
+          - row [ref=e159]:
+            - columnheader "查询类别" [ref=e160]
+            - columnheader "查询数" [ref=e161]
+            - columnheader "报告结果项" [ref=e162]
+            - columnheader "提取的候选页 URL" [ref=e163]
+        - rowgroup [ref=e164]:
+          - row [ref=e165]:
+            - rowheader "媒体与新闻" [ref=e166]
+            - cell "4" [ref=e167]
+            - cell "40" [ref=e168]
+            - cell "0" [ref=e169]
+          - row [ref=e170]:
+            - rowheader "社交平台" [ref=e171]
+            - cell "3" [ref=e172]
+            - cell "30" [ref=e173]
+            - cell "0" [ref=e174]
+          - row [ref=e175]:
+            - rowheader "国会" [ref=e176]
+            - cell "2" [ref=e177]
+            - cell "20" [ref=e178]
+            - cell "0" [ref=e179]
+          - row [ref=e180]:
+            - rowheader "智库" [ref=e181]
+            - cell "1" [ref=e182]
+            - cell "10" [ref=e183]
+            - cell "0" [ref=e184]
+          - row [ref=e185]:
+            - rowheader "档案" [ref=e186]
+            - cell "2" [ref=e187]
+            - cell "20" [ref=e188]
+            - cell "0" [ref=e189]
+    - paragraph [ref=e190]:
+      - strong [ref=e191]: 解释限制：
+      - text: 搜索引擎覆盖、索引、排序和查询解释均未知且非穷尽；没有候选页通过提取不代表不存在其他来源。本报告没有核实任何事件事实、来源内容、媒体画面/音频、来源可信度或使用权。
+  - region [ref=e192]:
+    - generic [ref=e193]:
+      - paragraph [ref=e194]: REVIEW CHECKLIST · ALL ITEMS PENDING
+      - heading "外部审查清单" [level=2] [ref=e195]
+    - paragraph [ref=e196]: 以下项目显示本次记录的来源、权利与内容核验状态；状态记录本身不是发布门槛，也不代表独立认证。
+    - list "待审项目" [ref=e197]:
+      - listitem [ref=e198]:
+        - generic [ref=e199]:
+          - checkbox "来源与事件匹配" [disabled] [ref=e200]
+          - text: 来源与事件匹配
+        - generic [ref=e201]: 待审
+      - listitem [ref=e202]:
+        - generic [ref=e203]:
+          - checkbox "原片画面及嵌入图文检查" [disabled] [ref=e204]
+          - text: 原片画面及嵌入图文检查
+        - generic [ref=e205]: 待审
+      - listitem [ref=e206]:
+        - generic [ref=e207]:
+          - checkbox "原片音频及英语 ASR 准确性" [disabled] [ref=e208]
+          - text: 原片音频及英语 ASR 准确性
+        - generic [ref=e209]: 待审
+      - listitem [ref=e210]:
+        - generic [ref=e211]:
+          - checkbox "中文翻译忠实度与可读性" [disabled] [ref=e212]
+          - text: 中文翻译忠实度与可读性
+        - generic [ref=e213]: 待审
+      - listitem [ref=e214]:
+        - generic [ref=e215]:
+          - checkbox "独立权利/许可及潜在第三方内容审查" [disabled] [ref=e216]
+          - text: 独立权利/许可及潜在第三方内容审查
+        - generic [ref=e217]: 待审
+    - paragraph [ref=e218]: 记录链接将在发布时填入。
+    - paragraph [ref=e219]:
+      - strong [ref=e220]: 仅供外部审查：
+      - text: ASR 与机器翻译未经人工核验；该页面和公开预发布资产均不代表字幕准确性或最终发布批准。

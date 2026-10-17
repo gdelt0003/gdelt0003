@@ -1,0 +1,397 @@
+name: Render Rose Garden lunch bilingual preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      requester_authorized_processing:
+        description: I explicitly authorize this GitHub-hosted private preview render for this exact source
+        type: boolean
+        required: true
+        default: false
+      exact_event_match_confirmed:
+        description: I verified that the selected official video depicts this exact Rose Garden event
+        type: boolean
+        required: true
+        default: false
+      reuse_rights_confirmed:
+        description: I verified that the supplied evidence permits downloading and private rendering of this exact source
+        type: boolean
+        required: true
+        default: false
+      event_time_local:
+        description: Verified local event time if known; leave empty if evidence does not establish it
+        type: string
+        required: false
+      event_timezone:
+        description: Verified event timezone if known; leave empty if evidence does not establish it
+        type: string
+        required: false
+      identity_evidence_url:
+        description: HTTPS evidence for this event's identity
+        type: string
+        required: true
+      source_match_evidence_url:
+        description: HTTPS evidence for this exact source/event match
+        type: string
+        required: true
+      rights_evidence_url:
+        description: HTTPS evidence permitting download and private rendering of this exact source
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rose-garden-lunch-preview-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js for yt-dlp
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install rendering dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install yt-dlp faster-whisper transformers sentencepiece pysubs2==1.8.0
+          ffmpeg -version
+          ffprobe -version
+
+      - name: Record supplied event identity
+        env:
+          EVENT_TIME_LOCAL: ${{ inputs.event_time_local }}
+          EVENT_TIMEZONE: ${{ inputs.event_timezone }}
+        run: |
+          python - "$RUNNER_TEMP/event-identity.json" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          event_time = os.environ.get("EVENT_TIME_LOCAL", "").strip() or None
+          timezone = os.environ.get("EVENT_TIMEZONE", "").strip() or None
+          identity = {
+              "event_date": "2026-10-15",
+              "event_time_local": event_time,
+              "time_precision": "minute" if event_time else "day",
+              "timezone": timezone,
+              "location": "White House Rose Garden, Washington, D.C.",
+              "event_type": "Rose Garden lunch",
+              "title": "President Trump Participates in a Rose Garden Lunch",
+              "participants": ["President Donald Trump"],
+              "official_video_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
+          }
+          Path(sys.argv[1]).write_text(
+              json.dumps(identity, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Check authorization, exact event match, and reuse rights before download
+        env:
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          IDENTITY_EVIDENCE_URL: ${{ inputs.identity_evidence_url }}
+          SOURCE_MATCH_EVIDENCE_URL: ${{ inputs.source_match_evidence_url }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+        run: |
+          for confirmation in \
+            "$PROCESSING_AUTHORIZED" \
+            "$EXACT_EVENT_MATCH_CONFIRMED" \
+            "$RIGHTS_CONFIRMED"; do
+            if [ "$confirmation" != "true" ]; then
+              echo "Required per-video authorization or confirmation is missing; no source will be downloaded or processed." >&2
+              exit 1
+            fi
+          done
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          names = (
+              "IDENTITY_EVIDENCE_URL",
+              "SOURCE_MATCH_EVIDENCE_URL",
+              "RIGHTS_EVIDENCE_URL",
+          )
+          urls = [os.environ[name].strip() for name in names]
+          for name, value in zip(names, urls, strict=True):
+              parsed = urlparse(value)
+              if parsed.scheme != "https" or not parsed.netloc:
+                  raise SystemExit(f"{name} must be a valid HTTPS evidence URL.")
+          PY
+          python scripts/prepare_event_production.py \
+            --identity-json "$RUNNER_TEMP/event-identity.json" \
+            --source-url "https://www.youtube.com/watch?v=IySF_8OArvw" \
+            --identity-evidence-url "$IDENTITY_EVIDENCE_URL" \
+            --source-match-evidence-url "$SOURCE_MATCH_EVIDENCE_URL" \
+            --confirm-same-event-match \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --output "$RUNNER_TEMP/event-preflight.json"
+
+      - name: Verify exact video metadata before downloading
+        id: identity
+        env:
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+        run: |
+          yt-dlp \
+            --dump-single-json \
+            --no-warnings \
+            --js-runtimes node \
+            "https://www.youtube.com/watch?v=IySF_8OArvw" \
+            > "$RUNNER_TEMP/source-metadata.json"
+          python - "$RUNNER_TEMP/source-metadata.json" <<'PY'
+          import json
+          import sys
+
+          metadata = json.load(open(sys.argv[1], encoding="utf-8"))
+          if metadata.get("id") != "IySF_8OArvw":
+              raise SystemExit("The resolved video ID does not match the requested source.")
+          title = metadata.get("title", "")
+          if "Rose Garden Lunch" not in title or "Oct. 15, 2026" not in title:
+              raise SystemExit(f"Unexpected source title for the requested event: {title!r}")
+          uploader = " ".join(
+              str(metadata.get(key, ""))
+              for key in ("uploader", "channel", "channel_url")
+          ).casefold()
+          if "white house" not in uploader:
+              raise SystemExit("The source is not identified as published by the White House.")
+          print(
+              f"Verified source identity: {title}; "
+              f"publisher={metadata.get('uploader') or metadata.get('channel')}"
+          )
+          PY
+          python - "$RUNNER_TEMP/event-identity.json" "$RUNNER_TEMP/source-metadata.json" "$RUNNER_TEMP/event-preflight.json" "$RUNNER_TEMP/event-metadata.json" <<'PY'
+          import json
+          import os
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          from scripts.event_identity import build_event_id
+
+          identity = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          source = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+          preflight = json.loads(Path(sys.argv[3]).read_text(encoding="utf-8"))
+          event_id = build_event_id(identity)
+          metadata = {
+              "schema_version": 1,
+              "event_id": event_id,
+              "identity": {key: value for key, value in identity.items() if key != "official_video_url"},
+              "source_url": identity["official_video_url"],
+              "official_video_url": identity["official_video_url"],
+              "identity_evidence_url": preflight["identity_evidence_url"],
+              "source_match_evidence_url": preflight["source_match_evidence_url"],
+              "source_title": source["title"],
+              "source_publisher": source.get("uploader") or source.get("channel"),
+              "source_match_status": "operator confirmed exact event; metadata matched; frame/audio review not verified",
+              "rights_evidence_url": preflight["rights_evidence_url"],
+              "reuse_rights_confirmed": os.environ["RIGHTS_CONFIRMED"] == "true",
+              "processing_authorized": os.environ["PROCESSING_AUTHORIZED"] == "true",
+              "exact_event_match_confirmed": os.environ["EXACT_EVENT_MATCH_CONFIRMED"] == "true",
+              "reuse_rights_status": "operator confirmed; independent rights review remains pending",
+              "review_status": "private preview only; human review pending",
+              "prepared_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+          }
+          Path(sys.argv[4]).write_text(
+              json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(f"Recorded private preview identity {event_id}; no public rights assertion.")
+          PY
+          event_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["event_id"])' "$RUNNER_TEMP/event-metadata.json")"
+          echo "event_id=$event_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download the selected source on the GitHub-hosted runner
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-source"
+          yt-dlp \
+            --concurrent-fragments 50 \
+            --js-runtimes node \
+            --merge-output-format mp4 \
+            -f 'bestvideo[width>=1920][height>=1080]+bestaudio/best[width>=1920][height>=1080]' \
+            --output "$RUNNER_TEMP/event-source/source.%(ext)s" \
+            "https://www.youtube.com/watch?v=IySF_8OArvw"
+          test -s "$RUNNER_TEMP/event-source/source.mp4"
+          ffprobe -v error -show_entries format=duration,size \
+            -show_streams -of json "$RUNNER_TEMP/event-source/source.mp4" \
+            > "$RUNNER_TEMP/source-probe.json"
+          python - "$RUNNER_TEMP/source-probe.json" "$RUNNER_TEMP/event-source/source.mp4" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          path = Path(sys.argv[2])
+          probe = json.load(open(sys.argv[1], encoding="utf-8"))
+          video = next(
+              (stream for stream in probe.get("streams", []) if stream.get("codec_type") == "video"),
+              None,
+          )
+          audio = any(
+              stream.get("codec_type") == "audio"
+              for stream in probe.get("streams", [])
+          )
+          if video is None or video.get("width", 0) < 1920 or video.get("height", 0) < 1080:
+              raise SystemExit(
+                  "The selected source is below 1920x1080; no upscaling is allowed."
+              )
+          if not audio:
+              raise SystemExit("The selected source has no audio stream.")
+          hasher = hashlib.sha256()
+          with path.open("rb") as source:
+              for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                  hasher.update(chunk)
+          digest = hasher.hexdigest()
+          verification = {
+              "source_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
+              "video_id": "IySF_8OArvw",
+              "source_size_bytes": path.stat().st_size,
+              "source_sha256": digest,
+              "duration_seconds": float(probe["format"]["duration"]),
+              "resolution": f'{video["width"]}x{video["height"]}',
+              "audio_present": audio,
+              "same_event_match": "title and publisher metadata matched; frames not yet human-reviewed",
+              "reuse_rights": "White House copyright policy cited; third-party content still requires human review",
+          }
+          Path(sys.argv[1]).with_name("source-verification.json").write_text(
+              json.dumps(verification, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(
+              f"Verified source: {verification['duration_seconds']:.1f}s, "
+              f"{verification['resolution']}, audio present, SHA-256 {digest}"
+          )
+          PY
+
+      - name: Cache transcription and translation models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-rose-garden-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Transcribe, translate, and burn bilingual captions
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-output"
+          python scripts/process_full_video.py \
+            --input "$RUNNER_TEMP/event-source/source.mp4" \
+            --output-dir "$RUNNER_TEMP/event-output" \
+            --asset-prefix IySF_8OArvw \
+            --caption-box 66,883,1852,1022
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/event-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/event-output/manifest.json"
+          python - "$RUNNER_TEMP/event-output/manifest.json" "$RUNNER_TEMP/event-metadata.json" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest_path = Path(sys.argv[1])
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          metadata = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+          manifest["event_id"] = metadata["event_id"]
+          manifest["event_identity"] = metadata["identity"]
+          manifest["source_url"] = metadata["source_url"]
+          manifest["official_video_url"] = metadata["official_video_url"]
+          manifest["identity_evidence_url"] = metadata["identity_evidence_url"]
+          manifest["source_match_evidence_url"] = metadata["source_match_evidence_url"]
+          manifest["rights_evidence_url"] = metadata["rights_evidence_url"]
+          manifest["source_match_review"] = "metadata matched; human frame/audio review not verified"
+          manifest["translation_review"] = "machine translation not reviewed"
+          manifest["source_frame_review"] = "not reviewed"
+          manifest["publication_status"] = "private review artifact; not published"
+          manifest_path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Extract representative rendered frames for review
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-output/rendered-frames"
+          python - "$RUNNER_TEMP/event-output/manifest.json" "$RUNNER_TEMP/event-output/IySF_8OArvw-bilingual.mp4" "$RUNNER_TEMP/event-output/rendered-frames" <<'PY'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+          video = Path(sys.argv[2])
+          output_dir = Path(sys.argv[3])
+          duration = float(manifest["duration_seconds"])
+          for label, fraction in (
+              ("beginning", 0.02),
+              ("quarter", 0.25),
+              ("middle", 0.50),
+              ("three-quarter", 0.75),
+              ("ending", 0.98),
+          ):
+              timestamp = min(max(0.0, duration * fraction), max(0.0, duration - 0.1))
+              target = output_dir / f"{label}.jpg"
+              subprocess.run(
+                  [
+                      "ffmpeg", "-v", "error", "-y", "-ss", str(timestamp),
+                      "-i", str(video), "-frames:v", "1", "-q:v", "2", str(target),
+                  ],
+                  check=True,
+              )
+              if not target.is_file() or target.stat().st_size == 0:
+                  raise SystemExit(f"Failed to extract rendered review frame: {label}")
+          PY
+
+      - name: Package private review artifact
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/event-review"
+          for file in \
+            "$RUNNER_TEMP/event-metadata.json" \
+            "$RUNNER_TEMP/source-metadata.json" \
+            "$RUNNER_TEMP/source-verification.json" \
+            "$RUNNER_TEMP/event-output/"*.mp4 \
+            "$RUNNER_TEMP/event-output/"*.srt \
+            "$RUNNER_TEMP/event-output/"*.vtt \
+            "$RUNNER_TEMP/event-output/manifest.json" \
+            "$RUNNER_TEMP/event-output/operation-audit.json"; do
+            if [ -f "$file" ]; then
+              cp "$file" "$RUNNER_TEMP/event-review/"
+            fi
+          done
+          if [ -d "$RUNNER_TEMP/event-output/rendered-frames" ]; then
+            cp -R "$RUNNER_TEMP/event-output/rendered-frames" "$RUNNER_TEMP/event-review/"
+          fi
+          if [ -n "$(find "$RUNNER_TEMP/event-review" -type f -print -quit)" ]; then
+            (
+              cd "$RUNNER_TEMP/event-review"
+              find . -type f ! -name SHA256SUMS -print0 \
+                | sort -z \
+                | xargs -0 sha256sum > SHA256SUMS
+            )
+          fi
+
+      - name: Upload private review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-lunch-2026-10-15-preview-${{ github.run_id }}
+          path: ${{ runner.temp }}/event-review
+          if-no-files-found: warn
+          retention-days: 14

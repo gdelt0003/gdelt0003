@@ -1,0 +1,269 @@
+- generic [active] [ref=f13e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f13e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f13e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f13e8]:
+    - search [ref=f13e9]:
+      - generic [ref=f13e11]:
+        - link "Google 首页" [ref=f13e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQPHoECAYQBA
+        - generic [ref=f13e16]:
+          - generic [ref=f13e17]:
+            - combobox "搜索" [ref=f13e20]: site:c-span.org Katie Zacharia first briefing October 13 2026 site:c-span.org Katie Zacharia first briefing October 13 2026
+            - generic [ref=f13e21]:
+              - button "清除" [ref=f13e23] [cursor=pointer]
+              - generic [ref=f13e28]:
+                - button "按语音搜索" [ref=f13e29] [cursor=pointer]
+                - button "按图搜索" [ref=f13e32] [cursor=pointer]
+          - button "搜索" [ref=f13e35] [cursor=pointer]
+    - generic [ref=f13e40]:
+      - button "设置" [ref=f13e42] [cursor=pointer]
+      - button "分享" [ref=f13e47] [cursor=pointer]
+      - generic [ref=f13e53]:
+        - button "Google 应用" [ref=f13e55] [cursor=pointer]
+        - link "登录" [ref=f13e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3Dsite%253Ac-span.org%2BKatie%2BZacharia%2Bfirst%2Bbriefing%2BOctober%2B13%2B2026&ec=futura_srp_og_si_72236_p
+  - generic [ref=f13e62]:
+    - navigation [ref=f13e68]:
+      - generic [ref=f13e74]:
+        - list [ref=f13e75]:
+          - listitem [ref=f13e76]:
+            - link "全部" [disabled] [ref=f13e77]
+          - listitem [ref=f13e80]:
+            - link "新闻" [ref=f13e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ0pQJegQIGRAB
+          - listitem [ref=f13e84]:
+            - link "图片" [ref=f13e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQtKgLegQIFxAB
+          - listitem [ref=f13e88]:
+            - link "视频" [ref=f13e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQtKgLegQIGBAB
+          - listitem [ref=f13e92]:
+            - link "短视频" [ref=f13e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQs6gLegQIFhAB
+          - listitem [ref=f13e96]:
+            - link "网页" [ref=f13e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQs6gLegQIFBAB
+          - listitem [ref=f13e100]:
+            - link "图书" [ref=f13e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ0pQJegQIFRAB
+          - listitem [ref=f13e104]:
+            - button [ref=f13e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f13e106]: 更多
+        - button "工具" [ref=f13e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f13e120]
+    - main [ref=f13e126]:
+      - generic [ref=f13e130]:
+        - generic [ref=f13e136]:
+          - generic [ref=f13e139]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing C-SPAN · C-SPAN https://www.c-span.org · 2天前" [ref=f13e141] [cursor=pointer]:
+              - /url: /goto?url=CAESsAEB6zswFdX5gUGyT8ZczS8jU0tTCmR1GNLwuts47eXBAFliJY_4hqeBYy9wpRO8QUNr67jWgJxpvmPdwHinrfReF8In1UsdU7ExVJpYLcQWDYbSSvrpWx-uG2gPITb7QV-ZVTXolBQjPyeCTW_4wq0VGTWua_S8AkcaShz0BYOak7Y6yFXckqUbgHGtao827sZS3MR6Bo-lcRdod_whGP4pyNkFGVj4CyCAGm24nJVzKw
+              - heading "White House Press Secretary Katie Zacharia Holds First Briefing" [level=3] [ref=f13e142]
+              - generic [ref=f13e148]:
+                - generic [ref=f13e149]: C-SPAN · C-SPAN
+                - generic [ref=f13e151]: https://www.c-span.org · 2天前
+            - button "关于这条结果的详细信息" [ref=f13e157] [cursor=pointer]
+          - generic [ref=f13e162]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f13e163] [cursor=pointer]:
+              - /url: /goto?url=CAESsAEB6zswFdX5gUGyT8ZczS8jU0tTCmR1GNLwuts47eXBAFliJY_4hqeBYy9wpRO8QUNr67jWgJxpvmPdwHinrfReF8In1UsdU7ExVJpYLcQWDYbSSvrpWx-uG2gPITb7QV-ZVTXolBQjPyeCTW_4wq0VGTWua_S8AkcaShz0BYOak7Y6yFXckqUbgHGtao827sZS3MR6Bo-lcRdod_whGP4pyNkFGVj4CyCAGm24nJVzKw
+            - generic [ref=f13e171]: White House Press Secretary Katie Zacharia holds her first briefing. She announces that U.S. Ambassador to Greece Kimberly ... October 13, 2026 LIVE.
+        - generic [ref=f13e176]:
+          - generic [ref=f13e179]:
+            - link "Katie Zacharia | C-SPAN.org C-SPAN https://www.c-span.org › person" [ref=f13e181] [cursor=pointer]:
+              - /url: /goto?url=CAESYAHrOzAVd-9VNQtk1B0ytOVKwsc4b8y_geurrZ_MU3qokGoaBpn-XX1JsuAdz6XIi-5T_vxEb_L4bdj7Ws6_2Z7ifHD9bv9GhfNxmlQuV9biKkiV2r8mI87lxA6bo8Mm6g
+              - heading "Katie Zacharia | C-SPAN.org" [level=3] [ref=f13e182]
+              - generic [ref=f13e188]:
+                - generic [ref=f13e189]: C-SPAN
+                - generic [ref=f13e191]: https://www.c-span.org › person
+            - generic [ref=f13e193]:
+              - generic [ref=f13e194]: ·
+              - link "翻译此页" [ref=f13e195] [cursor=pointer]:
+                - /url: /goto?url=CAESrwEB6zswFXwvQuM-zCAbgKZdqjMsfcHg4Dr6OASQsP_KcTS_PLT6UTkDyrui6fQ3tvCpe2BvTze3FUBtp7ymN5vUHms1T1wLvdviRoLkPkHKDxJKJG7QZ0xXF3_-JILCE_zYjYbZmy6Q13qpuBZ1Rg4VITqfmmpHB9JkuOpMzAanS5sso_nXWZEge2H9Ha71BX5V0qnAZxbAAe89NYGpmbRfcxqLMbVH6_ekJdz2FPe0
+            - button "关于这条结果的详细信息" [ref=f13e200] [cursor=pointer]
+          - generic [ref=f13e207]:
+            - emphasis [ref=f13e208]: White House Press Secretary Katie Zacharia Holds First Briefing
+            - text: . October 13, 2026. White House Press Secretary Katie Zacharia Holds First ...
+        - generic [ref=f13e214]:
+          - generic [ref=f13e217]:
+            - link "President Trump and New WH Press Secretary Katie Zacharia ... C-SPAN · C-SPAN https://www.c-span.org · 1天前" [ref=f13e219] [cursor=pointer]:
+              - /url: /goto?url=CAES0AEB6zswFXUIx2Sn1ItfMXh1FtH9wjT3LA9nhPUWibGHG3UNnb3Ml_aG6D2xvBpY0pyQ30grd2QnTMSMdZbxu6HKO7cMkNqGGTznqzTcJcl8KCO00Mtt7UJT2UGi0WAOCHL4DtFyqsZncuPm1nl0ZO9xIdfAtT6Jh80EzArt2VXByqPTePeqr-1Dq7QxUCDkr0DI0CqdRLOjwmrjzysRDWlaLfueuius7DqYJ6KGfLoYDhOoOLrYDEfapP6a2KOArEVCJ0-g-SFItKsEmXBtvv4X
+              - heading "President Trump and New WH Press Secretary Katie Zacharia ..." [level=3] [ref=f13e220]
+              - generic [ref=f13e226]:
+                - generic [ref=f13e227]: C-SPAN · C-SPAN
+                - generic [ref=f13e229]: https://www.c-span.org · 1天前
+            - button "关于这条结果的详细信息" [ref=f13e235] [cursor=pointer]
+          - generic [ref=f13e240]:
+            - link "President Trump and New WH Press Secretary Katie Zacharia ...，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f13e241] [cursor=pointer]:
+              - /url: /goto?url=CAES0AEB6zswFXUIx2Sn1ItfMXh1FtH9wjT3LA9nhPUWibGHG3UNnb3Ml_aG6D2xvBpY0pyQ30grd2QnTMSMdZbxu6HKO7cMkNqGGTznqzTcJcl8KCO00Mtt7UJT2UGi0WAOCHL4DtFyqsZncuPm1nl0ZO9xIdfAtT6Jh80EzArt2VXByqPTePeqr-1Dq7QxUCDkr0DI0CqdRLOjwmrjzysRDWlaLfueuius7DqYJ6KGfLoYDhOoOLrYDEfapP6a2KOArEVCJ0-g-SFItKsEmXBtvv4X
+            - generic [ref=f13e249]: October 13, 2026 LIVE. President Trump and New WH Press Secretary Katie Zacharia Pressed on Where She Passed ... White House Press Secretary Katie Zacharia ...
+        - generic [ref=f13e256]:
+          - generic [ref=f13e259]:
+            - link "New White House Press Secy. Katie Zacharia Confirms Amb. ... C-SPAN · C-SPAN https://www.c-span.org · 1天前" [ref=f13e261] [cursor=pointer]:
+              - /url: /goto?url=CAES1AEB6zswFfqpqhgtx37wO5pq58kcv1b7-9M-8uqI5yPk8_fhSHCkL-C2ZUnZK6yUcMnPqD2DvF7Eh6aJPBpEr6hdKFMnT6dM2qZOwr0z1bRvLKhSboH8UOLmg0YKUI0_0is74yEWqRddsm3_akBcbUVrZPl7DTdy3Co7T8_zBrCZX690kM2Y31gq_lSP4YgXtsU2oSVvsCgB0yCU6loEJKofSLfQH6c0RnbXP09a31xI0G9PiGukqcLVpdHd3eqNA1H3rAI7-o1RSezI5AgMthEzpR4jwA
+              - heading "New White House Press Secy. Katie Zacharia Confirms Amb. ..." [level=3] [ref=f13e262]
+              - generic [ref=f13e268]:
+                - generic [ref=f13e269]: C-SPAN · C-SPAN
+                - generic [ref=f13e271]: https://www.c-span.org · 1天前
+            - button "关于这条结果的详细信息" [ref=f13e277] [cursor=pointer]
+          - generic [ref=f13e282]:
+            - link "New White House Press Secy. Katie Zacharia Confirms Amb. ...，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f13e283] [cursor=pointer]:
+              - /url: /goto?url=CAES1AEB6zswFfqpqhgtx37wO5pq58kcv1b7-9M-8uqI5yPk8_fhSHCkL-C2ZUnZK6yUcMnPqD2DvF7Eh6aJPBpEr6hdKFMnT6dM2qZOwr0z1bRvLKhSboH8UOLmg0YKUI0_0is74yEWqRddsm3_akBcbUVrZPl7DTdy3Co7T8_zBrCZX690kM2Y31gq_lSP4YgXtsU2oSVvsCgB0yCU6loEJKofSLfQH6c0RnbXP09a31xI0G9PiGukqcLVpdHd3eqNA1H3rAI7-o1RSezI5AgMthEzpR4jwA
+            - generic [ref=f13e291]: October 13, 2026 LIVE. New White House Press Secy. Katie Zacharia Confirms Amb. Kimberly Guilfoyle Has Been Asked to Resign. New White House Press Secretary ...
+        - generic [ref=f13e296]:
+          - generic [ref=f13e299]:
+            - link "White House | Organization C-SPAN https://www.c-span.org › organization › wh..." [ref=f13e301] [cursor=pointer]:
+              - /url: /goto?url=CAESbwHrOzAVZNlUuIEfbcFcKRzqNsAfgqJpfl-kB1NHsRcl-i5sjtrClMXj5JpGEc1hf03BOc3v7y9Ail8xT92qTTuRX8dw16KFlMxxOd5hWR4QMAUiEM2goHG2fM5W3OVpm2buU7S1ZUVMGyiD46j4UQ
+              - heading "White House | Organization" [level=3] [ref=f13e302]
+              - generic [ref=f13e308]:
+                - generic [ref=f13e309]: C-SPAN
+                - generic [ref=f13e311]: https://www.c-span.org › organization › wh...
+            - generic [ref=f13e313]:
+              - generic [ref=f13e314]: ·
+              - link "翻译此页" [ref=f13e315] [cursor=pointer]:
+                - /url: /goto?url=CAESvwEB6zswFRKwqyz4c4IA7lN-x--Dhs4jYusB3PIUJJu3mhVJmWM9Hk7sJa_SfimJl5XwEB3Yl_JKmD8X9fAKkGlIYaF70Yl1p-t1nmsWN3vVUcbxETP2fezN87TxxqD6lgDJp9AXUc2D9MRZYeyf14WiUxVW-YSoiPbgtrp4T8Mnrp1a3FHKANSxRZ9gIIexlcmGzSDJiBcBcB-FTGE6LF7VT-YGpCdgi0LXA5_CXasSrSKljjJ74i-GLOZPlan9CQ
+            - button "关于这条结果的详细信息" [ref=f13e320] [cursor=pointer]
+          - generic [ref=f13e327]:
+            - emphasis [ref=f13e328]: October 13
+            - text: ","
+            - emphasis [ref=f13e329]: "2026"
+            - text: . White House Press Secretary
+            - emphasis [ref=f13e330]: Katie Zacharia
+            - text: Holds
+            - emphasis [ref=f13e331]: First Briefing
+            - text: . White House Press Secretary
+            - emphasis [ref=f13e332]: Katie Zacharia
+            - text: held her
+            - emphasis [ref=f13e333]: first briefing
+            - text: . “I want ...
+        - generic [ref=f13e339]:
+          - generic [ref=f13e342]:
+            - link "2026 White House Correspondents' Association Dinner Arrivals ... C-SPAN · C-SPAN https://www.c-span.org · 2026年7月24日" [ref=f13e344] [cursor=pointer]:
+              - /url: /goto?url=CAESwQEB6zswFTorTJqbK57O9Joooj1dGvUsxuPgmZnb39prR2J7y06jvdnaxj1TeoUhDaRc_B0_-gZL24IfSGeA0Og5bvLRUDmAuNI2tzXEB3KrNItNSvvjFaTGqZFswjtSYUJyD2XtvzgleTwSL2ssCnBcEvKifertF3ggxhaJY0qkxpbcPjmffCv4MLi7DVR2QJau8bZbe87uuu1Rf9VokGxK5gmkZxMZEVfw5OtNfI0e9G2TbCdJygEhnpSFncyD0UoU
+              - heading "2026 White House Correspondents' Association Dinner Arrivals ..." [level=3] [ref=f13e345]
+              - generic [ref=f13e351]:
+                - generic [ref=f13e352]: C-SPAN · C-SPAN
+                - generic [ref=f13e354]: https://www.c-span.org · 2026年7月24日
+            - button "关于这条结果的详细信息" [ref=f13e360] [cursor=pointer]
+          - generic [ref=f13e365]:
+            - link "2026 White House Correspondents' Association Dinner Arrivals ...，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放. 1:25:36" [ref=f13e366] [cursor=pointer]:
+              - /url: /goto?url=CAESwQEB6zswFTorTJqbK57O9Joooj1dGvUsxuPgmZnb39prR2J7y06jvdnaxj1TeoUhDaRc_B0_-gZL24IfSGeA0Og5bvLRUDmAuNI2tzXEB3KrNItNSvvjFaTGqZFswjtSYUJyD2XtvzgleTwSL2ssCnBcEvKifertF3ggxhaJY0qkxpbcPjmffCv4MLi7DVR2QJau8bZbe87uuu1Rf9VokGxK5gmkZxMZEVfw5OtNfI0e9G2TbCdJygEhnpSFncyD0UoU
+              - generic [ref=f13e367]: 1:25:36
+            - generic [ref=f13e376]: White House Press Secretary Katie Zacharia started her first briefing by thanking President Trump for his trust in her. ... Oct 13, 2026 ...
+        - generic [ref=f13e383]:
+          - generic [ref=f13e386]:
+            - 'link "User Clip: Clip: House Session | Video | C-SPAN.org User Clip: Clip: House Session | Video | C-SPAN.org · C-SPAN https://www.c-span.org · 2013年11月16日" [ref=f13e388] [cursor=pointer]':
+              - /url: /goto?url=CAESjAEB6zswFZPmrFrL8b6xG5BeN1xeVyiSrWc5Vgs628XyB8T7DdFx2TJVL17Hx_gtco6kgrtvxLL4Ho8EGvW9ZGqrT0IhmXzgifDS6VbfQRwuYzsXaJ0Q9PDqd4r_3OUxvB8EzOm1L_p8YC6M_6W1qnHj2HFypokK8FL4Nrg7rbURDOyZ8F3LNcHLsrOPsg
+              - 'heading "User Clip: Clip: House Session | Video | C-SPAN.org" [level=3] [ref=f13e389]'
+              - generic [ref=f13e395]:
+                - generic [ref=f13e396]: "User Clip: Clip: House Session | Video | C-SPAN.org · C-SPAN"
+                - generic [ref=f13e398]: https://www.c-span.org · 2013年11月16日
+            - button "关于这条结果的详细信息" [ref=f13e404] [cursor=pointer]
+          - generic [ref=f13e409]:
+            - 'link "User Clip: Clip: House Session | Video | C-SPAN.org，由C-SPAN上传到User Clip: Clip: House Session | Video | C-SPAN.org上. 在User Clip: Clip: House Session | Video | C-SPAN.org上播放. 1:00" [ref=f13e410] [cursor=pointer]':
+              - /url: /goto?url=CAESjAEB6zswFZPmrFrL8b6xG5BeN1xeVyiSrWc5Vgs628XyB8T7DdFx2TJVL17Hx_gtco6kgrtvxLL4Ho8EGvW9ZGqrT0IhmXzgifDS6VbfQRwuYzsXaJ0Q9PDqd4r_3OUxvB8EzOm1L_p8YC6M_6W1qnHj2HFypokK8FL4Nrg7rbURDOyZ8F3LNcHLsrOPsg
+              - generic [ref=f13e411]: 1:00
+            - generic [ref=f13e420]: "Oct 12, 2026. Campaign 2026: VP JD Vance Campaigns for Texas GOP ... White House Press Secretary Katie Zacharia Holds First Briefing. White House ..."
+        - generic [ref=f13e427]:
+          - generic [ref=f13e430]:
+            - link "Maine Governor Debate | Video C-SPAN · C-SPAN https://www.c-span.org · 2天前" [ref=f13e432] [cursor=pointer]:
+              - /url: /goto?url=CAESggEB6zswFZv31PHXWUMwMxzY-6MTVitMh44U54Bi1GTZyO6zUqmtit6tHUE63NHSQVrMzvEEzUBqVrUl_KVVPYDspMUrUYdAvVNeWz9h1Nm2k3TNXgEyf8cChB_CPCB5n8w66id_kHf8jx7qZwI2II5ZQeDgJzjeDmAp2I-LTcmcAVXL
+              - heading "Maine Governor Debate | Video" [level=3] [ref=f13e433]
+              - generic [ref=f13e439]:
+                - generic [ref=f13e440]: C-SPAN · C-SPAN
+                - generic [ref=f13e442]: https://www.c-span.org · 2天前
+            - button "关于这条结果的详细信息" [ref=f13e448] [cursor=pointer]
+          - generic [ref=f13e453]:
+            - link "Maine Governor Debate | Video，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f13e454] [cursor=pointer]:
+              - /url: /goto?url=CAESggEB6zswFZv31PHXWUMwMxzY-6MTVitMh44U54Bi1GTZyO6zUqmtit6tHUE63NHSQVrMzvEEzUBqVrUl_KVVPYDspMUrUYdAvVNeWz9h1Nm2k3TNXgEyf8cChB_CPCB5n8w66id_kHf8jx7qZwI2II5ZQeDgJzjeDmAp2I-LTcmcAVXL
+            - generic [ref=f13e462]: Watch LIVE at 4:00 PM PDT October 13, 2026 on C-SPAN.org. This program ... White House Press Secretary Katie Zacharia Holds First Briefing.
+        - generic [ref=f13e467]:
+          - generic [ref=f13e470]:
+            - link "White House Daily Briefing | April 15, 2026 | Video C-SPAN https://www.c-span.org › program › white-..." [ref=f13e472] [cursor=pointer]:
+              - /url: /goto?url=CAESjQEB6zswFcxSrEQH4ItOxmkv_c3Xd4HYweQLHoqpCVfo9TDdddG4jn9zE1dxWNWZ1tynLFjMdGCWNyJj_nwWxkDX-CJ7Vsoi7Ab2JJxTnYgswQnvamV5NbBRo-gd8XSi3nKZVVVKwlte4Ifl15u1NPRkK4iF9193bx1cVN-Y4t83L2vC9XssY_xjJ1XaJXM
+              - heading "White House Daily Briefing | April 15, 2026 | Video" [level=3] [ref=f13e473]
+              - generic [ref=f13e479]:
+                - generic [ref=f13e480]: C-SPAN
+                - generic [ref=f13e482]: https://www.c-span.org › program › white-...
+            - generic [ref=f13e484]:
+              - generic [ref=f13e485]: ·
+              - link "翻译此页" [ref=f13e486] [cursor=pointer]:
+                - /url: /goto?url=CAES3QEB6zswFUznlSw3UzZFJx68A_AkzALmvJ1TsTRXvj8nuVNrDxGBAc44j6RHnikIU7TjuBDwl2E8M736QiVm1QnZoKf6aeUJvARw4t0TBSOlJo1GR3RWq76AoY6dcEurMDP5Ixv_SnWglelbmxYWBglLZG5eVc1IT7Bk7vdws8W67K3kBNIwILUGwBHtILMnOoWAEyGCPwziQnPAuurE-k5fC8iuCo3XTsJk3FUe0-y7Q3F-e9_S7UyvnYmDlk6S2SaI1kTEonO2zjCfB7z-13dNZapCAOUuNX4m-DYFUg
+            - button "关于这条结果的详细信息" [ref=f13e491] [cursor=pointer]
+          - generic [ref=f13e497]:
+            - generic [ref=f13e498]: 2026年4月15日 —
+            - generic [ref=f13e499]:
+              - emphasis [ref=f13e500]: White House Press Secretary Katie Zacharia holds her first briefing
+              - text: . She announces that U.S. Ambassador to Greece Kimberly Guilfoyle has been ...
+        - generic [ref=f13e504]:
+          - generic [ref=f13e507]:
+            - link "C-SPAN TV Schedule | C-SPAN.org C-SPAN https://www.c-span.org › schedule" [ref=f13e509] [cursor=pointer]:
+              - /url: /goto?url=CAESbAHrOzAVIYvFcN7rm7nfJ_tnkylKOjJLxESqBtGFQMDoUDuh-MPPXYfYdvNa4GMu3wy5ewfoztrG-ODBuYN5n9IhIg2ajoBoOX88QpzKfrghpOayA1rQMpVGoFkejQTvJuC7OH86FKKepPDhQA
+              - heading "C-SPAN TV Schedule | C-SPAN.org" [level=3] [ref=f13e510]
+              - generic [ref=f13e516]:
+                - generic [ref=f13e517]: C-SPAN
+                - generic [ref=f13e519]: https://www.c-span.org › schedule
+            - generic [ref=f13e521]:
+              - generic [ref=f13e522]: ·
+              - link "翻译此页" [ref=f13e523] [cursor=pointer]:
+                - /url: /goto?url=CAESvgEB6zswFdDCWHjNqI4xtpqy5p2mhCxreXtGW3sZ29Za-5kz-6d4M5TKun_g9BMws5PEh5IkrCO3eHoiIsVZeHJTfRCU4sKO3K9-Z7xV0kq1A01QBoJdrpzj7yjZk7PSfSb5Kx41NyJrCv1rYQddBPmBOhvPUP9CCFeCnMa9JUGHh2pDydYTQ7KgnmHPfZtVuGtRKPo2tk30PLuDCvJ4r-n4K_poPUn_Z1nY6iuD_lt08wZMZYbSw1NkcfrgzSfr
+            - button "关于这条结果的详细信息" [ref=f13e528] [cursor=pointer]
+          - generic [ref=f13e534]:
+            - generic [ref=f13e535]: 2天前 —
+            - generic [ref=f13e536]:
+              - emphasis [ref=f13e537]: October 13, 2026
+              - text: "· 7:00am. Washington Journal: Washington Journal · 9:30am. White House Press Secretary Katie Zacharia Holds First Briefing · 10: ..."
+      - navigation [ref=f13e540]:
+        - heading "网页导航" [level=1] [ref=f13e541]
+        - text: "1"
+        - link "Page 2" [ref=f13e544] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=10&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAE
+          - text: "2"
+        - link "Page 3" [ref=f13e546] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=20&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAG
+          - text: "3"
+        - link "Page 4" [ref=f13e548] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=30&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAI
+          - text: "4"
+        - link "Page 5" [ref=f13e550] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=40&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAK
+          - text: "5"
+        - link "Page 6" [ref=f13e552] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=50&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAM
+          - text: "6"
+        - link "Page 7" [ref=f13e554] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=60&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAO
+          - text: "7"
+        - link "Page 8" [ref=f13e556] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=70&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAQ
+          - text: "8"
+        - link "Page 9" [ref=f13e558] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=80&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAS
+          - text: "9"
+        - link "Page 10" [ref=f13e560] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=90&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8tMDegQIHRAU
+          - text: "10"
+        - heading [level=2] [ref=f13e562]:
+          - link "下一页" [ref=f13e563] [cursor=pointer]:
+            - /url: /search?q=site:c-span.org+Katie+Zacharia+first+briefing+October+13+2026&newwindow=1&sca_esv=aacddb143e8355b1&sxsrf=APpeQnsbel2OZP9wV29GvOGHMNq_5MvARg:1792047208293&ei=aHjQavnNEfndkPIPvPbaiQo&start=10&sa=N&sstk=AS6-VmKaRVdE0fKCdPbJs-bDrNkscBsSEwv9RbxCD3TnCJgJxZw3uYL-C6TZ15h30pnGQrT9yX8l1svexjHp1UCINoU42-hPe7hAIA&ved=2ahUKEwj5oZWKuLuXAxX5LkQIHTy7NqEQ8NMDegQIHRAW
+      - navigation
+    - contentinfo [ref=f13e566]:
+      - heading "页脚链接" [level=1] [ref=f13e567]
+      - generic [ref=f13e571]:
+        - generic [ref=f13e575]:
+          - button "美兰区 中国海南省海口市 - 根据您的活动记录" [ref=f13e577] [cursor=pointer]:
+            - generic [ref=f13e578]: 美兰区 中国海南省海口市
+            - generic [ref=f13e580]:
+              - text: "-"
+              - generic [ref=f13e581]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f13e583] [cursor=pointer]
+        - generic [ref=f13e586]:
+          - link "帮助" [ref=f13e587] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f13e589] [cursor=pointer]
+          - link "隐私权" [ref=f13e591] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f13e592] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

@@ -1,0 +1,63 @@
+- main [ref=f1e2]:
+  - navigation "页面导航" [ref=f1e3]:
+    - link "返回主页" [ref=f1e4] [cursor=pointer]:
+      - /url: ../../
+  - generic [ref=f1e5]:
+    - paragraph [ref=f1e6]: PUBLIC · EXTERNAL REVIEW DRAFT · PENDING
+    - heading "Rose Garden Lunch · 外部审查草稿" [level=1] [ref=f1e7]
+    - paragraph [ref=f1e8]:
+      - strong [ref=f1e9]: 公开提示：
+      - text: 此 Pages 页面任何人都可以访问，不限于质量检查部门；链接本身不提供访问控制。
+    - paragraph [ref=f1e10]: 本页是公开外部审查草稿，不是完成的制作成品，不代表发布批准，也不构成权利或许可判断。来源、权利与内容核验状态逐项如实记录；待审或未核验状态不会阻止已获授权的草稿发布，也不会被表述为通过。
+    - paragraph [ref=f1e11]: 事件标题、日期（2026-10-15）及地点（White House Rose Garden）来自提交信息，尚未独立核实。原视频与所述事件的匹配、音频/字幕、中文翻译均未核验。
+    - paragraph [ref=f1e12]: 提交者已授权对指定视频进行云端处理并公开为外部审查稿；此操作授权不等于独立法律审查，也不代表已核验所有潜在第三方片段或肖像事项。
+  - region [ref=f1e13]:
+    - heading "双语烧录审查视频" [level=2] [ref=f1e14]
+    - paragraph [ref=f1e15]:
+      - strong [ref=f1e16]: 标题（提交者提供，未核实）：
+      - text: President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026
+    - paragraph [ref=f1e17]:
+      - strong [ref=f1e18]: 视频 ID：
+      - code [ref=f1e19]: IySF_8OArvw
+    - paragraph [ref=f1e20]: 以下为公开预发布版中的双语烧录视频，不是原始来源或最终批准版本。
+    - generic "Rose Garden Lunch 双语烧录外部审查稿" [ref=f1e22]: 您的浏览器不支持 HTML5 视频播放。
+    - paragraph [ref=f1e23]:
+      - link "直接打开双语烧录审查视频" [ref=f1e24] [cursor=pointer]:
+        - /url: https://github.com/gdelt0003/gdelt0003/releases/download/rose-garden-lunch-review/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
+    - paragraph [ref=f1e25]:
+      - link "查看提交的 YouTube 原始来源（次要来源链接）" [ref=f1e26] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=IySF_8OArvw
+    - paragraph [ref=f1e27]: 派生审查视频由 GitHub 公开预发布版托管，不在 Pages 部署包中包含大型 MP4；原始视频没有被重新托管。
+  - region [ref=f1e28]:
+    - heading "外部审查清单" [level=2] [ref=f1e29]
+    - paragraph [ref=f1e30]: 以下项目显示本次记录的来源、权利与内容核验状态；状态记录本身不是发布门槛，也不代表独立认证。
+    - list "待审项目" [ref=f1e31]:
+      - listitem [ref=f1e32]:
+        - generic [ref=f1e33]:
+          - checkbox "来源与事件匹配 待审" [disabled] [ref=f1e34]
+          - text: 来源与事件匹配
+          - generic [ref=f1e35]: 待审
+      - listitem [ref=f1e36]:
+        - generic [ref=f1e37]:
+          - checkbox "原片画面及嵌入图文检查 待审" [disabled] [ref=f1e38]
+          - text: 原片画面及嵌入图文检查
+          - generic [ref=f1e39]: 待审
+      - listitem [ref=f1e40]:
+        - generic [ref=f1e41]:
+          - checkbox "原片音频及英语 ASR 准确性 待审" [disabled] [ref=f1e42]
+          - text: 原片音频及英语 ASR 准确性
+          - generic [ref=f1e43]: 待审
+      - listitem [ref=f1e44]:
+        - generic [ref=f1e45]:
+          - checkbox "中文翻译忠实度与可读性 待审" [disabled] [ref=f1e46]
+          - text: 中文翻译忠实度与可读性
+          - generic [ref=f1e47]: 待审
+      - listitem [ref=f1e48]:
+        - generic [ref=f1e49]:
+          - checkbox "独立权利/许可及潜在第三方内容审查 待审" [disabled] [ref=f1e50]
+          - text: 独立权利/许可及潜在第三方内容审查
+          - generic [ref=f1e51]: 待审
+    - paragraph [ref=f1e52]: 记录链接将在发布时填入。
+    - paragraph [ref=f1e53]:
+      - strong [ref=f1e54]: 仅供外部审查：
+      - text: ASR 与机器翻译未经人工核验；该页面和公开预发布资产均不代表字幕准确性或最终发布批准。

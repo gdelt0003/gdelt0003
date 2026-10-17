@@ -1,0 +1,65 @@
+- main [ref=f3e2]:
+  - navigation "主要导航" [ref=f3e3]:
+    - link "GDELT · 事件视频" [ref=f3e4] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=f3e5]:
+      - link "主视频" [ref=f3e6] [cursor=pointer]:
+        - /url: "#featured-video"
+      - link "短片" [ref=f3e7] [cursor=pointer]:
+        - /url: "#highlights"
+      - link "事件与来源" [ref=f3e8] [cursor=pointer]:
+        - /url: "#event-research"
+      - link "机位证据" [ref=f3e9] [cursor=pointer]:
+        - /url: "#camera-map"
+  - generic [ref=f3e10]:
+    - paragraph [ref=f3e11]: GITHUB ACTIONS · PAGES
+    - heading "事件视频资料与高光片段" [level=1] [ref=f3e12]
+    - paragraph [ref=f3e13]: 全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态
+    - paragraph [ref=f3e14]: 页面现存的历史短片/全长视频不代表通过本轮来源、画面、英文识别和中文翻译验收。Columbus Day 白宫锚实帧可见横幅、Logo 与 QR；AP 有 1080p 同事件候选但保留 AP 水印、机位来源未证，尚无无水印干净素材。新云端生产流程尚未运行。
+  - region [ref=f3e15]:
+    - generic [ref=f3e16]:
+      - generic [ref=f3e17]:
+        - paragraph [ref=f3e18]: FULL-LENGTH EVENT VIDEOS
+        - heading "主视频" [level=2] [ref=f3e19]
+      - status [ref=f3e20]: 正在读取主视频清单…
+    - paragraph [ref=f3e21]: 每条主视频独立展示，可继续按事件添加；来源、字幕和复核状态跟随各自视频，不会被合并成单一焦点播放器。
+  - region [ref=f3e22]:
+    - generic [ref=f3e23]:
+      - generic [ref=f3e24]:
+        - paragraph [ref=f3e25]: WHITE HOUSE · BILINGUAL SHORTS
+        - heading "既有短片 · 推荐观看" [level=2] [ref=f3e26]
+      - status [ref=f3e27]: 竖屏 9:16 · 正在读取分段链接…
+    - paragraph [ref=f3e28]: 保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。
+  - region [ref=f3e29]:
+    - paragraph [ref=f3e30]: SINGLE-EVENT COMPARISON
+    - heading "双语字幕方案对照" [level=2] [ref=f3e31]
+    - paragraph [ref=f3e32]: 同一白宫视频的开源基线与指定 Microsoft Copilot 模型方案。模型未配置或质量未验证时会明确标注，不以其他模型冒充。
+    - paragraph [ref=f3e33]:
+      - link "打开 pvXbHQrIvTw 对照页" [ref=f3e34] [cursor=pointer]:
+        - /url: events/pvXbHQrIvTw/
+  - region [ref=f3e35]:
+    - generic [ref=f3e36]:
+      - generic [ref=f3e37]:
+        - paragraph [ref=f3e38]: EVENTS · SOURCE EVIDENCE
+        - heading "按事件整理的来源与候选" [level=2] [ref=f3e39]
+      - link "下载来源核验 Excel" [ref=f3e40] [cursor=pointer]:
+        - /url: outputs/event-source-review.xlsx
+    - paragraph [ref=f3e41]: 来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。
+    - generic [ref=f3e42]:
+      - heading "最新视频与新闻文章发现线索" [level=3] [ref=f3e43]
+      - status [ref=f3e44]: 等待云端例行检索…
+  - region [ref=f3e45]:
+    - generic [ref=f3e46]:
+      - generic [ref=f3e47]:
+        - paragraph [ref=f3e48]: REVIEWED EVENT PRODUCTIONS
+        - heading "已审阅的事件短片" [level=2] [ref=f3e49]
+      - status [ref=f3e50]: 正在读取已发布作品…
+    - paragraph [ref=f3e51]: 只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。
+  - region [ref=f3e52]:
+    - generic [ref=f3e53]:
+      - generic [ref=f3e54]:
+        - paragraph [ref=f3e55]: EVENT CAMERA GEOMETRY
+        - heading "活动 3D 机位图" [level=2] [ref=f3e56]
+      - status [ref=f3e57]: 正在读取测绘证据…
+    - list
+    - paragraph [ref=f3e59]: 仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。

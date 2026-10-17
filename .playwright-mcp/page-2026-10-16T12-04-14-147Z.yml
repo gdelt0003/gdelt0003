@@ -1,0 +1,259 @@
+- generic [active] [ref=f5e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f5e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f5e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f5e8]:
+    - search [ref=f5e9]:
+      - generic [ref=f5e11]:
+        - link "Google 首页" [ref=f5e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQPHoECAYQBA
+        - generic [ref=f5e16]:
+          - generic [ref=f5e17]:
+            - combobox "搜索" [ref=f5e20]: site:c-span.org "President Trump Remarks at Event for Law Enforcement Officials" site:c-span.org "President Trump Remarks at Event for Law Enforcement Officials"
+            - generic [ref=f5e21]:
+              - button "清除" [ref=f5e23] [cursor=pointer]
+              - generic [ref=f5e28]:
+                - button "按语音搜索" [ref=f5e29] [cursor=pointer]
+                - button "按图搜索" [ref=f5e32] [cursor=pointer]
+          - button "搜索" [ref=f5e35] [cursor=pointer]
+    - generic [ref=f5e40]:
+      - button "设置" [ref=f5e42] [cursor=pointer]
+      - button "分享" [ref=f5e47] [cursor=pointer]
+      - generic [ref=f5e53]:
+        - button "Google 应用" [ref=f5e55] [cursor=pointer]
+        - link "登录" [ref=f5e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3Dsite%253Ac-span.org%2B%2522President%2BTrump%2BRemarks%2Bat%2BEvent%2Bfor%2BLaw%2BEnforcement%2BOfficials%2522&ec=futura_srp_og_si_72236_p
+  - generic [ref=f5e62]:
+    - navigation [ref=f5e68]:
+      - generic [ref=f5e74]:
+        - list [ref=f5e75]:
+          - listitem [ref=f5e76]:
+            - link "全部" [disabled] [ref=f5e77]
+          - listitem [ref=f5e80]:
+            - link "新闻" [ref=f5e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQ0pQJegQIGxAB
+          - listitem [ref=f5e84]:
+            - link "视频" [ref=f5e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQtKgLegQIGhAB
+          - listitem [ref=f5e88]:
+            - link "图片" [ref=f5e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQtKgLegQIFxAB
+          - listitem [ref=f5e92]:
+            - link "短视频" [ref=f5e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQs6gLegQIGBAB
+          - listitem [ref=f5e96]:
+            - link "网页" [ref=f5e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQs6gLegQIGRAB
+          - listitem [ref=f5e100]:
+            - link "图书" [ref=f5e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQ0pQJegQIFhAB
+          - listitem [ref=f5e104]:
+            - button [ref=f5e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f5e106]: 更多
+        - button "工具" [ref=f5e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f5e120]
+    - main [ref=f5e126]:
+      - generic [ref=f5e130]:
+        - generic [ref=f5e136]:
+          - generic [ref=f5e139]:
+            - link "President Trump Remarks at Event for Law Enforcement Officials C-SPAN · C-SPAN https://www.c-span.org · 1天前" [ref=f5e141] [cursor=pointer]:
+              - /url: /goto?url=CAESrwEB6zswFU1Cu52icDQdKOUTv4WZ64ANP6h_aVwrD-IyTiYogKRqIi8UcbzZZ1uqEwQ9AT8_fmVJbytkzs4yHwAIylzLfBSpmtxuwP0AxOiNiPCyEqUcCAueaxaMhLj-71DsY443MBGEaNc94lE7kREqMBCKBgKWoK4crmcI_mhqXYNN460xaAmD-nrYF-lt9Zw5lU_ijv374Ugm8jicBsceaVSyfFrpFyhFjeH2sZsl
+              - heading "President Trump Remarks at Event for Law Enforcement Officials" [level=3] [ref=f5e142]
+              - generic [ref=f5e148]:
+                - generic [ref=f5e149]: C-SPAN · C-SPAN
+                - generic [ref=f5e151]: https://www.c-span.org · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e157] [cursor=pointer]
+          - generic [ref=f5e162]:
+            - link "President Trump Remarks at Event for Law Enforcement Officials，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f5e163] [cursor=pointer]:
+              - /url: /goto?url=CAESrwEB6zswFU1Cu52icDQdKOUTv4WZ64ANP6h_aVwrD-IyTiYogKRqIi8UcbzZZ1uqEwQ9AT8_fmVJbytkzs4yHwAIylzLfBSpmtxuwP0AxOiNiPCyEqUcCAueaxaMhLj-71DsY443MBGEaNc94lE7kREqMBCKBgKWoK4crmcI_mhqXYNN460xaAmD-nrYF-lt9Zw5lU_ijv374Ugm8jicBsceaVSyfFrpFyhFjeH2sZsl
+            - generic [ref=f5e171]: President Trump Remarks at Event for Law Enforcement Officials. President Trump gives remarks at an event for law enforcement officials at ...
+        - generic [ref=f5e176]:
+          - generic [ref=f5e179]:
+            - link "White House | Organization C-SPAN https://www.c-span.org › organization › wh..." [ref=f5e181] [cursor=pointer]:
+              - /url: /goto?url=CAESbwHrOzAVOf0fQIO35K-lhHB2fLRPG7wfpBJ69q5dfg9vIvFF0SQqz-B-ko1tJrsrZ9StVUqVkidIurj3touhz2lUEUtFKR4jaRkJZdSCLZxw0FOBGNCKHamU8bjgQYDzjmVWTUbpnXoDfvL7DOhcyA
+              - heading "White House | Organization" [level=3] [ref=f5e182]
+              - generic [ref=f5e188]:
+                - generic [ref=f5e189]: C-SPAN
+                - generic [ref=f5e191]: https://www.c-span.org › organization › wh...
+            - generic [ref=f5e193]:
+              - generic [ref=f5e194]: ·
+              - link "翻译此页" [ref=f5e195] [cursor=pointer]:
+                - /url: /goto?url=CAESvwEB6zswFbtZh9aTpimFT2eCSH7prhnTjoADdlxg88YJcUDF3TEMGFjO_g5YSDMRtnAMN5NApiIY-4J6tfRdXv0nUz_P8ljAFdbkq20D3qyklbfbzf6n8SN9i9BmHJtnDguCQ0RSqfdHdC3fmWIbPTqrZaHa9hLCxOKXI44T7wnTE_D40vn0XgSLiJmH1Z5H9n-InOI5VhuXsa8n_fGixW431LlwZhAG1EuSUlE_vSdUA2_q7MsNwJQXheFoS33ZiA
+            - button "关于这条结果的详细信息" [ref=f5e200] [cursor=pointer]
+          - generic [ref=f5e207]:
+            - emphasis [ref=f5e208]: President Trump Remarks at Event for Law Enforcement Officials
+            - text: · Program Image. October 14, 2026. President Trump Campaigns for Montana GOP at Midterm Rally.
+        - generic [ref=f5e214]:
+          - generic [ref=f5e217]:
+            - link "President Trump Jokes About Using Gifted Fire Helmet In Butler ... C-SPAN · C-SPAN https://www.c-span.org · 17小时前" [ref=f5e219] [cursor=pointer]:
+              - /url: /goto?url=CAESvQEB6zswFat_gEe37axnEDPHsHp4Us9etP-RZJoIduZvdcc1g8u0ic7DlMtxchqYHqq1mf-vQ2_Ga7xcwFIOdiD7G4qy-h68h3MQyChz5V9aqah4r0tra1sUzM8VUbrlv2gAlus1Eu0kCKXP1d_AkeRSC7MJyLMUizppYH2GA5asG-WD_zJkNa-EWA2wEq_S5_hRPC_hLOfX2nD597Rz3066U9KBp1WNuGqt_H2dFJIyuDuL1KpXq9gPK_Yq_vo
+              - heading "President Trump Jokes About Using Gifted Fire Helmet In Butler ..." [level=3] [ref=f5e220]
+              - generic [ref=f5e226]:
+                - generic [ref=f5e227]: C-SPAN · C-SPAN
+                - generic [ref=f5e229]: https://www.c-span.org · 17小时前
+            - button "关于这条结果的详细信息" [ref=f5e235] [cursor=pointer]
+          - generic [ref=f5e240]:
+            - link "President Trump Jokes About Using Gifted Fire Helmet In Butler ...，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放." [ref=f5e241] [cursor=pointer]:
+              - /url: /goto?url=CAESvQEB6zswFat_gEe37axnEDPHsHp4Us9etP-RZJoIduZvdcc1g8u0ic7DlMtxchqYHqq1mf-vQ2_Ga7xcwFIOdiD7G4qy-h68h3MQyChz5V9aqah4r0tra1sUzM8VUbrlv2gAlus1Eu0kCKXP1d_AkeRSC7MJyLMUizppYH2GA5asG-WD_zJkNa-EWA2wEq_S5_hRPC_hLOfX2nD597Rz3066U9KBp1WNuGqt_H2dFJIyuDuL1KpXq9gPK_Yq_vo
+            - generic [ref=f5e249]: Clip From. President Trump Remarks at Event for Law Enforcement Officials. View More. For quick viewing, C-SPAN provides Points of Interest ...
+        - generic [ref=f5e254]:
+          - generic [ref=f5e257]:
+            - 'link "User Clip: Black Laws | Video C-SPAN https://www.c-span.org › video" [ref=f5e259] [cursor=pointer]':
+              - /url: /goto?url=CAESYQHrOzAVTsWD7XbVJJbs47H8crAqwjd_zuxLtGHRbeaPmMSYpekETooeWOjItOABRODkc4ndikLzyCvqfjvVJwgTC7GZk61prpoI2QpoVlWA_PTEj3lqjJ5EnSGw8qRLEas
+              - 'heading "User Clip: Black Laws | Video" [level=3] [ref=f5e260]'
+              - generic [ref=f5e266]:
+                - generic [ref=f5e267]: C-SPAN
+                - generic [ref=f5e269]: https://www.c-span.org › video
+            - generic [ref=f5e271]:
+              - generic [ref=f5e272]: ·
+              - link "翻译此页" [ref=f5e273] [cursor=pointer]:
+                - /url: /goto?url=CAESsAEB6zswFWLoNiojbWgTC8LyOIDKAti0ohbeB-TRkfVlr48BizGVSpIvAv70Xh6sE0zpWFN_leKaYBUIfQiz7UXOCJrHj_Czl004BDfg_pYqE6sSgvmA7t6WaIgJIellyESZxMjlCDnH213ErojSU1q9o9ohI4FFYP_yD6jcdA3rJBXK_wefZHEQt7jNPFpRMtO41clI3JqNwFkA5KseFQQfA5ATkNFQmLT2-_Abr9AGLQ
+            - button "关于这条结果的详细信息" [ref=f5e278] [cursor=pointer]
+          - generic [ref=f5e285]:
+            - emphasis [ref=f5e286]: President Trump Remarks at Event for Law Enforcement Officials
+            - text: . President Trump gives remarks at an event for law enforcement officials at the White House Rose ...
+        - generic [ref=f5e290]:
+          - generic [ref=f5e293]:
+            - 'link "User Clip: CMSAF Bass Remarks C-SPAN https://www.c-span.org › public-affairs-event" [ref=f5e295] [cursor=pointer]':
+              - /url: /goto?url=CAESkAEB6zswFSdkBAJhro9RZGcmrg8SxB1ZnkAc6eIkGA90LWLxIUZOAVKgbjquP9l_PurcPOtOFvyYmrT_k1jN5gC82QoU7OF0KsNfwUxiTqBbzVJ9IO7hIR4ae3qhcYSPDpuZZPn2IsCYA2ls84DmWMGR4zglO6enjQsMHU-PIA-93jbnyeCWdwPtj7Lz2yOrW1Y
+              - 'heading "User Clip: CMSAF Bass Remarks" [level=3] [ref=f5e296]'
+              - generic [ref=f5e302]:
+                - generic [ref=f5e303]: C-SPAN
+                - generic [ref=f5e305]: https://www.c-span.org › public-affairs-event
+            - generic [ref=f5e307]:
+              - generic [ref=f5e308]: ·
+              - link "翻译此页" [ref=f5e309] [cursor=pointer]:
+                - /url: /goto?url=CAES4AEB6zswFVmiG02H4rcHCGZdrerYZI1ioa72dC49LdcZjZ82lyUVbI6O19YgHxmentOe4_yo6Bqb7A3Eba6GcbqaWRnoLuiIDgBAjSfQUS9-kSKmNKtP9Aw4A6DnwfP5XFQK1ZpPhTUW6xG0LMDxLJem5_sTGobE3jdnTBMspfu24g4faWa03zYdque291ysGv18YGTq2tDUjEkRcLbyXrTgkUUoippHOaWLT6eucVk_EeyBScvGH69-J-Hds3ebmrRVKFmLMPX8Ud68WGV4n-Dlv5fbOMGCeRUSrsUsWggpJQ
+            - button "关于这条结果的详细信息" [ref=f5e314] [cursor=pointer]
+          - generic [ref=f5e321]:
+            - emphasis [ref=f5e322]: President Trump Remarks at Event for Law Enforcement Officials
+            - text: . Oct 14, 2026.
+            - emphasis [ref=f5e323]: President Trump Remarks at Event for Law Enforcement Officials
+            - text: . President Trump ...
+        - generic [ref=f5e329]:
+          - generic [ref=f5e332]:
+            - 'link "Radio: Reair of Friday Events | May 2, 2015 C-SPAN · C-SPAN https://www.c-span.org · 2015年5月2日" [ref=f5e334] [cursor=pointer]':
+              - /url: /goto?url=CAESkgEB6zswFQm3PyaQ1feImEqOMsLxCO_9AloMp71c5C2eMe4beHs8MhAQTpDBjCNnK9E9PMy77SQcsOphtZe3hZnqf4kYU6OnI6a11M_eP6X64W7u7DCWtgBCQ5I-sVCyk3RnbeoDAKLlxLVSYtGY1aKmBnoOhDtcD3fWBGZhpKxFGL0rQeP7aslopoK_r1G-yxOBBg
+              - 'heading "Radio: Reair of Friday Events | May 2, 2015" [level=3] [ref=f5e335]'
+              - generic [ref=f5e341]:
+                - generic [ref=f5e342]: C-SPAN · C-SPAN
+                - generic [ref=f5e344]: https://www.c-span.org · 2015年5月2日
+            - button "关于这条结果的详细信息" [ref=f5e350] [cursor=pointer]
+          - generic [ref=f5e355]:
+            - 'link "Radio: Reair of Friday Events | May 2, 2015，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放. 6:00:00" [ref=f5e356] [cursor=pointer]':
+              - /url: /goto?url=CAESkgEB6zswFQm3PyaQ1feImEqOMsLxCO_9AloMp71c5C2eMe4beHs8MhAQTpDBjCNnK9E9PMy77SQcsOphtZe3hZnqf4kYU6OnI6a11M_eP6X64W7u7DCWtgBCQ5I-sVCyk3RnbeoDAKLlxLVSYtGY1aKmBnoOhDtcD3fWBGZhpKxFGL0rQeP7aslopoK_r1G-yxOBBg
+              - generic [ref=f5e357]: 6:00:00
+            - generic [ref=f5e366]: President Trump Remarks at Event for Law Enforcement Officials. President Trump gives remarks at an event for law enforcement officials at the ...
+        - generic [ref=f5e373]:
+          - generic [ref=f5e376]:
+            - link "President Trump Remarks at World Economic Forum C-SPAN · C-SPAN https://www.c-span.org · 2025年1月23日" [ref=f5e378] [cursor=pointer]:
+              - /url: /goto?url=CAESogEB6zswFRAmo7wyfSRcQn9LmPnW0IewfUH_6F3etKEPjKcMhpcW0T70rzaIXnunWYlwi8emrsmo7yqznZejsLtgdQW37vSCN0dOPCS_a6vjLvU6aexQeNqtc7vDO_YrH4vCVDJR6sEb4lQ4m2-HIIPlagiB13PSwrwZVk2Xv8suf_A7WV6lbKdAinB1fIoLCvsSxLwub5Cm2fHLzvaK3R0Y-Tw
+              - heading "President Trump Remarks at World Economic Forum" [level=3] [ref=f5e379]
+              - generic [ref=f5e385]:
+                - generic [ref=f5e386]: C-SPAN · C-SPAN
+                - generic [ref=f5e388]: https://www.c-span.org · 2025年1月23日
+            - button "关于这条结果的详细信息" [ref=f5e394] [cursor=pointer]
+          - generic [ref=f5e399]:
+            - link "President Trump Remarks at World Economic Forum，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放. 46:37" [ref=f5e400] [cursor=pointer]:
+              - /url: /goto?url=CAESogEB6zswFRAmo7wyfSRcQn9LmPnW0IewfUH_6F3etKEPjKcMhpcW0T70rzaIXnunWYlwi8emrsmo7yqznZejsLtgdQW37vSCN0dOPCS_a6vjLvU6aexQeNqtc7vDO_YrH4vCVDJR6sEb4lQ4m2-HIIPlagiB13PSwrwZVk2Xv8suf_A7WV6lbKdAinB1fIoLCvsSxLwub5Cm2fHLzvaK3R0Y-Tw
+              - generic [ref=f5e401]: 46:37
+            - generic [ref=f5e410]: President Trump Remarks at Event for Law Enforcement Officials. Oct 14, 2026. President Trump Remarks at Event for Law Enforcement Officials.
+        - generic [ref=f5e415]:
+          - heading "图片" [level=2] [ref=f5e419]
+          - generic [ref=f5e423]:
+            - generic [ref=f5e427] [cursor=pointer]:
+              - link "President Trump Remarks at Event for Law Enforcement Officials C-SPAN" [ref=f5e428]:
+                - /url: /goto?url=CAESrwEB6zswFU1Cu52icDQdKOUTv4WZ64ANP6h_aVwrD-IyTiYogKRqIi8UcbzZZ1uqEwQ9AT8_fmVJbytkzs4yHwAIylzLfBSpmtxuwP0AxOiNiPCyEqUcCAueaxaMhLj-71DsY443MBGEaNc94lE7kREqMBCKBgKWoK4crmcI_mhqXYNN460xaAmD-nrYF-lt9Zw5lU_ijv374Ugm8jicBsceaVSyfFrpFyhFjeH2sZsl
+              - button [ref=f5e430]:
+                - img "President Trump Remarks at Event for Law Enforcement Officials" [ref=f5e433]
+                - generic [ref=f5e434]: 18 小时前
+              - generic [ref=f5e436]:
+                - generic [ref=f5e438]: President Trump Remarks at Event for Law Enforcement Officials
+                - generic [ref=f5e439]:
+                  - generic [ref=f5e441]: C-SPAN
+                  - button "关于这条结果的详细信息" [ref=f5e451]
+            - generic [ref=f5e459] [cursor=pointer]:
+              - link "President Trump Remarks at Event for Law Enforcement ... C-SPAN" [ref=f5e460]:
+                - /url: /goto?url=CAESrwEB6zswFU1Cu52icDQdKOUTv4WZ64ANP6h_aVwrD-IyTiYogKRqIi8UcbzZZ1uqEwQ9AT8_fmVJbytkzs4yHwAIylzLfBSpmtxuwP0AxOiNiPCyEqUcCAueaxaMhLj-71DsY443MBGEaNc94lE7kREqMBCKBgKWoK4crmcI_mhqXYNN460xaAmD-nrYF-lt9Zw5lU_ijv374Ugm8jicBsceaVSyfFrpFyhFjeH2sZsl
+              - button [ref=f5e462]:
+                - img "President Trump Remarks at Event for Law Enforcement ..." [ref=f5e465]
+                - generic [ref=f5e466]: 2 天前
+              - generic [ref=f5e468]:
+                - generic [ref=f5e470]: President Trump Remarks at Event for Law Enforcement ...
+                - generic [ref=f5e471]:
+                  - generic [ref=f5e473]: C-SPAN
+                  - button "关于这条结果的详细信息" [ref=f5e483]
+            - generic [ref=f5e491] [cursor=pointer]:
+              - link "President Trump Gives Remarks to Fort Bragg Military Families C-SPAN" [ref=f5e492]:
+                - /url: /goto?url=CAESsAEB6zswFe5C83ljcM6jaX_DMEZXv2zw8zAxnN0QZ12mQ1dFMYU_pMeCF0y9XVuFWB4FmrfQ1vbMMzA6RTl5WZlwYOBIKnPQ_AIFlyuhbUEEM0tAIm3_Jolic0UjEBK1OIGmK-b2MjU-XUvK5iU01n4En7AeGMKlOK-ahOXbw0VxyebpKe8xMdYV5rhnRDbP3PyYc7OUTR9pnfsvjxzB0cwekkbhAP95S99gBo8xLlTYjQ
+              - button [ref=f5e494]:
+                - img "President Trump Gives Remarks to Fort Bragg Military Families" [ref=f5e496]
+              - generic [ref=f5e498]:
+                - generic [ref=f5e500]: President Trump Gives Remarks to Fort Bragg Military Families
+                - generic [ref=f5e501]:
+                  - generic [ref=f5e503]: C-SPAN
+                  - button "关于这条结果的详细信息" [ref=f5e513]
+          - button "显示更多图片" [ref=f5e519] [cursor=pointer]:
+            - separator [aria-hidden] [ref=f5e520]
+        - generic [ref=f5e531]:
+          - generic [ref=f5e534]:
+            - link "President Trump on Reopening the Economy C-SPAN · C-SPAN https://www.c-span.org · 2020年6月17日" [ref=f5e536] [cursor=pointer]:
+              - /url: /goto?url=CAESmQEB6zswFVpDiP94jpwAAoz13xZjvaFlWIWPGDvXnFt6V4qCxz1wZbjbKujqI44ar_5TFJ5BBAZuWTE2GjK35dxFFo3oSY63icRFSyopGXR81Y9PaFI0q-zTIvd8HERIOvwAsc552QSVTz7gx8DNvx7YGa-HBPTCXIDSK4D0Wv0QY2fbGduc63_va4g851pxTLDGboBHzZqp0Zs
+              - heading "President Trump on Reopening the Economy" [level=3] [ref=f5e537]
+              - generic [ref=f5e543]:
+                - generic [ref=f5e544]: C-SPAN · C-SPAN
+                - generic [ref=f5e546]: https://www.c-span.org · 2020年6月17日
+            - button "关于这条结果的详细信息" [ref=f5e552] [cursor=pointer]
+          - generic [ref=f5e557]:
+            - link "President Trump on Reopening the Economy，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放. 3:23" [ref=f5e558] [cursor=pointer]:
+              - /url: /goto?url=CAESmQEB6zswFVpDiP94jpwAAoz13xZjvaFlWIWPGDvXnFt6V4qCxz1wZbjbKujqI44ar_5TFJ5BBAZuWTE2GjK35dxFFo3oSY63icRFSyopGXR81Y9PaFI0q-zTIvd8HERIOvwAsc552QSVTz7gx8DNvx7YGa-HBPTCXIDSK4D0Wv0QY2fbGduc63_va4g851pxTLDGboBHzZqp0Zs
+              - generic [ref=f5e559]: 3:23
+            - generic [ref=f5e571]: President Trump Remarks at Event for Law Enforcement Officials ... President Trump gives remarks at an event for law enforcement officials at the White House Rose ...
+        - generic [ref=f5e578]:
+          - generic [ref=f5e581]:
+            - link "President Trump 2025 Inauguration C-SPAN · C-SPAN https://www.c-span.org · 2025年1月20日" [ref=f5e583] [cursor=pointer]:
+              - /url: /goto?url=CAESlAEB6zswFTc9yuLnXJA-0U1MhgsCFhG-ljDZv3X0kmSdRlI3C8T01tzzVbFwnio8pO2ean-qMNI0nbOyXvZU6ZBCRelVqjPzneqnyByYJxC4AMG_SFrjM1MEps__SHaBXhWyiFhsVUYWprbvfxedOcE_e8EkmcJEgDUB6dDGYlQuAGeCgPi0QwWxz10GTk_WEY1EeNB7
+              - heading "President Trump 2025 Inauguration" [level=3] [ref=f5e584]
+              - generic [ref=f5e590]:
+                - generic [ref=f5e591]: C-SPAN · C-SPAN
+                - generic [ref=f5e593]: https://www.c-span.org · 2025年1月20日
+            - button "关于这条结果的详细信息" [ref=f5e599] [cursor=pointer]
+          - generic [ref=f5e604]:
+            - link "President Trump 2025 Inauguration，由C-SPAN上传到C-SPAN上. 在C-SPAN上播放. 2:01:11" [ref=f5e605] [cursor=pointer]:
+              - /url: /goto?url=CAESlAEB6zswFTc9yuLnXJA-0U1MhgsCFhG-ljDZv3X0kmSdRlI3C8T01tzzVbFwnio8pO2ean-qMNI0nbOyXvZU6ZBCRelVqjPzneqnyByYJxC4AMG_SFrjM1MEps__SHaBXhWyiFhsVUYWprbvfxedOcE_e8EkmcJEgDUB6dDGYlQuAGeCgPi0QwWxz10GTk_WEY1EeNB7
+              - generic [ref=f5e606]: 2:01:11
+            - generic [ref=f5e615]: President Trump Remarks at Event for Law Enforcement Officials. Oct 14, 2026. President Trump Remarks at Event for Law Enforcement Officials.
+      - navigation [ref=f5e619]:
+        - heading "网页导航" [level=1] [ref=f5e620]
+        - text: "1"
+        - link "Page 2" [ref=f5e623] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&ei=vRLSapSdN_aL8L0PpY3ngQ0&start=10&sa=N&sstk=AS6-VmLpO2Goyar8Pnt86SbD6kI44J8IewYp8jCklZQV2MTNl1rJ25d8pQqCPYjlG2RMr-vjissgHA2oV67qV7pgcnhphuB18CxmHg&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQ8tMDegQIHxAE
+          - text: "2"
+        - link "Page 3" [ref=f5e625] [cursor=pointer]:
+          - /url: /search?q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&ei=vRLSapSdN_aL8L0PpY3ngQ0&start=20&sa=N&sstk=AS6-VmLpO2Goyar8Pnt86SbD6kI44J8IewYp8jCklZQV2MTNl1rJ25d8pQqCPYjlG2RMr-vjissgHA2oV67qV7pgcnhphuB18CxmHg&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQ8tMDegQIHxAG
+          - text: "3"
+        - heading [level=2] [ref=f5e627]:
+          - link "下一页" [ref=f5e628] [cursor=pointer]:
+            - /url: /search?q=site:c-span.org+%22President+Trump+Remarks+at+Event+for+Law+Enforcement+Officials%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnurK2IO_seU1nRmN7KDH1WZkd41XQ:1792152253910&ei=vRLSapSdN_aL8L0PpY3ngQ0&start=10&sa=N&sstk=AS6-VmLpO2Goyar8Pnt86SbD6kI44J8IewYp8jCklZQV2MTNl1rJ25d8pQqCPYjlG2RMr-vjissgHA2oV67qV7pgcnhphuB18CxmHg&ved=2ahUKEwjU7-izv76XAxX2BbwBHaXGOdAQ8NMDegQIHxAI
+      - navigation
+    - contentinfo [ref=f5e631]:
+      - heading "页脚链接" [level=1] [ref=f5e632]
+      - generic [ref=f5e636]:
+        - generic [ref=f5e640]:
+          - button "龙华区 中国海南省海口市 - 根据您的活动记录" [ref=f5e642] [cursor=pointer]:
+            - generic [ref=f5e643]: 龙华区 中国海南省海口市
+            - generic [ref=f5e645]:
+              - text: "-"
+              - generic [ref=f5e646]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f5e648] [cursor=pointer]
+        - generic [ref=f5e651]:
+          - link "帮助" [ref=f5e652] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f5e654] [cursor=pointer]
+          - link "隐私权" [ref=f5e656] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f5e657] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

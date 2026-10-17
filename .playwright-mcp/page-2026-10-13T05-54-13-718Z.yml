@@ -1,0 +1,627 @@
+- generic [active] [ref=f163e1]:
+  - generic [ref=f163e2]:
+    - link [ref=f163e3] [cursor=pointer]:
+      - /url: /wmt25/index.html
+      - text: EMNLP 2025
+      - heading "TENTH CONFERENCE ON MACHINE TRANSLATION (WMT25)" [level=2] [ref=f163e4]
+      - text: November 8-9, 2025 Suzhou, China
+    - generic [ref=f163e5]:
+      - link "HOME" [ref=f163e6] [cursor=pointer]:
+        - /url: /wmt25/index.html
+      - text: •︎
+      - link "PROGRAM" [ref=f163e7] [cursor=pointer]:
+        - /url: /wmt25/program.html
+      - text: •︎
+      - link "PAPERS" [ref=f163e8] [cursor=pointer]:
+        - /url: /wmt25/papers.html
+      - text: •︎
+      - link "AUTHORS" [ref=f163e9] [cursor=pointer]:
+        - /url: /wmt25/authors.html
+    - table [ref=f163e10]:
+      - rowgroup [ref=f163e11]:
+        - row [ref=f163e12]:
+          - cell "TRANSLATION TASKS:" [ref=f163e13]
+          - cell [ref=f163e14]:
+            - link "GENERAL MT (NEWS)" [ref=f163e15] [cursor=pointer]:
+              - /url: /wmt25/translation-task.html
+            - text: •︎
+            - link "INDIC MT" [ref=f163e16] [cursor=pointer]:
+              - /url: /wmt25/indic-mt-task.html
+            - text: •︎
+            - link "TERMINOLOGY" [ref=f163e17] [cursor=pointer]:
+              - /url: /wmt25/terminology.html
+            - text: •︎
+            - link "CREOLE MT" [ref=f163e18] [cursor=pointer]:
+              - /url: /wmt25/creole-mt.html
+            - text: •︎
+            - link "MODEL COMPRESSION" [ref=f163e19] [cursor=pointer]:
+              - /url: /wmt25/model-compression.html
+        - row [ref=f163e20]:
+          - cell "EVALUATION TASKS:" [ref=f163e21]
+          - cell [ref=f163e22]:
+            - link "MT TEST SUITES" [ref=f163e23] [cursor=pointer]:
+              - /url: /wmt25/testsuite-subtask.html
+            - text: •︎
+            - link "(UNIFIED) MT EVALUATION" [ref=f163e24] [cursor=pointer]:
+              - /url: /wmt25/mteval-subtask.html
+        - row [ref=f163e25]:
+          - cell "OTHER TASKS:" [ref=f163e26]
+          - cell [ref=f163e27]:
+            - link "OPEN DATA" [ref=f163e28] [cursor=pointer]:
+              - /url: /wmt25/open-data.html
+        - row [ref=f163e29]:
+          - cell "MULTILINGUAL TASKS:" [ref=f163e30]
+          - cell [ref=f163e31]:
+            - link "MULTILINGUAL INSTRUCTION" [ref=f163e32] [cursor=pointer]:
+              - /url: /wmt25/multilingual-instruction.html
+            - text: •︎
+            - link "LIMITED RESOURCES SLAVIC LLM" [ref=f163e33] [cursor=pointer]:
+              - /url: /wmt25/limited-resources-slavic-llm.html
+  - generic [ref=f163e34]:
+    - 'heading "Shared Task: General Machine Translation" [level=1] [ref=f163e35]'
+    - generic [ref=f163e36]:
+      - generic [ref=f163e37]: General MT Task
+      - list [ref=f163e38]:
+        - listitem [ref=f163e39]:
+          - link "ANNOUNCEMENTS" [ref=f163e40] [cursor=pointer]:
+            - /url: "#_announcements"
+        - listitem [ref=f163e41]:
+          - link "DESCRIPTION" [ref=f163e42] [cursor=pointer]:
+            - /url: "#_description"
+          - list [ref=f163e43]:
+            - listitem [ref=f163e44]:
+              - link "Main changes of 2025" [ref=f163e45] [cursor=pointer]:
+                - /url: "#_main_changes_of_2025"
+            - listitem [ref=f163e46]:
+              - link "Language pairs" [ref=f163e47] [cursor=pointer]:
+                - /url: "#_language_pairs"
+        - listitem [ref=f163e48]:
+          - link "IMPORTANT DATES" [ref=f163e49] [cursor=pointer]:
+            - /url: "#_important_dates"
+        - listitem [ref=f163e50]:
+          - link "TASK DESCRIPTION" [ref=f163e51] [cursor=pointer]:
+            - /url: "#_task_description"
+          - list [ref=f163e52]:
+            - listitem [ref=f163e53]:
+              - link "Constrained/Unconstrained track" [ref=f163e54] [cursor=pointer]:
+                - /url: "#_constrainedunconstrained_track"
+            - listitem [ref=f163e55]:
+              - link "Domains" [ref=f163e56] [cursor=pointer]:
+                - /url: "#_domains"
+            - listitem [ref=f163e57]:
+              - link "Test Suites subtask" [ref=f163e58] [cursor=pointer]:
+                - /url: "#_test_suites_subtask"
+            - listitem [ref=f163e59]:
+              - link "Multilingual subtask" [ref=f163e60] [cursor=pointer]:
+                - /url: "#multilingual-subtask"
+        - listitem [ref=f163e61]:
+          - link "DATA" [ref=f163e62] [cursor=pointer]:
+            - /url: "#_data"
+          - list [ref=f163e63]:
+            - listitem [ref=f163e64]:
+              - link "Licensing" [ref=f163e65] [cursor=pointer]:
+                - /url: "#_licensing"
+            - listitem [ref=f163e66]:
+              - link "Recommended training data" [ref=f163e67] [cursor=pointer]:
+                - /url: "#training"
+            - listitem [ref=f163e68]:
+              - link "Development Data" [ref=f163e69] [cursor=pointer]:
+                - /url: "#dev"
+        - listitem [ref=f163e70]:
+          - link "EVALUATION" [ref=f163e71] [cursor=pointer]:
+            - /url: "#_evaluation"
+          - list [ref=f163e72]:
+            - listitem [ref=f163e73]:
+              - link "Testset Submission" [ref=f163e74] [cursor=pointer]:
+                - /url: "#submission"
+        - listitem [ref=f163e75]:
+          - link "CONTACT" [ref=f163e76] [cursor=pointer]:
+            - /url: "#_contact"
+          - list [ref=f163e77]:
+            - listitem [ref=f163e78]:
+              - link "Organizers" [ref=f163e79] [cursor=pointer]:
+                - /url: "#_organizers"
+            - listitem [ref=f163e80]:
+              - link "Acknowledgements" [ref=f163e81] [cursor=pointer]:
+                - /url: "#_acknowledgements"
+  - generic [ref=f163e82]:
+    - generic [ref=f163e83]:
+      - heading "ANNOUNCEMENTS" [level=2] [ref=f163e84]
+      - list [ref=f163e87]:
+        - listitem [ref=f163e88]:
+          - paragraph [ref=f163e89]: "2025-06-28: We have added Italian among human evaluated languages."
+        - listitem [ref=f163e90]:
+          - paragraph [ref=f163e91]:
+            - text: "2025-06-25: we set up"
+            - link "OCELoT" [ref=f163e92] [cursor=pointer]:
+              - /url: https://aka.ms/wmt25submissions
+            - text: for system submissions.
+        - listitem [ref=f163e93]:
+          - paragraph [ref=f163e94]: "2025-06-19: We released blindsets."
+        - listitem [ref=f163e95]:
+          - paragraph [ref=f163e96]: "2025-05-14: We extended the submission period by a week, therefore participants will have two weeks for translation of the testsets."
+        - listitem [ref=f163e97]:
+          - paragraph [ref=f163e98]: "2025-04-26: Added clarity for language variants: Egyptian Arabic, Simplified Chinese, and Cyrillic Serbian (note: Latin Serbian will be automatically evaluated)."
+        - listitem [ref=f163e99]:
+          - paragraph [ref=f163e100]: "2025-04-15: Update dates."
+        - listitem [ref=f163e101]:
+          - paragraph [ref=f163e102]:
+            - text: "2025-04-01:"
+            - link "Test suite sub-task" [ref=f163e103] [cursor=pointer]:
+              - /url: testsuite-subtask.html
+            - text: announced.
+        - listitem [ref=f163e104]:
+          - paragraph [ref=f163e105]: "2025-03-25: Change language direction for Bhojpuri and Maasai to be out-of-English instead of to-English."
+        - listitem [ref=f163e106]:
+          - paragraph [ref=f163e107]:
+            - text: "2025-03-01: Added"
+            - link "WMT24++" [ref=f163e108] [cursor=pointer]:
+              - /url: https://huggingface.co/datasets/google/wmt24pp
+            - text: testset and removed Irish from multilingual subtask.
+        - listitem [ref=f163e109]:
+          - paragraph [ref=f163e110]: "2025-02-20: The shared task announced."
+    - generic [ref=f163e111]:
+      - heading "DESCRIPTION" [level=2] [ref=f163e112]
+      - generic [ref=f163e113]:
+        - paragraph [ref=f163e115]:
+          - text: Formerly known as News translation task of the
+          - link "WMT" [ref=f163e116] [cursor=pointer]:
+            - /url: index.html
+          - text: focusses on evaluation of general capabilities of machine translation (MT) systems. Its primary goal is to test performance across a wide range of languages, domains, genres, and modalities. Systems are evaluated with humans.
+        - paragraph [ref=f163e118]: "In addition to the main General MT task, there are two separate subtasks:"
+        - list [ref=f163e120]:
+          - listitem [ref=f163e121]:
+            - paragraph [ref=f163e122]:
+              - link "Test suite subtask" [ref=f163e123] [cursor=pointer]:
+                - /url: testsuite-subtask.html
+              - text: "- design challenge testset and analyze the system translations"
+          - listitem [ref=f163e124]:
+            - paragraph [ref=f163e125]:
+              - link "Multilingual subtask" [ref=f163e126] [cursor=pointer]:
+                - /url: "#multilingual-subtask"
+              - text: "- develop a system that can translate into multiple languages simultaneously. The participating system needs to translate all General MT + additional 15 languages"
+        - paragraph [ref=f163e128]: "The goals of the shared translation task are:"
+        - list [ref=f163e130]:
+          - listitem [ref=f163e131]:
+            - paragraph [ref=f163e132]: To investigate the applicability of current MT techniques when translating into languages other than English across various domains
+          - listitem [ref=f163e133]:
+            - paragraph [ref=f163e134]: To investigate the translation of low-resource, morphologically rich languages
+          - listitem [ref=f163e135]:
+            - paragraph [ref=f163e136]: To create publicly available testset for machine translation evaluation
+          - listitem [ref=f163e137]:
+            - paragraph [ref=f163e138]: To generate up-to-date performance scores in order to provide a basis of comparison in future research
+          - listitem [ref=f163e139]:
+            - paragraph [ref=f163e140]: To offer newcomers a smooth start with hands-on experience in state-of-the-art machine translation methods
+          - listitem [ref=f163e141]:
+            - paragraph [ref=f163e142]: To investigate the usefulness of multilingual and third language resources
+          - listitem [ref=f163e143]:
+            - paragraph [ref=f163e144]: To assess the effectiveness of document-level approaches and uses of non-textual modalities
+        - paragraph [ref=f163e146]: We hope that both beginners and established research groups will participate in this task.
+        - generic [ref=f163e147]:
+          - heading "Main changes of 2025" [level=3] [ref=f163e148]
+          - list [ref=f163e150]:
+            - listitem [ref=f163e151]:
+              - paragraph [ref=f163e152]: "New modalities as an additional context: video, image"
+            - listitem [ref=f163e153]:
+              - paragraph [ref=f163e154]: Testset will be document-level by default rather than paragraph-level with document context
+            - listitem [ref=f163e155]:
+              - paragraph [ref=f163e156]: "Redefined constrained/open/closed tracks. Only two tracks:"
+              - list [ref=f163e158]:
+                - listitem [ref=f163e159]:
+                  - paragraph [ref=f163e160]: constrained open weights track - any public training data allowed, any public model smaller than 20B is allowed, model must be publicly released
+                - listitem [ref=f163e161]:
+                  - paragraph [ref=f163e162]: unconstrained track - no limitations, only system description paper is required
+            - listitem [ref=f163e163]:
+              - paragraph [ref=f163e164]: New language pairs (English-Arabic, English-Estonian, English-Korean, English-Serbian, Czech-German, English-Bhojpuri, English-Maasai)
+            - listitem [ref=f163e165]:
+              - paragraph [ref=f163e166]:
+                - text: New
+                - link "Multilingual subtask" [ref=f163e167] [cursor=pointer]:
+                  - /url: "#multilingual-subtask"
+                - text: "- participating systems are required to translate ~30 language pairs"
+            - listitem [ref=f163e168]:
+              - paragraph [ref=f163e169]: "Testsets will focus on four different domains:"
+              - list [ref=f163e171]:
+                - listitem [ref=f163e172]:
+                  - paragraph [ref=f163e173]: News - we employ difficulty sampling to select most challenging articles
+                - listitem [ref=f163e174]:
+                  - paragraph [ref=f163e175]: Speech - we provide ASR transcript together with the original video
+                - listitem [ref=f163e176]:
+                  - paragraph [ref=f163e177]: Social - in addition to textual content, we provide printscreen image that may contain useful context
+                - listitem [ref=f163e178]:
+                  - paragraph [ref=f163e179]: Literary - a domain focussing on a long-context
+            - listitem [ref=f163e180]:
+              - paragraph [ref=f163e181]: Providing preamble prompt for each domain containing translation brief of expected translation output useful with instruction LLMs
+            - listitem [ref=f163e182]:
+              - paragraph [ref=f163e183]: XML format will be replaced with JSONs
+            - listitem [ref=f163e184]:
+              - paragraph [ref=f163e185]: Automatic system ranking will be based on panel of LLM-as-a-judge to minimize the metric bias
+        - generic [ref=f163e186]:
+          - heading "Language pairs" [level=3] [ref=f163e187]
+          - paragraph [ref=f163e189]: "The list of languages that are going to be evaluated (only specified direction):"
+          - list [ref=f163e191]:
+            - listitem [ref=f163e192]:
+              - paragraph [ref=f163e193]: Czech to Ukrainian
+            - listitem [ref=f163e194]:
+              - paragraph [ref=f163e195]: Czech to German (New)
+            - listitem [ref=f163e196]:
+              - paragraph [ref=f163e197]: Japanese to Chinese, Simplified
+            - listitem [ref=f163e198]:
+              - paragraph [ref=f163e199]: English to Arabic, Egyptian (New)
+            - listitem [ref=f163e200]:
+              - paragraph [ref=f163e201]: English to Bhojpuri (New)
+            - listitem [ref=f163e202]:
+              - paragraph [ref=f163e203]: English to Chinese, Simplified
+            - listitem [ref=f163e204]:
+              - paragraph [ref=f163e205]: English to Czech
+            - listitem [ref=f163e206]:
+              - paragraph [ref=f163e207]: English to Estonian (New)
+            - listitem [ref=f163e208]:
+              - paragraph [ref=f163e209]: English to Icelandic
+            - listitem [ref=f163e210]:
+              - paragraph [ref=f163e211]: English to Italian
+            - listitem [ref=f163e212]:
+              - paragraph [ref=f163e213]: English to Japanese
+            - listitem [ref=f163e214]:
+              - paragraph [ref=f163e215]: English to Korean (New)
+            - listitem [ref=f163e216]:
+              - paragraph [ref=f163e217]: English to Maasai, Kenya (New)
+            - listitem [ref=f163e218]:
+              - paragraph [ref=f163e219]: English to Russian
+            - listitem [ref=f163e220]:
+              - paragraph [ref=f163e221]: English to Serbian, Cyrillic script (New)
+            - listitem [ref=f163e222]:
+              - paragraph [ref=f163e223]: English to Ukrainian
+    - generic [ref=f163e224]:
+      - heading "IMPORTANT DATES" [level=2] [ref=f163e225]
+      - generic [ref=f163e226]:
+        - paragraph [ref=f163e228]: All dates are at the end of the day for Anywhere on Earth (AoE)
+        - table [ref=f163e229]:
+          - rowgroup [ref=f163e233]:
+            - row [ref=f163e234]:
+              - cell [ref=f163e235]:
+                - paragraph [ref=f163e236]: Finalized task details
+              - cell [ref=f163e237]:
+                - paragraph [ref=f163e238]: February 2025
+            - row [ref=f163e239]:
+              - cell [ref=f163e240]:
+                - paragraph [ref=f163e241]:
+                  - text: Final
+                  - link "test suite" [ref=f163e242] [cursor=pointer]:
+                    - /url: testsuite-subtask.html
+                  - text: source texts must reach us
+              - cell [ref=f163e243]:
+                - paragraph [ref=f163e244]: 12th June 2025
+            - row [ref=f163e245]:
+              - cell [ref=f163e246]:
+                - paragraph [ref=f163e247]: Test data released
+              - cell [ref=f163e248]:
+                - paragraph [ref=f163e249]: 19th June 2025
+            - row [ref=f163e250]:
+              - cell [ref=f163e251]:
+                - paragraph [ref=f163e252]: Translation submission deadline
+              - cell [ref=f163e253]:
+                - paragraph [ref=f163e254]: 3rd July 2025
+            - row [ref=f163e255]:
+              - cell [ref=f163e256]:
+                - paragraph [ref=f163e257]: System description abstract paper
+              - cell [ref=f163e258]:
+                - paragraph [ref=f163e259]: 10th July 2025
+            - row [ref=f163e260]:
+              - cell [ref=f163e261]:
+                - paragraph [ref=f163e262]:
+                  - text: Translated
+                  - link "test suites" [ref=f163e263] [cursor=pointer]:
+                    - /url: testsuite-subtask.html
+                  - text: shipped back to test suites authors
+              - cell [ref=f163e264]:
+                - paragraph [ref=f163e265]: 17th July 2025
+            - row [ref=f163e266]:
+              - cell [ref=f163e267]:
+                - paragraph [ref=f163e268]: System description paper submission & constrained weights release
+              - cell [ref=f163e269]:
+                - paragraph [ref=f163e270]: 14th August 2025
+            - row [ref=f163e271]:
+              - cell [ref=f163e272]:
+                - paragraph [ref=f163e273]: Camera-ready submission
+              - cell [ref=f163e274]:
+                - paragraph [ref=f163e275]: 25th September 2025
+    - generic [ref=f163e276]:
+      - heading "TASK DESCRIPTION" [level=2] [ref=f163e277]
+      - generic [ref=f163e278]:
+        - paragraph [ref=f163e280]: The task is to improve and evaluate current MT methods. We encourage a broad participation — if you feel that your method is interesting but not state-of-the-art, then please participate in order to disseminate it and measure progress. Participants will use their systems to translate a testset of unseen documents. The translation quality is measured by a human evaluation and various automatic evaluation metrics.
+        - paragraph [ref=f163e282]:
+          - text: You may participate in any or all of the language pairs. If your system is multilingual, please, participate in
+          - link "Multilingual subtask" [ref=f163e283] [cursor=pointer]:
+            - /url: "#multilingual-subtask"
+          - text: . To lower the entry barrier, we define a constrained track allowing to compare systems from same category.
+        - paragraph [ref=f163e285]:
+          - text: Each participant is required to submit submission paper, which will describe the process of how the model was built and highlight in which ways their own methods and data differ from the usual training pipeline. You should make it clear which tools and training sets you used. Each participant has to submit at least one page long abstract of the system description one week after the system submission deadline. The abstract must contain, at a minimum, basic information about the system and the approaches/data/tools used. It can be a full description paper or a draft that can be later modified for the final system description paper. See the
+          - link "Main page" [ref=f163e286] [cursor=pointer]:
+            - /url: .
+          - text: for the link to the submission site.
+        - generic [ref=f163e287]:
+          - heading "Constrained/Unconstrained track" [level=3] [ref=f163e288]
+          - paragraph [ref=f163e290]: The General MT task has two separate tracks with different constraints on the models allowing for better comparability. Constrained models compete only against other constrained, while unconstrained compete against all.
+          - list [ref=f163e292]:
+            - listitem [ref=f163e293]:
+              - paragraph [ref=f163e294]: Constrained open weights systems
+            - listitem [ref=f163e295]:
+              - paragraph [ref=f163e296]: you are allowed to use any training data, models, and frameworks, under any open source license that allows unrestricted use for non-commercial purposes (e.g. Apache, MIT, …) allowing to make your work replicable by any research group
+            - listitem [ref=f163e297]:
+              - paragraph [ref=f163e298]: the final model’s total number of parameters must me smaller than 20B parameters. See suggested LLMs that falls into this category below. Intermediate steps may use larger models, such as distilling.
+            - listitem [ref=f163e299]:
+              - paragraph [ref=f163e300]: you are required to release the model weights under some open source license before camera-ready deadline
+            - listitem [ref=f163e301]:
+              - paragraph [ref=f163e302]: Unconstrained track - track that do not place any limitations, neither requires publishing the model. Closed systems such as GPT are part of this track.
+          - paragraph [ref=f163e304]:
+            - text: Although we no longer restric training data, we currated
+            - link "corpora" [ref=f163e305] [cursor=pointer]:
+              - /url: mtdata
+            - text: that should cover majority of available data.
+          - paragraph [ref=f163e307]: "Here is a non-exhaustive list of suggested LLMs that falls into the category under 20B parameters:"
+          - list [ref=f163e309]:
+            - listitem [ref=f163e310]:
+              - paragraph [ref=f163e311]:
+                - text: "Textual:"
+                - link "Aya Expanse 8B" [ref=f163e312] [cursor=pointer]:
+                  - /url: https://huggingface.co/CohereForAI/aya-expanse-8b
+                - text: ","
+                - link "Aya 101 (13B)" [ref=f163e313] [cursor=pointer]:
+                  - /url: https://huggingface.co/CohereForAI/aya-101
+                - text: ","
+                - link "Cohere R 7B" [ref=f163e314] [cursor=pointer]:
+                  - /url: https://huggingface.co/CohereForAI/c4ai-command-r7b-12-2024
+                - text: ","
+                - link "Llama 7B" [ref=f163e315] [cursor=pointer]:
+                  - /url: https://huggingface.co/meta-llama/Llama-2-7b-chat
+                - text: ","
+                - link "Llama 13B" [ref=f163e316] [cursor=pointer]:
+                  - /url: https://huggingface.co/meta-llama/Llama-2-13b-chat
+                - text: ","
+                - link "Qwen 2.5 7B" [ref=f163e317] [cursor=pointer]:
+                  - /url: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct
+                - text: ","
+                - link "Ministral 8B" [ref=f163e318] [cursor=pointer]:
+                  - /url: https://huggingface.co/mistralai/Ministral-8B-Instruct-2410
+                - text: ","
+                - link "Mistral 7B" [ref=f163e319] [cursor=pointer]:
+                  - /url: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+                - text: ","
+                - link "EuroLLM" [ref=f163e320] [cursor=pointer]:
+                  - /url: https://huggingface.co/utter-project/EuroLLM-9B-Instruct
+                - text: ","
+                - link "NLLB" [ref=f163e321] [cursor=pointer]:
+                  - /url: https://huggingface.co/facebook/nllb-200-3.3B
+            - listitem [ref=f163e322]:
+              - paragraph [ref=f163e323]:
+                - text: "Multimodal:"
+                - link "Whisper" [ref=f163e324] [cursor=pointer]:
+                  - /url: https://huggingface.co/openai/whisper-large-v3
+                - text: ","
+                - link "Seamless M4T" [ref=f163e325] [cursor=pointer]:
+                  - /url: https://huggingface.co/facebook/seamless-m4t-v2-large
+        - generic [ref=f163e326]:
+          - heading "Domains" [level=3] [ref=f163e327]
+          - paragraph [ref=f163e329]: "We plan following domains: news, social, speech, and literary. There may be some differences in domains for non-English source languages. All testsets will be provided as a document-level."
+          - generic [ref=f163e330]:
+            - heading "Speech domain" [level=4] [ref=f163e331]
+            - paragraph [ref=f163e333]:
+              - text: The speech domain is going to be released with the original video together with machine generated transcript. We will use only the original video as a source for human evaluation. All testsets will contain the transcript which will be generated with speech recognition model, therefore the audio is not required to be used but could improve the performance. You may utilize models such as
+              - link "Whisper" [ref=f163e334] [cursor=pointer]:
+                - /url: https://huggingface.co/openai/whisper-large-v3
+              - text: to get a cleaner transcript.
+            - paragraph [ref=f163e336]: As a useful development set, we recommend using WMT24 that was released together with videos.
+          - generic [ref=f163e337]:
+            - heading "Social domain" [level=4] [ref=f163e338]
+            - paragraph [ref=f163e340]: In addition to the textual content, we will provide the printscreen of the original social page that may or may not be useful to the translation. However, human evaluation will use the printscreens when judging the quality of the translation.
+            - paragraph [ref=f163e342]:
+              - text: Our setup will have a similar printscreens as released by
+              - link "WMT24++" [ref=f163e343] [cursor=pointer]:
+                - /url: https://arxiv.org/pdf/2502.12404
+              - text: which can be used as a development set.
+        - generic [ref=f163e344]:
+          - heading "Test Suites subtask" [level=3] [ref=f163e345]
+          - paragraph [ref=f163e347]:
+            - text: This year’s shared task will also include the “Test suites” sub-task, which has been part of WMT since 2018. The participants of the test suite track will provide challenge testsets that will be used to test specific phenomena of machine translation. More details about the test suites are provided in a
+            - link "separate page" [ref=f163e348] [cursor=pointer]:
+              - /url: testsuite-subtask.html
+            - text: .
+        - generic [ref=f163e349]:
+          - heading "Multilingual subtask" [level=3] [ref=f163e350]
+          - paragraph [ref=f163e352]: As modern MT systems are able to translate into multiple languages, we define additional list of languages and ask participants of multilingual subtask to translate test containing all General MT and additional languages.
+          - paragraph [ref=f163e354]: Systems from multilingual subtask will also compete in General MT track as usually, but in addition are evaluated automatically for the following languages and compete in additional multilingual category.
+          - paragraph [ref=f163e356]: "The sources for translation will be identical to English sources from main task, while systems will be evaluated in additional following languages:"
+          - list [ref=f163e358]:
+            - listitem [ref=f163e359]:
+              - paragraph [ref=f163e360]: Bengali, German, Greek, Hindi, Indonesian, Italian, Kannada, Lithuanian, Marathi, Farsi (Persian), Romanian, Serbian (Cyrillic), Swedish, Thai, Turkish, Vietnamese
+          - paragraph [ref=f163e362]:
+            - text: A development test containing all these languages in all investigated domains is available at
+            - link "WMT24++" [ref=f163e363] [cursor=pointer]:
+              - /url: https://huggingface.co/datasets/google/wmt24pp
+    - generic [ref=f163e364]:
+      - heading "DATA" [level=2] [ref=f163e365]
+      - generic [ref=f163e366]:
+        - generic [ref=f163e367]:
+          - heading "Licensing" [level=3] [ref=f163e368]
+          - paragraph [ref=f163e370]: The data released for the General MT task can be freely used for research purposes, we ask that you cite the shared task overview findings paper, and respect any additional citation requirements on the individual data sets. For other uses of the data, you should consult with original owners of the data sets.
+        - generic [ref=f163e371]:
+          - heading "Recommended training data" [level=3] [ref=f163e372]
+          - paragraph [ref=f163e374]:
+            - text: We aim to use publicly available datasets wherever possible.
+            - link "Click here" [ref=f163e375] [cursor=pointer]:
+              - /url: mtdata
+            - text: "to view all details. You can download all corpora via command line:"
+          - code [ref=f163e379]: "pip install mtdata==0.4.3 # on python 3.9-3.11 wget https://www.statmt.org/wmt25/mtdata/mtdata.recipes.wmt25-constrained.yml mtdata -no-pb cache -j 8 -ri \"wmt25-*\" for id in wmt25-{eng-{ara,bho,ces,est,isl,jpn,kor,rus,srp,ukr,zho},ces-{ukr,deu},jpn-zho}; do mtdata get-recipe -i $id -o $id --compress --no-merge -j 8 done"
+        - generic [ref=f163e380]:
+          - heading "Development Data" [level=3] [ref=f163e381]
+          - paragraph [ref=f163e383]:
+            - text: To evaluate your system during development, we suggest using testsets from past WMT years. For automatic evaluation, we recommend to use
+            - link "COMET" [ref=f163e384] [cursor=pointer]:
+              - /url: https://github.com/Unbabel/COMET
+            - text: automatic metric that has been
+            - link "shown to have high correlation with humans" [ref=f163e385] [cursor=pointer]:
+              - /url: https://aclanthology.org/2021.wmt-1.57/
+            - text: . You can use following testsets when developing your systems
+          - list [ref=f163e387]:
+            - listitem [ref=f163e388]:
+              - paragraph [ref=f163e389]:
+                - link "WMT devsets" [ref=f163e390] [cursor=pointer]:
+                  - /url: https://data.statmt.org/wmt24/general-mt/wmt24_GeneralMT-devsets.zip
+            - listitem [ref=f163e391]:
+              - paragraph [ref=f163e392]:
+                - link "WMT24++ translated into 55 languages" [ref=f163e393] [cursor=pointer]:
+                  - /url: https://huggingface.co/datasets/google/wmt24pp
+            - listitem [ref=f163e394]:
+              - paragraph [ref=f163e395]:
+                - link "NTREX-128" [ref=f163e396] [cursor=pointer]:
+                  - /url: https://github.com/MicrosoftTranslator/NTREX
+            - listitem [ref=f163e397]:
+              - paragraph [ref=f163e398]:
+                - link "Flores-200 (outdated for modern MT)" [ref=f163e399] [cursor=pointer]:
+                  - /url: https://github.com/facebookresearch/flores/blob/main/flores200
+    - generic [ref=f163e400]:
+      - heading "EVALUATION" [level=2] [ref=f163e401]
+      - generic [ref=f163e402]:
+        - paragraph [ref=f163e404]:
+          - text: Primary systems (for which abstract papers have been submitted to
+          - link "SoftConf" [ref=f163e405] [cursor=pointer]:
+            - /url: https://softconf.com/emnlp2025/wmt2025/
+          - text: ) will be included in the human evaluation. We will collect subjective judgments about the translation quality from annotators based likely on the
+          - link "ESA protocol" [ref=f163e406] [cursor=pointer]:
+            - /url: https://aclanthology.org/2024.wmt-1.131/
+          - text: ", taking the document context into account."
+        - paragraph [ref=f163e408]: We are able to evaluate with humans only about 15 systems from each language pair. Therefore, for language pairs where we obtain more submissions than we can evaluate, we will prioritize constained systems and remove from human evaluation unconstrained systems with the lowest automatic performance and clear outliers with low performance under automatic evaluation. We will follow similar approach as in 2025 with AutoRank, while adding LLM-as-a-judge to metrics.
+        - paragraph [ref=f163e410]: We collect translation from online services and popular LLM systems. The collection will happen during the evaluation period between releasing the testset and translation deadline.
+        - generic [ref=f163e411]:
+          - heading "Testset Submission" [level=3] [ref=f163e412]
+          - paragraph [ref=f163e414]:
+            - text: "Here is a link to OCELoT submission system:"
+            - link "https://aka.ms/wmt25submissions" [ref=f163e415] [cursor=pointer]:
+              - /url: https://aka.ms/wmt25submissions
+          - paragraph [ref=f163e417]: "Here are detailed instructions to make submission process seamless. To participate, please, follow the steps outlined below:"
+          - paragraph [ref=f163e419]:
+            - text: "1) Translate blind testsets:"
+            - link "wmt25.jsonl" [ref=f163e420] [cursor=pointer]:
+              - /url: https://data.statmt.org/wmt25/general-mt/wmt25.jsonl
+            - text: ; multimodal resources are
+            - link "wmt25_genmt_assets.zip" [ref=f163e421] [cursor=pointer]:
+              - /url: https://data.statmt.org/wmt25/general-mt/wmt25_genmt_assets.zip
+          - list [ref=f163e423]:
+            - listitem [ref=f163e424]:
+              - paragraph [ref=f163e425]:
+                - text: Blindset is Jsonlines formated input with several metadata. The core fields are
+                - code [ref=f163e426]: tgt_lang
+                - text: and
+                - code [ref=f163e427]: src_text
+                - text: . It also contain
+                - code [ref=f163e428]: prompt_instruction
+                - text: for LLMs that you may use as it is adjusted for each domain.
+            - listitem [ref=f163e429]:
+              - paragraph [ref=f163e430]: Blindset is document-level with paragraphs separated by double new line. You may segment it in any way, however, the translation must contain same number of paragraphs (separated by double new line). For this, we share with you following verification script (see below)
+            - listitem [ref=f163e431]:
+              - paragraph [ref=f163e432]: Speech domain textual information is collected by automatic speech recognition process, multimodal systems may benefit from the original video
+            - listitem [ref=f163e433]:
+              - paragraph [ref=f163e434]: Social domain contain original printscreens from Mastodon containing pictures
+            - listitem [ref=f163e435]:
+              - paragraph [ref=f163e436]: Although you can participate in only a subset of languages, we strongly encourage you to translate all languages, even those not supported by your system, and mark in the poll which languages you focussed on and which are only contrastive.
+          - paragraph [ref=f163e438]:
+            - text: 2) Submit translations to OCELoT[
+            - link "aka.ms/wmt25submissions" [ref=f163e439] [cursor=pointer]:
+              - /url: https://aka.ms/wmt25submissions
+            - text: "] (deadline is 3th July AoE, please, don’t leave it to the last minute). Use verification script to double check submission"
+          - list [ref=f163e441]:
+            - listitem [ref=f163e442]:
+              - paragraph [ref=f163e443]: You won’t get any feedback on your system in OCELoT, human references do not exist at the time of submission. You may use quality estimation (e.g. CometKiwi) to check if everything is well translated.
+            - listitem [ref=f163e444]:
+              - paragraph [ref=f163e445]: Select the primary system in OCELoT, in case you did multiple submissions and fill a poll about your system in OCELoT.
+            - listitem [ref=f163e446]:
+              - paragraph [ref=f163e447]: The output file needs to contain "hypothesis" column for your translations and contain "doc_id", "tgt_lang", "dataset_id" from blindset. Submitted in format JSON Lines.
+          - paragraph [ref=f163e449]:
+            - text: 3) Before 11th July AoE, submit a short abstract paper to
+            - link "SoftConf" [ref=f163e450] [cursor=pointer]:
+              - /url: https://softconf.com/emnlp2025/wmt2025/
+            - text: . It can be a one page summary of your submission which you later replace with a system description paper, you may already submit the system description paper if you want.
+          - generic [ref=f163e451]:
+            - heading "Verification script" [level=4] [ref=f163e452]
+            - paragraph [ref=f163e454]:
+              - text: We are releasing a script
+              - link "wmt_gen_mt_tool.py" [ref=f163e455] [cursor=pointer]:
+                - /url: https://www2.statmt.org/wmt25/wmt_gen_mt_tool.py
+              - text: "to simplify handling the blindset. Example usage:"
+            - code [ref=f163e459]: "python wmt_gen_mt_tool.py --task verify-submission ARGS # to verify, you maintained paragraph alignment python wmt_gen_mt_tool.py --task split-documents-into-paragraphs ARGS # To simplify paragraph level translation python wmt_gen_mt_tool.py --task merge-paragraphs-into-documents ARGS # This needs to be used to merge back to the document-level"
+    - generic [ref=f163e460]:
+      - heading "CONTACT" [level=2] [ref=f163e461]
+      - generic [ref=f163e462]:
+        - paragraph [ref=f163e464]:
+          - text: For queries, please use the
+          - link "mailing list" [ref=f163e465] [cursor=pointer]:
+            - /url: https://groups.google.com/g/wmt-tasks
+          - text: or contact Tom Kocmi.
+        - generic [ref=f163e466]:
+          - heading "Organizers" [level=3] [ref=f163e467]
+          - list [ref=f163e469]:
+            - listitem [ref=f163e470]:
+              - paragraph [ref=f163e471]:
+                - text: Tom Kocmi -
+                - strong [ref=f163e472]: kocmi@cohere.com
+            - listitem [ref=f163e473]:
+              - paragraph [ref=f163e474]: Katia Artemova
+            - listitem [ref=f163e475]:
+              - paragraph [ref=f163e476]: Eleftherios Avramidis
+            - listitem [ref=f163e477]:
+              - paragraph [ref=f163e478]: Rachel Bawden
+            - listitem [ref=f163e479]:
+              - paragraph [ref=f163e480]: Ondřej Bojar
+            - listitem [ref=f163e481]:
+              - paragraph [ref=f163e482]: Konstantin Dranch
+            - listitem [ref=f163e483]:
+              - paragraph [ref=f163e484]: Anton Dvorkovich
+            - listitem [ref=f163e485]:
+              - paragraph [ref=f163e486]: Sergey Dukanov
+            - listitem [ref=f163e487]:
+              - paragraph [ref=f163e488]: Natalia Fedorova
+            - listitem [ref=f163e489]:
+              - paragraph [ref=f163e490]: Mark Fishel
+            - listitem [ref=f163e491]:
+              - paragraph [ref=f163e492]: Markus Freitag
+            - listitem [ref=f163e493]:
+              - paragraph [ref=f163e494]: TG Gowda
+            - listitem [ref=f163e495]:
+              - paragraph [ref=f163e496]: Roman Grundkiewicz
+            - listitem [ref=f163e497]:
+              - paragraph [ref=f163e498]: Barry Haddow
+            - listitem [ref=f163e499]:
+              - paragraph [ref=f163e500]: Marzena Karpinska
+            - listitem [ref=f163e501]:
+              - paragraph [ref=f163e502]: Philipp Koehn
+            - listitem [ref=f163e503]:
+              - paragraph [ref=f163e504]: Howard Lakougna
+            - listitem [ref=f163e505]:
+              - paragraph [ref=f163e506]: Jessica Lundin
+            - listitem [ref=f163e507]:
+              - paragraph [ref=f163e508]: Kenton Murray
+            - listitem [ref=f163e509]:
+              - paragraph [ref=f163e510]: Masaaki Nagata
+            - listitem [ref=f163e511]:
+              - paragraph [ref=f163e512]: Stefano Perrella
+            - listitem [ref=f163e513]:
+              - paragraph [ref=f163e514]: Lorenzo Proietti
+            - listitem [ref=f163e515]:
+              - paragraph [ref=f163e516]: Martin Popel
+            - listitem [ref=f163e517]:
+              - paragraph [ref=f163e518]: Maja Popović
+            - listitem [ref=f163e519]:
+              - paragraph [ref=f163e520]: Parker Riley
+            - listitem [ref=f163e521]:
+              - paragraph [ref=f163e522]: Mariya Shmatova
+            - listitem [ref=f163e523]:
+              - paragraph [ref=f163e524]: Steinþór Steingrímsson
+            - listitem [ref=f163e525]:
+              - paragraph [ref=f163e526]: Lisa Yankovskaya
+            - listitem [ref=f163e527]:
+              - paragraph [ref=f163e528]: Vilém Zouhar
+        - generic [ref=f163e529]:
+          - heading "Acknowledgements" [level=3] [ref=f163e530]
+          - paragraph [ref=f163e532]: "This task would not have been possible without the sponsorship of testsets translations and human evaluation done with our partners. Namely (in alphabetical order): Árni Magnússon Institute for Icelandic Studies, Charles University, Cohere, Custom.MT, Dubformer, Gates Foundation, Google, Institute of the Estonian Language, Microsoft, NTT, Toloka, University of Tartu, University of Tokyo. Furthermore, we are grateful to Toshiaki Nakazawa, Michael Karani, and Youssef Nafea, and for the support from the UK Research and Innovation (UKRI) under the UK government’s Horizon Europe funding guarantee (Grant No 10039436)."
+  - generic [ref=f163e533]: Last updated 2025-10-14 20:35:14 UTC

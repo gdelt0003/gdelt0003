@@ -1,0 +1,183 @@
+- generic [active] [ref=f11e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f11e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f11e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f11e6]:
+    - search [ref=f11e7]:
+      - generic [ref=f11e9]:
+        - link "Google 首页" [ref=f11e11] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=0ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQPAgH
+        - generic [ref=f11e14]:
+          - generic [ref=f11e15]:
+            - combobox "搜索" [ref=f11e18]: "\"Katie Zacharia\" first briefing Oct. 13 2026 news \"Katie Zacharia\" first briefing Oct. 13 2026 news"
+            - generic [ref=f11e19]:
+              - button "清除" [ref=f11e21] [cursor=pointer]
+              - button "按语音搜索" [ref=f11e27] [cursor=pointer]
+          - button "Google 搜索" [ref=f11e30] [cursor=pointer]
+    - generic [ref=f11e35]:
+      - button "设置" [ref=f11e37] [cursor=pointer]
+      - generic [ref=f11e42]:
+        - button "Google 应用" [ref=f11e44] [cursor=pointer]
+        - link "登录" [ref=f11e49] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Katie%2BZacharia%2522%2Bfirst%2Bbriefing%2BOct.%2B13%2B2026%2Bnews%26tbm%3Dnws&ec=futura_srp_og_si_72236_p
+  - generic [ref=f11e51]:
+    - navigation [ref=f11e57]:
+      - generic [ref=f11e63]:
+        - list [ref=f11e64]:
+          - listitem [ref=f11e65]:
+            - link "全部" [ref=f11e66] [cursor=pointer]:
+              - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&source=lnms&sa=X&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ0pQJegQIAxAD
+          - listitem [ref=f11e69]:
+            - link "图片" [ref=f11e70] [cursor=pointer]:
+              - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&udm=2&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&source=lnms&sa=X&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ0pQJegQIAxAF
+          - listitem [ref=f11e73]:
+            - link "视频" [ref=f11e74] [cursor=pointer]:
+              - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&udm=vids&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&source=lnms&sa=X&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ0pQJegQIAxAH
+          - listitem [ref=f11e77]:
+            - link "新闻" [disabled] [ref=f11e78]
+          - listitem [ref=f11e81]:
+            - link "图书" [ref=f11e82] [cursor=pointer]:
+              - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&udm=36&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&source=lnms&sa=X&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ0pQJegQIAxAL
+          - listitem [ref=f11e85]:
+            - link "财经" [ref=f11e86] [cursor=pointer]:
+              - /url: https://www.google.com/finance?sa=X&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ0pQJegQIAxAN
+        - button "工具" [ref=f11e90] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f11e97]
+    - navigation
+    - main [ref=f11e103]:
+      - generic [ref=f11e109]:
+        - link "CNN White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing Several White House officials are questioning how long Katie Zacharia will keep the press secretary job after her first briefing Tuesday,... . 1 天前" [ref=f11e113] [cursor=pointer]:
+          - /url: /goto?url=CAESfQHrOzAVFG6qEFaAUwauvMDmI3cmdZDyAy0nbH2l4cgDRBLdo2NgcvmCNmsRozHBz6s22FZ9o8J_lniyIvGEwZbfb91VqSVxSEUHd7FkpGIqaDdkjf_oGrt2BxazI_uj66l1nBLApMN4k4rBo9FfEdmSGLKWHXgv1J_sspfi
+          - generic [ref=f11e118]:
+            - generic [ref=f11e119]: CNN
+            - heading "White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing" [level=3] [ref=f11e123]
+            - generic [ref=f11e124]: Several White House officials are questioning how long Katie Zacharia will keep the press secretary job after her first briefing Tuesday,...
+            - generic [ref=f11e125]: .
+            - generic: 1 天前
+        - link "Reuters New White House press secretary Katie Zacharia's legal career draws scrutiny WASHINGTON/BEIJING, Oct 14 (Reuters) - The new White House press secretary, Katie Zacharia, faced questions on Wednesday about her legal... . 6小时前" [ref=f11e130] [cursor=pointer]:
+          - /url: /goto?url=CAESvAEB6zswFdYlTOuAuX51_wNdQF19mImtW_d_JyH1IUH4hzmsfpXMc0XO9PNaeQhWPOpL-Gz2t9X40aqU1R1b3YhBEc3yT2714xMe821xMtEgXf3pPGPaC7rV7QdQQc_qt-R6BMVdKLZyalkWGopNciymrQDJ9sbQPpcK0NofA4eIcSJr3AVpg_IF9dZNr_8kEQKCNfuDmVD_XRvUFRuFm8SgbkQ09QOvm5z4aK4UWHyQ2I-Cpk52-esVMcTOkA
+          - generic [ref=f11e135]:
+            - generic [ref=f11e136]: Reuters
+            - heading "New White House press secretary Katie Zacharia's legal career draws scrutiny" [level=3] [ref=f11e140]
+            - generic [ref=f11e141]: WASHINGTON/BEIJING, Oct 14 (Reuters) - The new White House press secretary, Katie Zacharia, faced questions on Wednesday about her legal...
+            - generic [ref=f11e142]: .
+            - generic: 6小时前
+        - link "Al Jazeera White House spokesperson Katie Zacharia’s law career faces scrutiny Katie Zacharia has repeatedly claimed to be a lawyer, but critics question whether she was ever licensed. . 5小时前" [ref=f11e147] [cursor=pointer]:
+          - /url: /goto?url=CAESpAEB6zswFeObPIDp0cKFVnmf4FuTFgVLrglrmJ81UkjadRlfK8JDhy61m5TN8K8iklJ_vgN_je_1FF-6xtgRE5s37MD_5GV_KpBP8NyrcBx6qQ8PnBn2JhFXDIFF1p5ABUfWX76Tifm02r2oOg4ewQBfCNDsYFrRI5YLZIqJ0qbI_IzTUsOEAxMfUZ4cTYV9owOPIIqUklMPF3ThrSUUE1468RB0QA
+          - generic [ref=f11e152]:
+            - generic [ref=f11e153]: Al Jazeera
+            - heading "White House spokesperson Katie Zacharia’s law career faces scrutiny" [level=3] [ref=f11e157]
+            - generic [ref=f11e158]: Katie Zacharia has repeatedly claimed to be a lawyer, but critics question whether she was ever licensed.
+            - generic [ref=f11e159]: .
+            - generic: 5小时前
+        - link "The White House (.gov) Katie Zacharia Delivers Powerful Inaugural Briefing as the 37th White House Press Secretary Today, Katie Zacharia delivered a commanding inaugural press briefing as the 37th White House Press Secretary. The briefing, which generated... . 1 天前" [ref=f11e164] [cursor=pointer]:
+          - /url: /goto?url=CAESvQEB6zswFX1MDVG8TkUz_Rru1fOe0W-99et3BHByTIVwWkhEjjyrD-wuJ-YQsm0_nGYfGfrQbGRO1oWPeiPSHj7wgkX0D59sJk6030pGrV22OYF-XtYeSo5xr5OqkTtsO5M9sXeCTIMzmMAbYXW1X23COWOquqfgIoH-ol9AHMDtnjvouyaHj_Sx5YblphlxqLUQ8InRk_HKAV5jtzaR46rFTsR7wmw0trVz3kFt3rroJ8odcCN_516bCoNUyi0
+          - generic [ref=f11e169]:
+            - generic [ref=f11e170]: The White House (.gov)
+            - heading "Katie Zacharia Delivers Powerful Inaugural Briefing as the 37th White House Press Secretary" [level=3] [ref=f11e174]
+            - generic [ref=f11e175]: Today, Katie Zacharia delivered a commanding inaugural press briefing as the 37th White House Press Secretary. The briefing, which generated...
+            - generic [ref=f11e176]: .
+            - generic: 1 天前
+        - 'link "MS NOW ‘Not ready for primetime’: New press secretary stumbles in her debut Katie Zacharia''s first briefing alarmed people inside and close to the White House, in an administration where on-air performance can make... . 1 天前" [ref=f11e181] [cursor=pointer]':
+          - /url: /goto?url=CAESegHrOzAV22D7SbAz4J-VaWeCFOmT8qYxfQUmJwTWYEGd6rpmxPmsqx2rtbV8R9c7aTg2elM9h7uTmzcaGVdUVBipI6gHw7PV0DKipVaCF9hGLZ7QXiY048m-lF2wrrR58iGCSn3nOWD7uPcuq4NL3216Sn426vLEyMYR
+          - generic [ref=f11e186]:
+            - generic [ref=f11e187]: MS NOW
+            - 'heading "‘Not ready for primetime’: New press secretary stumbles in her debut" [level=3] [ref=f11e191]'
+            - generic [ref=f11e192]: Katie Zacharia's first briefing alarmed people inside and close to the White House, in an administration where on-air performance can make...
+            - generic [ref=f11e193]: .
+            - generic: 1 天前
+        - 'link "PBS WATCH: New White House press secretary Katie Zacharia takes few questions in short first briefing Katie Zacharia, the newly appointed White House press secretary, took the podium to take questions from reporters during her first press... . 1 天前" [ref=f11e198] [cursor=pointer]':
+          - /url: /goto?url=CAESrAEB6zswFWLWD9L82YEnMda3kQz9umV5KwGvGFLI95uPdyOWTQNOHeDQPsoReYKRPHwuJcdJufrZdcENo2SBA7Ra007sh6YiUXnEEJjUr_0ZK31l1qellndpL1W4yLsXlFhT9xE1AQHi1M8Ez_YQr9XVkMHrPcZZiMrA3uFKixAqvs_5naxWQEOm9kv12MpO2iRxAcgqM6Gf5COgDGzmwcTpopUYpEutM2zTd7if
+          - generic [ref=f11e203]:
+            - generic [ref=f11e204]: PBS
+            - 'heading "WATCH: New White House press secretary Katie Zacharia takes few questions in short first briefing" [level=3] [ref=f11e208]'
+            - generic [ref=f11e209]: Katie Zacharia, the newly appointed White House press secretary, took the podium to take questions from reporters during her first press...
+            - generic [ref=f11e210]: .
+            - generic: 1 天前
+        - link "Sinar Daily Trump's new press secretary Katie Zacharia faces scrutiny over credentials WASHINGTON - The White House was facing mounting questions Wednesday over new press secretary Katie Zacharia's legal credentials,... . 5小时前" [ref=f11e215] [cursor=pointer]:
+          - /url: /goto?url=CAEStgEB6zswFcGWD6049VFOS2p7Hn3yTGnMBZ3FWF3Z5cT9WoXHowxDRcBdTgoJHyALtt0q6TqUgvhtYhQqv98ODl-pzbEQ8EnjWxDKMEamDvqD4rI0KmvdrQN5jalE-8h41q5ljJJAMY9tAclR7pRGn5ec_o8DXJQ2PUpmhuYAIJbPfAZ2QhGhnGvJVyZlzN5ovpcyxwgWiebtAIv-PBOlJa46JhEwos62a1uU1GBoAsvOajSF19NtSw
+          - generic [ref=f11e220]:
+            - generic [ref=f11e221]: Sinar Daily
+            - heading "Trump's new press secretary Katie Zacharia faces scrutiny over credentials" [level=3] [ref=f11e225]
+            - generic [ref=f11e226]: WASHINGTON - The White House was facing mounting questions Wednesday over new press secretary Katie Zacharia's legal credentials,...
+            - generic [ref=f11e227]: .
+            - generic: 5小时前
+        - link "AP News Katie Zacharia's debut shows the pitfalls and possibilities of White House press secretary's role The new press secretary for Donald Trump's White House stepped to the podium. The eyes of a packed room of journalists — and many in their... . 18小时前" [ref=f11e232] [cursor=pointer]:
+          - /url: /goto?url=CAESjwEB6zswFS9MWE4kQT4fhZnEOhorM2U4IRHfhL9zytPLXa7hQtMHb253ta6CYz3zqbXNSQZ6F82_fPQQYeHKcS5LvOBhnG4GQjoaVMd-oBQGdeFVCfqDqYZBg67-IjbIDUjzewMjXcFlz8razfGgoe_X-AAGW1TthFkbjj4I84ankU--XpW9Cg6Q3Q3tuuz0Dw
+          - generic [ref=f11e237]:
+            - generic [ref=f11e238]: AP News
+            - heading "Katie Zacharia's debut shows the pitfalls and possibilities of White House press secretary's role" [level=3] [ref=f11e242]
+            - generic [ref=f11e243]: The new press secretary for Donald Trump's White House stepped to the podium. The eyes of a packed room of journalists — and many in their...
+            - generic [ref=f11e244]: .
+            - generic: 18小时前
+        - 'link "The Guardian Enter the Zachbot: Trump’s new press secretary malfunctions on podium debut Katie Zacharia''s maiden briefing was excruciating – at least her predecessor had delivered her propaganda hot. . 1 天前" [ref=f11e249] [cursor=pointer]':
+          - /url: /goto?url=CAESiwEB6zswFagwPt1FES4tLFGRZxvk1dmblpyF4reC4m1--88Ia9dKL3IaN7jb10oLvcEcnnPYhe_-NSX5nRBMsto1DQ6JMo1Cmfbzgye3kqSnbJdjXH34z7ZqWTWBwvcQ_bNumEX5butKbfxcVaRYdAvpnxyo8fyGQ9I125g3oYYftLsEAD74bSPWPpd6
+          - generic [ref=f11e254]:
+            - generic [ref=f11e255]: The Guardian
+            - 'heading "Enter the Zachbot: Trump’s new press secretary malfunctions on podium debut" [level=3] [ref=f11e259]'
+            - generic [ref=f11e260]: Katie Zacharia's maiden briefing was excruciating – at least her predecessor had delivered her propaganda hot.
+            - generic [ref=f11e261]: .
+            - generic: 1 天前
+        - link "Advocate.com New White House Press Secretary Katie Zacharia claims to have passed bar in China The new communications chief held her first press briefing on Tuesday. . 9小时前" [ref=f11e266] [cursor=pointer]:
+          - /url: /goto?url=CAEShwEB6zswFTTb7vbNrUkbPE9sJQRunwHgFm8pc9A8MmpltqJgUKP4qYNFlLN9FnKUsEHiPFQ5_YXWFnD-WAN5PyVZrXdgR8dSluPXNzU0OUIlI7gpf8lbARX49CzIFkMZywufQWNRRY9aIiYz_Bmqk-LQKSsSyxnN7_7jj81KGGa4kVS1Jp3h5iA
+          - generic [ref=f11e271]:
+            - generic [ref=f11e272]: Advocate.com
+            - heading "New White House Press Secretary Katie Zacharia claims to have passed bar in China" [level=3] [ref=f11e276]
+            - generic [ref=f11e277]: The new communications chief held her first press briefing on Tuesday.
+            - generic [ref=f11e278]: .
+            - generic: 9小时前
+      - navigation [ref=f11e282]:
+        - heading "网页导航" [level=1] [ref=f11e283]
+        - text: "1"
+        - link "Page 2" [ref=f11e286] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=10&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAE
+          - text: "2"
+        - link "Page 3" [ref=f11e288] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=20&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAG
+          - text: "3"
+        - link "Page 4" [ref=f11e290] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=30&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAI
+          - text: "4"
+        - link "Page 5" [ref=f11e292] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=40&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAK
+          - text: "5"
+        - link "Page 6" [ref=f11e294] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=50&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAM
+          - text: "6"
+        - link "Page 7" [ref=f11e296] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=60&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAO
+          - text: "7"
+        - link "Page 8" [ref=f11e298] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=70&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAQ
+          - text: "8"
+        - link "Page 9" [ref=f11e300] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=80&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAS
+          - text: "9"
+        - link "Page 10" [ref=f11e302] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=90&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8tMDegQIHRAU
+          - text: "10"
+        - heading [level=2] [ref=f11e304]:
+          - link "下一页" [ref=f11e305] [cursor=pointer]:
+            - /url: /search?q=%22Katie+Zacharia%22+first+briefing+Oct.+13+2026+news&newwindow=1&sca_esv=0b6b5098e114a672&tbm=nws&sxsrf=APpeQnufYkx1nMAjXdObB2NIOrP4XlfZNw:1792047158155&ei=NnjQaryWCf6sur8PuPy0wQo&start=10&sa=N&ved=2ahUKEwi8iaHyt7uXAxV-lu4BHTg-LagQ8NMDegQIHRAW
+      - navigation
+    - contentinfo [ref=f11e308]:
+      - heading "页脚链接" [level=1] [ref=f11e309]
+      - generic [ref=f11e313]:
+        - generic [ref=f11e317]:
+          - button "海口市 中国海南省 - 根据您的活动记录" [ref=f11e319] [cursor=pointer]:
+            - generic [ref=f11e320]: 海口市 中国海南省
+            - generic [ref=f11e322]:
+              - text: "-"
+              - generic [ref=f11e323]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f11e325] [cursor=pointer]
+        - generic [ref=f11e328]:
+          - link "帮助" [ref=f11e329] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f11e331] [cursor=pointer]
+          - link "隐私权" [ref=f11e333] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f11e334] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

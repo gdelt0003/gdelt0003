@@ -1,0 +1,67 @@
+- main [ref=e2]:
+  - navigation "主要导航" [ref=e3]:
+    - link "GDELT · 事件视频" [ref=e4] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=e5]:
+      - link "Copilot 成果" [ref=e6] [cursor=pointer]:
+        - /url: copilot-results.html
+      - link "主视频" [ref=e7] [cursor=pointer]:
+        - /url: "#featured-video"
+      - link "短片" [ref=e8] [cursor=pointer]:
+        - /url: "#highlights"
+      - link "事件与来源" [ref=e9] [cursor=pointer]:
+        - /url: "#event-research"
+      - link "机位证据" [ref=e10] [cursor=pointer]:
+        - /url: "#camera-map"
+  - generic [ref=e11]:
+    - paragraph [ref=e12]: GITHUB ACTIONS · PAGES
+    - heading "事件视频资料与高光片段" [level=1] [ref=e13]
+    - paragraph [ref=e14]: 全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态
+    - paragraph [ref=e15]: 本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。
+  - region [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - paragraph [ref=e19]: FULL-LENGTH EVENT VIDEOS
+        - heading "主视频" [level=2] [ref=e20]
+      - status [ref=e21]: 正在读取主视频清单…
+    - paragraph [ref=e22]: 按事件日期由新到旧排列。卡片仅保留视频与复核摘要；“来源与版本信心详情”按事件单独查看，未核验信息不会被推定。
+  - region [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: WHITE HOUSE · BILINGUAL SHORTS
+        - heading "既有短片 · 推荐观看" [level=2] [ref=e27]
+      - status [ref=e28]: 竖屏 9:16 · 正在读取分段链接…
+    - paragraph [ref=e29]: 保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。
+  - region [ref=e30]:
+    - paragraph [ref=e31]: DEDICATED PATHWAY COMPARISON
+    - heading "开源媒体工具 × Copilot 工程路线" [level=2] [ref=e32]
+    - paragraph [ref=e33]: 开源工具候选、实际媒体产物与 Copilot coding-agent 的仓库工程交付在专页分栏展示。只对同输入、同任务且有证据的结果作质量比较；未运行或未核验项不会冒充成绩。
+    - paragraph [ref=e34]:
+      - link "打开 pvXbHQrIvTw 专属路线对比页" [ref=e35] [cursor=pointer]:
+        - /url: events/pvXbHQrIvTw/#pathways
+  - region [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - paragraph [ref=e39]: EVENTS · SOURCE EVIDENCE
+        - heading "按事件整理的来源与候选" [level=2] [ref=e40]
+      - link "下载来源核验 Excel" [ref=e41] [cursor=pointer]:
+        - /url: outputs/event-source-review.xlsx
+    - paragraph [ref=e42]: 来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。
+    - generic [ref=e43]:
+      - heading "最新视频与新闻文章发现线索" [level=3] [ref=e44]
+      - status [ref=e45]: 等待云端例行检索…
+  - region [ref=e46]:
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: REVIEWED EVENT PRODUCTIONS
+        - heading "已审阅的事件短片" [level=2] [ref=e50]
+      - status [ref=e51]: 正在读取已发布作品…
+    - paragraph [ref=e52]: 只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。
+  - region [ref=e53]:
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - paragraph [ref=e56]: EVENT CAMERA GEOMETRY
+        - heading "活动 3D 机位图" [level=2] [ref=e57]
+      - status [ref=e58]: 正在读取测绘证据…
+    - list
+    - paragraph [ref=e60]: 仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。

@@ -1,0 +1,113 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - link "Skip to content" [ref=f6e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=f6e9]:
+      - heading "Navigation Menu" [level=2] [ref=f6e10]
+      - generic [ref=f6e11]:
+        - link "Homepage" [ref=f6e13] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f6e16]:
+          - navigation "Global" [ref=f6e17]:
+            - list [ref=f6e18]:
+              - listitem [ref=f6e19]:
+                - button "Platform" [ref=f6e21] [cursor=pointer]
+              - listitem [ref=f6e24]:
+                - button "Solutions" [ref=f6e26] [cursor=pointer]
+              - listitem [ref=f6e29]:
+                - button "Resources" [ref=f6e31] [cursor=pointer]
+              - listitem [ref=f6e34]:
+                - button "Open Source" [ref=f6e36] [cursor=pointer]
+              - listitem [ref=f6e39]:
+                - button "Enterprise" [ref=f6e41] [cursor=pointer]
+              - listitem [ref=f6e44]:
+                - link "Pricing" [ref=f6e45] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+          - generic [ref=f6e46]:
+            - button "Search or jump to, type / to search" [ref=f6e48] [cursor=pointer]
+            - link "Sign in" [ref=f6e55] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fgdelt0003%2Fgdelt0003%2Factions%2Fruns%2F38832525536%2Fjob%2F116754277578
+            - link "Sign up" [ref=f6e58] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Fjob%2Findex&source=header-repo&source_repo=gdelt0003%2Fgdelt0003
+            - button "Appearance settings" [ref=f6e61] [cursor=pointer]
+  - main [ref=f6e68]:
+    - generic [ref=f6e69]:
+      - generic "Global navigation menu" [ref=f6e72]:
+        - navigation "Breadcrumbs" [ref=f6e75]:
+          - list [ref=f6e76]:
+            - listitem [ref=f6e77]:
+              - link "gdelt0003" [ref=f6e78] [cursor=pointer]:
+                - /url: /gdelt0003
+            - listitem [ref=f6e80]:
+              - link "gdelt0003" [ref=f6e81] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003
+        - heading "Repository navigation" [level=2] [ref=f6e84]
+        - navigation "Repository" [ref=f6e85]:
+          - list [ref=f6e86]:
+            - listitem [ref=f6e87]:
+              - link "Code" [ref=f6e88] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003
+            - listitem [ref=f6e93]:
+              - link "Issues" [ref=f6e94] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/issues
+            - listitem [ref=f6e100]:
+              - link "Pull requests (5)" [ref=f6e101] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/pulls
+                - generic [ref=f6e105]: Pull requests
+                - generic [ref=f6e106]:
+                  - generic [aria-hidden] [ref=f6e107]: "5"
+                  - generic [ref=f6e108]: (5)
+            - listitem [ref=f6e109]:
+              - link "Actions" [ref=f6e110] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/actions
+            - listitem [ref=f6e115]:
+              - link "Projects" [ref=f6e116] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/projects
+            - listitem [ref=f6e121]:
+              - link "Security and quality" [ref=f6e122] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/security
+            - listitem [ref=f6e127]:
+              - link "Insights" [ref=f6e128] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/pulse
+      - generic [ref=f6e137]:
+        - generic [ref=f6e140]:
+          - link "Publish Rose Garden bilingual review video" [ref=f6e143] [cursor=pointer]:
+            - /url: /gdelt0003/gdelt0003/actions/workflows/publish-rose-garden-review.yml
+          - generic [ref=f6e147]:
+            - generic [ref=f6e148]:
+              - img "currently running:" [ref=f6e153]
+              - 'heading "Publish Rose Garden bilingual review video #2" [level=1] [ref=f6e157]'
+            - link "Sign in to view logs" [ref=f6e161] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fgdelt0003%2Fgdelt0003%2Factions%2Fruns%2F38832525536%2Fjob%2F116754277578
+        - generic [ref=f6e162]:
+          - navigation "Workflow run" [ref=f6e168]:
+            - list [ref=f6e169]:
+              - listitem [ref=f6e170]:
+                - link "Summary" [ref=f6e171] [cursor=pointer]:
+                  - /url: /gdelt0003/gdelt0003/actions/runs/38832525536
+              - generic [ref=f6e174]:
+                - heading "All jobs" [level=4] [ref=f6e175]
+                - button "Filter by job status" [ref=f6e176] [cursor=pointer]
+              - listitem [aria-hidden] [ref=f6e179]
+              - listitem [ref=f6e180]:
+                - list [ref=f6e181]:
+                  - listitem [ref=f6e182]:
+                    - generic "Loading" [ref=f6e183]
+              - listitem [aria-hidden] [ref=f6e192]
+              - listitem [ref=f6e193]:
+                - heading "Run details" [level=3] [ref=f6e195]
+                - list "Run details" [ref=f6e196]:
+                  - listitem [ref=f6e197]:
+                    - link "Usage" [ref=f6e198] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/usage
+                  - listitem [ref=f6e201]:
+                    - link "Workflow file" [ref=f6e202] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/workflow
+                  - listitem [ref=f6e205]:
+                    - link "Lockfile" [ref=f6e206] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/lockfile
+          - region "Check run summary" [ref=f6e210]:
+            - generic [ref=f6e214]:
+              - link "render" [ref=f6e217] [cursor=pointer]:
+                - /url: "#logs"
+              - generic [ref=f6e219]: Started 2026-10-16 00:58:29 45m 10s ago

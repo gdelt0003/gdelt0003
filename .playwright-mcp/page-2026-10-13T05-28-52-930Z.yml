@@ -1,0 +1,339 @@
+- generic [active] [ref=f2e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f2e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f2e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f2e8]:
+    - search [ref=f2e9]:
+      - generic [ref=f2e11]:
+        - link "Google 首页" [ref=f2e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0QPHoECAYQBA
+        - generic [ref=f2e21]:
+          - generic [ref=f2e22]:
+            - combobox "搜索" [ref=f2e25]: subtitle style guidelines two lines safe area outline yellow Chinese subtitle style guidelines two lines safe area outline yellow Chinese
+            - generic [ref=f2e26]:
+              - button "清除" [ref=f2e28] [cursor=pointer]
+              - generic [ref=f2e33]:
+                - button "按语音搜索" [ref=f2e34] [cursor=pointer]
+                - button "按图搜索" [ref=f2e37] [cursor=pointer]
+          - button "搜索" [ref=f2e40] [cursor=pointer]
+    - generic [ref=f2e45]:
+      - button "设置" [ref=f2e47] [cursor=pointer]
+      - button "分享" [ref=f2e52] [cursor=pointer]
+      - generic [ref=f2e58]:
+        - button "Google 应用" [ref=f2e60] [cursor=pointer]
+        - link "登录" [ref=f2e65] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3Dsubtitle%2Bstyle%2Bguidelines%2Btwo%2Blines%2Bsafe%2Barea%2Boutline%2Byellow%2BChinese%26sei%3Dk8HNatHdB-_YkPIPyI7liAw&ec=futura_srp_og_si_72236_p
+  - generic [ref=f2e68]:
+    - navigation [ref=f2e74]:
+      - generic [ref=f2e80]:
+        - list [ref=f2e81]:
+          - listitem [ref=f2e82]:
+            - link "全部" [disabled] [ref=f2e83]
+          - listitem [ref=f2e86]:
+            - link "图片" [ref=f2e87] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0QtKgLegQIDhAB
+          - listitem [ref=f2e90]:
+            - link "视频" [ref=f2e91] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0QtKgLegQIDxAB
+          - listitem [ref=f2e94]:
+            - link "短视频" [ref=f2e95] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Qs6gLegQIEBAB
+          - listitem [ref=f2e98]:
+            - link "新闻" [ref=f2e99] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q0pQJegQIERAB
+          - listitem [ref=f2e102]:
+            - link "网页" [ref=f2e103] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Qs6gLegQIEhAB
+          - listitem [ref=f2e106]:
+            - link "图书" [ref=f2e107] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOm668fbRC_a7Vhb8DCgbMq5qkXH1ll5RuIouPLh5wQpsjSPZ1jCO3RTEOVjBrKAX5aHAyKPiwK339FbCDoQhaMDsJKH7j47k_p-57zERSWrhIcfgX2gUnvgXMiDK2YNGG-EDnjKnvuhtsgQ0e9vtvdp3xshxIDPw5jgly6CtZY5dat9H5&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q0pQJegQIExAB
+          - listitem [ref=f2e110]:
+            - button [ref=f2e111] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f2e112]: 更多
+        - button "工具" [ref=f2e119] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f2e126]
+    - main [ref=f2e132]:
+      - generic [ref=f2e136]:
+        - generic [ref=f2e139]:
+          - heading "Web results" [level=2] [ref=f2e140]
+          - generic [ref=f2e141]:
+            - generic [ref=f2e144]:
+              - 'link "Timed Text Style Guide: Subtitle Templates Netflix | Partner Help Center https://partnerhelp.netflixstudios.com › en-us" [ref=f2e146] [cursor=pointer]':
+                - /url: /goto?url=CAESpwEB6zswFf0-h4y_WuZu6kOtnx3u4ErgavbkFy4uHyTxmyivKNXEi8C9X_YRkBfFoS5xFdzTg5OPZuA5PxwlmLJJ_7zlnoJ3urozpqwRi2tmDXfxB9MO8NYVJe_CzqlOJmkQlOAwGT--BjztiUdpXCMg8D2iPHVDPtOFsu7I0bOsbE9IOvO2uieBZ04wrpUfLk_AhIz7NlAftQHTjfnTbUFxmZjhopmifA
+                - 'heading "Timed Text Style Guide: Subtitle Templates" [level=3] [ref=f2e147]'
+                - generic [ref=f2e153]:
+                  - generic [ref=f2e154]: Netflix | Partner Help Center
+                  - generic [ref=f2e156]: https://partnerhelp.netflixstudios.com › en-us
+              - generic [ref=f2e158]:
+                - generic [ref=f2e159]: ·
+                - link "翻译此页" [ref=f2e160] [cursor=pointer]:
+                  - /url: /goto?url=CAES9wEB6zswFf2fLJA-qkRLOuZhkL2qR-KTlpzFh_P3prX5Ryo48HXXDzrjdyALq8eznrMzeu0rCUd8_lgKWr6-ptesQlUmYJ0ahGwaZjVZVzCyLyusl4BpzDox3zyu5a7VxNHkHIIEHOqnqWCoI05vPYQKOsagb1RKHRW7hdgkqgWZwym0O9-qYKA0XiP_fChBUomWnACRxixI67FnkG4Q0OkUcNVzHPD0vxsP_DWqFlArtFDXtljsjdM31jqb1orWHxR9bJTja5kZXGNA3Jg01OKWTjIfYF_mrWOL7dDroh-767jUoWIIjAg6R4YXanuVPw-AZZ2lA8U-
+              - button "关于这条结果的详细信息" [ref=f2e165] [cursor=pointer]
+            - generic [ref=f2e172]:
+              - emphasis [ref=f2e173]: Use a hyphen without a space to indicate two speakers in one subtitle
+              - text: ", with a maximum of one speaker per line. ... Chinese (Traditional) Timed Text Style Guide."
+        - generic [ref=f2e177]:
+          - generic [ref=f2e180]:
+            - 'link "Subtitle Styling Best Practices: The Readability Rules convertaudiototext.com https://convertaudiototext.com › Blog" [ref=f2e182] [cursor=pointer]':
+              - /url: /goto?url=CAESfgHrOzAVH1xQYm6ydJGQ9QH9t7QVPOKkOKHhSyLl_pWK6HdD0XgUQWhSM5KL-A3A5oQQxkAhMnCvvTok3lxEC8_BByDb2F8sceHQru-8vXeUcabRj3Gi5Kmln3TA6Yb-wH84lucOTRPO0L_mZ4uRbtcyxWbdNxNY71R_EGiMSw
+              - 'heading "Subtitle Styling Best Practices: The Readability Rules" [level=3] [ref=f2e183]'
+              - generic [ref=f2e189]:
+                - generic [ref=f2e190]: convertaudiototext.com
+                - generic [ref=f2e192]: https://convertaudiototext.com › Blog
+            - generic [ref=f2e194]:
+              - generic [ref=f2e195]: ·
+              - link "翻译此页" [ref=f2e196] [cursor=pointer]:
+                - /url: /goto?url=CAESzgEB6zswFe4G-HZ_yq3AvzZN7BEy2z8i8JQjtaI3kdR6zZaESOULULRCwBj03AzgN-UL_hPVwHyruUKF0GiWMsP4_ZXsNUZulZ6X7N2s5gJZJ6JR0PjIYCxWKvFjqMp3L6s9hVdCMtuwjEDxiJg1u0ijizAyogay0dXfkl-4JPZWe0tf0SHbuVH0vIAROfVQPjelE4TO9rcbNhScnFQ-prpZz89zWMUalsYS3T8gIn3v1-pX5sJ0UA26PHzt074ZARpB4BCrR1SJBJx_wkITKg
+            - button "关于这条结果的详细信息" [ref=f2e201] [cursor=pointer]
+          - generic [ref=f2e207]:
+            - generic [ref=f2e208]: 2026年5月26日 —
+            - generic [ref=f2e209]:
+              - text: Verified
+              - emphasis [ref=f2e210]: subtitle
+              - text: styling rules from BBC and Netflix
+              - emphasis [ref=f2e211]: style guides
+              - text: ":"
+              - emphasis [ref=f2e212]: line
+              - text: length, timing, contrast,
+              - emphasis [ref=f2e213]: safe areas
+              - text: ", and"
+              - emphasis [ref=f2e214]: font
+              - text: .
+          - generic [ref=f2e217]:
+            - generic [ref=f2e218]:
+              - img "评分为 4.9 星（最高 5 星）， (1,427) 条用户评价" [ref=f2e219]: 4.9(1,427)
+              - text: ·
+            - text: 免费 · ‎多媒体
+        - generic [ref=f2e226]:
+          - generic [ref=f2e229]:
+            - link "Subtitling Style Guide - AVTpro Certification AVTpro Certification https://avtpro.ooona.net › uploads › 2025/03 › A..." [ref=f2e231] [cursor=pointer]:
+              - /url: /goto?url=CAESiwEB6zswFROdCxNVOCM5Wm2hBviQRpTWV96Ml6UGb_rl3AgZLxwdL4XTHq3e6wTuKtRmAWdi5QVVla2RH-fHjH8-ucFRIrUQ8Imo9AjcG6Gz4039i35BmmR1N4hgFUz16ZIMqXZqPLRI2cBQE-FmCfc_WQWNufvXjFFjnKEtrfZonF_djvdeO2XIjCS2
+              - heading "Subtitling Style Guide - AVTpro Certification" [level=3] [ref=f2e232]
+              - generic [ref=f2e238]:
+                - generic [ref=f2e239]: AVTpro Certification
+                - generic [ref=f2e241]: https://avtpro.ooona.net › uploads › 2025/03 › A...
+            - generic [ref=f2e243]: PDF
+            - button "关于这条结果的详细信息" [ref=f2e248] [cursor=pointer]
+          - generic [ref=f2e254]:
+            - generic [ref=f2e255]: 2025年5月26日 —
+            - generic [ref=f2e256]:
+              - text: "1"
+              - emphasis [ref=f2e257]: Use a hyphen without a space to indicate two speakers in one subtitle
+              - text: ", with a maximum of one speaker per line: -最近好吗? -挺好的. L4.2 ..."
+        - generic [ref=f2e261]:
+          - generic [ref=f2e264]:
+            - link "Standard Subtitling Guidelines FEPSS https://fepss.org › Subtitle Services" [ref=f2e266] [cursor=pointer]:
+              - /url: /goto?url=CAESfgHrOzAVyLYGdmMX54b1i5M6aqlbRIIKwJ22YaOx7FKk61IKfw6G58CUN6TtHvUNcfqmg5NNHn0p143DPabAZ7Z0zXUM6YUfEaaKiJmJp5OCRqwgcZZh1kKlF5mXvc_oFvKd709AKxZCUxsDFGUYHw3QB8l3ceKzIV9o842fug
+              - heading "Standard Subtitling Guidelines" [level=3] [ref=f2e267]
+              - generic [ref=f2e273]:
+                - generic [ref=f2e274]: FEPSS
+                - generic [ref=f2e276]: https://fepss.org › Subtitle Services
+            - generic [ref=f2e278]:
+              - generic [ref=f2e279]: ·
+              - link "翻译此页" [ref=f2e280] [cursor=pointer]:
+                - /url: /goto?url=CAESzgEB6zswFVONBDIa7Lhc7Fm_AKekupT2hn73BjcOOQmwv2DrkkWA-ziFAKe3SkVg4-fvynQyZBdHzC4MWsZb530_cnC_GRuKWZV5r4Wj5g0KvbdZm0nt9cU4D1pbCAv9ZeXr_yhyjYrKKEOU1m-eJm9lIpUj75TMdWLbknyPAfRNoZF2L-n2JfmsEHSejU0YbD28a4_r69NZtATMevql_1YEwGdScIFc0mV9qyoY45gpgiloscgjZfoMPeYzpsYlPXDm3I1fG2tvIcjDCOFKeA
+            - button "关于这条结果的详细信息" [ref=f2e285] [cursor=pointer]
+          - generic [ref=f2e292]:
+            - text: No more than
+            - emphasis [ref=f2e293]: two lines
+            - text: per caption. Place all captions within the
+            - emphasis [ref=f2e294]: safe zone
+            - text: (or
+            - emphasis [ref=f2e295]: safe area
+            - text: ). In the case where essential sound eﬀects are used simultaneously ...
+        - generic [ref=f2e299]:
+          - generic [ref=f2e302]:
+            - link "CHANNEL 4 SUBTITLING GUIDELINES Channel 4 https://www.channel4.com › foi-docs › SG_FLP" [ref=f2e304] [cursor=pointer]:
+              - /url: /goto?url=CAESgQEB6zswFdXWqbJFQs1gMEESJ86e-n139-dQvM0jOWG2JcJrlxTgDam39yp9LvLf7aBUdzIeIKseHVbr2cU-HfMKdTI6Fa68x54D2cG1FupDcdGdlZolPVNCeufKbHdNghby_aeB-6H41Nm86h8eVCnvpsB9pxQkeoYqufJJssirN4w
+              - heading "CHANNEL 4 SUBTITLING GUIDELINES" [level=3] [ref=f2e305]
+              - generic [ref=f2e311]:
+                - generic [ref=f2e312]: Channel 4
+                - generic [ref=f2e314]: https://www.channel4.com › foi-docs › SG_FLP
+            - generic [ref=f2e316]: PDF
+            - button "关于这条结果的详细信息" [ref=f2e321] [cursor=pointer]
+          - generic [ref=f2e326]:
+            - generic [ref=f2e328]:
+              - emphasis [ref=f2e329]: All subtitles must stay within text safe areas
+              - text: . • Subtitles should not appear on screen at the same time as captions, which should be cleared before subtitling ...
+            - generic [ref=f2e330]: 2 页
+        - generic [ref=f2e335]:
+          - heading "相关问题" [level=2] [ref=f2e337]
+          - generic [ref=f2e338]:
+            - button "What are the standard guidelines for subtitles?" [ref=f2e344] [cursor=pointer]
+            - button "What are the guidelines for subtitling?" [ref=f2e358] [cursor=pointer]
+            - button "To ensure viewers can read subtitles comfortably, when should a subtitle be broken into two lines?" [ref=f2e372] [cursor=pointer]
+            - button "What are Netflix's subtitle guidelines for English?" [ref=f2e386] [cursor=pointer]
+        - generic [ref=f2e396]:
+          - heading "Web results" [level=2] [ref=f2e397]
+          - generic [ref=f2e398]:
+            - generic [ref=f2e401]:
+              - link "Configuring Subtitle Properties > Safe Area EZTitles https://eztitles.com › Plugins › Avid › safe_a..." [ref=f2e403] [cursor=pointer]:
+                - /url: /goto?url=CAEScgHrOzAVFLFijOGj-o1LL8jWxbyeJSefttngr74hSdBjlQBLwvDzwECwoe8dnX9J3GPr6nHaDoMgEjIQy3ujiKd05bjMDtH-zg51G1XLzPnogr2BGGyfR00Xh2Dsi0s3YlRW4SOubs9MsAgk3-_qSWDTZQ
+                - heading "Configuring Subtitle Properties > Safe Area" [level=3] [ref=f2e404]
+                - generic [ref=f2e410]:
+                  - generic [ref=f2e411]: EZTitles
+                  - generic [ref=f2e413]: https://eztitles.com › Plugins › Avid › safe_a...
+              - generic [ref=f2e415]:
+                - generic [ref=f2e416]: ·
+                - link "翻译此页" [ref=f2e417] [cursor=pointer]:
+                  - /url: /goto?url=CAESwgEB6zswFYsna0fbaw7qYI2ZUgEkBFCETymoHmTHPZSIMfKHSrDUdNpR6qz_qskWuBn5wCasqhKXXp7Q1cIVAPSS5MUwEBTQwCQu_XBnYS9DG_Q2oS8kmNfjx-wRdsw7sqtnsJcwC6ocJ-J7CTH767PzEJHsLPkNRWy7qptv0RMUV6pR6tzGOG2AGjpNW3CorTeFwUwQ-n9K3Rtoo0XxMNa8pKFBLT9l5evGvUzNrQn15QL6q9CFEiVu_OMZko7W8OsYhQ
+              - button "关于这条结果的详细信息" [ref=f2e422] [cursor=pointer]
+            - generic [ref=f2e429]:
+              - text: For
+              - emphasis [ref=f2e430]: subtitles
+              - text: with
+              - emphasis [ref=f2e431]: two
+              - text: text
+              - emphasis [ref=f2e432]: lines
+              - text: "the higher one appears above the baseline and the lower one - bellow the baseline: The position of the baseline ("
+              - emphasis [ref=f2e433]: yellow line
+              - text: ) ...
+        - generic [ref=f2e437]:
+          - generic [ref=f2e440]:
+            - link "BBC Subtitle Guidelines BBC https://www.bbc.co.uk › guides › subtitles" [ref=f2e442] [cursor=pointer]:
+              - /url: /goto?url=CAESfAHrOzAVNsFodKR0SshocvjxdoTOVl6u6ryp4gkbtSwxyi-ElGfnRAsK3sTwco6UbKTU9w8QoiTpfkXrMHbOVeCEfUp83q4fcbtWSEHTyfgWKV_jDMdaBmZ-sAHsWTfxNFi0iyf3JeAGoNOwuQwPzKuIlgXWhCcg1zLYpfc
+              - heading "BBC Subtitle Guidelines" [level=3] [ref=f2e443]
+              - generic [ref=f2e449]:
+                - generic [ref=f2e450]: BBC
+                - generic [ref=f2e452]: https://www.bbc.co.uk › guides › subtitles
+            - generic [ref=f2e454]:
+              - generic [ref=f2e455]: ·
+              - link "翻译此页" [ref=f2e456] [cursor=pointer]:
+                - /url: /goto?url=CAESzAEB6zswFbcyGKsiHGdB53VKEqA9ABR-5vGrxuIYLI1hbnBgGZfYmzOGDltaywXw4ePkLPuTY3Jsh0bumTfyjYs5PcPhKvV16xWjV98Jlfd02pc-eNpqiqUD1BaAA9jOPn-Q3GwXM6QKxf6NFe4ha0grY07-XCwlMnk4lsiMGbgCGV1VVZsQUeg14-IsXOV3EhuDbrPD4EgEcMQoi0DIv_cCItNKXLFIR6IYrxvvNirNSTbHu8RzLtjPwbxLvaB9jTfu9SiGuSq9h_a7FKA
+            - button "关于这条结果的详细信息" [ref=f2e461] [cursor=pointer]
+          - generic [ref=f2e468]:
+            - text: The BBC Academy has produced an online
+            - emphasis [ref=f2e469]: guide
+            - text: to subtitling. If you are new to subtitling, please start there.
+            - emphasis [ref=f2e470]: Subtitles
+            - text: are primarily intended to serve ...
+        - generic [ref=f2e474]:
+          - generic [ref=f2e477]:
+            - link "How to Break Subtitle Lines Naturally (Rules + Automatic Tools) geeklink.dev https://geeklink.dev › ... › Voice to Subtitle" [ref=f2e479] [cursor=pointer]:
+              - /url: /goto?url=CAESdwHrOzAVJTM4QqHzIwCevx8DXi-ccBYhkfJTNwrYEeKkHwkxzL0FGxuk6XQqRjeAskEiV_PMaDzgFVAqHd_SOVttGyz6dM0emF8WQw2mypVh2kuzT1zzG_DA65_dfcaGlgYyGtDcC8LciFiE3YChShPf90fGMLtR
+              - heading "How to Break Subtitle Lines Naturally (Rules + Automatic Tools)" [level=3] [ref=f2e480]
+              - generic [ref=f2e486]:
+                - generic [ref=f2e487]: geeklink.dev
+                - generic [ref=f2e489]: https://geeklink.dev › ... › Voice to Subtitle
+            - generic [ref=f2e491]:
+              - generic [ref=f2e492]: ·
+              - link "翻译此页" [ref=f2e493] [cursor=pointer]:
+                - /url: /goto?url=CAESxwEB6zswFV2GdB3r6bc8TXZ0mX57rtLDeqtsrxUwCwTIb3KNY9Y_l7atrUDVWuptcoC2TcrlMVUzcawqZrNO8GB_yQEUvqYjOFhL2IWt_cSHTifsRprcz86DvNo_REBVTRstNWV_x1Y1IHrbEVGTg1qOY4v6vRGLfWRGnAIre0oKkgfjgzb4GEwNB3k1Ih02Ws6aTcuqAp3uG6vD_Db_hItQWM38qbycy2o2JkuvMX8LJ26Mgekk7dk0Tw_Hqnba6q_EH_NWNAY-
+            - button "关于这条结果的详细信息" [ref=f2e498] [cursor=pointer]
+          - generic [ref=f2e505]:
+            - text: The rules for breaking subtitle lines naturally · Respect a character-per-line limit. ·
+            - emphasis [ref=f2e506]: Use no more than two lines
+            - text: . · Break after punctuation. · Break at clause ...
+        - generic [ref=f2e510]:
+          - generic [ref=f2e513]:
+            - link "Samtext subtitling guidelines Samtext International https://www.samtext.com › audiovisual-text" [ref=f2e515] [cursor=pointer]:
+              - /url: /goto?url=CAESlgEB6zswFTOaAz4_fkcfag6x_Vi_Yf8fYcGOyIeu0_rlebWvAU7XixSvu2ud5mrmSrpeqPdg5diHymtM3MdGJH5d2Y3hqBX4dzlmYDBx0uR-0nlB0Yb183h8FcR8_35mvle5VGBSb8Ys8QWrFb11fmf389Sf7LtZeFYCgjycPNvpSVo5I8wqVFO8rD6t2irMzL5iVXtmKvg
+              - heading "Samtext subtitling guidelines" [level=3] [ref=f2e516]
+              - generic [ref=f2e522]:
+                - generic [ref=f2e523]: Samtext International
+                - generic [ref=f2e525]: https://www.samtext.com › audiovisual-text
+            - generic [ref=f2e527]:
+              - generic [ref=f2e528]: ·
+              - link "翻译此页" [ref=f2e529] [cursor=pointer]:
+                - /url: /goto?url=CAES5gEB6zswFV2_SPtBa1Ruc_kMttS2Q3w-AuqDV07ZMd4kUEfT_JGM6e7FAEXymGM3tgMowD8Jx-FnMJZpakfm3oN5OVqAp-ccaYcsuKo2ICtasVHC-4_NBEJh_i1q9AItWwTPaBezPJEJLAV7G9H13t_vq3iEKUR-JbXZ6-hWdzj0srmXXJNDlkBE55Epprvn_lCb6KfcFDDMbnQ7mNDbFhwR1iYN8f5GlOrUmovYFFZJndU7qa1xRZPCSu0zBU4DmuNXn66S07fxyu_DDulFWW7J1f9-CZMV5Dow8h5KUkkVspg0V44uGA
+            - button "关于这条结果的详细信息" [ref=f2e534] [cursor=pointer]
+          - generic [ref=f2e541]:
+            - text: A block
+            - emphasis [ref=f2e542]: subtitle
+            - text: should consist of one or
+            - emphasis [ref=f2e543]: two lines
+            - text: . · If there is continuous dialogue that needs to be split into several block
+            - emphasis [ref=f2e544]: subtitles
+            - text: ", it must be divided at ..."
+        - generic [ref=f2e550]:
+          - generic [ref=f2e553]:
+            - link "The Ultimate Guide to Movie Subtitling Format, Style & Etiquette YouTube · StudioBinder 20.6万+ 次观看 · 3年前" [ref=f2e555] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV1Cafsd0JR7_GG3edWH72uI0fO5fdl29wdAWpIJo6T9MGg-98gahYulP2IgM6sbihrUU5-4HGsRmyxntItwuScIK1gy38dwaHJgTkIbJPx6VJzARoaDTJBrZhdVRBFufWMw
+              - heading "The Ultimate Guide to Movie Subtitling Format, Style & Etiquette" [level=3] [ref=f2e556]
+              - generic [ref=f2e562]:
+                - generic [ref=f2e563]: YouTube · StudioBinder
+                - generic [ref=f2e565]: 20.6万+ 次观看 · 3年前
+            - button "关于这条结果的详细信息" [ref=f2e571] [cursor=pointer]
+          - generic [ref=f2e576]:
+            - link "The Ultimate Guide to Movie Subtitling Format, Style & Etiquette，由StudioBinder上传到YouTube上. 在YouTube上播放. 15:12" [ref=f2e577] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV1Cafsd0JR7_GG3edWH72uI0fO5fdl29wdAWpIJo6T9MGg-98gahYulP2IgM6sbihrUU5-4HGsRmyxntItwuScIK1gy38dwaHJgTkIbJPx6VJzARoaDTJBrZhdVRBFufWMw
+              - generic [ref=f2e578]: 15:12
+            - generic [ref=f2e590]: One use of subtitles for me as a non native speaker, is when characters in movies talk with low volume (which, unfortunately, is too often).
+          - button "在此视频中，有 6 个重要时刻" [ref=f2e596] [cursor=pointer]
+      - generic [ref=f2e607]:
+        - generic [ref=f2e612]:
+          - heading "用户还搜索了" [level=2] [ref=f2e614]
+          - generic [ref=f2e616]:
+            - generic [ref=f2e617]:
+              - link "Netflix Timed Text Style Guide English" [ref=f2e621] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+Timed+Text+Style+Guide+English&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhEEAE
+              - link "Netflix subtitle guidelines" [ref=f2e635] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+subtitle+guidelines&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhLEAE
+              - link "Netflix subtitle font name" [ref=f2e649] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+subtitle+font+name&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhKEAE
+              - link "Netflix subtitle font CapCut" [ref=f2e663] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+subtitle+font+CapCut&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhJEAE
+            - generic [ref=f2e674]:
+              - link "BBC subtitle guidelines" [ref=f2e678] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=BBC+subtitle+guidelines&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhIEAE
+              - link "How should lines be broken up within a subtitle" [ref=f2e692] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=How+should+lines+be+broken+up+within+a+subtitle&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhHEAE
+              - link "Netflix timed text style guide english uk" [ref=f2e706] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+timed+text+style+guide+english+uk&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhGEAE
+              - link "Netflix subtitle font size" [ref=f2e720] [cursor=pointer]:
+                - /url: /search?newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&q=Netflix+subtitle+font+size&sa=X&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q1QJ6BAhFEAE
+        - navigation [ref=f2e731]:
+          - heading "网页导航" [level=1] [ref=f2e732]
+          - text: "1"
+          - link "Page 2" [ref=f2e735] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=10&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAE
+            - text: "2"
+          - link "Page 3" [ref=f2e737] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=20&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAG
+            - text: "3"
+          - link "Page 4" [ref=f2e739] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=30&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAI
+            - text: "4"
+          - link "Page 5" [ref=f2e741] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=40&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAK
+            - text: "5"
+          - link "Page 6" [ref=f2e743] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=50&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAM
+            - text: "6"
+          - link "Page 7" [ref=f2e745] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=60&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAO
+            - text: "7"
+          - link "Page 8" [ref=f2e747] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=70&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAQ
+            - text: "8"
+          - link "Page 9" [ref=f2e749] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=80&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAS
+            - text: "9"
+          - link "Page 10" [ref=f2e751] [cursor=pointer]:
+            - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=90&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8tMDegQIPBAU
+            - text: "10"
+          - heading [level=2] [ref=f2e753]:
+            - link "下一页" [ref=f2e754] [cursor=pointer]:
+              - /url: /search?q=subtitle+style+guidelines+two+lines+safe+area+outline+yellow+Chinese&newwindow=1&sca_esv=95a3924c91beb42b&sxsrf=APpeQnvg5YSCFSEDWJrcEs4Y_DGtRFToNg:1791869331808&ei=k8HNas_9MKj1kPIP5OiS6A8&start=10&sa=N&sstk=AS6-VmLiQKIEP3EiN-AgIzmvnl5NJlZdLZEW88UGyYDdVgMQOB_sCDnEU5l9yVMQNsdg2Idy_9lBFod398WqE5rstJW1yUOLziqxaw&ved=2ahUKEwiPk4a4obaXAxWoOkQIHWS0BP0Q8NMDegQIPBAW
+      - navigation
+    - contentinfo [ref=f2e757]:
+      - heading "页脚链接" [level=1] [ref=f2e758]
+      - generic [ref=f2e762]:
+        - generic [ref=f2e766]:
+          - button "龙华区 中国海南省海口市 - 是根据您的 IP 地址推断出来的" [ref=f2e768] [cursor=pointer]:
+            - generic [ref=f2e769]: 龙华区 中国海南省海口市
+            - generic [ref=f2e771]:
+              - text: "-"
+              - generic [ref=f2e772]: 是根据您的 IP 地址推断出来的
+          - text: "-"
+          - button "更新位置信息" [ref=f2e774] [cursor=pointer]
+        - generic [ref=f2e777]:
+          - link "帮助" [ref=f2e778] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f2e780] [cursor=pointer]
+          - link "隐私权" [ref=f2e782] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f2e783] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

@@ -1,0 +1,3250 @@
+- generic [active] [ref=f3e1]:
+  - navigation [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link [ref=f3e4] [cursor=pointer]:
+        - /url: https://aclanthology.org/
+        - img "ACL Logo" [ref=f3e5]
+        - text: ACL Anthology
+      - generic [ref=f3e6]:
+        - list [ref=f3e7]:
+          - listitem [ref=f3e8]:
+            - button "Open About menu" [ref=f3e9] [cursor=pointer]:
+              - text: About
+              - generic [ref=f3e10]: 
+          - listitem [ref=f3e11]:
+            - button "Open Using menu" [ref=f3e12] [cursor=pointer]:
+              - text: Using
+              - generic [ref=f3e13]: 
+          - listitem [ref=f3e14]:
+            - button "Open Contributions menu" [ref=f3e15] [cursor=pointer]:
+              - text: Contributions
+              - generic [ref=f3e16]: 
+          - listitem [ref=f3e17]:
+            - link " GitHub" [ref=f3e18] [cursor=pointer]:
+              - /url: https://github.com/acl-org/acl-anthology/
+              - generic [ref=f3e19]: 
+              - text: GitHub
+        - text: 
+      - search [ref=f3e20]:
+        - combobox "Search papers or authors" [ref=f3e21]
+        - button "Submit search" [ref=f3e22] [cursor=pointer]:
+          - generic [ref=f3e23]: 
+        - status [ref=f3e24]
+  - generic [ref=f3e26]:
+    - heading [level=2] [ref=f3e27]:
+      - link "Proceedings of the Tenth Conference on Machine Translation" [ref=f3e28] [cursor=pointer]:
+        - /url: https://aclanthology.org/2025.wmt-1.pdf
+    - paragraph [ref=f3e29]:
+      - link "Barry Haddow" [ref=f3e30] [cursor=pointer]:
+        - /url: /people/barry-haddow/unverified/
+      - text: ","
+      - link "Tom Kocmi" [ref=f3e31] [cursor=pointer]:
+        - /url: /people/tom-kocmi/
+      - text: ","
+      - link "Philipp Koehn" [ref=f3e32] [cursor=pointer]:
+        - /url: /people/philipp-koehn/
+      - text: ","
+      - link "Christof Monz" [ref=f3e33] [cursor=pointer]:
+        - /url: /people/christof-monz/
+      - text: (Editors)
+    - separator [ref=f3e34]
+    - generic [ref=f3e35]:
+      - generic [ref=f3e37]:
+        - term [ref=f3e38]: "Anthology ID:"
+        - definition [ref=f3e39]: 2025.wmt-1
+        - term [ref=f3e40]: "Month:"
+        - definition [ref=f3e41]: November
+        - term [ref=f3e42]: "Year:"
+        - definition [ref=f3e43]: "2025"
+        - term [ref=f3e44]: "Address:"
+        - definition [ref=f3e45]: Suzhou, China
+        - term [ref=f3e46]: "Venue:"
+        - definition [ref=f3e47]:
+          - link "WMT" [ref=f3e48] [cursor=pointer]:
+            - /url: /venues/wmt/
+        - term [ref=f3e49]: "Events:"
+        - definition [ref=f3e50]:
+          - link "The 2025 Conference on Empirical Methods in Natural Language Processing" [ref=f3e51] [cursor=pointer]:
+            - /url: /events/emnlp-2025/
+          - text: "|"
+          - link "Conference on Machine Translation (2025)" [ref=f3e52] [cursor=pointer]:
+            - /url: /events/wmt-2025/
+        - term [ref=f3e53]: "SIG:"
+        - definition [ref=f3e54]:
+          - link "SIGMT" [ref=f3e55] [cursor=pointer]:
+            - /url: /sigs/sigmt/
+        - term [ref=f3e56]: "Publisher:"
+        - definition [ref=f3e57]: Association for Computational Linguistics
+        - term [ref=f3e58]: "URL:"
+        - definition [ref=f3e59]:
+          - link "https://aclanthology.org/2025.wmt-1/" [ref=f3e60] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1/
+        - term [ref=f3e61]: "DOI:"
+        - definition [ref=f3e62]:
+          - link "10.18653/v1/2025.wmt-1" [ref=f3e63] [cursor=pointer]:
+            - /url: https://doi.org/10.18653/v1/2025.wmt-1
+        - term [ref=f3e64]: "ISBN:"
+        - definition [ref=f3e65]: 979-8-89176-341-8
+        - term [ref=f3e66]: "Bib Export formats:"
+        - definition [ref=f3e67]:
+          - link "BibTeX" [ref=f3e68] [cursor=pointer]:
+            - /url: /volumes/2025.wmt-1.bib
+          - link "MODS XML" [ref=f3e69] [cursor=pointer]:
+            - /url: /volumes/2025.wmt-1.xml
+          - link "EndNote" [ref=f3e70] [cursor=pointer]:
+            - /url: /volumes/2025.wmt-1.enw
+        - term [ref=f3e71]: "PDF:"
+        - definition [ref=f3e72]:
+          - link "https://aclanthology.org/2025.wmt-1.pdf" [ref=f3e73] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.pdf
+      - generic [ref=f3e74]:
+        - link " PDF (full)" [ref=f3e75] [cursor=pointer]:
+          - /url: https://aclanthology.org/2025.wmt-1.pdf
+          - generic [ref=f3e76]: 
+          - generic [ref=f3e77]: PDF (full)
+        - link " BibTeX" [ref=f3e78] [cursor=pointer]:
+          - /url: /volumes/2025.wmt-1.bib
+          - generic [ref=f3e79]: 
+          - text: BibTeX
+        - link " Search" [ref=f3e80] [cursor=pointer]:
+          - /url: https://www.semanticscholar.org/search?q=Proceedings+of+the+Tenth+Conference+on+Machine+Translation
+          - generic [ref=f3e81]: 
+          - text: Search
+    - separator [ref=f3e82]
+    - button "Show all abstracts " [ref=f3e83] [cursor=pointer]:
+      - generic [ref=f3e84]:
+        - text: Show all abstracts
+        - generic [ref=f3e85]: 
+      - text: 
+    - generic [ref=f3e86]:
+      - generic [ref=f3e87]:
+        - generic [ref=f3e89]:
+          - link "Open PDF" [ref=f3e90] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.0.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e91] [cursor=pointer]:
+            - /url: /2025.wmt-1.0.bib
+            - text: bib
+        - generic [ref=f3e92]:
+          - strong [ref=f3e93]:
+            - link "Proceedings of the Tenth Conference on Machine Translation" [ref=f3e94] [cursor=pointer]:
+              - /url: /2025.wmt-1.0/
+          - link "Barry Haddow" [ref=f3e95] [cursor=pointer]:
+            - /url: /people/barry-haddow/unverified/
+          - text: "|"
+          - link "Tom Kocmi" [ref=f3e96] [cursor=pointer]:
+            - /url: /people/tom-kocmi/
+          - text: "|"
+          - link "Philipp Koehn" [ref=f3e97] [cursor=pointer]:
+            - /url: /people/philipp-koehn/
+          - text: "|"
+          - link "Christof Monz" [ref=f3e98] [cursor=pointer]:
+            - /url: /people/christof-monz/
+      - generic [ref=f3e99]:
+        - generic [ref=f3e101]:
+          - link "Open PDF" [ref=f3e102] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.1.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e103] [cursor=pointer]:
+            - /url: /2025.wmt-1.1.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e104] [cursor=pointer]: abs
+        - generic [ref=f3e105]:
+          - strong [ref=f3e106]:
+            - link "An Empirical Analysis of Machine Translation for Expanding Multilingual Benchmarks" [ref=f3e107] [cursor=pointer]:
+              - /url: /2025.wmt-1.1/
+          - link "Sara Rajaee" [ref=f3e108] [cursor=pointer]:
+            - /url: /people/sara-rajaee/unverified/
+          - text: "|"
+          - link "Rochelle Choenni" [ref=f3e109] [cursor=pointer]:
+            - /url: /people/rochelle-choenni/unverified/
+          - text: "|"
+          - link "Ekaterina Shutova" [ref=f3e110] [cursor=pointer]:
+            - /url: /people/ekaterina-shutova/
+          - text: "|"
+          - link "Christof Monz" [ref=f3e111] [cursor=pointer]:
+            - /url: /people/christof-monz/
+      - generic [ref=f3e112]:
+        - generic [ref=f3e114]:
+          - link "Open PDF" [ref=f3e115] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.2.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e116] [cursor=pointer]:
+            - /url: /2025.wmt-1.2.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e117] [cursor=pointer]: abs
+        - generic [ref=f3e118]:
+          - strong [ref=f3e119]:
+            - link "Cross-lingual Human-Preference Alignment for Neural Machine Translation with Direct Quality Optimization" [ref=f3e120] [cursor=pointer]:
+              - /url: /2025.wmt-1.2/
+          - link "Kaden Uhlig" [ref=f3e121] [cursor=pointer]:
+            - /url: /people/kaden-uhlig/
+          - text: "|"
+          - link "Joern Wuebker" [ref=f3e122] [cursor=pointer]:
+            - /url: /people/joern-wuebker/
+          - text: "|"
+          - link "Raphael Reinauer" [ref=f3e123] [cursor=pointer]:
+            - /url: /people/raphael-reinauer/unverified/
+          - text: "|"
+          - link "John Denero" [ref=f3e124] [cursor=pointer]:
+            - /url: /people/john-denero/unverified/
+      - generic [ref=f3e125]:
+        - generic [ref=f3e127]:
+          - link "Open PDF" [ref=f3e128] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.3.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e129] [cursor=pointer]:
+            - /url: /2025.wmt-1.3.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e130] [cursor=pointer]: abs
+        - generic [ref=f3e131]:
+          - strong [ref=f3e132]:
+            - link "Audio-Based Crowd-Sourced Evaluation of Machine Translation Quality" [ref=f3e133] [cursor=pointer]:
+              - /url: /2025.wmt-1.3/
+          - link "Sami Haq" [ref=f3e134] [cursor=pointer]:
+            - /url: /people/sami-haq/unverified/
+          - text: "|"
+          - link "Sheila Castilho" [ref=f3e135] [cursor=pointer]:
+            - /url: /people/sheila-castilho/unverified/
+          - text: "|"
+          - link "Yvette Graham" [ref=f3e136] [cursor=pointer]:
+            - /url: /people/yvette-graham/
+      - generic [ref=f3e137]:
+        - generic [ref=f3e139]:
+          - link "Open PDF" [ref=f3e140] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.4.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e141] [cursor=pointer]:
+            - /url: /2025.wmt-1.4.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e142] [cursor=pointer]: abs
+        - generic [ref=f3e143]:
+          - strong [ref=f3e144]:
+            - link "Meaningful Pose-Based Sign Language Evaluation" [ref=f3e145] [cursor=pointer]:
+              - /url: /2025.wmt-1.4/
+          - link "Zifan Jiang" [ref=f3e146] [cursor=pointer]:
+            - /url: /people/zifan-jiang/
+          - text: "|"
+          - link "Colin Leong" [ref=f3e147] [cursor=pointer]:
+            - /url: /people/colin-leong/unverified/
+          - text: "|"
+          - link "Amit Moryossef" [ref=f3e148] [cursor=pointer]:
+            - /url: /people/amit-moryossef/
+          - text: "|"
+          - link "Oliver Cory" [ref=f3e149] [cursor=pointer]:
+            - /url: /people/oliver-cory/unverified/
+          - text: "|"
+          - link "Maksym Ivashechkin" [ref=f3e150] [cursor=pointer]:
+            - /url: /people/maksym-ivashechkin/unverified/
+          - text: "|"
+          - link "Neha Tarigopula" [ref=f3e151] [cursor=pointer]:
+            - /url: /people/neha-tarigopula/unverified/
+          - text: "|"
+          - link "Biao Zhang" [ref=f3e152] [cursor=pointer]:
+            - /url: /people/biao-zhang/unverified/
+          - text: "|"
+          - link "Anne Göhring" [ref=f3e153] [cursor=pointer]:
+            - /url: /people/anne-gohring/
+          - text: "|"
+          - link "Annette Rios" [ref=f3e154] [cursor=pointer]:
+            - /url: /people/annette-rios-gonzales/
+          - text: "|"
+          - link "Rico Sennrich" [ref=f3e155] [cursor=pointer]:
+            - /url: /people/rico-sennrich/
+          - text: "|"
+          - link "Sarah Ebling" [ref=f3e156] [cursor=pointer]:
+            - /url: /people/sarah-ebling/
+      - generic [ref=f3e157]:
+        - generic [ref=f3e159]:
+          - link "Open PDF" [ref=f3e160] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.5.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e161] [cursor=pointer]:
+            - /url: /2025.wmt-1.5.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e162] [cursor=pointer]: abs
+        - generic [ref=f3e163]:
+          - strong [ref=f3e164]:
+            - 'link "Context Is Ubiquitous, but Rarely Changes Judgments: Revisiting Document-Level MT Evaluation" [ref=f3e165] [cursor=pointer]':
+              - /url: /2025.wmt-1.5/
+          - link "Ahrii Kim" [ref=f3e166] [cursor=pointer]:
+            - /url: /people/ahrii-kim/
+      - generic [ref=f3e167]:
+        - generic [ref=f3e169]:
+          - link "Open PDF" [ref=f3e170] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.6.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e171] [cursor=pointer]:
+            - /url: /2025.wmt-1.6.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e172] [cursor=pointer]: abs
+        - generic [ref=f3e173]:
+          - strong [ref=f3e174]:
+            - 'link "GIIFT: Graph-guided Inductive Image-free Multimodal Machine Translation" [ref=f3e175] [cursor=pointer]':
+              - /url: /2025.wmt-1.6/
+          - link "Jiafeng Xiong" [ref=f3e176] [cursor=pointer]:
+            - /url: /people/jiafeng-xiong/unverified/
+          - text: "|"
+          - link "Yuting Zhao" [ref=f3e177] [cursor=pointer]:
+            - /url: /people/yuting-zhao/unverified/
+      - generic [ref=f3e178]:
+        - generic [ref=f3e180]:
+          - link "Open PDF" [ref=f3e181] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.7.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e182] [cursor=pointer]:
+            - /url: /2025.wmt-1.7.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e183] [cursor=pointer]: abs
+        - generic [ref=f3e184]:
+          - strong [ref=f3e185]:
+            - link "Specification-Aware Machine Translation and Evaluation for Purpose Alignment" [ref=f3e186] [cursor=pointer]:
+              - /url: /2025.wmt-1.7/
+          - link "Yoko Kayano" [ref=f3e187] [cursor=pointer]:
+            - /url: /people/yoko-kayano/unverified/
+          - text: "|"
+          - link "Saku Sugawara" [ref=f3e188] [cursor=pointer]:
+            - /url: /people/saku-sugawara/
+      - generic [ref=f3e189]:
+        - generic [ref=f3e191]:
+          - link "Open PDF" [ref=f3e192] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.8.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e193] [cursor=pointer]:
+            - /url: /2025.wmt-1.8.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e194] [cursor=pointer]: abs
+        - generic [ref=f3e195]:
+          - strong [ref=f3e196]:
+            - 'link "OpenWHO: A Document-Level Parallel Corpus for Health Translation in Low-Resource Languages" [ref=f3e197] [cursor=pointer]':
+              - /url: /2025.wmt-1.8/
+          - link "Raphael Merx" [ref=f3e198] [cursor=pointer]:
+            - /url: /people/raphael-merx/
+          - text: "|"
+          - link "Hanna Suominen" [ref=f3e199] [cursor=pointer]:
+            - /url: /people/hanna-suominen/
+          - text: "|"
+          - link "Trevor Cohn" [ref=f3e200] [cursor=pointer]:
+            - /url: /people/trevor-cohn/
+          - text: "|"
+          - link "Ekaterina Vylomova" [ref=f3e201] [cursor=pointer]:
+            - /url: /people/ekaterina-vylomova/
+      - generic [ref=f3e202]:
+        - generic [ref=f3e204]:
+          - link "Open PDF" [ref=f3e205] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.9.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e206] [cursor=pointer]:
+            - /url: /2025.wmt-1.9.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e207] [cursor=pointer]: abs
+        - generic [ref=f3e208]:
+          - strong [ref=f3e209]:
+            - link "Factors Affecting Translation Quality in In-context Learning for Multilingual Medical Domain" [ref=f3e210] [cursor=pointer]:
+              - /url: /2025.wmt-1.9/
+          - link "Jonathan Mutal" [ref=f3e211] [cursor=pointer]:
+            - /url: /people/jonathan-mutal/unverified/
+          - text: "|"
+          - link "Raphael Rubino" [ref=f3e212] [cursor=pointer]:
+            - /url: /people/raphael-rubino/
+          - text: "|"
+          - link "Pierrette Bouillon" [ref=f3e213] [cursor=pointer]:
+            - /url: /people/pierrette-bouillon/
+      - generic [ref=f3e214]:
+        - generic [ref=f3e216]:
+          - link "Open PDF" [ref=f3e217] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.10.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e218] [cursor=pointer]:
+            - /url: /2025.wmt-1.10.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e219] [cursor=pointer]: abs
+        - generic [ref=f3e220]:
+          - strong [ref=f3e221]:
+            - link "Character-Aware English-to-Japanese Translation of Fictional Dialogue Using Speaker Embeddings and Back-Translation" [ref=f3e222] [cursor=pointer]:
+              - /url: /2025.wmt-1.10/
+          - link "Ayuna Nagato" [ref=f3e223] [cursor=pointer]:
+            - /url: /people/ayuna-nagato/unverified/
+          - text: "|"
+          - link "Takuya Matsuzaki" [ref=f3e224] [cursor=pointer]:
+            - /url: /people/takuya-matsuzaki/unverified/
+      - generic [ref=f3e225]:
+        - generic [ref=f3e227]:
+          - link "Open PDF" [ref=f3e228] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.11.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e229] [cursor=pointer]:
+            - /url: /2025.wmt-1.11.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e230] [cursor=pointer]: abs
+        - generic [ref=f3e231]:
+          - strong [ref=f3e232]:
+            - 'link "DTW-Align: Bridging the Modality Gap in End-to-End Speech Translation with Dynamic Time Warping Alignment" [ref=f3e233] [cursor=pointer]':
+              - /url: /2025.wmt-1.11/
+          - link "Abderrahmane Issam" [ref=f3e234] [cursor=pointer]:
+            - /url: /people/abderrahmane-issam/unverified/
+          - text: "|"
+          - link "Yusuf Can Semerci" [ref=f3e235] [cursor=pointer]:
+            - /url: /people/yusuf-can-semerci/
+          - text: "|"
+          - link "Jan Scholtes" [ref=f3e236] [cursor=pointer]:
+            - /url: /people/jan-scholtes/unverified/
+          - text: "|"
+          - link "Gerasimos Spanakis" [ref=f3e237] [cursor=pointer]:
+            - /url: /people/gerasimos-spanakis/
+      - generic [ref=f3e238]:
+        - generic [ref=f3e240]:
+          - link "Open PDF" [ref=f3e241] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.12.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e242] [cursor=pointer]:
+            - /url: /2025.wmt-1.12.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e243] [cursor=pointer]: abs
+        - generic [ref=f3e244]:
+          - strong [ref=f3e245]:
+            - 'link "Targeted Source Text Editing for Machine Translation: Exploiting Quality Estimators and Large Language Models" [ref=f3e246] [cursor=pointer]':
+              - /url: /2025.wmt-1.12/
+          - link "Hyuga Koretaka" [ref=f3e247] [cursor=pointer]:
+            - /url: /people/hyuga-koretaka/unverified/
+          - text: "|"
+          - link "Atsushi Fujita" [ref=f3e248] [cursor=pointer]:
+            - /url: /people/atsushi-fujita/unverified/
+          - text: "|"
+          - link "Tomoyuki Kajiwara" [ref=f3e249] [cursor=pointer]:
+            - /url: /people/tomoyuki-kajiwara/
+      - generic [ref=f3e250]:
+        - generic [ref=f3e252]:
+          - link "Open PDF" [ref=f3e253] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.13.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e254] [cursor=pointer]:
+            - /url: /2025.wmt-1.13.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e255] [cursor=pointer]: abs
+        - generic [ref=f3e256]:
+          - strong [ref=f3e257]:
+            - link "Self-Retrieval from Distant Contexts for Document-Level Machine Translation" [ref=f3e258] [cursor=pointer]:
+              - /url: /2025.wmt-1.13/
+          - link "Ziqian Peng" [ref=f3e259] [cursor=pointer]:
+            - /url: /people/ziqian-peng/unverified/
+          - text: "|"
+          - link "Rachel Bawden" [ref=f3e260] [cursor=pointer]:
+            - /url: /people/rachel-bawden/
+          - text: "|"
+          - link "François Yvon" [ref=f3e261] [cursor=pointer]:
+            - /url: /people/francois-yvon/
+      - generic [ref=f3e262]:
+        - generic [ref=f3e264]:
+          - link "Open PDF" [ref=f3e265] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.14.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e266] [cursor=pointer]:
+            - /url: /2025.wmt-1.14.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e267] [cursor=pointer]: abs
+        - generic [ref=f3e268]:
+          - strong [ref=f3e269]:
+            - link "Using Encipherment to Isolate Conditions for the Successful Fine-tuning of Massively Multilingual Translation Models" [ref=f3e270] [cursor=pointer]:
+              - /url: /2025.wmt-1.14/
+          - link "Carter Louchheim" [ref=f3e271] [cursor=pointer]:
+            - /url: /people/carter-louchheim/unverified/
+          - text: "|"
+          - link "Denis Sotnichenko" [ref=f3e272] [cursor=pointer]:
+            - /url: /people/denis-sotnichenko/unverified/
+          - text: "|"
+          - link "Yukina Yamaguchi" [ref=f3e273] [cursor=pointer]:
+            - /url: /people/yukina-yamaguchi/unverified/
+          - text: "|"
+          - link "Mark Hopkins" [ref=f3e274] [cursor=pointer]:
+            - /url: /people/mark-hopkins/unverified/
+      - generic [ref=f3e275]:
+        - generic [ref=f3e277]:
+          - link "Open PDF" [ref=f3e278] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.15.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e279] [cursor=pointer]:
+            - /url: /2025.wmt-1.15.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e280] [cursor=pointer]: abs
+        - generic [ref=f3e281]:
+          - strong [ref=f3e282]:
+            - 'link "Translate, Then Detect: Leveraging Machine Translation for Cross-Lingual Toxicity Classification" [ref=f3e283] [cursor=pointer]':
+              - /url: /2025.wmt-1.15/
+          - link "Samuel Bell" [ref=f3e284] [cursor=pointer]:
+            - /url: /people/samuel-bell/
+          - text: "|"
+          - link "Eduardo Sánchez" [ref=f3e285] [cursor=pointer]:
+            - /url: /people/eduardo-sanchez/
+          - text: "|"
+          - link "David Dale" [ref=f3e286] [cursor=pointer]:
+            - /url: /people/david-dale/
+          - text: "|"
+          - link "Pontus Stenetorp" [ref=f3e287] [cursor=pointer]:
+            - /url: /people/pontus-stenetorp/
+          - text: "|"
+          - link "Mikel Artetxe" [ref=f3e288] [cursor=pointer]:
+            - /url: /people/mikel-artetxe/
+          - text: "|"
+          - link "Marta R. Costa-Jussà" [ref=f3e289] [cursor=pointer]:
+            - /url: /people/marta-r-costa-jussa/
+      - generic [ref=f3e290]:
+        - generic [ref=f3e292]:
+          - link "Open PDF" [ref=f3e293] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.16.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e294] [cursor=pointer]:
+            - /url: /2025.wmt-1.16.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e295] [cursor=pointer]: abs
+        - generic [ref=f3e296]:
+          - strong [ref=f3e297]:
+            - link "Feeding Two Birds or Favoring One? Adequacy–Fluency Tradeoffs in Evaluation and Meta-Evaluation of Machine Translation" [ref=f3e298] [cursor=pointer]:
+              - /url: /2025.wmt-1.16/
+          - link "Behzad Shayegh" [ref=f3e299] [cursor=pointer]:
+            - /url: /people/behzad-shayegh/unverified/
+          - text: "|"
+          - link "Jan-Thorsten Peter" [ref=f3e300] [cursor=pointer]:
+            - /url: /people/jan-thorsten-peter/unverified/
+          - text: "|"
+          - link "David Vilar" [ref=f3e301] [cursor=pointer]:
+            - /url: /people/david-vilar/unverified/
+          - text: "|"
+          - link "Tobias Domhan" [ref=f3e302] [cursor=pointer]:
+            - /url: /people/tobias-domhan/unverified/
+          - text: "|"
+          - link "Juraj Juraska" [ref=f3e303] [cursor=pointer]:
+            - /url: /people/juraj-juraska/unverified/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e304] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+          - text: "|"
+          - link "Lili Mou" [ref=f3e305] [cursor=pointer]:
+            - /url: /people/lili-mou/
+      - generic [ref=f3e306]:
+        - generic [ref=f3e308]:
+          - link "Open PDF" [ref=f3e309] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.17.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e310] [cursor=pointer]:
+            - /url: /2025.wmt-1.17.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e311] [cursor=pointer]: abs
+        - generic [ref=f3e312]:
+          - strong [ref=f3e313]:
+            - 'link "DocHPLT: A Massively Multilingual Document-Level Translation Dataset" [ref=f3e314] [cursor=pointer]':
+              - /url: /2025.wmt-1.17/
+          - link "Dayyán O’Brien" [ref=f3e315] [cursor=pointer]:
+            - /url: /people/dayyan-o-brien/
+          - text: "|"
+          - link "Bhavitvya Malik" [ref=f3e316] [cursor=pointer]:
+            - /url: /people/bhavitvya-malik/unverified/
+          - text: "|"
+          - link "Ona de Gibert" [ref=f3e317] [cursor=pointer]:
+            - /url: /people/ona-de-gibert/
+          - text: "|"
+          - link "Pinzhen Chen" [ref=f3e318] [cursor=pointer]:
+            - /url: /people/pinzhen-chen/
+          - text: "|"
+          - link "Barry Haddow" [ref=f3e319] [cursor=pointer]:
+            - /url: /people/barry-haddow/unverified/
+          - text: "|"
+          - link "Jörg Tiedemann" [ref=f3e320] [cursor=pointer]:
+            - /url: /people/jorg-tiedemann/
+      - generic [ref=f3e321]:
+        - generic [ref=f3e323]:
+          - link "Open PDF" [ref=f3e324] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.18.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e325] [cursor=pointer]:
+            - /url: /2025.wmt-1.18.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e326] [cursor=pointer]: abs
+        - generic [ref=f3e327]:
+          - strong [ref=f3e328]:
+            - 'link "SONAR-SLT: Multilingual Sign Language Translation via Language-Agnostic Sentence Embedding Supervision" [ref=f3e329] [cursor=pointer]':
+              - /url: /2025.wmt-1.18/
+          - link "Yasser Hamidullah" [ref=f3e330] [cursor=pointer]:
+            - /url: /people/yasser-hamidullah/unverified/
+          - text: "|"
+          - link "Shakib Yazdani" [ref=f3e331] [cursor=pointer]:
+            - /url: /people/shakib-yazdani/
+          - text: "|"
+          - link "Cennet Oguz" [ref=f3e332] [cursor=pointer]:
+            - /url: /people/cennet-oguz/
+          - text: "|"
+          - link "Josef van Genabith" [ref=f3e333] [cursor=pointer]:
+            - /url: /people/josef-van-genabith/
+          - text: "|"
+          - link "Cristina España-Bonet" [ref=f3e334] [cursor=pointer]:
+            - /url: /people/cristina-espana-bonet/
+      - generic [ref=f3e335]:
+        - generic [ref=f3e337]:
+          - link "Open PDF" [ref=f3e338] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.19.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e339] [cursor=pointer]:
+            - /url: /2025.wmt-1.19.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e340] [cursor=pointer]: abs
+        - generic [ref=f3e341]:
+          - strong [ref=f3e342]:
+            - 'link "GAMBIT+: A Challenge Set for Evaluating Gender Bias in Machine Translation Quality Estimation Metrics" [ref=f3e343] [cursor=pointer]':
+              - /url: /2025.wmt-1.19/
+          - link "George Filandrianos" [ref=f3e344] [cursor=pointer]:
+            - /url: /people/george-filandrianos/unverified/
+          - text: "|"
+          - link "Orfeas Menis Mastromichalakis" [ref=f3e345] [cursor=pointer]:
+            - /url: /people/orfeas-menis-mastromichalakis/unverified/
+          - text: "|"
+          - link "Wafaa Mohammed" [ref=f3e346] [cursor=pointer]:
+            - /url: /people/wafaa-mohammed/unverified/
+          - text: "|"
+          - link "Giuseppe Attanasio" [ref=f3e347] [cursor=pointer]:
+            - /url: /people/giuseppe-attanasio/
+          - text: "|"
+          - link "Chrysoula Zerva" [ref=f3e348] [cursor=pointer]:
+            - /url: /people/chrysoula-zerva/
+      - generic [ref=f3e349]:
+        - generic [ref=f3e351]:
+          - link "Open PDF" [ref=f3e352] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.20.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e353] [cursor=pointer]:
+            - /url: /2025.wmt-1.20.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e354] [cursor=pointer]: abs
+        - generic [ref=f3e355]:
+          - strong [ref=f3e356]:
+            - link "Implementing and Evaluating Multi-source Retrieval-Augmented Translation" [ref=f3e357] [cursor=pointer]:
+              - /url: /2025.wmt-1.20/
+          - link "Tommi Nieminen" [ref=f3e358] [cursor=pointer]:
+            - /url: /people/tommi-nieminen/unverified/
+          - text: "|"
+          - link "Jörg Tiedemann" [ref=f3e359] [cursor=pointer]:
+            - /url: /people/jorg-tiedemann/
+          - text: "|"
+          - link "Sami Virpioja" [ref=f3e360] [cursor=pointer]:
+            - /url: /people/sami-virpioja/unverified/
+      - generic [ref=f3e361]:
+        - generic [ref=f3e363]:
+          - link "Open PDF" [ref=f3e364] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.21.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e365] [cursor=pointer]:
+            - /url: /2025.wmt-1.21.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e366] [cursor=pointer]: abs
+        - generic [ref=f3e367]:
+          - strong [ref=f3e368]:
+            - link "A Cross-Lingual Perspective on Neural Machine Translation Difficulty" [ref=f3e369] [cursor=pointer]:
+              - /url: /2025.wmt-1.21/
+          - link "Esther Ploeger" [ref=f3e370] [cursor=pointer]:
+            - /url: /people/esther-ploeger/
+          - text: "|"
+          - link "Johannes Bjerva" [ref=f3e371] [cursor=pointer]:
+            - /url: /people/johannes-bjerva/
+          - text: "|"
+          - link "Jörg Tiedemann" [ref=f3e372] [cursor=pointer]:
+            - /url: /people/jorg-tiedemann/
+          - text: "|"
+          - link "Robert Östling" [ref=f3e373] [cursor=pointer]:
+            - /url: /people/robert-ostling/
+      - generic [ref=f3e374]:
+        - generic [ref=f3e376]:
+          - link "Open PDF" [ref=f3e377] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.22.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e378] [cursor=pointer]:
+            - /url: /2025.wmt-1.22.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e379] [cursor=pointer]: abs
+        - generic [ref=f3e380]:
+          - strong [ref=f3e381]:
+            - 'link "Findings of the WMT25 General Machine Translation Shared Task: Time to Stop Evaluating on Easy Test Sets" [ref=f3e382] [cursor=pointer]':
+              - /url: /2025.wmt-1.22/
+          - link "Tom Kocmi" [ref=f3e383] [cursor=pointer]:
+            - /url: /people/tom-kocmi/
+          - text: "|"
+          - link "Ekaterina Artemova" [ref=f3e384] [cursor=pointer]:
+            - /url: /people/ekaterina-artemova/unverified/
+          - text: "|"
+          - link "Eleftherios Avramidis" [ref=f3e385] [cursor=pointer]:
+            - /url: /people/eleftherios-avramidis/
+          - text: "|"
+          - link "Rachel Bawden" [ref=f3e386] [cursor=pointer]:
+            - /url: /people/rachel-bawden/
+          - text: "|"
+          - link "Ondřej Bojar" [ref=f3e387] [cursor=pointer]:
+            - /url: /people/ondrej-bojar/
+          - text: "|"
+          - link "Konstantin Dranch" [ref=f3e388] [cursor=pointer]:
+            - /url: /people/konstantin-dranch/unverified/
+          - text: "|"
+          - link "Anton Dvorkovich" [ref=f3e389] [cursor=pointer]:
+            - /url: /people/anton-dvorkovich/unverified/
+          - text: "|"
+          - link "Sergey Dukanov" [ref=f3e390] [cursor=pointer]:
+            - /url: /people/sergey-dukanov/unverified/
+          - text: "|"
+          - link "Mark Fishel" [ref=f3e391] [cursor=pointer]:
+            - /url: /people/mark-fishel/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e392] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+          - text: "|"
+          - link "Thamme Gowda" [ref=f3e393] [cursor=pointer]:
+            - /url: /people/thamme-gowda/unverified/
+          - text: "|"
+          - link "Roman Grundkiewicz" [ref=f3e394] [cursor=pointer]:
+            - /url: /people/roman-grundkiewicz/unverified/
+          - text: "|"
+          - link "Barry Haddow" [ref=f3e395] [cursor=pointer]:
+            - /url: /people/barry-haddow/unverified/
+          - text: "|"
+          - link "Marzena Karpinska" [ref=f3e396] [cursor=pointer]:
+            - /url: /people/marzena-karpinska/
+          - text: "|"
+          - link "Philipp Koehn" [ref=f3e397] [cursor=pointer]:
+            - /url: /people/philipp-koehn/
+          - text: "|"
+          - link "Howard Lakougna" [ref=f3e398] [cursor=pointer]:
+            - /url: /people/howard-lakougna/unverified/
+          - text: "|"
+          - link "Jessica Lundin" [ref=f3e399] [cursor=pointer]:
+            - /url: /people/jessica-lundin/unverified/
+          - text: "|"
+          - link "Christof Monz" [ref=f3e400] [cursor=pointer]:
+            - /url: /people/christof-monz/
+          - text: "|"
+          - link "Kenton Murray" [ref=f3e401] [cursor=pointer]:
+            - /url: /people/kenton-murray/
+          - text: "|"
+          - link "Masaaki Nagata" [ref=f3e402] [cursor=pointer]:
+            - /url: /people/masaaki-nagata/
+          - text: "|"
+          - link "Stefano Perrella" [ref=f3e403] [cursor=pointer]:
+            - /url: /people/stefano-perrella/
+          - text: "|"
+          - link "Lorenzo Proietti" [ref=f3e404] [cursor=pointer]:
+            - /url: /people/lorenzo-proietti/
+          - text: "|"
+          - link "Martin Popel" [ref=f3e405] [cursor=pointer]:
+            - /url: /people/martin-popel/unverified/
+          - text: "|"
+          - link "Maja Popović" [ref=f3e406] [cursor=pointer]:
+            - /url: /people/maja-popovic/
+          - text: "|"
+          - link "Parker Riley" [ref=f3e407] [cursor=pointer]:
+            - /url: /people/parker-riley/unverified/
+          - text: "|"
+          - link "Mariya Shmatova" [ref=f3e408] [cursor=pointer]:
+            - /url: /people/mariya-shmatova/unverified/
+          - text: "|"
+          - link "Steinthór Steingrímsson" [ref=f3e409] [cursor=pointer]:
+            - /url: /people/steinthor-steingrimsson/
+          - text: "|"
+          - link "Lisa Yankovskaya" [ref=f3e410] [cursor=pointer]:
+            - /url: /people/lisa-yankovskaya/unverified/
+          - text: "|"
+          - link "Vilém Zouhar" [ref=f3e411] [cursor=pointer]:
+            - /url: /people/vilem-zouhar/
+      - generic [ref=f3e412]:
+        - generic [ref=f3e414]:
+          - link "Open PDF" [ref=f3e415] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.23.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e416] [cursor=pointer]:
+            - /url: /2025.wmt-1.23.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e417] [cursor=pointer]: abs
+        - generic [ref=f3e418]:
+          - strong [ref=f3e419]:
+            - 'link "Findings of the WMT25 Multilingual Instruction Shared Task: Persistent Hurdles in Reasoning, Generation, and Evaluation" [ref=f3e420] [cursor=pointer]':
+              - /url: /2025.wmt-1.23/
+          - link "Tom Kocmi" [ref=f3e421] [cursor=pointer]:
+            - /url: /people/tom-kocmi/
+          - text: "|"
+          - link "Sweta Agrawal" [ref=f3e422] [cursor=pointer]:
+            - /url: /people/sweta-agrawal/unverified/
+          - text: "|"
+          - link "Ekaterina Artemova" [ref=f3e423] [cursor=pointer]:
+            - /url: /people/ekaterina-artemova/unverified/
+          - text: "|"
+          - link "Eleftherios Avramidis" [ref=f3e424] [cursor=pointer]:
+            - /url: /people/eleftherios-avramidis/
+          - text: "|"
+          - link "Eleftheria Briakou" [ref=f3e425] [cursor=pointer]:
+            - /url: /people/eleftheria-briakou/unverified/
+          - text: "|"
+          - link "Pinzhen Chen" [ref=f3e426] [cursor=pointer]:
+            - /url: /people/pinzhen-chen/
+          - text: "|"
+          - link "Marzieh Fadaee" [ref=f3e427] [cursor=pointer]:
+            - /url: /people/marzieh-fadaee/unverified/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e428] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+          - text: "|"
+          - link "Roman Grundkiewicz" [ref=f3e429] [cursor=pointer]:
+            - /url: /people/roman-grundkiewicz/unverified/
+          - text: "|"
+          - link "Yupeng Hou" [ref=f3e430] [cursor=pointer]:
+            - /url: /people/yupeng-hou/unverified/
+          - text: "|"
+          - link "Philipp Koehn" [ref=f3e431] [cursor=pointer]:
+            - /url: /people/philipp-koehn/
+          - text: "|"
+          - link "Julia Kreutzer" [ref=f3e432] [cursor=pointer]:
+            - /url: /people/julia-kreutzer/
+          - text: "|"
+          - link "Saab Mansour" [ref=f3e433] [cursor=pointer]:
+            - /url: /people/saab-mansour/
+          - text: "|"
+          - link "Stefano Perrella" [ref=f3e434] [cursor=pointer]:
+            - /url: /people/stefano-perrella/
+          - text: "|"
+          - link "Lorenzo Proietti" [ref=f3e435] [cursor=pointer]:
+            - /url: /people/lorenzo-proietti/
+          - text: "|"
+          - link "Parker Riley" [ref=f3e436] [cursor=pointer]:
+            - /url: /people/parker-riley/unverified/
+          - text: "|"
+          - link "Eduardo Sánchez" [ref=f3e437] [cursor=pointer]:
+            - /url: /people/eduardo-sanchez/
+          - text: "|"
+          - link "Patricia Schmidtova" [ref=f3e438] [cursor=pointer]:
+            - /url: /people/patricia-schmidtova/
+          - text: "|"
+          - link "Mariya Shmatova" [ref=f3e439] [cursor=pointer]:
+            - /url: /people/mariya-shmatova/unverified/
+          - text: "|"
+          - link "Vilém Zouhar" [ref=f3e440] [cursor=pointer]:
+            - /url: /people/vilem-zouhar/
+      - generic [ref=f3e441]:
+        - generic [ref=f3e443]:
+          - link "Open PDF" [ref=f3e444] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.24.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e445] [cursor=pointer]:
+            - /url: /2025.wmt-1.24.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e446] [cursor=pointer]: abs
+        - generic [ref=f3e447]:
+          - strong [ref=f3e448]:
+            - 'link "Findings of the WMT25 Shared Task on Automated Translation Evaluation Systems: Linguistic Diversity is Challenging and References Still Help" [ref=f3e449] [cursor=pointer]':
+              - /url: /2025.wmt-1.24/
+          - link "Alon Lavie" [ref=f3e450] [cursor=pointer]:
+            - /url: /people/alon-lavie/
+          - text: "|"
+          - link "Greg Hanneman" [ref=f3e451] [cursor=pointer]:
+            - /url: /people/greg-hanneman/unverified/
+          - text: "|"
+          - link "Sweta Agrawal" [ref=f3e452] [cursor=pointer]:
+            - /url: /people/sweta-agrawal/unverified/
+          - text: "|"
+          - link "Diptesh Kanojia" [ref=f3e453] [cursor=pointer]:
+            - /url: /people/diptesh-kanojia/
+          - text: "|"
+          - link "Chi-Kiu Lo" [ref=f3e454] [cursor=pointer]:
+            - /url: /people/chi-kiu-lo/
+          - text: "|"
+          - link "Vilém Zouhar" [ref=f3e455] [cursor=pointer]:
+            - /url: /people/vilem-zouhar/
+          - text: "|"
+          - link "Frederic Blain" [ref=f3e456] [cursor=pointer]:
+            - /url: /people/frederic-blain/
+          - text: "|"
+          - link "Chrysoula Zerva" [ref=f3e457] [cursor=pointer]:
+            - /url: /people/chrysoula-zerva/
+          - text: "|"
+          - link "Eleftherios Avramidis" [ref=f3e458] [cursor=pointer]:
+            - /url: /people/eleftherios-avramidis/
+          - text: "|"
+          - link "Sourabh Deoghare" [ref=f3e459] [cursor=pointer]:
+            - /url: /people/sourabh-deoghare/
+          - text: "|"
+          - link "Archchana Sindhujan" [ref=f3e460] [cursor=pointer]:
+            - /url: /people/archchana-sindhujan/
+          - text: "|"
+          - link "Jiayi Wang" [ref=f3e461] [cursor=pointer]:
+            - /url: /people/jiayi-wang/unverified/
+          - text: "|"
+          - link "David Ifeoluwa Adelani" [ref=f3e462] [cursor=pointer]:
+            - /url: /people/david-ifeoluwa-adelani/
+          - text: "|"
+          - link "Brian Thompson" [ref=f3e463] [cursor=pointer]:
+            - /url: /people/brian-thompson/unverified/
+          - text: "|"
+          - link "Tom Kocmi" [ref=f3e464] [cursor=pointer]:
+            - /url: /people/tom-kocmi/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e465] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+          - text: "|"
+          - link "Daniel Deutsch" [ref=f3e466] [cursor=pointer]:
+            - /url: /people/daniel-deutsch/
+      - generic [ref=f3e467]:
+        - generic [ref=f3e469]:
+          - link "Open PDF" [ref=f3e470] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.25.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e471] [cursor=pointer]:
+            - /url: /2025.wmt-1.25.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e472] [cursor=pointer]: abs
+        - generic [ref=f3e473]:
+          - strong [ref=f3e474]:
+            - 'link "Findings of the WMT 2025 Shared Task on Model Compression: Early Insights on Compressing LLMs for Machine Translation" [ref=f3e475] [cursor=pointer]':
+              - /url: /2025.wmt-1.25/
+          - link "Marco Gaido" [ref=f3e476] [cursor=pointer]:
+            - /url: /people/marco-gaido/
+          - text: "|"
+          - link "Roman Grundkiewicz" [ref=f3e477] [cursor=pointer]:
+            - /url: /people/roman-grundkiewicz/unverified/
+          - text: "|"
+          - link "Thamme Gowda" [ref=f3e478] [cursor=pointer]:
+            - /url: /people/thamme-gowda/unverified/
+          - text: "|"
+          - link "Matteo Negri" [ref=f3e479] [cursor=pointer]:
+            - /url: /people/matteo-negri/
+      - generic [ref=f3e480]:
+        - generic [ref=f3e482]:
+          - link "Open PDF" [ref=f3e483] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.26.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e484] [cursor=pointer]:
+            - /url: /2025.wmt-1.26.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e485] [cursor=pointer]: abs
+        - generic [ref=f3e486]:
+          - strong [ref=f3e487]:
+            - link "Findings of the WMT 2025 Shared Task of the Open Language Data Initiative" [ref=f3e488] [cursor=pointer]:
+              - /url: /2025.wmt-1.26/
+          - link "David Dale" [ref=f3e489] [cursor=pointer]:
+            - /url: /people/david-dale/
+          - text: "|"
+          - link "Laurie Burchell" [ref=f3e490] [cursor=pointer]:
+            - /url: /people/laurie-burchell/
+          - text: "|"
+          - link "Jean Maillard" [ref=f3e491] [cursor=pointer]:
+            - /url: /people/jean-maillard/
+          - text: "|"
+          - link "Idris Abdulmumin" [ref=f3e492] [cursor=pointer]:
+            - /url: /people/idris-abdulmumin/
+          - text: "|"
+          - link "Antonios Anastasopoulos" [ref=f3e493] [cursor=pointer]:
+            - /url: /people/antonios-anastasopoulos/
+          - text: "|"
+          - link "Isaac Caswell" [ref=f3e494] [cursor=pointer]:
+            - /url: /people/isaac-caswell/unverified/
+          - text: "|"
+          - link "Philipp Koehn" [ref=f3e495] [cursor=pointer]:
+            - /url: /people/philipp-koehn/
+      - generic [ref=f3e496]:
+        - generic [ref=f3e498]:
+          - link "Open PDF" [ref=f3e499] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.27.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e500] [cursor=pointer]:
+            - /url: /2025.wmt-1.27.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e501] [cursor=pointer]: abs
+        - generic [ref=f3e502]:
+          - strong [ref=f3e503]:
+            - 'link "Findings of the WMT 2025 Shared Task LLMs with Limited Resources for Slavic Languages: MT and QA" [ref=f3e504] [cursor=pointer]':
+              - /url: /2025.wmt-1.27/
+          - link "Shu Okabe" [ref=f3e505] [cursor=pointer]:
+            - /url: /people/shu-okabe/
+          - text: "|"
+          - link "Daryna Dementieva" [ref=f3e506] [cursor=pointer]:
+            - /url: /people/daryna-dementieva/
+          - text: "|"
+          - link "Marion Di Marco" [ref=f3e507] [cursor=pointer]:
+            - /url: /people/marion-weller-di-marco/
+          - text: "|"
+          - link "Lukas Edman" [ref=f3e508] [cursor=pointer]:
+            - /url: /people/lukas-edman/
+          - text: "|"
+          - link "Katharina Haemmerl" [ref=f3e509] [cursor=pointer]:
+            - /url: /people/katharina-haemmerl/unverified/
+          - text: "|"
+          - link "Marko Měškank" [ref=f3e510] [cursor=pointer]:
+            - /url: /people/marko-meskank/unverified/
+          - text: "|"
+          - link "Anita Hendrichowa" [ref=f3e511] [cursor=pointer]:
+            - /url: /people/anita-hendrichowa/unverified/
+          - text: "|"
+          - link "Alexander Fraser" [ref=f3e512] [cursor=pointer]:
+            - /url: /people/alexander-fraser/
+      - generic [ref=f3e513]:
+        - generic [ref=f3e515]:
+          - link "Open PDF" [ref=f3e516] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.28.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e517] [cursor=pointer]:
+            - /url: /2025.wmt-1.28.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e518] [cursor=pointer]: abs
+        - generic [ref=f3e519]:
+          - strong [ref=f3e520]:
+            - link "Findings of the First Shared Task for Creole Language Machine Translation at WMT25" [ref=f3e521] [cursor=pointer]:
+              - /url: /2025.wmt-1.28/
+          - link "Nathaniel Robinson" [ref=f3e522] [cursor=pointer]:
+            - /url: /people/nathaniel-robinson/unverified/
+          - text: "|"
+          - link "Claire Bizon Monroc" [ref=f3e523] [cursor=pointer]:
+            - /url: /people/claire-bizon-monroc/unverified/
+          - text: "|"
+          - link "Rasul Dent" [ref=f3e524] [cursor=pointer]:
+            - /url: /people/rasul-dent/
+          - text: "|"
+          - link "Stefan Watson" [ref=f3e525] [cursor=pointer]:
+            - /url: /people/stefan-watson/unverified/
+          - text: "|"
+          - link "Kenton Murray" [ref=f3e526] [cursor=pointer]:
+            - /url: /people/kenton-murray/
+          - text: "|"
+          - link "Raj Dabre" [ref=f3e527] [cursor=pointer]:
+            - /url: /people/raj-dabre/unverified/
+          - text: "|"
+          - link "Andre Coy" [ref=f3e528] [cursor=pointer]:
+            - /url: /people/andre-coy/unverified/
+          - text: "|"
+          - link "Heather Lent" [ref=f3e529] [cursor=pointer]:
+            - /url: /people/heather-lent/unverified/
+      - generic [ref=f3e530]:
+        - generic [ref=f3e532]:
+          - link "Open PDF" [ref=f3e533] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.29.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e534] [cursor=pointer]:
+            - /url: /2025.wmt-1.29.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e535] [cursor=pointer]: abs
+        - generic [ref=f3e536]:
+          - strong [ref=f3e537]:
+            - link "Findings of WMT 2025 Shared Task on Low-resource Indic Languages Translation" [ref=f3e538] [cursor=pointer]:
+              - /url: /2025.wmt-1.29/
+          - link "Partha Pakray" [ref=f3e539] [cursor=pointer]:
+            - /url: /people/partha-pakray/
+          - text: "|"
+          - link "Reddi Krishna" [ref=f3e540] [cursor=pointer]:
+            - /url: /people/reddi-krishna/unverified/
+          - text: "|"
+          - link "Santanu Pal" [ref=f3e541] [cursor=pointer]:
+            - /url: /people/santanu-pal/
+          - text: "|"
+          - link "Advaitha Vetagiri" [ref=f3e542] [cursor=pointer]:
+            - /url: /people/advaitha-vetagiri/unverified/
+          - text: "|"
+          - link "Sandeep Dash" [ref=f3e543] [cursor=pointer]:
+            - /url: /people/sandeep-dash/unverified/
+          - text: "|"
+          - link "Arnab Kumar Maji" [ref=f3e544] [cursor=pointer]:
+            - /url: /people/arnab-kumar-maji/unverified/
+          - text: "|"
+          - link "Saralin A. Lyngdoh" [ref=f3e545] [cursor=pointer]:
+            - /url: /people/saralin-a-lyngdoh/unverified/
+          - text: "|"
+          - link "Lenin Laitonjam" [ref=f3e546] [cursor=pointer]:
+            - /url: /people/lenin-laitonjam/unverified/
+          - text: "|"
+          - link "Anupam Jamatia" [ref=f3e547] [cursor=pointer]:
+            - /url: /people/anupam-jamatia/unverified/
+          - text: "|"
+          - link "Koj Sambyo" [ref=f3e548] [cursor=pointer]:
+            - /url: /people/koj-sambyo/unverified/
+          - text: "|"
+          - link "Ajit Das" [ref=f3e549] [cursor=pointer]:
+            - /url: /people/ajit-das/unverified/
+          - text: "|"
+          - link "Riyanka Manna" [ref=f3e550] [cursor=pointer]:
+            - /url: /people/riyanka-manna/unverified/
+      - generic [ref=f3e551]:
+        - generic [ref=f3e553]:
+          - link "Open PDF" [ref=f3e554] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.30.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e555] [cursor=pointer]:
+            - /url: /2025.wmt-1.30.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e556] [cursor=pointer]: abs
+        - generic [ref=f3e557]:
+          - strong [ref=f3e558]:
+            - 'link "Findings of the WMT25 Terminology Translation Task: Terminology is Useful Especially for Good MTs" [ref=f3e559] [cursor=pointer]':
+              - /url: /2025.wmt-1.30/
+          - link "Kirill Semenov" [ref=f3e560] [cursor=pointer]:
+            - /url: /people/kirill-semenov/unverified/
+          - text: "|"
+          - link "Xu Huang" [ref=f3e561] [cursor=pointer]:
+            - /url: /people/xu-huang-nanjing/
+          - text: "|"
+          - link "Vilém Zouhar" [ref=f3e562] [cursor=pointer]:
+            - /url: /people/vilem-zouhar/
+          - text: "|"
+          - link "Nathaniel Berger" [ref=f3e563] [cursor=pointer]:
+            - /url: /people/nathaniel-berger/unverified/
+          - text: "|"
+          - link "Dawei Zhu" [ref=f3e564] [cursor=pointer]:
+            - /url: /people/dawei-zhu/unverified/
+          - text: "|"
+          - link "Arturo Oncevay" [ref=f3e565] [cursor=pointer]:
+            - /url: /people/arturo-oncevay/
+          - text: "|"
+          - link "Pinzhen Chen" [ref=f3e566] [cursor=pointer]:
+            - /url: /people/pinzhen-chen/
+      - generic [ref=f3e567]:
+        - generic [ref=f3e569]:
+          - link "Open PDF" [ref=f3e570] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.31.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e571] [cursor=pointer]:
+            - /url: /2025.wmt-1.31.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e572] [cursor=pointer]: abs
+        - generic [ref=f3e573]:
+          - strong [ref=f3e574]:
+            - link "Midheind at WMT25 General Machine Translation Task" [ref=f3e575] [cursor=pointer]:
+              - /url: /2025.wmt-1.31/
+          - link "Svanhvít Lilja Ingólfsdóttir" [ref=f3e576] [cursor=pointer]:
+            - /url: /people/svanhvit-lilja-ingolfsdottir/unverified/
+          - text: "|"
+          - link "Haukur Jónsson" [ref=f3e577] [cursor=pointer]:
+            - /url: /people/haukur-jonsson/unverified/
+          - text: "|"
+          - link "Kári Steinn Adhalsteinsson" [ref=f3e578] [cursor=pointer]:
+            - /url: /people/kari-steinn-adhalsteinsson/unverified/
+          - text: "|"
+          - link "Róbert Fjölnir Birkisson" [ref=f3e579] [cursor=pointer]:
+            - /url: /people/robert-fjolnir-birkisson/unverified/
+          - text: "|"
+          - link "Sveinbjörn Thórdharson" [ref=f3e580] [cursor=pointer]:
+            - /url: /people/sveinbjorn-thordharson/unverified/
+          - text: "|"
+          - link "Thorvaldur Páll Helgason" [ref=f3e581] [cursor=pointer]:
+            - /url: /people/thorvaldur-pall-helgason/unverified/
+      - generic [ref=f3e582]:
+        - generic [ref=f3e584]:
+          - link "Open PDF" [ref=f3e585] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.32.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e586] [cursor=pointer]:
+            - /url: /2025.wmt-1.32.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e587] [cursor=pointer]: abs
+        - generic [ref=f3e588]:
+          - strong [ref=f3e589]:
+            - link "A Preliminary Study of AI Agent Model in Machine Translation" [ref=f3e590] [cursor=pointer]:
+              - /url: /2025.wmt-1.32/
+          - link "Ahrii Kim" [ref=f3e591] [cursor=pointer]:
+            - /url: /people/ahrii-kim/
+      - generic [ref=f3e592]:
+        - generic [ref=f3e594]:
+          - link "Open PDF" [ref=f3e595] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.33.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e596] [cursor=pointer]:
+            - /url: /2025.wmt-1.33.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e597] [cursor=pointer]: abs
+        - generic [ref=f3e598]:
+          - strong [ref=f3e599]:
+            - 'link "Marco Large Translation Model at WMT2025: Transforming Translation Capability in LLMs via Quality-Aware Training and Decoding" [ref=f3e600] [cursor=pointer]':
+              - /url: /2025.wmt-1.33/
+          - link "Hao Wang" [ref=f3e601] [cursor=pointer]:
+            - /url: /people/hao-wang/unverified/
+          - text: "|"
+          - link "Linlong Xu" [ref=f3e602] [cursor=pointer]:
+            - /url: /people/linlong-xu/
+          - text: "|"
+          - link "Heng Liu" [ref=f3e603] [cursor=pointer]:
+            - /url: /people/heng-liu/
+          - text: "|"
+          - link "Yangyang Liu" [ref=f3e604] [cursor=pointer]:
+            - /url: /people/yangyang-liu/
+          - text: "|"
+          - link "Xiaohu Zhao" [ref=f3e605] [cursor=pointer]:
+            - /url: /people/xiaohu-zhao/
+          - text: "|"
+          - link "Bo Zeng" [ref=f3e606] [cursor=pointer]:
+            - /url: /people/bo-zeng/
+          - text: "|"
+          - link "Longyue Wang" [ref=f3e607] [cursor=pointer]:
+            - /url: /people/longyue-wang/
+          - text: "|"
+          - link "Weihua Luo" [ref=f3e608] [cursor=pointer]:
+            - /url: /people/weihua-luo/
+          - text: "|"
+          - link "Kaifu Zhang" [ref=f3e609] [cursor=pointer]:
+            - /url: /people/kaifu-zhang/unverified/
+      - generic [ref=f3e610]:
+        - generic [ref=f3e612]:
+          - link "Open PDF" [ref=f3e613] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.34.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e614] [cursor=pointer]:
+            - /url: /2025.wmt-1.34.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e615] [cursor=pointer]: abs
+        - generic [ref=f3e616]:
+          - strong [ref=f3e617]:
+            - link "Evaluation of QWEN-3 for English to Ukrainian Translation" [ref=f3e618] [cursor=pointer]:
+              - /url: /2025.wmt-1.34/
+          - link "Cristian Grozea" [ref=f3e619] [cursor=pointer]:
+            - /url: /people/cristian-grozea/unverified/
+          - text: "|"
+          - link "Oleg Verbitsky" [ref=f3e620] [cursor=pointer]:
+            - /url: /people/oleg-verbitsky/unverified/
+      - generic [ref=f3e621]:
+        - generic [ref=f3e623]:
+          - link "Open PDF" [ref=f3e624] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.35.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e625] [cursor=pointer]:
+            - /url: /2025.wmt-1.35.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e626] [cursor=pointer]: abs
+        - generic [ref=f3e627]:
+          - strong [ref=f3e628]:
+            - link "SYSTRAN @ WMT 2025 General Translation Task" [ref=f3e629] [cursor=pointer]:
+              - /url: /2025.wmt-1.35/
+          - link "Dakun Zhang" [ref=f3e630] [cursor=pointer]:
+            - /url: /people/dakun-zhang/unverified/
+          - text: "|"
+          - link "Yara Khater" [ref=f3e631] [cursor=pointer]:
+            - /url: /people/yara-khater/unverified/
+          - text: "|"
+          - link "Ramzi Rahli" [ref=f3e632] [cursor=pointer]:
+            - /url: /people/ramzi-rahli/unverified/
+          - text: "|"
+          - link "Anna Rebollo" [ref=f3e633] [cursor=pointer]:
+            - /url: /people/anna-rebollo/unverified/
+          - text: "|"
+          - link "Josep Crego" [ref=f3e634] [cursor=pointer]:
+            - /url: /people/josep-m-crego/
+      - generic [ref=f3e635]:
+        - generic [ref=f3e637]:
+          - link "Open PDF" [ref=f3e638] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.36.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e639] [cursor=pointer]:
+            - /url: /2025.wmt-1.36.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e640] [cursor=pointer]: abs
+        - generic [ref=f3e641]:
+          - strong [ref=f3e642]:
+            - link "Shy-hunyuan-MT at WMT25 General Machine Translation Shared Task" [ref=f3e643] [cursor=pointer]:
+              - /url: /2025.wmt-1.36/
+          - link "Mao Zheng" [ref=f3e644] [cursor=pointer]:
+            - /url: /people/mao-zheng/
+          - text: "|"
+          - link "Zheng Li" [ref=f3e645] [cursor=pointer]:
+            - /url: /people/zheng-li/unverified/
+          - text: "|"
+          - link "Yang Du" [ref=f3e646] [cursor=pointer]:
+            - /url: /people/yang-du/unverified/
+          - text: "|"
+          - link "Bingxin Qu" [ref=f3e647] [cursor=pointer]:
+            - /url: /people/bingxin-qu/unverified/
+          - text: "|"
+          - link "Mingyang Song" [ref=f3e648] [cursor=pointer]:
+            - /url: /people/mingyang-song/unverified/
+      - generic [ref=f3e649]:
+        - generic [ref=f3e651]:
+          - link "Open PDF" [ref=f3e652] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.37.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e653] [cursor=pointer]:
+            - /url: /2025.wmt-1.37.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e654] [cursor=pointer]: abs
+        - generic [ref=f3e655]:
+          - strong [ref=f3e656]:
+            - 'link "From SALAMANDRA to SALAMANDRATA: BSC Submission for WMT25 General Machine Translation Shared Task" [ref=f3e657] [cursor=pointer]':
+              - /url: /2025.wmt-1.37/
+          - link "Javier Garcia Gilabert" [ref=f3e658] [cursor=pointer]:
+            - /url: /people/javier-garcia-gilabert/unverified/
+          - text: "|"
+          - link "Xixian Liao" [ref=f3e659] [cursor=pointer]:
+            - /url: /people/xixian-liao/
+          - text: "|"
+          - link "Severino Da Dalt" [ref=f3e660] [cursor=pointer]:
+            - /url: /people/severino-da-dalt/unverified/
+          - text: "|"
+          - link "Ella Bohman" [ref=f3e661] [cursor=pointer]:
+            - /url: /people/ella-bohman/unverified/
+          - text: "|"
+          - link "Audrey Mash" [ref=f3e662] [cursor=pointer]:
+            - /url: /people/audrey-mash/
+          - text: "|"
+          - link "Francesca De Luca Fornaciari" [ref=f3e663] [cursor=pointer]:
+            - /url: /people/francesca-de-luca-fornaciari/
+          - text: "|"
+          - link "Irene Baucells" [ref=f3e664] [cursor=pointer]:
+            - /url: /people/irene-baucells/
+          - text: "|"
+          - link "Joan Llop" [ref=f3e665] [cursor=pointer]:
+            - /url: /people/joan-llop/unverified/
+          - text: "|"
+          - link "Miguel Claramunt" [ref=f3e666] [cursor=pointer]:
+            - /url: /people/miguel-claramunt/unverified/
+          - text: "|"
+          - link "Carlos Escolano" [ref=f3e667] [cursor=pointer]:
+            - /url: /people/carlos-escolano/
+          - text: "|"
+          - link "Maite Melero" [ref=f3e668] [cursor=pointer]:
+            - /url: /people/maite-melero/
+      - generic [ref=f3e669]:
+        - generic [ref=f3e671]:
+          - link "Open PDF" [ref=f3e672] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.38.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e673] [cursor=pointer]:
+            - /url: /2025.wmt-1.38.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e674] [cursor=pointer]: abs
+        - generic [ref=f3e675]:
+          - strong [ref=f3e676]:
+            - link "Instruction-Tuned English to Bhojpuri Neural Machine Translation Using Contrastive Preference Optimization" [ref=f3e677] [cursor=pointer]:
+              - /url: /2025.wmt-1.38/
+          - link "Kshetrimayum Boynao Singh" [ref=f3e678] [cursor=pointer]:
+            - /url: /people/kshetrimayum-boynao-singh/
+          - text: "|"
+          - link "Deepak Kumar" [ref=f3e679] [cursor=pointer]:
+            - /url: /people/deepak-kumar/
+          - text: "|"
+          - link "Asif Ekbal" [ref=f3e680] [cursor=pointer]:
+            - /url: /people/asif-ekbal/
+      - generic [ref=f3e681]:
+        - generic [ref=f3e683]:
+          - link "Open PDF" [ref=f3e684] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.39.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e685] [cursor=pointer]:
+            - /url: /2025.wmt-1.39.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e686] [cursor=pointer]: abs
+        - generic [ref=f3e687]:
+          - strong [ref=f3e688]:
+            - link "SH at WMT25 General Machine Translation Task" [ref=f3e689] [cursor=pointer]:
+              - /url: /2025.wmt-1.39/
+          - link "Hayate Shiroma" [ref=f3e690] [cursor=pointer]:
+            - /url: /people/hayate-shiroma/unverified/
+      - generic [ref=f3e691]:
+        - generic [ref=f3e693]:
+          - link "Open PDF" [ref=f3e694] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.40.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e695] [cursor=pointer]:
+            - /url: /2025.wmt-1.40.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e696] [cursor=pointer]: abs
+        - generic [ref=f3e697]:
+          - strong [ref=f3e698]:
+            - 'link "Simple Test Time Scaling for Machine Translation: Kaze-MT at the WMT25 General Translation Task" [ref=f3e699] [cursor=pointer]':
+              - /url: /2025.wmt-1.40/
+          - link "Shaomu Tan" [ref=f3e700] [cursor=pointer]:
+            - /url: /people/shaomu-tan/unverified/
+      - generic [ref=f3e701]:
+        - generic [ref=f3e703]:
+          - link "Open PDF" [ref=f3e704] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.41.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e705] [cursor=pointer]:
+            - /url: /2025.wmt-1.41.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e706] [cursor=pointer]: abs
+        - generic [ref=f3e707]:
+          - strong [ref=f3e708]:
+            - link "NTTSU at WMT2025 General Translation Task" [ref=f3e709] [cursor=pointer]:
+              - /url: /2025.wmt-1.41/
+          - link "Zhang Yin" [ref=f3e710] [cursor=pointer]:
+            - /url: /people/zhang-yin/unverified/
+          - text: "|"
+          - link "Hiroyuki Deguchi" [ref=f3e711] [cursor=pointer]:
+            - /url: /people/hiroyuki-deguchi/
+          - text: "|"
+          - link "Haruto Azami" [ref=f3e712] [cursor=pointer]:
+            - /url: /people/haruto-azami/unverified/
+          - text: "|"
+          - link "Guanyu Ouyang" [ref=f3e713] [cursor=pointer]:
+            - /url: /people/guanyu-ouyang/unverified/
+          - text: "|"
+          - link "Kosei Buma" [ref=f3e714] [cursor=pointer]:
+            - /url: /people/kosei-buma/unverified/
+          - text: "|"
+          - link "Yingyi Fu" [ref=f3e715] [cursor=pointer]:
+            - /url: /people/yingyi-fu/unverified/
+          - text: "|"
+          - link "Katsuki Chousa" [ref=f3e716] [cursor=pointer]:
+            - /url: /people/katsuki-chousa/
+          - text: "|"
+          - link "Takehito Utsuro" [ref=f3e717] [cursor=pointer]:
+            - /url: /people/takehito-utsuro/
+      - generic [ref=f3e718]:
+        - generic [ref=f3e720]:
+          - link "Open PDF" [ref=f3e721] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.42.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e722] [cursor=pointer]:
+            - /url: /2025.wmt-1.42.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e723] [cursor=pointer]: abs
+        - generic [ref=f3e724]:
+          - strong [ref=f3e725]:
+            - link "A* Decoding for Machine Translation in LLMs - SRPOL Participation in WMT2025" [ref=f3e726] [cursor=pointer]:
+              - /url: /2025.wmt-1.42/
+          - link "Adam Dobrowolski" [ref=f3e727] [cursor=pointer]:
+            - /url: /people/adam-dobrowolski/unverified/
+          - text: "|"
+          - link "Paweł Przewłocki" [ref=f3e728] [cursor=pointer]:
+            - /url: /people/pawel-przewlocki/unverified/
+          - text: "|"
+          - link "Paweł Przybysz" [ref=f3e729] [cursor=pointer]:
+            - /url: /people/pawel-przybysz/unverified/
+          - text: "|"
+          - link "Marcin Szymański" [ref=f3e730] [cursor=pointer]:
+            - /url: /people/marcin-szymanski/unverified/
+          - text: "|"
+          - link "Dawid Siwicki" [ref=f3e731] [cursor=pointer]:
+            - /url: /people/dawid-siwicki/unverified/
+      - generic [ref=f3e732]:
+        - generic [ref=f3e734]:
+          - link "Open PDF" [ref=f3e735] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.43.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e736] [cursor=pointer]:
+            - /url: /2025.wmt-1.43.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e737] [cursor=pointer]: abs
+        - generic [ref=f3e738]:
+          - strong [ref=f3e739]:
+            - link "In2X at WMT25 Translation Task" [ref=f3e740] [cursor=pointer]:
+              - /url: /2025.wmt-1.43/
+          - link "Lei Pang" [ref=f3e741] [cursor=pointer]:
+            - /url: /people/lei-pang/unverified/
+          - text: "|"
+          - link "Hanyi Mao" [ref=f3e742] [cursor=pointer]:
+            - /url: /people/hanyi-mao/unverified/
+          - text: "|"
+          - link "Quanjia Xiao" [ref=f3e743] [cursor=pointer]:
+            - /url: /people/quanjia-xiao/unverified/
+          - text: "|"
+          - link "Chen Ruihan" [ref=f3e744] [cursor=pointer]:
+            - /url: /people/chen-ruihan/unverified/
+          - text: "|"
+          - link "Jingjun Zhang" [ref=f3e745] [cursor=pointer]:
+            - /url: /people/jingjun-zhang/unverified/
+          - text: "|"
+          - link "Haixiao Liu" [ref=f3e746] [cursor=pointer]:
+            - /url: /people/haixiao-liu/unverified/
+          - text: "|"
+          - link "Xiangyi Li" [ref=f3e747] [cursor=pointer]:
+            - /url: /people/xiangyi-li/unverified/
+      - generic [ref=f3e748]:
+        - generic [ref=f3e750]:
+          - link "Open PDF" [ref=f3e751] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.44.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e752] [cursor=pointer]:
+            - /url: /2025.wmt-1.44.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e753] [cursor=pointer]: abs
+        - generic [ref=f3e754]:
+          - strong [ref=f3e755]:
+            - link "CUNI at WMT25 General Translation Task" [ref=f3e756] [cursor=pointer]:
+              - /url: /2025.wmt-1.44/
+          - link "Miroslav Hrabal" [ref=f3e757] [cursor=pointer]:
+            - /url: /people/miroslav-hrabal/unverified/
+          - text: "|"
+          - link "Josef Jon" [ref=f3e758] [cursor=pointer]:
+            - /url: /people/josef-jon/unverified/
+          - text: "|"
+          - link "Martin Popel" [ref=f3e759] [cursor=pointer]:
+            - /url: /people/martin-popel/unverified/
+          - text: "|"
+          - link "Ondřej Bojar" [ref=f3e760] [cursor=pointer]:
+            - /url: /people/ondrej-bojar/
+      - generic [ref=f3e761]:
+        - generic [ref=f3e763]:
+          - link "Open PDF" [ref=f3e764] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.45.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e765] [cursor=pointer]:
+            - /url: /2025.wmt-1.45.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e766] [cursor=pointer]: abs
+        - generic [ref=f3e767]:
+          - strong [ref=f3e768]:
+            - link "UvA-MT’s Participation in the WMT25 General Translation Shared Task" [ref=f3e769] [cursor=pointer]:
+              - /url: /2025.wmt-1.45/
+          - link "Di Wu" [ref=f3e770] [cursor=pointer]:
+            - /url: /people/di-wu/unverified/
+          - text: "|"
+          - link "Yan Meng" [ref=f3e771] [cursor=pointer]:
+            - /url: /people/yan-meng/
+          - text: "|"
+          - link "Maya Konstantinovna Nachesa" [ref=f3e772] [cursor=pointer]:
+            - /url: /people/maya-konstantinovna-nachesa/unverified/
+          - text: "|"
+          - link "Seth Aycock" [ref=f3e773] [cursor=pointer]:
+            - /url: /people/seth-aycock/
+          - text: "|"
+          - link "Christof Monz" [ref=f3e774] [cursor=pointer]:
+            - /url: /people/christof-monz/
+      - generic [ref=f3e775]:
+        - generic [ref=f3e777]:
+          - link "Open PDF" [ref=f3e778] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.46.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e779] [cursor=pointer]:
+            - /url: /2025.wmt-1.46.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e780] [cursor=pointer]: abs
+        - generic [ref=f3e781]:
+          - strong [ref=f3e782]:
+            - 'link "AMI at WMT25 General Translation Task: How Low Can We Go? Finetuning Lightweight Llama Models for Low Resource Machine Translation" [ref=f3e783] [cursor=pointer]':
+              - /url: /2025.wmt-1.46/
+          - link "Atli Jasonarson" [ref=f3e784] [cursor=pointer]:
+            - /url: /people/atli-jasonarson/unverified/
+          - text: "|"
+          - link "Steinthor Steingrimsson" [ref=f3e785] [cursor=pointer]:
+            - /url: /people/steinthor-steingrimsson/
+      - generic [ref=f3e786]:
+        - generic [ref=f3e788]:
+          - link "Open PDF" [ref=f3e789] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.47.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e790] [cursor=pointer]:
+            - /url: /2025.wmt-1.47.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e791] [cursor=pointer]: abs
+        - generic [ref=f3e792]:
+          - strong [ref=f3e793]:
+            - link "KIKIS at WMT 2025 General Translation Task" [ref=f3e794] [cursor=pointer]:
+              - /url: /2025.wmt-1.47/
+          - link "Koichi Iwakawa" [ref=f3e795] [cursor=pointer]:
+            - /url: /people/koichi-iwakawa/unverified/
+          - text: "|"
+          - link "Keito Kudo" [ref=f3e796] [cursor=pointer]:
+            - /url: /people/keito-kudo/unverified/
+          - text: "|"
+          - link "Subaru Kimura" [ref=f3e797] [cursor=pointer]:
+            - /url: /people/subaru-kimura/unverified/
+          - text: "|"
+          - link "Takumi Ito" [ref=f3e798] [cursor=pointer]:
+            - /url: /people/takumi-ito/
+          - text: "|"
+          - link "Jun Suzuki" [ref=f3e799] [cursor=pointer]:
+            - /url: /people/jun-suzuki/
+      - generic [ref=f3e800]:
+        - generic [ref=f3e802]:
+          - link "Open PDF" [ref=f3e803] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.48.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e804] [cursor=pointer]:
+            - /url: /2025.wmt-1.48.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e805] [cursor=pointer]: abs
+        - generic [ref=f3e806]:
+          - strong [ref=f3e807]:
+            - link "Google Translate’s Research Submission to WMT2025" [ref=f3e808] [cursor=pointer]:
+              - /url: /2025.wmt-1.48/
+          - link "Mara Finkelstein" [ref=f3e809] [cursor=pointer]:
+            - /url: /people/mara-finkelstein/unverified/
+          - text: "|"
+          - link "Geza Kovacs" [ref=f3e810] [cursor=pointer]:
+            - /url: /people/geza-kovacs/unverified/
+          - text: "|"
+          - link "Isaac Caswell" [ref=f3e811] [cursor=pointer]:
+            - /url: /people/isaac-caswell/unverified/
+          - text: "|"
+          - link "Tobias Domhan" [ref=f3e812] [cursor=pointer]:
+            - /url: /people/tobias-domhan/unverified/
+          - text: "|"
+          - link "Jan-Thorsten Peter" [ref=f3e813] [cursor=pointer]:
+            - /url: /people/jan-thorsten-peter/unverified/
+          - text: "|"
+          - link "Juraj Juraska" [ref=f3e814] [cursor=pointer]:
+            - /url: /people/juraj-juraska/unverified/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e815] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+          - text: "|"
+          - link "David Vilar" [ref=f3e816] [cursor=pointer]:
+            - /url: /people/david-vilar/unverified/
+      - generic [ref=f3e817]:
+        - generic [ref=f3e819]:
+          - link "Open PDF" [ref=f3e820] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.49.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e821] [cursor=pointer]:
+            - /url: /2025.wmt-1.49.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e822] [cursor=pointer]: abs
+        - generic [ref=f3e823]:
+          - strong [ref=f3e824]:
+            - link "DLUT and GTCOM’s Large Language Model Based Translation System for WMT25" [ref=f3e825] [cursor=pointer]:
+              - /url: /2025.wmt-1.49/
+          - link "Hao Zong" [ref=f3e826] [cursor=pointer]:
+            - /url: /people/hao-zong/unverified/
+          - text: "|"
+          - link "Chao Bei" [ref=f3e827] [cursor=pointer]:
+            - /url: /people/chao-bei/unverified/
+          - text: "|"
+          - link "Wentao Chen" [ref=f3e828] [cursor=pointer]:
+            - /url: /people/wentao-chen/unverified/
+          - text: "|"
+          - link "Conghu Yuan" [ref=f3e829] [cursor=pointer]:
+            - /url: /people/conghu-yuan/unverified/
+          - text: "|"
+          - link "Huan Liu" [ref=f3e830] [cursor=pointer]:
+            - /url: /people/huan-liu/unverified/
+          - text: "|"
+          - link "Degen Huang" [ref=f3e831] [cursor=pointer]:
+            - /url: /people/degen-huang/
+      - generic [ref=f3e832]:
+        - generic [ref=f3e834]:
+          - link "Open PDF" [ref=f3e835] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.50.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e836] [cursor=pointer]:
+            - /url: /2025.wmt-1.50.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e837] [cursor=pointer]: abs
+        - generic [ref=f3e838]:
+          - strong [ref=f3e839]:
+            - link "Yandex Submission to the WMT25 General Machine Translation Task" [ref=f3e840] [cursor=pointer]:
+              - /url: /2025.wmt-1.50/
+          - link "Nikolay Karpachev" [ref=f3e841] [cursor=pointer]:
+            - /url: /people/nikolay-karpachev/
+          - text: "|"
+          - link "Ekaterina Enikeeva" [ref=f3e842] [cursor=pointer]:
+            - /url: /people/ekaterina-enikeeva/
+          - text: "|"
+          - link "Dmitry Popov" [ref=f3e843] [cursor=pointer]:
+            - /url: /people/dmitry-popov/
+          - text: "|"
+          - link "Arsenii Bulgakov" [ref=f3e844] [cursor=pointer]:
+            - /url: /people/arsenii-bulgakov/unverified/
+          - text: "|"
+          - link "Daniil Panteleev" [ref=f3e845] [cursor=pointer]:
+            - /url: /people/daniil-panteleev/unverified/
+          - text: "|"
+          - link "Dmitrii Ulianov" [ref=f3e846] [cursor=pointer]:
+            - /url: /people/dmitrii-ulianov/unverified/
+          - text: "|"
+          - link "Artem Kryukov" [ref=f3e847] [cursor=pointer]:
+            - /url: /people/artem-kryukov/unverified/
+          - text: "|"
+          - link "Artem Mekhraliev" [ref=f3e848] [cursor=pointer]:
+            - /url: /people/artem-mekhraliev/
+      - generic [ref=f3e849]:
+        - generic [ref=f3e851]:
+          - link "Open PDF" [ref=f3e852] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.51.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e853] [cursor=pointer]:
+            - /url: /2025.wmt-1.51.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e854] [cursor=pointer]: abs
+        - generic [ref=f3e855]:
+          - strong [ref=f3e856]:
+            - 'link "IRB-MT at WMT25 Translation Task: A Simple Agentic System Using an Off-the-Shelf LLM" [ref=f3e857] [cursor=pointer]':
+              - /url: /2025.wmt-1.51/
+          - link "Ivan Grubišić" [ref=f3e858] [cursor=pointer]:
+            - /url: /people/ivan-grubisic/unverified/
+          - text: "|"
+          - link "Damir Korencic" [ref=f3e859] [cursor=pointer]:
+            - /url: /people/damir-korencic/
+      - generic [ref=f3e860]:
+        - generic [ref=f3e862]:
+          - link "Open PDF" [ref=f3e863] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.52.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e864] [cursor=pointer]:
+            - /url: /2025.wmt-1.52.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e865] [cursor=pointer]: abs
+        - generic [ref=f3e866]:
+          - strong [ref=f3e867]:
+            - link "Improving Low-Resource Japanese Translation with Fine-Tuning and Backtranslation for the WMT 25 General Translation Task" [ref=f3e868] [cursor=pointer]:
+              - /url: /2025.wmt-1.52/
+          - link "Felipe Fujita" [ref=f3e869] [cursor=pointer]:
+            - /url: /people/felipe-fujita/unverified/
+          - text: "|"
+          - link "Hideyuki Takada" [ref=f3e870] [cursor=pointer]:
+            - /url: /people/hideyuki-takada/unverified/
+      - generic [ref=f3e871]:
+        - generic [ref=f3e873]:
+          - link "Open PDF" [ref=f3e874] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.53.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e875] [cursor=pointer]:
+            - /url: /2025.wmt-1.53.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e876] [cursor=pointer]: abs
+        - generic [ref=f3e877]:
+          - strong [ref=f3e878]:
+            - 'link "Multi-agentMT: Deploying AI Agent in the WMT25 Shared Task" [ref=f3e879] [cursor=pointer]':
+              - /url: /2025.wmt-1.53/
+          - link "Ahrii Kim" [ref=f3e880] [cursor=pointer]:
+            - /url: /people/ahrii-kim/
+      - generic [ref=f3e881]:
+        - generic [ref=f3e883]:
+          - link "Open PDF" [ref=f3e884] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.54.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e885] [cursor=pointer]:
+            - /url: /2025.wmt-1.54.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e886] [cursor=pointer]: abs
+        - generic [ref=f3e887]:
+          - strong [ref=f3e888]:
+            - 'link "Laniqo at WMT25 General Translation Task: Self-Improved and Retrieval-Augmented Translation" [ref=f3e889] [cursor=pointer]':
+              - /url: /2025.wmt-1.54/
+          - link "Kamil Guttmann" [ref=f3e890] [cursor=pointer]:
+            - /url: /people/kamil-guttmann/unverified/
+          - text: "|"
+          - link "Zofia Rostek" [ref=f3e891] [cursor=pointer]:
+            - /url: /people/zofia-rostek/unverified/
+          - text: "|"
+          - link "Adrian Charkiewicz" [ref=f3e892] [cursor=pointer]:
+            - /url: /people/adrian-charkiewicz/unverified/
+          - text: "|"
+          - link "Antoni Solarski" [ref=f3e893] [cursor=pointer]:
+            - /url: /people/antoni-solarski/unverified/
+          - text: "|"
+          - link "Mikołaj Pokrywka" [ref=f3e894] [cursor=pointer]:
+            - /url: /people/mikolaj-pokrywka/
+          - text: "|"
+          - link "Artur Nowakowski" [ref=f3e895] [cursor=pointer]:
+            - /url: /people/artur-nowakowski/
+      - generic [ref=f3e896]:
+        - generic [ref=f3e898]:
+          - link "Open PDF" [ref=f3e899] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.55.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e900] [cursor=pointer]:
+            - /url: /2025.wmt-1.55.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e901] [cursor=pointer]: abs
+        - generic [ref=f3e902]:
+          - strong [ref=f3e903]:
+            - 'link "Command-A-Translate: Raising the Bar of Machine Translation with Difficulty Filtering" [ref=f3e904] [cursor=pointer]':
+              - /url: /2025.wmt-1.55/
+          - link "Tom Kocmi" [ref=f3e905] [cursor=pointer]:
+            - /url: /people/tom-kocmi/
+          - text: "|"
+          - link "Arkady Arkhangorodsky" [ref=f3e906] [cursor=pointer]:
+            - /url: /people/arkady-arkhangorodsky/unverified/
+          - text: "|"
+          - link "Alexandre Berard" [ref=f3e907] [cursor=pointer]:
+            - /url: /people/alexandre-berard/
+          - text: "|"
+          - link "Phil Blunsom" [ref=f3e908] [cursor=pointer]:
+            - /url: /people/phil-blunsom/
+          - text: "|"
+          - link "Samuel Cahyawijaya" [ref=f3e909] [cursor=pointer]:
+            - /url: /people/samuel-cahyawijaya/
+          - text: "|"
+          - link "Théo Dehaze" [ref=f3e910] [cursor=pointer]:
+            - /url: /people/theo-dehaze/unverified/
+          - text: "|"
+          - link "Marzieh Fadaee" [ref=f3e911] [cursor=pointer]:
+            - /url: /people/marzieh-fadaee/unverified/
+          - text: "|"
+          - link "Nicholas Frosst" [ref=f3e912] [cursor=pointer]:
+            - /url: /people/nicholas-frosst/unverified/
+          - text: "|"
+          - link "Matthias Galle" [ref=f3e913] [cursor=pointer]:
+            - /url: /people/matthias-galle/
+          - text: "|"
+          - link "Aidan Gomez" [ref=f3e914] [cursor=pointer]:
+            - /url: /people/aidan-gomez/unverified/
+          - text: "|"
+          - link "Nithya Govindarajan" [ref=f3e915] [cursor=pointer]:
+            - /url: /people/nithya-govindarajan/unverified/
+          - text: "|"
+          - link "Wei-Yin Ko" [ref=f3e916] [cursor=pointer]:
+            - /url: /people/wei-yin-ko/unverified/
+          - text: "|"
+          - link "Julia Kreutzer" [ref=f3e917] [cursor=pointer]:
+            - /url: /people/julia-kreutzer/
+          - text: "|"
+          - link "Kelly Marchisio" [ref=f3e918] [cursor=pointer]:
+            - /url: /people/kelly-marchisio/
+          - text: "|"
+          - link "Ahmet Üstün" [ref=f3e919] [cursor=pointer]:
+            - /url: /people/ahmet-ustun/
+          - text: "|"
+          - link "Sebastian Vincent" [ref=f3e920] [cursor=pointer]:
+            - /url: /people/sebastian-vincent/
+          - text: "|"
+          - link "Ivan Zhang" [ref=f3e921] [cursor=pointer]:
+            - /url: /people/ivan-zhang/unverified/
+      - generic [ref=f3e922]:
+        - generic [ref=f3e924]:
+          - link "Open PDF" [ref=f3e925] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.56.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e926] [cursor=pointer]:
+            - /url: /2025.wmt-1.56.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e927] [cursor=pointer]: abs
+        - generic [ref=f3e928]:
+          - strong [ref=f3e929]:
+            - 'link "GENDER1PERSON: Test Suite for Estimating Gender Bias of First-person Singular Forms" [ref=f3e930] [cursor=pointer]':
+              - /url: /2025.wmt-1.56/
+          - link "Maja Popović" [ref=f3e931] [cursor=pointer]:
+            - /url: /people/maja-popovic/
+          - text: "|"
+          - link "Ekaterina Lapshinova-Koltunski" [ref=f3e932] [cursor=pointer]:
+            - /url: /people/ekaterina-lapshinova-koltunski/
+      - generic [ref=f3e933]:
+        - generic [ref=f3e935]:
+          - link "Open PDF" [ref=f3e936] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.57.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e937] [cursor=pointer]:
+            - /url: /2025.wmt-1.57.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e938] [cursor=pointer]: abs
+        - generic [ref=f3e939]:
+          - strong [ref=f3e940]:
+            - link "Evaluation of LLM for English to Hindi Legal Domain Machine Translation Systems" [ref=f3e941] [cursor=pointer]:
+              - /url: /2025.wmt-1.57/
+          - link "Kshetrimayum Boynao Singh" [ref=f3e942] [cursor=pointer]:
+            - /url: /people/kshetrimayum-boynao-singh/
+          - text: "|"
+          - link "Deepak Kumar" [ref=f3e943] [cursor=pointer]:
+            - /url: /people/deepak-kumar/
+          - text: "|"
+          - link "Asif Ekbal" [ref=f3e944] [cursor=pointer]:
+            - /url: /people/asif-ekbal/
+      - generic [ref=f3e945]:
+        - generic [ref=f3e947]:
+          - link "Open PDF" [ref=f3e948] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.58.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e949] [cursor=pointer]:
+            - /url: /2025.wmt-1.58.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e950] [cursor=pointer]: abs
+        - generic [ref=f3e951]:
+          - strong [ref=f3e952]:
+            - 'link "RoCS-MT v2 at WMT 2025: Robust Challenge Set for Machine Translation" [ref=f3e953] [cursor=pointer]':
+              - /url: /2025.wmt-1.58/
+          - link "Rachel Bawden" [ref=f3e954] [cursor=pointer]:
+            - /url: /people/rachel-bawden/
+          - text: "|"
+          - link "Benoît Sagot" [ref=f3e955] [cursor=pointer]:
+            - /url: /people/benoit-sagot/
+      - generic [ref=f3e956]:
+        - generic [ref=f3e958]:
+          - link "Open PDF" [ref=f3e959] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.59.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e960] [cursor=pointer]:
+            - /url: /2025.wmt-1.59.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e961] [cursor=pointer]: abs
+        - generic [ref=f3e962]:
+          - strong [ref=f3e963]:
+            - link "Automated Evaluation for Terminology Translation Related to the EEA Agreement" [ref=f3e964] [cursor=pointer]:
+              - /url: /2025.wmt-1.59/
+          - link "Selma Dis Hauksdottir" [ref=f3e965] [cursor=pointer]:
+            - /url: /people/selma-dis-hauksdottir/unverified/
+          - text: "|"
+          - link "Steinthor Steingrimsson" [ref=f3e966] [cursor=pointer]:
+            - /url: /people/steinthor-steingrimsson/
+      - generic [ref=f3e967]:
+        - generic [ref=f3e969]:
+          - link "Open PDF" [ref=f3e970] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.60.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e971] [cursor=pointer]:
+            - /url: /2025.wmt-1.60.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e972] [cursor=pointer]: abs
+        - generic [ref=f3e973]:
+          - strong [ref=f3e974]:
+            - link "Up to Par? MT Systems Take a Shot at Sports Terminology" [ref=f3e975] [cursor=pointer]:
+              - /url: /2025.wmt-1.60/
+          - link "Einar Sigurdsson" [ref=f3e976] [cursor=pointer]:
+            - /url: /people/einar-sigurdsson/unverified/
+          - text: "|"
+          - link "Magnús Magnússon" [ref=f3e977] [cursor=pointer]:
+            - /url: /people/magnus-magnusson/unverified/
+          - text: "|"
+          - link "Atli Jasonarson" [ref=f3e978] [cursor=pointer]:
+            - /url: /people/atli-jasonarson/unverified/
+          - text: "|"
+          - link "Steinthor Steingrimsson" [ref=f3e979] [cursor=pointer]:
+            - /url: /people/steinthor-steingrimsson/
+      - generic [ref=f3e980]:
+        - generic [ref=f3e982]:
+          - link "Open PDF" [ref=f3e983] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.61.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e984] [cursor=pointer]:
+            - /url: /2025.wmt-1.61.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e985] [cursor=pointer]: abs
+        - generic [ref=f3e986]:
+          - strong [ref=f3e987]:
+            - 'link "Fine-Grained Evaluation of English-Russian MT in 2025: Linguistic Challenges Mirroring Human Translator Training" [ref=f3e988] [cursor=pointer]':
+              - /url: /2025.wmt-1.61/
+          - link "Shushen Manakhimova" [ref=f3e989] [cursor=pointer]:
+            - /url: /people/shushen-manakhimova/unverified/
+          - text: "|"
+          - link "Maria Kunilovskaya" [ref=f3e990] [cursor=pointer]:
+            - /url: /people/maria-kunilovskaya/
+          - text: "|"
+          - link "Ekaterina Lapshinova-Koltunski" [ref=f3e991] [cursor=pointer]:
+            - /url: /people/ekaterina-lapshinova-koltunski/
+          - text: "|"
+          - link "Eleftherios Avramidis" [ref=f3e992] [cursor=pointer]:
+            - /url: /people/eleftherios-avramidis/
+      - generic [ref=f3e993]:
+        - generic [ref=f3e995]:
+          - link "Open PDF" [ref=f3e996] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.62.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e997] [cursor=pointer]:
+            - /url: /2025.wmt-1.62.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e998] [cursor=pointer]: abs
+        - generic [ref=f3e999]:
+          - strong [ref=f3e1000]:
+            - link "Tagged Span Annotation for Detecting Translation Errors in Reasoning LLMs" [ref=f3e1001] [cursor=pointer]:
+              - /url: /2025.wmt-1.62/
+          - link "Taemin Yeom" [ref=f3e1002] [cursor=pointer]:
+            - /url: /people/taemin-yeom/unverified/
+          - text: "|"
+          - link "Yonghyun Ryu" [ref=f3e1003] [cursor=pointer]:
+            - /url: /people/yonghyun-ryu/unverified/
+          - text: "|"
+          - link "Yoonjung Choi" [ref=f3e1004] [cursor=pointer]:
+            - /url: /people/yoonjung-choi/unverified/
+          - text: "|"
+          - link "Jinyeong Bak" [ref=f3e1005] [cursor=pointer]:
+            - /url: /people/jinyeong-bak/
+      - generic [ref=f3e1006]:
+        - generic [ref=f3e1008]:
+          - link "Open PDF" [ref=f3e1009] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.63.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1010] [cursor=pointer]:
+            - /url: /2025.wmt-1.63.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1011] [cursor=pointer]: abs
+        - generic [ref=f3e1012]:
+          - strong [ref=f3e1013]:
+            - 'link "COMET-poly: Machine Translation Metric Grounded in Other Candidates" [ref=f3e1014] [cursor=pointer]':
+              - /url: /2025.wmt-1.63/
+          - link "Maike Züfle" [ref=f3e1015] [cursor=pointer]:
+            - /url: /people/maike-zufle/
+          - text: "|"
+          - link "Vilém Zouhar" [ref=f3e1016] [cursor=pointer]:
+            - /url: /people/vilem-zouhar/
+          - text: "|"
+          - link "Tu Anh Dinh" [ref=f3e1017] [cursor=pointer]:
+            - /url: /people/tu-anh-dinh/
+          - text: "|"
+          - link "Felipe Maia Polo" [ref=f3e1018] [cursor=pointer]:
+            - /url: /people/felipe-maia-polo/unverified/
+          - text: "|"
+          - link "Jan Niehues" [ref=f3e1019] [cursor=pointer]:
+            - /url: /people/jan-niehues/
+          - text: "|"
+          - link "Mrinmaya Sachan" [ref=f3e1020] [cursor=pointer]:
+            - /url: /people/mrinmaya-sachan/unverified/
+      - generic [ref=f3e1021]:
+        - generic [ref=f3e1023]:
+          - link "Open PDF" [ref=f3e1024] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.64.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1025] [cursor=pointer]:
+            - /url: /2025.wmt-1.64.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1026] [cursor=pointer]: abs
+        - generic [ref=f3e1027]:
+          - strong [ref=f3e1028]:
+            - link "Long-context Reference-based MT Quality Estimation" [ref=f3e1029] [cursor=pointer]:
+              - /url: /2025.wmt-1.64/
+          - link "Sami Ul Haq" [ref=f3e1030] [cursor=pointer]:
+            - /url: /people/sami-ul-haq/unverified/
+          - text: "|"
+          - link "Chinonso Cynthia Osuji" [ref=f3e1031] [cursor=pointer]:
+            - /url: /people/chinonso-cynthia-osuji/
+          - text: "|"
+          - link "Thiago Castro Ferreira" [ref=f3e1032] [cursor=pointer]:
+            - /url: /people/thiago-castro-ferreira/
+          - text: "|"
+          - link "Brian Davis" [ref=f3e1033] [cursor=pointer]:
+            - /url: /people/brian-davis/
+          - text: "|"
+          - link "Sheila Castilho" [ref=f3e1034] [cursor=pointer]:
+            - /url: /people/sheila-castilho/unverified/
+      - generic [ref=f3e1035]:
+        - generic [ref=f3e1037]:
+          - link "Open PDF" [ref=f3e1038] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.65.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1039] [cursor=pointer]:
+            - /url: /2025.wmt-1.65.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1040] [cursor=pointer]: abs
+        - generic [ref=f3e1041]:
+          - strong [ref=f3e1042]:
+            - link "Evaluating WMT 2025 Metrics Shared Task Submissions on the SSA-MTE African Challenge Set" [ref=f3e1043] [cursor=pointer]:
+              - /url: /2025.wmt-1.65/
+          - link "Senyu Li" [ref=f3e1044] [cursor=pointer]:
+            - /url: /people/senyu-li/unverified/
+          - text: "|"
+          - link "Felermino Dario Mario Ali" [ref=f3e1045] [cursor=pointer]:
+            - /url: /people/felermino-dario-mario-ali/unverified/
+          - text: "|"
+          - link "Jiayi Wang" [ref=f3e1046] [cursor=pointer]:
+            - /url: /people/jiayi-wang/unverified/
+          - text: "|"
+          - link "Rui Sousa-Silva" [ref=f3e1047] [cursor=pointer]:
+            - /url: /people/rui-sousa-silva/
+          - text: "|"
+          - link "Henrique Lopes Cardoso" [ref=f3e1048] [cursor=pointer]:
+            - /url: /people/henrique-lopes-cardoso/
+          - text: "|"
+          - link "Pontus Stenetorp" [ref=f3e1049] [cursor=pointer]:
+            - /url: /people/pontus-stenetorp/
+          - text: "|"
+          - link "Colin Cherry" [ref=f3e1050] [cursor=pointer]:
+            - /url: /people/colin-cherry/
+          - text: "|"
+          - link "David Ifeoluwa Adelani" [ref=f3e1051] [cursor=pointer]:
+            - /url: /people/david-ifeoluwa-adelani/
+      - generic [ref=f3e1052]:
+        - generic [ref=f3e1054]:
+          - link "Open PDF" [ref=f3e1055] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.66.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1056] [cursor=pointer]:
+            - /url: /2025.wmt-1.66.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1057] [cursor=pointer]: abs
+        - generic [ref=f3e1058]:
+          - strong [ref=f3e1059]:
+            - link "Nvidia-Nemo’s WMT 2025 Metrics Shared Task Submission" [ref=f3e1060] [cursor=pointer]:
+              - /url: /2025.wmt-1.66/
+          - link "Brian Yan" [ref=f3e1061] [cursor=pointer]:
+            - /url: /people/brian-yan/unverified/
+          - text: "|"
+          - link "Shuoyang Ding" [ref=f3e1062] [cursor=pointer]:
+            - /url: /people/shuoyang-ding/unverified/
+          - text: "|"
+          - link "Kuang-Da Wang" [ref=f3e1063] [cursor=pointer]:
+            - /url: /people/kuang-da-wang/
+          - text: "|"
+          - link "Siqi Ouyang" [ref=f3e1064] [cursor=pointer]:
+            - /url: /people/siqi-ouyang/
+          - text: "|"
+          - link "Oleksii Hrinchuk" [ref=f3e1065] [cursor=pointer]:
+            - /url: /people/oleksii-hrinchuk/
+          - text: "|"
+          - link "Vitaly Lavrukhin" [ref=f3e1066] [cursor=pointer]:
+            - /url: /people/vitaly-lavrukhin/
+          - text: "|"
+          - link "Boris Ginsburg" [ref=f3e1067] [cursor=pointer]:
+            - /url: /people/boris-ginsburg/unverified/
+      - generic [ref=f3e1068]:
+        - generic [ref=f3e1070]:
+          - link "Open PDF" [ref=f3e1071] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.67.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1072] [cursor=pointer]:
+            - /url: /2025.wmt-1.67.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1073] [cursor=pointer]: abs
+        - generic [ref=f3e1074]:
+          - strong [ref=f3e1075]:
+            - 'link "GEMBA V2: Ten Judgments Are Better Than One" [ref=f3e1076] [cursor=pointer]':
+              - /url: /2025.wmt-1.67/
+          - link "Marcin Junczys-Dowmunt" [ref=f3e1077] [cursor=pointer]:
+            - /url: /people/marcin-junczys-dowmunt/unverified/
+      - generic [ref=f3e1078]:
+        - generic [ref=f3e1080]:
+          - link "Open PDF" [ref=f3e1081] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.68.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1082] [cursor=pointer]:
+            - /url: /2025.wmt-1.68.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1083] [cursor=pointer]: abs
+        - generic [ref=f3e1084]:
+          - strong [ref=f3e1085]:
+            - link "CUNI and Phrase at WMT25 MT Evaluation Task" [ref=f3e1086] [cursor=pointer]:
+              - /url: /2025.wmt-1.68/
+          - link "Miroslav Hrabal" [ref=f3e1087] [cursor=pointer]:
+            - /url: /people/miroslav-hrabal/unverified/
+          - text: "|"
+          - link "Ondrej Glembek" [ref=f3e1088] [cursor=pointer]:
+            - /url: /people/ondrej-glembek/unverified/
+          - text: "|"
+          - link "Aleš Tamchyna" [ref=f3e1089] [cursor=pointer]:
+            - /url: /people/ales-tamchyna/unverified/
+          - text: "|"
+          - link "Almut Silja Hildebrand" [ref=f3e1090] [cursor=pointer]:
+            - /url: /people/almut-silja-hildebrand/
+          - text: "|"
+          - link "Alan Eckhard" [ref=f3e1091] [cursor=pointer]:
+            - /url: /people/alan-eckhard/unverified/
+          - text: "|"
+          - link "Miroslav Štola" [ref=f3e1092] [cursor=pointer]:
+            - /url: /people/miroslav-stola/unverified/
+          - text: "|"
+          - link "Sergio Penkale" [ref=f3e1093] [cursor=pointer]:
+            - /url: /people/sergio-penkale/unverified/
+          - text: "|"
+          - link "Zuzana Šimečková" [ref=f3e1094] [cursor=pointer]:
+            - /url: /people/zuzana-simeckova/unverified/
+          - text: "|"
+          - link "Ondřej Bojar" [ref=f3e1095] [cursor=pointer]:
+            - /url: /people/ondrej-bojar/
+          - text: "|"
+          - link "Alon Lavie" [ref=f3e1096] [cursor=pointer]:
+            - /url: /people/alon-lavie/
+          - text: "|"
+          - link "Craig Stewart" [ref=f3e1097] [cursor=pointer]:
+            - /url: /people/craig-stewart/unverified/
+      - generic [ref=f3e1098]:
+        - generic [ref=f3e1100]:
+          - link "Open PDF" [ref=f3e1101] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.69.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1102] [cursor=pointer]:
+            - /url: /2025.wmt-1.69.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1103] [cursor=pointer]: abs
+        - generic [ref=f3e1104]:
+          - strong [ref=f3e1105]:
+            - 'link "MSLC25: Metric Performance on Low-Quality Machine Translation, Empty Strings, and Language Variants" [ref=f3e1106] [cursor=pointer]':
+              - /url: /2025.wmt-1.69/
+          - link "Rebecca Knowles" [ref=f3e1107] [cursor=pointer]:
+            - /url: /people/rebecca-knowles/
+          - text: "|"
+          - link "Samuel Larkin" [ref=f3e1108] [cursor=pointer]:
+            - /url: /people/samuel-larkin/
+          - text: "|"
+          - link "Chi-Kiu Lo" [ref=f3e1109] [cursor=pointer]:
+            - /url: /people/chi-kiu-lo/
+      - generic [ref=f3e1110]:
+        - generic [ref=f3e1112]:
+          - link "Open PDF" [ref=f3e1113] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.70.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1114] [cursor=pointer]:
+            - /url: /2025.wmt-1.70.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1115] [cursor=pointer]: abs
+        - generic [ref=f3e1116]:
+          - strong [ref=f3e1117]:
+            - 'link "MetricX-25 and GemSpanEval: Google Translate Submissions to the WMT25 Evaluation Shared Task" [ref=f3e1118] [cursor=pointer]':
+              - /url: /2025.wmt-1.70/
+          - link "Juraj Juraska" [ref=f3e1119] [cursor=pointer]:
+            - /url: /people/juraj-juraska/unverified/
+          - text: "|"
+          - link "Tobias Domhan" [ref=f3e1120] [cursor=pointer]:
+            - /url: /people/tobias-domhan/unverified/
+          - text: "|"
+          - link "Mara Finkelstein" [ref=f3e1121] [cursor=pointer]:
+            - /url: /people/mara-finkelstein/unverified/
+          - text: "|"
+          - link "Tetsuji Nakagawa" [ref=f3e1122] [cursor=pointer]:
+            - /url: /people/tetsuji-nakagawa/unverified/
+          - text: "|"
+          - link "Geza Kovacs" [ref=f3e1123] [cursor=pointer]:
+            - /url: /people/geza-kovacs/unverified/
+          - text: "|"
+          - link "Daniel Deutsch" [ref=f3e1124] [cursor=pointer]:
+            - /url: /people/daniel-deutsch/
+          - text: "|"
+          - link "Pidong Wang" [ref=f3e1125] [cursor=pointer]:
+            - /url: /people/pidong-wang/unverified/
+          - text: "|"
+          - link "Markus Freitag" [ref=f3e1126] [cursor=pointer]:
+            - /url: /people/markus-freitag/
+      - generic [ref=f3e1127]:
+        - generic [ref=f3e1129]:
+          - link "Open PDF" [ref=f3e1130] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.71.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1131] [cursor=pointer]:
+            - /url: /2025.wmt-1.71.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1132] [cursor=pointer]: abs
+        - generic [ref=f3e1133]:
+          - strong [ref=f3e1134]:
+            - link "HW-TSC’s Submissions to the WMT 2025 Segment-level Quality Score Prediction Task" [ref=f3e1135] [cursor=pointer]:
+              - /url: /2025.wmt-1.71/
+          - link "Yuanchang Luo" [ref=f3e1136] [cursor=pointer]:
+            - /url: /people/yuanchang-luo/unverified/
+          - text: "|"
+          - link "Jiaxin Guo" [ref=f3e1137] [cursor=pointer]:
+            - /url: /people/jiaxin-guo/
+          - text: "|"
+          - link "Daimeng Wei" [ref=f3e1138] [cursor=pointer]:
+            - /url: /people/daimeng-wei/
+          - text: "|"
+          - link "Hengchao Shang" [ref=f3e1139] [cursor=pointer]:
+            - /url: /people/hengchao-shang/
+          - text: "|"
+          - link "Zongyao Li" [ref=f3e1140] [cursor=pointer]:
+            - /url: /people/zongyao-li/
+          - text: "|"
+          - link "Zhiqiang Rao" [ref=f3e1141] [cursor=pointer]:
+            - /url: /people/zhiqiang-rao/unverified/
+          - text: "|"
+          - link "Jinlong Yang" [ref=f3e1142] [cursor=pointer]:
+            - /url: /people/jinlong-yang/
+          - text: "|"
+          - link "Zhanglin Wu" [ref=f3e1143] [cursor=pointer]:
+            - /url: /people/zhanglin-wu/
+          - text: "|"
+          - link "Xiaoyu Chen" [ref=f3e1144] [cursor=pointer]:
+            - /url: /people/xiaoyu-chen/unverified/
+          - text: "|"
+          - link "Hao Yang" [ref=f3e1145] [cursor=pointer]:
+            - /url: /people/hao-yang/unverified/
+      - generic [ref=f3e1146]:
+        - generic [ref=f3e1148]:
+          - link "Open PDF" [ref=f3e1149] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.72.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1150] [cursor=pointer]:
+            - /url: /2025.wmt-1.72.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1151] [cursor=pointer]: abs
+        - generic [ref=f3e1152]:
+          - strong [ref=f3e1153]:
+            - 'link "UvA-MT at WMT25 Evaluation Task: LLM Uncertainty as a Proxy for Translation Quality" [ref=f3e1154] [cursor=pointer]':
+              - /url: /2025.wmt-1.72/
+          - link "Di Wu" [ref=f3e1155] [cursor=pointer]:
+            - /url: /people/di-wu/unverified/
+          - text: "|"
+          - link "Christof Monz" [ref=f3e1156] [cursor=pointer]:
+            - /url: /people/christof-monz/
+      - generic [ref=f3e1157]:
+        - generic [ref=f3e1159]:
+          - link "Open PDF" [ref=f3e1160] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.73.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1161] [cursor=pointer]:
+            - /url: /2025.wmt-1.73.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1162] [cursor=pointer]: abs
+        - generic [ref=f3e1163]:
+          - strong [ref=f3e1164]:
+            - link "Submission for WMT25 Task 3" [ref=f3e1165] [cursor=pointer]:
+              - /url: /2025.wmt-1.73/
+          - link "Govardhan Padmanabhan" [ref=f3e1166] [cursor=pointer]:
+            - /url: /people/govardhan-padmanabhan/unverified/
+      - generic [ref=f3e1167]:
+        - generic [ref=f3e1169]:
+          - link "Open PDF" [ref=f3e1170] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.74.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1171] [cursor=pointer]:
+            - /url: /2025.wmt-1.74.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1172] [cursor=pointer]: abs
+        - generic [ref=f3e1173]:
+          - strong [ref=f3e1174]:
+            - 'link "RankedCOMET: Elevating a 2022 Baseline to a Top-5 Finish in the WMT 2025 QE Task" [ref=f3e1175] [cursor=pointer]':
+              - /url: /2025.wmt-1.74/
+          - link "Sujal Maharjan" [ref=f3e1176] [cursor=pointer]:
+            - /url: /people/sujal-maharjan/
+          - text: "|"
+          - link "Astha Shrestha" [ref=f3e1177] [cursor=pointer]:
+            - /url: /people/astha-shrestha/
+      - generic [ref=f3e1178]:
+        - generic [ref=f3e1180]:
+          - link "Open PDF" [ref=f3e1181] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.75.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1182] [cursor=pointer]:
+            - /url: /2025.wmt-1.75.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1183] [cursor=pointer]: abs
+        - generic [ref=f3e1184]:
+          - strong [ref=f3e1185]:
+            - link "Quality-Informed Segment-Level Error Correction Using Natural Language Explanations from xTower and Large Language Models" [ref=f3e1186] [cursor=pointer]:
+              - /url: /2025.wmt-1.75/
+          - link "Prashant Sharma" [ref=f3e1187] [cursor=pointer]:
+            - /url: /people/prashant-sharma/unverified/
+      - generic [ref=f3e1188]:
+        - generic [ref=f3e1190]:
+          - link "Open PDF" [ref=f3e1191] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.76.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1192] [cursor=pointer]:
+            - /url: /2025.wmt-1.76.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1193] [cursor=pointer]: abs
+        - generic [ref=f3e1194]:
+          - strong [ref=f3e1195]:
+            - 'link "TASER: Translation Assessment via Systematic Evaluation and Reasoning" [ref=f3e1196] [cursor=pointer]':
+              - /url: /2025.wmt-1.76/
+          - link "Monishwaran Maheswaran" [ref=f3e1197] [cursor=pointer]:
+            - /url: /people/monishwaran-maheswaran/unverified/
+          - text: "|"
+          - link "Marco Carini" [ref=f3e1198] [cursor=pointer]:
+            - /url: /people/marco-carini/unverified/
+          - text: "|"
+          - link "Christian Federmann" [ref=f3e1199] [cursor=pointer]:
+            - /url: /people/christian-federmann/unverified/
+          - text: "|"
+          - link "Tony Diaz" [ref=f3e1200] [cursor=pointer]:
+            - /url: /people/tony-diaz/unverified/
+      - generic [ref=f3e1201]:
+        - generic [ref=f3e1203]:
+          - link "Open PDF" [ref=f3e1204] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.77.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1205] [cursor=pointer]:
+            - /url: /2025.wmt-1.77.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1206] [cursor=pointer]: abs
+        - generic [ref=f3e1207]:
+          - strong [ref=f3e1208]:
+            - 'link "Vicomtech@WMT 2025: Evolutionary Model Compression for Machine Translation" [ref=f3e1209] [cursor=pointer]':
+              - /url: /2025.wmt-1.77/
+          - link "David Ponce" [ref=f3e1210] [cursor=pointer]:
+            - /url: /people/david-ponce/unverified/
+          - text: "|"
+          - link "Harritxu Gete" [ref=f3e1211] [cursor=pointer]:
+            - /url: /people/harritxu-gete/
+          - text: "|"
+          - link "Thierry Etchegoyhen" [ref=f3e1212] [cursor=pointer]:
+            - /url: /people/thierry-etchegoyhen/unverified/
+      - generic [ref=f3e1213]:
+        - generic [ref=f3e1215]:
+          - link "Open PDF" [ref=f3e1216] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.78.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1217] [cursor=pointer]:
+            - /url: /2025.wmt-1.78.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1218] [cursor=pointer]: abs
+        - generic [ref=f3e1219]:
+          - strong [ref=f3e1220]:
+            - link "Iterative Layer Pruning for Efficient Translation Inference" [ref=f3e1221] [cursor=pointer]:
+              - /url: /2025.wmt-1.78/
+          - link "Yasmin Moslem" [ref=f3e1222] [cursor=pointer]:
+            - /url: /people/yasmin-moslem/
+          - text: "|"
+          - link "Muhammad Hazim Al Farouq" [ref=f3e1223] [cursor=pointer]:
+            - /url: /people/muhammad-hazim-al-farouq/unverified/
+          - text: "|"
+          - link "John Kelleher" [ref=f3e1224] [cursor=pointer]:
+            - /url: /people/john-kelleher/
+      - generic [ref=f3e1225]:
+        - generic [ref=f3e1227]:
+          - link "Open PDF" [ref=f3e1228] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.79.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1229] [cursor=pointer]:
+            - /url: /2025.wmt-1.79.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1230] [cursor=pointer]: abs
+        - generic [ref=f3e1231]:
+          - strong [ref=f3e1232]:
+            - link "Expanding the WMT24++ Benchmark with Rumantsch Grischun, Sursilvan, Sutsilvan, Surmiran, Puter, and Vallader" [ref=f3e1233] [cursor=pointer]:
+              - /url: /2025.wmt-1.79/
+          - link "Jannis Vamvas" [ref=f3e1234] [cursor=pointer]:
+            - /url: /people/jannis-vamvas/
+          - text: "|"
+          - link "Ignacio Pérez Prat" [ref=f3e1235] [cursor=pointer]:
+            - /url: /people/ignacio-perez-prat/unverified/
+          - text: "|"
+          - link "Not Soliva" [ref=f3e1236] [cursor=pointer]:
+            - /url: /people/not-soliva/unverified/
+          - text: "|"
+          - link "Sandra Baltermia-Guetg" [ref=f3e1237] [cursor=pointer]:
+            - /url: /people/sandra-baltermia-guetg/unverified/
+          - text: "|"
+          - link "Andrina Beeli" [ref=f3e1238] [cursor=pointer]:
+            - /url: /people/andrina-beeli/unverified/
+          - text: "|"
+          - link "Simona Beeli" [ref=f3e1239] [cursor=pointer]:
+            - /url: /people/simona-beeli/unverified/
+          - text: "|"
+          - link "Madlaina Capeder" [ref=f3e1240] [cursor=pointer]:
+            - /url: /people/madlaina-capeder/unverified/
+          - text: "|"
+          - link "Laura Decurtins" [ref=f3e1241] [cursor=pointer]:
+            - /url: /people/laura-decurtins/unverified/
+          - text: "|"
+          - link "Gian Peder Gregori" [ref=f3e1242] [cursor=pointer]:
+            - /url: /people/gian-peder-gregori/unverified/
+          - text: "|"
+          - link "Flavia Hobi" [ref=f3e1243] [cursor=pointer]:
+            - /url: /people/flavia-hobi/unverified/
+          - text: "|"
+          - link "Gabriela Holderegger" [ref=f3e1244] [cursor=pointer]:
+            - /url: /people/gabriela-holderegger/unverified/
+          - text: "|"
+          - link "Arina Lazzarini" [ref=f3e1245] [cursor=pointer]:
+            - /url: /people/arina-lazzarini/unverified/
+          - text: "|"
+          - link "Viviana Lazzarini" [ref=f3e1246] [cursor=pointer]:
+            - /url: /people/viviana-lazzarini/unverified/
+          - text: "|"
+          - link "Walter Rosselli" [ref=f3e1247] [cursor=pointer]:
+            - /url: /people/walter-rosselli/unverified/
+          - text: "|"
+          - link "Bettina Vital" [ref=f3e1248] [cursor=pointer]:
+            - /url: /people/bettina-vital/unverified/
+          - text: "|"
+          - link "Anna Rutkiewicz" [ref=f3e1249] [cursor=pointer]:
+            - /url: /people/anna-rutkiewicz/unverified/
+          - text: "|"
+          - link "Rico Sennrich" [ref=f3e1250] [cursor=pointer]:
+            - /url: /people/rico-sennrich/
+      - generic [ref=f3e1251]:
+        - generic [ref=f3e1253]:
+          - link "Open PDF" [ref=f3e1254] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.80.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1255] [cursor=pointer]:
+            - /url: /2025.wmt-1.80.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1256] [cursor=pointer]: abs
+        - generic [ref=f3e1257]:
+          - strong [ref=f3e1258]:
+            - link "A French Version of the OLDI Seed Corpus" [ref=f3e1259] [cursor=pointer]:
+              - /url: /2025.wmt-1.80/
+          - link "Malik Marmonier" [ref=f3e1260] [cursor=pointer]:
+            - /url: /people/malik-marmonier/
+          - text: "|"
+          - link "Benoît Sagot" [ref=f3e1261] [cursor=pointer]:
+            - /url: /people/benoit-sagot/
+          - text: "|"
+          - link "Rachel Bawden" [ref=f3e1262] [cursor=pointer]:
+            - /url: /people/rachel-bawden/
+      - generic [ref=f3e1263]:
+        - generic [ref=f3e1265]:
+          - link "Open PDF" [ref=f3e1266] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.81.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1267] [cursor=pointer]:
+            - /url: /2025.wmt-1.81.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1268] [cursor=pointer]: abs
+        - generic [ref=f3e1269]:
+          - strong [ref=f3e1270]:
+            - link "Bringing Ladin to FLORES+" [ref=f3e1271] [cursor=pointer]:
+              - /url: /2025.wmt-1.81/
+          - link "Samuel Frontull" [ref=f3e1272] [cursor=pointer]:
+            - /url: /people/samuel-frontull/
+          - text: "|"
+          - link "Thomas Ströhle" [ref=f3e1273] [cursor=pointer]:
+            - /url: /people/thomas-strohle/unverified/
+          - text: "|"
+          - link "Carlo Zoli" [ref=f3e1274] [cursor=pointer]:
+            - /url: /people/carlo-zoli/unverified/
+          - text: "|"
+          - link "Werner Pescosta" [ref=f3e1275] [cursor=pointer]:
+            - /url: /people/werner-pescosta/unverified/
+          - text: "|"
+          - link "Ulrike Frenademez" [ref=f3e1276] [cursor=pointer]:
+            - /url: /people/ulrike-frenademez/unverified/
+          - text: "|"
+          - link "Matteo Ruggeri" [ref=f3e1277] [cursor=pointer]:
+            - /url: /people/matteo-ruggeri/unverified/
+          - text: "|"
+          - link "Daria Valentin" [ref=f3e1278] [cursor=pointer]:
+            - /url: /people/daria-valentin/unverified/
+          - text: "|"
+          - link "Karin Comploj" [ref=f3e1279] [cursor=pointer]:
+            - /url: /people/karin-comploj/unverified/
+          - text: "|"
+          - link "Gabriel Perathoner" [ref=f3e1280] [cursor=pointer]:
+            - /url: /people/gabriel-perathoner/unverified/
+          - text: "|"
+          - link "Silvia Liotto" [ref=f3e1281] [cursor=pointer]:
+            - /url: /people/silvia-liotto/unverified/
+          - text: "|"
+          - link "Paolo Anvidalfarei" [ref=f3e1282] [cursor=pointer]:
+            - /url: /people/paolo-anvidalfarei/unverified/
+      - generic [ref=f3e1283]:
+        - generic [ref=f3e1285]:
+          - link "Open PDF" [ref=f3e1286] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.82.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1287] [cursor=pointer]:
+            - /url: /2025.wmt-1.82.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1288] [cursor=pointer]: abs
+        - generic [ref=f3e1289]:
+          - strong [ref=f3e1290]:
+            - link "Correcting the Tamazight Portions of FLORES+ and OLDI Seed Datasets" [ref=f3e1291] [cursor=pointer]:
+              - /url: /2025.wmt-1.82/
+          - link "Alp Oktem" [ref=f3e1292] [cursor=pointer]:
+            - /url: /people/alp-oktem/unverified/
+          - text: "|"
+          - link "Mohamed Aymane Farhi" [ref=f3e1293] [cursor=pointer]:
+            - /url: /people/mohamed-aymane-farhi/unverified/
+          - text: "|"
+          - link "Brahim Essaidi" [ref=f3e1294] [cursor=pointer]:
+            - /url: /people/brahim-essaidi/unverified/
+          - text: "|"
+          - link "Naceur Jabouja" [ref=f3e1295] [cursor=pointer]:
+            - /url: /people/naceur-jabouja/unverified/
+          - text: "|"
+          - link "Farida Boudichat" [ref=f3e1296] [cursor=pointer]:
+            - /url: /people/farida-boudichat/unverified/
+      - generic [ref=f3e1297]:
+        - generic [ref=f3e1299]:
+          - link "Open PDF" [ref=f3e1300] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.83.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1301] [cursor=pointer]:
+            - /url: /2025.wmt-1.83.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1302] [cursor=pointer]: abs
+        - generic [ref=f3e1303]:
+          - strong [ref=f3e1304]:
+            - 'link "Filling the Gap for Uzbek: Creating Translation Resources for Southern Uzbek" [ref=f3e1305] [cursor=pointer]':
+              - /url: /2025.wmt-1.83/
+          - link "Mukhammadsaid Mamasaidov" [ref=f3e1306] [cursor=pointer]:
+            - /url: /people/mukhammadsaid-mamasaidov/unverified/
+          - text: "|"
+          - link "Azizullah Aral" [ref=f3e1307] [cursor=pointer]:
+            - /url: /people/azizullah-aral/unverified/
+          - text: "|"
+          - link "Abror Shopulatov" [ref=f3e1308] [cursor=pointer]:
+            - /url: /people/abror-shopulatov/unverified/
+          - text: "|"
+          - link "Mironshoh Inomjonov" [ref=f3e1309] [cursor=pointer]:
+            - /url: /people/mironshoh-inomjonov/unverified/
+      - generic [ref=f3e1310]:
+        - generic [ref=f3e1312]:
+          - link "Open PDF" [ref=f3e1313] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.84.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1314] [cursor=pointer]:
+            - /url: /2025.wmt-1.84.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1315] [cursor=pointer]: abs
+        - generic [ref=f3e1316]:
+          - strong [ref=f3e1317]:
+            - link "The Kyrgyz Seed Dataset Submission to the WMT25 Open Language Data Initiative Shared Task" [ref=f3e1318] [cursor=pointer]:
+              - /url: /2025.wmt-1.84/
+          - link "Murat Jumashev" [ref=f3e1319] [cursor=pointer]:
+            - /url: /people/murat-jumashev/unverified/
+          - text: "|"
+          - link "Alina Tillabaeva" [ref=f3e1320] [cursor=pointer]:
+            - /url: /people/alina-tillabaeva/unverified/
+          - text: "|"
+          - link "Aida Kasieva" [ref=f3e1321] [cursor=pointer]:
+            - /url: /people/aida-kasieva/unverified/
+          - text: "|"
+          - link "Turgunbek Omurkanov" [ref=f3e1322] [cursor=pointer]:
+            - /url: /people/turgunbek-omurkanov/unverified/
+          - text: "|"
+          - link "Akylai Musaeva" [ref=f3e1323] [cursor=pointer]:
+            - /url: /people/akylai-musaeva/unverified/
+          - text: "|"
+          - link "Meerim Emil Kyzy" [ref=f3e1324] [cursor=pointer]:
+            - /url: /people/meerim-emil-kyzy/unverified/
+          - text: "|"
+          - link "Gulaiym Chagataeva" [ref=f3e1325] [cursor=pointer]:
+            - /url: /people/gulaiym-chagataeva/unverified/
+          - text: "|"
+          - link "Jonathan Washington" [ref=f3e1326] [cursor=pointer]:
+            - /url: /people/jonathan-washington/
+      - generic [ref=f3e1327]:
+        - generic [ref=f3e1329]:
+          - link "Open PDF" [ref=f3e1330] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.85.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1331] [cursor=pointer]:
+            - /url: /2025.wmt-1.85.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1332] [cursor=pointer]: abs
+        - generic [ref=f3e1333]:
+          - strong [ref=f3e1334]:
+            - 'link "SMOL: Professionally Translated Parallel Data for 115 Under-represented Languages" [ref=f3e1335] [cursor=pointer]':
+              - /url: /2025.wmt-1.85/
+          - link "Isaac Caswell" [ref=f3e1336] [cursor=pointer]:
+            - /url: /people/isaac-caswell/unverified/
+          - text: "|"
+          - link "Elizabeth Nielsen" [ref=f3e1337] [cursor=pointer]:
+            - /url: /people/elizabeth-nielsen/unverified/
+          - text: "|"
+          - link "Jiaming Luo" [ref=f3e1338] [cursor=pointer]:
+            - /url: /people/jiaming-luo/
+          - text: "|"
+          - link "Colin Cherry" [ref=f3e1339] [cursor=pointer]:
+            - /url: /people/colin-cherry/
+          - text: "|"
+          - link "Geza Kovacs" [ref=f3e1340] [cursor=pointer]:
+            - /url: /people/geza-kovacs/unverified/
+          - text: "|"
+          - link "Hadar Shemtov" [ref=f3e1341] [cursor=pointer]:
+            - /url: /people/hadar-shemtov/unverified/
+          - text: "|"
+          - link "Partha Talukdar" [ref=f3e1342] [cursor=pointer]:
+            - /url: /people/partha-talukdar/
+          - text: "|"
+          - link "Dinesh Tewari" [ref=f3e1343] [cursor=pointer]:
+            - /url: /people/dinesh-tewari/unverified/
+          - text: "|"
+          - link "Baba Mamadi Diane" [ref=f3e1344] [cursor=pointer]:
+            - /url: /people/baba-mamadi-diane/unverified/
+          - text: "|"
+          - link "Djibrila Diane" [ref=f3e1345] [cursor=pointer]:
+            - /url: /people/djibrila-diane/unverified/
+          - text: "|"
+          - link "Solo Farabado Cissé" [ref=f3e1346] [cursor=pointer]:
+            - /url: /people/solo-farabado-cisse/unverified/
+          - text: "|"
+          - link "Koulako Moussa Doumbouya" [ref=f3e1347] [cursor=pointer]:
+            - /url: /people/koulako-moussa-doumbouya/unverified/
+          - text: "|"
+          - link "Edoardo Ferrante" [ref=f3e1348] [cursor=pointer]:
+            - /url: /people/edoardo-ferrante/unverified/
+          - text: "|"
+          - link "Alessandro Guasoni" [ref=f3e1349] [cursor=pointer]:
+            - /url: /people/alessandro-guasoni/unverified/
+          - text: "|"
+          - link "Christopher Homan" [ref=f3e1350] [cursor=pointer]:
+            - /url: /people/christopher-m-homan/
+          - text: "|"
+          - link "Mamadou K. Keita" [ref=f3e1351] [cursor=pointer]:
+            - /url: /people/mamadou-k-keita/
+          - text: "|"
+          - link "Sudhamoy DebBarma" [ref=f3e1352] [cursor=pointer]:
+            - /url: /people/sudhamoy-debbarma/unverified/
+          - text: "|"
+          - link "Ali Kuzhuget" [ref=f3e1353] [cursor=pointer]:
+            - /url: /people/ali-kuzhuget/unverified/
+          - text: "|"
+          - link "David Anugraha" [ref=f3e1354] [cursor=pointer]:
+            - /url: /people/david-anugraha/
+          - text: "|"
+          - link "Muhammad Ravi Shulthan Habibi" [ref=f3e1355] [cursor=pointer]:
+            - /url: /people/muhammad-ravi-shulthan-habibi/
+          - text: "|"
+          - link "Sina Ahmadi" [ref=f3e1356] [cursor=pointer]:
+            - /url: /people/sina-ahmadi/
+          - text: "|"
+          - link "Anthony Munthali" [ref=f3e1357] [cursor=pointer]:
+            - /url: /people/anthony-munthali/unverified/
+          - text: "|"
+          - link "Jonathan Mingfei Liu" [ref=f3e1358] [cursor=pointer]:
+            - /url: /people/jonathan-mingfei-liu/unverified/
+          - text: "|"
+          - link "Jonathan Eng" [ref=f3e1359] [cursor=pointer]:
+            - /url: /people/jonathan-eng/unverified/
+      - generic [ref=f3e1360]:
+        - generic [ref=f3e1362]:
+          - link "Open PDF" [ref=f3e1363] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.86.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1364] [cursor=pointer]:
+            - /url: /2025.wmt-1.86.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1365] [cursor=pointer]: abs
+        - generic [ref=f3e1366]:
+          - strong [ref=f3e1367]:
+            - link "Improved Norwegian Bokmål Translations for FLORES" [ref=f3e1368] [cursor=pointer]:
+              - /url: /2025.wmt-1.86/
+          - link "Petter Mæhlum" [ref=f3e1369] [cursor=pointer]:
+            - /url: /people/petter-maehlum/unverified/
+          - text: "|"
+          - link "Anders Næss Evensen" [ref=f3e1370] [cursor=pointer]:
+            - /url: /people/anders-naess-evensen/unverified/
+          - text: "|"
+          - link "Yves Scherrer" [ref=f3e1371] [cursor=pointer]:
+            - /url: /people/yves-scherrer/unverified/
+      - generic [ref=f3e1372]:
+        - generic [ref=f3e1374]:
+          - link "Open PDF" [ref=f3e1375] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.87.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1376] [cursor=pointer]:
+            - /url: /2025.wmt-1.87.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1377] [cursor=pointer]: abs
+        - generic [ref=f3e1378]:
+          - strong [ref=f3e1379]:
+            - link "NRC Systems for the WMT2025-LRSL Shared Task" [ref=f3e1380] [cursor=pointer]:
+              - /url: /2025.wmt-1.87/
+          - link "Samuel Larkin" [ref=f3e1381] [cursor=pointer]:
+            - /url: /people/samuel-larkin/
+          - text: "|"
+          - link "Chi-Kiu Lo" [ref=f3e1382] [cursor=pointer]:
+            - /url: /people/chi-kiu-lo/
+          - text: "|"
+          - link "Rebecca Knowles" [ref=f3e1383] [cursor=pointer]:
+            - /url: /people/rebecca-knowles/
+      - generic [ref=f3e1384]:
+        - generic [ref=f3e1386]:
+          - link "Open PDF" [ref=f3e1387] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.88.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1388] [cursor=pointer]:
+            - /url: /2025.wmt-1.88.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1389] [cursor=pointer]: abs
+        - generic [ref=f3e1390]:
+          - strong [ref=f3e1391]:
+            - link "TartuNLP at WMT25 LLMs with Limited Resources for Slavic Languages Shared Task" [ref=f3e1392] [cursor=pointer]:
+              - /url: /2025.wmt-1.88/
+          - link "Taido Purason" [ref=f3e1393] [cursor=pointer]:
+            - /url: /people/taido-purason/
+          - text: "|"
+          - link "Mark Fishel" [ref=f3e1394] [cursor=pointer]:
+            - /url: /people/mark-fishel/
+      - generic [ref=f3e1395]:
+        - generic [ref=f3e1397]:
+          - link "Open PDF" [ref=f3e1398] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.89.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1399] [cursor=pointer]:
+            - /url: /2025.wmt-1.89.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1400] [cursor=pointer]: abs
+        - generic [ref=f3e1401]:
+          - strong [ref=f3e1402]:
+            - 'link "JGU Mainz’s Submission to the WMT25 Shared Task on LLMs with Limited Resources for Slavic Languages: MT and QA" [ref=f3e1403] [cursor=pointer]':
+              - /url: /2025.wmt-1.89/
+          - link "Hossain Shaikh Saadi" [ref=f3e1404] [cursor=pointer]:
+            - /url: /people/hossain-shaikh-saadi/unverified/
+          - text: "|"
+          - link "Minh Duc Bui" [ref=f3e1405] [cursor=pointer]:
+            - /url: /people/minh-duc-bui/
+          - text: "|"
+          - link "Mario Sanz-Guerrero" [ref=f3e1406] [cursor=pointer]:
+            - /url: /people/mario-sanz-guerrero/
+          - text: "|"
+          - link "Katharina von der Wense" [ref=f3e1407] [cursor=pointer]:
+            - /url: /people/katharina-von-der-wense/
+      - generic [ref=f3e1408]:
+        - generic [ref=f3e1410]:
+          - link "Open PDF" [ref=f3e1411] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.90.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1412] [cursor=pointer]:
+            - /url: /2025.wmt-1.90.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1413] [cursor=pointer]: abs
+        - generic [ref=f3e1414]:
+          - strong [ref=f3e1415]:
+            - 'link "Krey-All WMT 2025 CreoleMT System Description: Language Agnostic Strategies for Low-Resource Translation" [ref=f3e1416] [cursor=pointer]':
+              - /url: /2025.wmt-1.90/
+          - link "Ananya Ayasi" [ref=f3e1417] [cursor=pointer]:
+            - /url: /people/ananya-ayasi/unverified/
+      - generic [ref=f3e1418]:
+        - generic [ref=f3e1420]:
+          - link "Open PDF" [ref=f3e1421] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.91.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1422] [cursor=pointer]:
+            - /url: /2025.wmt-1.91.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1423] [cursor=pointer]: abs
+        - generic [ref=f3e1424]:
+          - strong [ref=f3e1425]:
+            - 'link "EdinHelsOW WMT 2025 CreoleMT System Description: Improving Lusophone Creole Translation through Data Augmentation, Model Merging and LLM Post-editing" [ref=f3e1426] [cursor=pointer]':
+              - /url: /2025.wmt-1.91/
+          - link "Jacqueline Rowe" [ref=f3e1427] [cursor=pointer]:
+            - /url: /people/jacqueline-rowe/
+          - text: "|"
+          - link "Ona De Gibert" [ref=f3e1428] [cursor=pointer]:
+            - /url: /people/ona-de-gibert/
+          - text: "|"
+          - link "Mateusz Klimaszewski" [ref=f3e1429] [cursor=pointer]:
+            - /url: /people/mateusz-klimaszewski/
+          - text: "|"
+          - link "Coleman Haley" [ref=f3e1430] [cursor=pointer]:
+            - /url: /people/coleman-haley/
+          - text: "|"
+          - link "Alexandra Birch" [ref=f3e1431] [cursor=pointer]:
+            - /url: /people/alexandra-birch/
+          - text: "|"
+          - link "Yves Scherrer" [ref=f3e1432] [cursor=pointer]:
+            - /url: /people/yves-scherrer/unverified/
+      - generic [ref=f3e1433]:
+        - generic [ref=f3e1435]:
+          - link "Open PDF" [ref=f3e1436] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.92.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1437] [cursor=pointer]:
+            - /url: /2025.wmt-1.92.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1438] [cursor=pointer]: abs
+        - generic [ref=f3e1439]:
+          - strong [ref=f3e1440]:
+            - 'link "KozKreolMRU WMT 2025 CreoleMT System Description: Koz Kreol: Multi-Stage Training for English–Mauritian Creole MT" [ref=f3e1441] [cursor=pointer]':
+              - /url: /2025.wmt-1.92/
+          - link "Yush Rajcoomar" [ref=f3e1442] [cursor=pointer]:
+            - /url: /people/yush-rajcoomar/unverified/
+      - generic [ref=f3e1443]:
+        - generic [ref=f3e1445]:
+          - link "Open PDF" [ref=f3e1446] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.93.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1447] [cursor=pointer]:
+            - /url: /2025.wmt-1.93.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1448] [cursor=pointer]: abs
+        - generic [ref=f3e1449]:
+          - strong [ref=f3e1450]:
+            - 'link "JHU WMT 2025 CreoleMT System Description: Data for Belizean Kriol and French Guianese Creole MT" [ref=f3e1451] [cursor=pointer]':
+              - /url: /2025.wmt-1.93/
+          - link "Nathaniel Robinson" [ref=f3e1452] [cursor=pointer]:
+            - /url: /people/nathaniel-robinson/unverified/
+      - generic [ref=f3e1453]:
+        - generic [ref=f3e1455]:
+          - link "Open PDF" [ref=f3e1456] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.94.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1457] [cursor=pointer]:
+            - /url: /2025.wmt-1.94.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1458] [cursor=pointer]: abs
+        - generic [ref=f3e1459]:
+          - strong [ref=f3e1460]:
+            - 'link "WMT 2025 CreoleMT Systems Description : Martinican Creole and French" [ref=f3e1461] [cursor=pointer]':
+              - /url: /2025.wmt-1.94/
+          - link "Ludovic Mompelat" [ref=f3e1462] [cursor=pointer]:
+            - /url: /people/ludovic-mompelat/
+      - generic [ref=f3e1463]:
+        - generic [ref=f3e1465]:
+          - link "Open PDF" [ref=f3e1466] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.95.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1467] [cursor=pointer]:
+            - /url: /2025.wmt-1.95.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1468] [cursor=pointer]: abs
+        - generic [ref=f3e1469]:
+          - strong [ref=f3e1470]:
+            - 'link "JU-NLP: Improving Low-Resource Indic Translation System with Efficient LoRA-Based Adaptation" [ref=f3e1471] [cursor=pointer]':
+              - /url: /2025.wmt-1.95/
+          - link "Priyobroto Acharya" [ref=f3e1472] [cursor=pointer]:
+            - /url: /people/priyobroto-acharya/unverified/
+          - text: "|"
+          - link "Haranath Mondal" [ref=f3e1473] [cursor=pointer]:
+            - /url: /people/haranath-mondal/unverified/
+          - text: "|"
+          - link "Dipanjan Saha" [ref=f3e1474] [cursor=pointer]:
+            - /url: /people/dipanjan-saha/unverified/
+          - text: "|"
+          - link "Dipankar Das" [ref=f3e1475] [cursor=pointer]:
+            - /url: /people/dipankar-das/
+          - text: "|"
+          - link "Sivaji Bandyopadhyay" [ref=f3e1476] [cursor=pointer]:
+            - /url: /people/sivaji-bandyopadhyay/
+      - generic [ref=f3e1477]:
+        - generic [ref=f3e1479]:
+          - link "Open PDF" [ref=f3e1480] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.96.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1481] [cursor=pointer]:
+            - /url: /2025.wmt-1.96.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1482] [cursor=pointer]: abs
+        - generic [ref=f3e1483]:
+          - strong [ref=f3e1484]:
+            - link "An Attention-Based Neural Translation System for English to Bodo" [ref=f3e1485] [cursor=pointer]:
+              - /url: /2025.wmt-1.96/
+          - link "Subhash Wary" [ref=f3e1486] [cursor=pointer]:
+            - /url: /people/subhash-wary/unverified/
+          - text: "|"
+          - link "Birhang Borgoyary" [ref=f3e1487] [cursor=pointer]:
+            - /url: /people/birhang-borgoyary/unverified/
+          - text: "|"
+          - link "Akher Ahmed" [ref=f3e1488] [cursor=pointer]:
+            - /url: /people/akher-ahmed/unverified/
+          - text: "|"
+          - link "Mohanji Sah" [ref=f3e1489] [cursor=pointer]:
+            - /url: /people/mohanji-sah/unverified/
+          - text: "|"
+          - link "Apurbalal Senapati" [ref=f3e1490] [cursor=pointer]:
+            - /url: /people/apurbalal-senapati/unverified/
+      - generic [ref=f3e1491]:
+        - generic [ref=f3e1493]:
+          - link "Open PDF" [ref=f3e1494] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.97.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1495] [cursor=pointer]:
+            - /url: /2025.wmt-1.97.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1496] [cursor=pointer]: abs
+        - generic [ref=f3e1497]:
+          - strong [ref=f3e1498]:
+            - 'link "Tackling Low-Resource NMT with Instruction-Tuned LLaMA: A Study on Kokborok and Bodo" [ref=f3e1499] [cursor=pointer]':
+              - /url: /2025.wmt-1.97/
+          - link "Deepak Kumar" [ref=f3e1500] [cursor=pointer]:
+            - /url: /people/deepak-kumar/
+          - text: "|"
+          - link "Kshetrimayum Boynao Singh" [ref=f3e1501] [cursor=pointer]:
+            - /url: /people/kshetrimayum-boynao-singh/
+          - text: "|"
+          - link "Asif Ekbal" [ref=f3e1502] [cursor=pointer]:
+            - /url: /people/asif-ekbal/
+      - generic [ref=f3e1503]:
+        - generic [ref=f3e1505]:
+          - link "Open PDF" [ref=f3e1506] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.98.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1507] [cursor=pointer]:
+            - /url: /2025.wmt-1.98.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1508] [cursor=pointer]: abs
+        - generic [ref=f3e1509]:
+          - strong [ref=f3e1510]:
+            - 'link "DELAB-IIITM WMT25: Enhancing Low-Resource Machine Translation for Manipuri and Assamese" [ref=f3e1511] [cursor=pointer]':
+              - /url: /2025.wmt-1.98/
+          - link "Dingku Singh Oinam" [ref=f3e1512] [cursor=pointer]:
+            - /url: /people/dingku-singh-oinam/unverified/
+          - text: "|"
+          - link "Navanath Saharia" [ref=f3e1513] [cursor=pointer]:
+            - /url: /people/navanath-saharia/
+      - generic [ref=f3e1514]:
+        - generic [ref=f3e1516]:
+          - link "Open PDF" [ref=f3e1517] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.99.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1518] [cursor=pointer]:
+            - /url: /2025.wmt-1.99.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1519] [cursor=pointer]: abs
+        - generic [ref=f3e1520]:
+          - strong [ref=f3e1521]:
+            - 'link "Transformers: Leveraging OpenNMT and Transfer Learning for Low-Resource Indian Language Translation" [ref=f3e1522] [cursor=pointer]':
+              - /url: /2025.wmt-1.99/
+          - link "Bhagyashree Wagh" [ref=f3e1523] [cursor=pointer]:
+            - /url: /people/bhagyashree-wagh/unverified/
+          - text: "|"
+          - link "Harish Bapat" [ref=f3e1524] [cursor=pointer]:
+            - /url: /people/harish-bapat/unverified/
+          - text: "|"
+          - link "Neha Gupta" [ref=f3e1525] [cursor=pointer]:
+            - /url: /people/neha-gupta/unverified/
+          - text: "|"
+          - link "Saurabh Salunkhe" [ref=f3e1526] [cursor=pointer]:
+            - /url: /people/saurabh-salunkhe/unverified/
+      - generic [ref=f3e1527]:
+        - generic [ref=f3e1529]:
+          - link "Open PDF" [ref=f3e1530] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.100.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1531] [cursor=pointer]:
+            - /url: /2025.wmt-1.100.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1532] [cursor=pointer]: abs
+        - generic [ref=f3e1533]:
+          - strong [ref=f3e1534]:
+            - 'link "RBG-AI: Benefits of Multilingual Language Models for Low-Resource Languages" [ref=f3e1535] [cursor=pointer]':
+              - /url: /2025.wmt-1.100/
+          - link "Barathi Ganesh Hb" [ref=f3e1536] [cursor=pointer]:
+            - /url: /people/barathi-ganesh-hb/unverified/
+          - text: "|"
+          - link "Michal Ptaszynski" [ref=f3e1537] [cursor=pointer]:
+            - /url: /people/michal-ptaszynski/
+      - generic [ref=f3e1538]:
+        - generic [ref=f3e1540]:
+          - link "Open PDF" [ref=f3e1541] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.101.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1542] [cursor=pointer]:
+            - /url: /2025.wmt-1.101.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1543] [cursor=pointer]: abs
+        - generic [ref=f3e1544]:
+          - strong [ref=f3e1545]:
+            - 'link "ANVITA : A Multi-pronged Approach for Enhancing Machine Translation of Extremely Low-Resource Indian Languages" [ref=f3e1546] [cursor=pointer]':
+              - /url: /2025.wmt-1.101/
+          - link "Sivabhavani J" [ref=f3e1547] [cursor=pointer]:
+            - /url: /people/sivabhavani-j/unverified/
+          - text: "|"
+          - link "Daneshwari Kankanwadi" [ref=f3e1548] [cursor=pointer]:
+            - /url: /people/daneshwari-kankanwadi/unverified/
+          - text: "|"
+          - link "Abhinav Mishra" [ref=f3e1549] [cursor=pointer]:
+            - /url: /people/abhinav-mishra/unverified/
+          - text: "|"
+          - link "Biswajit Paul" [ref=f3e1550] [cursor=pointer]:
+            - /url: /people/biswajit-paul/unverified/
+      - generic [ref=f3e1551]:
+        - generic [ref=f3e1553]:
+          - link "Open PDF" [ref=f3e1554] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.102.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1555] [cursor=pointer]:
+            - /url: /2025.wmt-1.102.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1556] [cursor=pointer]: abs
+        - generic [ref=f3e1557]:
+          - strong [ref=f3e1558]:
+            - link "DoDS-IITPKD:Submissions to the WMT25 Low-Resource Indic Language Translation Task" [ref=f3e1559] [cursor=pointer]:
+              - /url: /2025.wmt-1.102/
+          - link "Ontiwell Khongthaw" [ref=f3e1560] [cursor=pointer]:
+            - /url: /people/ontiwell-khongthaw/unverified/
+          - text: "|"
+          - link "G.L. John Salvin" [ref=f3e1561] [cursor=pointer]:
+            - /url: /people/g-l-john-salvin/unverified/
+          - text: "|"
+          - link "Shrikant Tryambak Budde" [ref=f3e1562] [cursor=pointer]:
+            - /url: /people/shrikant-tryambak-budde/unverified/
+          - text: "|"
+          - link "Abigairl Nyasha Chigwededza" [ref=f3e1563] [cursor=pointer]:
+            - /url: /people/abigairl-nyasha-chigwededza/unverified/
+          - text: "|"
+          - link "Dhruvadeep Malkar" [ref=f3e1564] [cursor=pointer]:
+            - /url: /people/dhruvadeep-malkar/unverified/
+          - text: "|"
+          - link "Swapnil Hingmire" [ref=f3e1565] [cursor=pointer]:
+            - /url: /people/swapnil-hingmire/unverified/
+      - generic [ref=f3e1566]:
+        - generic [ref=f3e1568]:
+          - link "Open PDF" [ref=f3e1569] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.103.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1570] [cursor=pointer]:
+            - /url: /2025.wmt-1.103.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1571] [cursor=pointer]: abs
+        - generic [ref=f3e1572]:
+          - strong [ref=f3e1573]:
+            - link "A Preliminary Exploration of Phrase-Based SMT and Multi-BPE Segmentations through Concatenated Tokenised Corpora for Low-Resource Indian Languages" [ref=f3e1574] [cursor=pointer]:
+              - /url: /2025.wmt-1.103/
+          - link "Saumitra Yadav" [ref=f3e1575] [cursor=pointer]:
+            - /url: /people/saumitra-yadav/
+          - text: "|"
+          - link "Manish Shrivastava" [ref=f3e1576] [cursor=pointer]:
+            - /url: /people/manish-shrivastava/
+      - generic [ref=f3e1577]:
+        - generic [ref=f3e1579]:
+          - link "Open PDF" [ref=f3e1580] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.104.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1581] [cursor=pointer]:
+            - /url: /2025.wmt-1.104.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1582] [cursor=pointer]: abs
+        - generic [ref=f3e1583]:
+          - strong [ref=f3e1584]:
+            - 'link "AkibaNLP-TUT: Injecting Language-Specific Word-Level Noise for Low-Resource Language Translation" [ref=f3e1585] [cursor=pointer]':
+              - /url: /2025.wmt-1.104/
+          - link "Shoki Hamada" [ref=f3e1586] [cursor=pointer]:
+            - /url: /people/shoki-hamada/unverified/
+          - text: "|"
+          - link "Tomoyosi Akiba" [ref=f3e1587] [cursor=pointer]:
+            - /url: /people/tomoyosi-akiba/unverified/
+          - text: "|"
+          - link "Hajime Tsukada" [ref=f3e1588] [cursor=pointer]:
+            - /url: /people/hajime-tsukada/unverified/
+      - generic [ref=f3e1589]:
+        - generic [ref=f3e1591]:
+          - link "Open PDF" [ref=f3e1592] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.105.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1593] [cursor=pointer]:
+            - /url: /2025.wmt-1.105.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1594] [cursor=pointer]: abs
+        - generic [ref=f3e1595]:
+          - strong [ref=f3e1596]:
+            - 'link "BVSLP: Machine Translation Using Linguistic Embellishments for IndicMT Shared Task 2025" [ref=f3e1597] [cursor=pointer]':
+              - /url: /2025.wmt-1.105/
+          - link "Nisheeth Joshi" [ref=f3e1598] [cursor=pointer]:
+            - /url: /people/nisheeth-joshi/
+          - text: "|"
+          - link "Palak Arora" [ref=f3e1599] [cursor=pointer]:
+            - /url: /people/palak-arora/unverified/
+          - text: "|"
+          - link "Anju Krishnia" [ref=f3e1600] [cursor=pointer]:
+            - /url: /people/anju-krishnia/unverified/
+          - text: "|"
+          - link "Riya Lonchenpa" [ref=f3e1601] [cursor=pointer]:
+            - /url: /people/riya-lonchenpa/unverified/
+          - text: "|"
+          - link "Mhasilenuo Vizo" [ref=f3e1602] [cursor=pointer]:
+            - /url: /people/mhasilenuo-vizo/unverified/
+      - generic [ref=f3e1603]:
+        - generic [ref=f3e1605]:
+          - link "Open PDF" [ref=f3e1606] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.106.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1607] [cursor=pointer]:
+            - /url: /2025.wmt-1.106.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1608] [cursor=pointer]: abs
+        - generic [ref=f3e1609]:
+          - strong [ref=f3e1610]:
+            - link "TranssionMT’s Submission to the Indic MT Shared Task in WMT 2025" [ref=f3e1611] [cursor=pointer]:
+              - /url: /2025.wmt-1.106/
+          - link "Zebiao Zhou" [ref=f3e1612] [cursor=pointer]:
+            - /url: /people/zebiao-zhou/unverified/
+          - text: "|"
+          - link "Hui Li" [ref=f3e1613] [cursor=pointer]:
+            - /url: /people/hui-li/unverified/
+          - text: "|"
+          - link "Xiangxun Zhu" [ref=f3e1614] [cursor=pointer]:
+            - /url: /people/xiangxun-zhu/unverified/
+          - text: "|"
+          - link "Kangzhen Liu" [ref=f3e1615] [cursor=pointer]:
+            - /url: /people/kangzhen-liu/unverified/
+      - generic [ref=f3e1616]:
+        - generic [ref=f3e1618]:
+          - link "Open PDF" [ref=f3e1619] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.107.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1620] [cursor=pointer]:
+            - /url: /2025.wmt-1.107.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1621] [cursor=pointer]: abs
+        - generic [ref=f3e1622]:
+          - strong [ref=f3e1623]:
+            - 'link "Laniqo at WMT25 Terminology Translation Task: A Multi-Objective Reranking Strategy for Terminology-Aware Translation via Pareto-Optimal Decoding" [ref=f3e1624] [cursor=pointer]':
+              - /url: /2025.wmt-1.107/
+          - link "Kamil Guttmann" [ref=f3e1625] [cursor=pointer]:
+            - /url: /people/kamil-guttmann/unverified/
+          - text: "|"
+          - link "Adrian Charkiewicz" [ref=f3e1626] [cursor=pointer]:
+            - /url: /people/adrian-charkiewicz/unverified/
+          - text: "|"
+          - link "Zofia Rostek" [ref=f3e1627] [cursor=pointer]:
+            - /url: /people/zofia-rostek/unverified/
+          - text: "|"
+          - link "Mikołaj Pokrywka" [ref=f3e1628] [cursor=pointer]:
+            - /url: /people/mikolaj-pokrywka/
+          - text: "|"
+          - link "Artur Nowakowski" [ref=f3e1629] [cursor=pointer]:
+            - /url: /people/artur-nowakowski/
+      - generic [ref=f3e1630]:
+        - generic [ref=f3e1632]:
+          - link "Open PDF" [ref=f3e1633] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.108.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1634] [cursor=pointer]:
+            - /url: /2025.wmt-1.108.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1635] [cursor=pointer]: abs
+        - generic [ref=f3e1636]:
+          - strong [ref=f3e1637]:
+            - 'link "Fine-tuning NMT Models and LLMs for Specialised EN-ES Translation Using Aligned Corpora, Glossaries, and Synthetic Data: MULTITAN at WMT25 Terminology Shared Task" [ref=f3e1638] [cursor=pointer]':
+              - /url: /2025.wmt-1.108/
+          - link "Lichao Zhu" [ref=f3e1639] [cursor=pointer]:
+            - /url: /people/lichao-zhu/unverified/
+          - text: "|"
+          - link "Maria Zimina-Poirot" [ref=f3e1640] [cursor=pointer]:
+            - /url: /people/maria-zimina-poirot/unverified/
+          - text: "|"
+          - link "Cristian Valdez" [ref=f3e1641] [cursor=pointer]:
+            - /url: /people/cristian-valdez/unverified/
+          - text: "|"
+          - link "Stephane Patin" [ref=f3e1642] [cursor=pointer]:
+            - /url: /people/stephane-patin/unverified/
+      - generic [ref=f3e1643]:
+        - generic [ref=f3e1645]:
+          - link "Open PDF" [ref=f3e1646] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.109.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1647] [cursor=pointer]:
+            - /url: /2025.wmt-1.109.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1648] [cursor=pointer]: abs
+        - generic [ref=f3e1649]:
+          - strong [ref=f3e1650]:
+            - link "Contextual Selection of Pseudo-terminology Constraints for Terminology-aware Neural Machine Translation in the IT Domain" [ref=f3e1651] [cursor=pointer]:
+              - /url: /2025.wmt-1.109/
+          - link "Benjamin Pong" [ref=f3e1652] [cursor=pointer]:
+            - /url: /people/benjamin-pong/
+      - generic [ref=f3e1653]:
+        - generic [ref=f3e1655]:
+          - link "Open PDF" [ref=f3e1656] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.110.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1657] [cursor=pointer]:
+            - /url: /2025.wmt-1.110.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1658] [cursor=pointer]: abs
+        - generic [ref=f3e1659]:
+          - strong [ref=f3e1660]:
+            - 'link "IRB-MT at WMT25 Terminology Translation Task: Metric-guided Multi-agent Approach" [ref=f3e1661] [cursor=pointer]':
+              - /url: /2025.wmt-1.110/
+          - link "Ivan Grubišić" [ref=f3e1662] [cursor=pointer]:
+            - /url: /people/ivan-grubisic/unverified/
+          - text: "|"
+          - link "Damir Korencic" [ref=f3e1663] [cursor=pointer]:
+            - /url: /people/damir-korencic/
+      - generic [ref=f3e1664]:
+        - generic [ref=f3e1666]:
+          - link "Open PDF" [ref=f3e1667] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.111.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1668] [cursor=pointer]:
+            - /url: /2025.wmt-1.111.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1669] [cursor=pointer]: abs
+        - generic [ref=f3e1670]:
+          - strong [ref=f3e1671]:
+            - link "Terminology-Constrained Translation from Monolingual Data Using GRPO" [ref=f3e1672] [cursor=pointer]:
+              - /url: /2025.wmt-1.111/
+          - link "Javier Garcia Gilabert" [ref=f3e1673] [cursor=pointer]:
+            - /url: /people/javier-garcia-gilabert/unverified/
+          - text: "|"
+          - link "Carlos Escolano" [ref=f3e1674] [cursor=pointer]:
+            - /url: /people/carlos-escolano/
+          - text: "|"
+          - link "Xixian Liao" [ref=f3e1675] [cursor=pointer]:
+            - /url: /people/xixian-liao/
+          - text: "|"
+          - link "Maite Melero" [ref=f3e1676] [cursor=pointer]:
+            - /url: /people/maite-melero/
+      - generic [ref=f3e1677]:
+        - generic [ref=f3e1679]:
+          - link "Open PDF" [ref=f3e1680] [cursor=pointer]:
+            - /url: https://aclanthology.org/2025.wmt-1.112.pdf
+            - text: pdf
+          - link "Export to BibTeX" [ref=f3e1681] [cursor=pointer]:
+            - /url: /2025.wmt-1.112.bib
+            - text: bib
+          - button "Show Abstract" [ref=f3e1682] [cursor=pointer]: abs
+        - generic [ref=f3e1683]:
+          - strong [ref=f3e1684]:
+            - 'link "It Takes Two: A Dual Stage Approach for Terminology-Aware Translation" [ref=f3e1685] [cursor=pointer]':
+              - /url: /2025.wmt-1.112/
+          - link "Akshat Jaswal" [ref=f3e1686] [cursor=pointer]:
+            - /url: /people/akshat-jaswal/unverified/
+  - contentinfo [ref=f3e1687]:
+    - generic [ref=f3e1688]:
+      - paragraph [ref=f3e1689]:
+        - link [ref=f3e1691] [cursor=pointer]:
+          - /url: http://creativecommons.org/licenses/by/4.0/
+          - img "Creative Commons License" [ref=f3e1692]
+        - text: ACL materials are Copyright © 1963–2026 ACL; other materials are copyrighted by their respective copyright holders. Materials prior to 2016 here are licensed under the
+        - link "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 International License" [ref=f3e1693] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+        - text: . Permission is granted to make copies for the purposes of teaching and research. Materials published in or after 2016 are licensed on a
+        - link "Creative Commons Attribution 4.0 International License" [ref=f3e1694] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by/4.0/
+        - text: .
+      - paragraph [ref=f3e1695]:
+        - text: The ACL Anthology is managed and built by the
+        - link "ACL Anthology team" [ref=f3e1696] [cursor=pointer]:
+          - /url: /info/credits/
+        - text: of volunteers.
+      - paragraph [ref=f3e1697]:
+        - generic [ref=f3e1698]:
+          - text: Site last built on 12 October 2026 at 19:21 UTC with
+          - link "commit a75fcdc" [ref=f3e1699] [cursor=pointer]:
+            - /url: https://github.com/acl-org/acl-anthology/tree/a75fcdc07381dca29654bb8fc588e7bc1cd34c95
+          - text: .
