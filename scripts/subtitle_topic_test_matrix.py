@@ -45,7 +45,7 @@ def _request_json(url: str, token: str) -> dict[str, Any]:
         "X-GitHub-Api-Version": "2022-11-28",
     }
     if token:
-        headers["Authorization"] = f"Bearer {token}"
+        headers["Authorization"] = "Bearer " + token
     request = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
