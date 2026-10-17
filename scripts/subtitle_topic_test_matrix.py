@@ -277,6 +277,69 @@ def _sandbox_path() -> str:
     return os.pathsep.join(dict.fromkeys(paths))
 
 
+def _ensure_sandbox_path_traversal(
+    path: Path, sandbox_uid: int, sandbox_gid: int
+) -> list[str]:
+    def can_traverse() -> bool:
+        access = subprocess.run(
+            [
+                "sudo",
+                "-n",
+                "setpriv",
+                f"--reuid={sandbox_uid}",
+                f"--regid={sandbox_gid}",
+                "--init-groups",
+                "--",
+                "sh",
+                "-c",
+                'test -x "$1"; status=$?; if [ "$status" -eq 1 ]; then exit 10; fi; exit "$status"',
+                "sh",
+                str(path),
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=15,
+            check=False,
+        )
+        if access.returncode == 0:
+            return True
+        if access.returncode == 10:
+            return False
+        raise RuntimeError(
+            "Sandbox traversal probe failed "
+            f"(exit {access.returncode}): {access.stdout[-1000:]}"
+        )
+
+    if can_traverse():
+        return []
+
+    changed_directories = []
+    directory = path
+    for _ in range(8):
+        if (
+            directory == Path(directory.anchor)
+            or directory.as_posix() in {"/", "/home/runner"}
+        ):
+            break
+        subprocess.run(
+            ["sudo", "-n", "chmod", "o+x", "--", str(directory)],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=15,
+        )
+        changed_directories.append(str(directory))
+        if can_traverse():
+            return changed_directories
+        directory = directory.parent
+    raise RuntimeError(
+        "Sandbox user cannot traverse the per-job runner temp path after "
+        "execute-only access was granted to its bounded ancestor chain."
+    )
+
+
 def _capture_process_output(
     process: subprocess.Popen[bytes], timeout_seconds: int
 ) -> tuple[int | None, str, bool]:
@@ -361,19 +424,26 @@ def _test_process(
         os.environ.get("RUNNER_TEMP", tempfile.gettempdir())
     ).resolve()
     try:
-        subprocess.run(
-            ["sudo", "-n", "chmod", "o+x", "--", str(runner_temp)],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            timeout=15,
+        changed_directories = _ensure_sandbox_path_traversal(
+            runner_temp, sandbox_uid, sandbox_gid
         )
-    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+    except (
+        OSError,
+        RuntimeError,
+        subprocess.CalledProcessError,
+        subprocess.TimeoutExpired,
+    ) as error:
         return "skipped", (
             "Unable to grant execute-only traversal on this job's runner temp "
             f"directory: {error}"
         )
+    traversal_note = (
+        "Sandbox path traversal required o+x on: "
+        + ", ".join(changed_directories)
+        + "\n"
+        if changed_directories
+        else "Sandbox path traversal preflight passed without permission changes.\n"
+    )
     temp_root = Path(
         tempfile.mkdtemp(
             prefix="subtitle-topic-sandbox-",
@@ -439,7 +509,9 @@ def _test_process(
         )
     except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
         shutil.rmtree(temp_root, ignore_errors=True)
-        return "skipped", f"Unable to prepare unprivileged test sandbox: {error}"
+        return "skipped", (
+            f"{traversal_note}Unable to prepare unprivileged test sandbox: {error}"
+        )
 
     clean_environment = {
         "PATH": _sandbox_path(),
@@ -492,9 +564,10 @@ def _test_process(
                 check=False,
             )
         except (OSError, subprocess.TimeoutExpired) as error:
-            return "skipped", f"Test executable preflight failed: {error}"
+            return "skipped", f"{traversal_note}Test executable preflight failed: {error}"
         if preflight.returncode != 0:
             return "skipped", (
+                f"{traversal_note}"
                 "Test executable is unavailable to the unprivileged sandbox user "
                 f"(preflight exited {preflight.returncode}): "
                 f"{preflight.stdout[-1000:]}"
@@ -512,9 +585,11 @@ def _test_process(
             process, timeout_seconds
         )
         if timed_out:
-            return "failed", f"Test command exceeded {timeout_seconds} seconds."
+            return "failed", (
+                f"{traversal_note}Test command exceeded {timeout_seconds} seconds."
+            )
     except OSError as error:
-        return "failed", f"Unable to start test command: {error}"
+        return "failed", f"{traversal_note}Unable to start test command: {error}"
     finally:
         try:
             subprocess.run(
@@ -528,8 +603,10 @@ def _test_process(
         finally:
             shutil.rmtree(temp_root, ignore_errors=True)
     if return_code == 0:
-        return "passed", output
-    return "failed", f"Test command exited {return_code}.\n{output or ''}"
+        return "passed", f"{traversal_note}{output}"
+    return "failed", (
+        f"{traversal_note}Test command exited {return_code}.\n{output or ''}"
+    )
 
 
 def _write_json(path: Path, value: dict[str, Any]) -> None:
