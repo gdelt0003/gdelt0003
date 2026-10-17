@@ -1,0 +1,161 @@
+- generic [ref=f5e2]:
+  - generic [ref=f5e3]:
+    - link "Skip to content" [ref=f5e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=f5e9]:
+      - heading "Navigation Menu" [level=2] [ref=f5e10]
+      - generic [ref=f5e11]:
+        - link "Homepage" [ref=f5e13] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f5e16]:
+          - navigation "Global" [ref=f5e17]:
+            - list [ref=f5e18]:
+              - listitem [ref=f5e19]:
+                - button "Platform" [ref=f5e21] [cursor=pointer]
+              - listitem [ref=f5e24]:
+                - button "Solutions" [ref=f5e26] [cursor=pointer]
+              - listitem [ref=f5e29]:
+                - button "Resources" [ref=f5e31] [cursor=pointer]
+              - listitem [ref=f5e34]:
+                - button "Open Source" [ref=f5e36] [cursor=pointer]
+              - listitem [ref=f5e39]:
+                - button "Enterprise" [ref=f5e41] [cursor=pointer]
+              - listitem [ref=f5e44]:
+                - link "Pricing" [ref=f5e45] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+          - generic [ref=f5e46]:
+            - button "Search or jump to, type / to search" [ref=f5e48] [cursor=pointer]
+            - link "Sign in" [ref=f5e55] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fgdelt0003%2Fgdelt0003%2Factions%2Fruns%2F38832525536
+            - link "Sign up" [ref=f5e58] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Fworkflow_runs%2Fshow&source=header-repo&source_repo=gdelt0003%2Fgdelt0003
+            - button "Appearance settings" [ref=f5e61] [cursor=pointer]
+  - main [ref=f5e68]:
+    - generic [ref=f5e69]:
+      - generic "Global navigation menu" [ref=f5e72]:
+        - navigation "Breadcrumbs" [ref=f5e75]:
+          - list [ref=f5e76]:
+            - listitem [ref=f5e77]:
+              - link "gdelt0003" [ref=f5e78] [cursor=pointer]:
+                - /url: /gdelt0003
+            - listitem [ref=f5e80]:
+              - link "gdelt0003" [ref=f5e81] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003
+        - heading "Repository navigation" [level=2] [ref=f5e84]
+        - navigation "Repository" [ref=f5e85]:
+          - list [ref=f5e86]:
+            - listitem [ref=f5e87]:
+              - link "Code" [ref=f5e88] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003
+            - listitem [ref=f5e93]:
+              - link "Issues" [ref=f5e94] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/issues
+            - listitem [ref=f5e100]:
+              - link "Pull requests (5)" [ref=f5e101] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/pulls
+                - generic [ref=f5e105]: Pull requests
+                - generic [ref=f5e106]:
+                  - generic [aria-hidden] [ref=f5e107]: "5"
+                  - generic [ref=f5e108]: (5)
+            - listitem [ref=f5e109]:
+              - link "Actions" [ref=f5e110] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/actions
+            - listitem [ref=f5e115]:
+              - link "Projects" [ref=f5e116] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/projects
+            - listitem [ref=f5e121]:
+              - link "Security and quality" [ref=f5e122] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/security
+            - listitem [ref=f5e127]:
+              - link "Insights" [ref=f5e128] [cursor=pointer]:
+                - /url: /gdelt0003/gdelt0003/pulse
+      - generic [ref=f5e137]:
+        - generic [ref=f5e140]:
+          - link "Publish Rose Garden bilingual review video" [ref=f5e143] [cursor=pointer]:
+            - /url: /gdelt0003/gdelt0003/actions/workflows/publish-rose-garden-review.yml
+          - generic [ref=f5e147]:
+            - generic [ref=f5e148]:
+              - img "currently running:" [ref=f5e153]
+              - 'heading "Publish Rose Garden bilingual review video #2" [level=1] [ref=f5e157]'
+            - link "Sign in to view logs" [ref=f5e161] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fgdelt0003%2Fgdelt0003%2Factions%2Fruns%2F38832525536
+        - generic [ref=f5e162]:
+          - navigation "Workflow run" [ref=f5e168]:
+            - list [ref=f5e169]:
+              - listitem [ref=f5e170]:
+                - link "Summary" [ref=f5e171] [cursor=pointer]:
+                  - /url: /gdelt0003/gdelt0003/actions/runs/38832525536
+              - generic [ref=f5e174]:
+                - heading "All jobs" [level=4] [ref=f5e175]
+                - button "Filter by job status" [ref=f5e176] [cursor=pointer]
+              - listitem [aria-hidden] [ref=f5e179]
+              - listitem:
+                - list
+              - listitem [aria-hidden] [ref=f5e180]
+              - listitem [ref=f5e181]:
+                - heading "Run details" [level=3] [ref=f5e183]
+                - list "Run details" [ref=f5e184]:
+                  - listitem [ref=f5e185]:
+                    - link "Usage" [ref=f5e186] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/usage
+                  - listitem [ref=f5e189]:
+                    - link "Workflow file" [ref=f5e190] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/workflow
+                  - listitem [ref=f5e193]:
+                    - link "Lockfile" [ref=f5e194] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/lockfile
+          - generic [ref=f5e198]:
+            - region "Workflow run summary" [ref=f5e199]:
+              - generic [ref=f5e200]:
+                - generic [ref=f5e201]:
+                  - generic [ref=f5e202]: Manually triggered October 16, 2026 00:5845 minutes ago
+                  - generic [ref=f5e203]:
+                    - link [ref=f5e204] [cursor=pointer]:
+                      - /url: /gdelt0003
+                      - img "@gdelt0003" [ref=f5e205]
+                      - text: gdelt0003
+                    - generic [ref=f5e206]:
+                      - text: ⁠
+                      - link "a696b18" [ref=f5e207] [cursor=pointer]:
+                        - /url: /gdelt0003/gdelt0003/commit/a696b18094b7629645df30d04251b069c695f2ef
+                    - link "main" [ref=f5e210] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/tree/refs/heads/main
+                - generic [ref=f5e211]:
+                  - generic [ref=f5e212]: Status
+                  - text: In progress
+                - generic [ref=f5e213]:
+                  - generic [ref=f5e214]: Total duration
+                  - link "–" [ref=f5e215] [cursor=pointer]:
+                    - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/usage
+                - generic [ref=f5e216]:
+                  - generic [ref=f5e217]: Artifacts
+                  - text: –
+            - region "Workflow run graph" [ref=f5e218]:
+              - generic [ref=f5e220]:
+                - generic [ref=f5e222]:
+                  - heading [level=2] [ref=f5e223]:
+                    - link "publish-rose-garden-review.yml" [ref=f5e224] [cursor=pointer]:
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/workflow
+                  - generic [ref=f5e225]: "on: workflow_dispatch"
+                - generic [ref=f5e227]:
+                  - generic [ref=f5e228]:
+                    - 'link "currently running: render 44m 58s" [ref=f5e232] [cursor=pointer]':
+                      - /url: /gdelt0003/gdelt0003/actions/runs/38832525536/job/116754277578
+                      - generic [ref=f5e234]:
+                        - img "currently running:" [ref=f5e237]
+                        - generic [ref=f5e241]: render
+                        - generic "Oct 16, 2026, 08:58 GMT+8" [ref=f5e244]: 44m 58s
+                    - generic [ref=f5e246]: deploy-pages
+                  - generic [aria-hidden] [ref=f5e257]:
+                    - paragraph [ref=f5e258]: Oh hello! Nice to see you.
+                    - paragraph [ref=f5e259]:
+                      - text: Made with ❤️ by
+                      - link [ref=f5e260] [cursor=pointer]:
+                        - /url: https://actions.github.io/humans.txt
+                        - text: humans.txt
+                - generic [ref=f5e261]:
+                  - button "Fit to window" [disabled] [ref=f5e262]
+                  - generic [ref=f5e263]:
+                    - button "Zoom out" [disabled] [ref=f5e265]
+                    - button "Zoom in" [disabled] [ref=f5e267]
+            - region "Annotations"

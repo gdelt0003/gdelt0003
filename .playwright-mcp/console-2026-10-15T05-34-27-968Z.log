@@ -1,0 +1,22 @@
+[    7371ms] [LOG] [RS DEBUG] load() called @ https://www.kcentv.com/video/news/nation-world/first-briefing-from-new-white-house-press-secretary-katie-zacharia/507-3abb494f-a706-4bbd-b111-2e5283dcb981:1303
+[   11853ms] [LOG] [jquery]              loaded @ https://www.kcentv.com/jquery.js:0
+[   12928ms] [LOG] ===== oneplusx fired library code @ :0
+[   12937ms] [LOG] [amazona9.js]          init {pubID: 3276, adServer: googletag, videoAdServer: DFP, bidTimeout: 1000, params: Object} @ :1
+[   16380ms] [INFO] [2026-10-15T05:34:44.347Z] Information: Normalizing '/tgnaMessage' to 'https://www.kcentv.com/tgnaMessage'. @ https://www.kcentv.com/assets/js-libs/signalr/signalr.min.js:15
+[   16445ms] [WARNING] It is recommended that a robustness level be specified. Not specifying the robustness level could result in unexpected behavior. @ https://www.kcentv.com/assets/js-libs/akamai/amp/core/amp.js?apikey=tegna&version=9.1.22:1135
+[   16456ms] [LOG] visibilityChange: 8 false @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 4 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 5 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 3 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 1 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 6 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16456ms] [LOG] visibilityChange: 7 false @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16457ms] [LOG] visibilityChange: 2 true @ https://www.kcentv.com/common-legacy.min_9.30.42.js:41
+[   16545ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://launch.newsinc.com/js/embed.js:0
+[   17355ms] [LOG] received a request for uspapi @ https://cdn.cookielaw.org/opt-out/otCCPAiab.js:95
+[   17356ms] [LOG] received a request for uspapi @ https://cdn.cookielaw.org/opt-out/otCCPAiab.js:95
+[   18048ms] [WARNING] It is recommended that a robustness level be specified. Not specifying the robustness level could result in unexpected behavior. @ https://www.kcentv.com/assets/js-libs/akamai/amp/core/amp.js?apikey=tegna&version=9.1.22:1135
+[   18405ms] [WARNING] Placements With no Content: Below Video Feed | Card 5 @ https://cdn.taboola.com/libtrc/tegna-network1/loader.js:0
+[   19351ms] [WARNING] Placements With no Content: Below Video Feed | Lazy Injected 1 @ https://cdn.taboola.com/libtrc/tegna-network1/loader.js:0
+[   21093ms] [INFO] [2026-10-15T05:34:49.060Z] Information: WebSocket connected to wss://tgna-ux-east2.service.signalr.net/client/?hub=tegnaonemessage&asrs.op=%2FtgnaMessage&asrs_request_id=MY%2FY9C8KAAA%3D&id=_zJ4KJNV0KrDaJFIvwxIwwSJ-EMAn02&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjE2MzIwNjk1MzgifQ.eyJuYmYiOjE3OTIwNDIxMTMsImV4cCI6MTc5MjA0NTcxMywiaWF0IjoxNzkyMDQyMTEzLCJhdWQiOiJodHRwczovL3RnbmEtdXgtZWFzdDIuc2VydmljZS5zaWduYWxyLm5ldC9jbGllbnQvP2h1Yj10ZWduYW9uZW1lc3NhZ2UifQ.kyARCAoAiKa8z-KFmhVIFxsQwtumgjvzg4D_BHF0djM. @ https://www.kcentv.com/assets/js-libs/signalr/signalr.min.js:15
+[   21094ms] [INFO] [2026-10-15T05:34:49.061Z] Information: Using HubProtocol 'json'. @ https://www.kcentv.com/assets/js-libs/signalr/signalr.min.js:15

@@ -1,0 +1,359 @@
+- generic [active] [ref=f16e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f16e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f16e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f16e8]:
+    - search [ref=f16e9]:
+      - generic [ref=f16e11]:
+        - link "Google 首页" [ref=f16e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0QPHoECAYQBA
+        - generic [ref=f16e16]:
+          - generic [ref=f16e17]:
+            - combobox "搜索" [ref=f16e20]: "\"Katie Zacharia\" first press briefing video YouTube Fox CSPAN Reuters October 13 \"Katie Zacharia\" first press briefing video YouTube Fox CSPAN Reuters October 13"
+            - generic [ref=f16e21]:
+              - button "清除" [ref=f16e23] [cursor=pointer]
+              - generic [ref=f16e28]:
+                - button "按语音搜索" [ref=f16e29] [cursor=pointer]
+                - button "按图搜索" [ref=f16e32] [cursor=pointer]
+          - button "搜索" [ref=f16e35] [cursor=pointer]
+    - generic [ref=f16e40]:
+      - button "设置" [ref=f16e42] [cursor=pointer]
+      - button "分享" [ref=f16e47] [cursor=pointer]
+      - generic [ref=f16e53]:
+        - button "Google 应用" [ref=f16e55] [cursor=pointer]
+        - link "登录" [ref=f16e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Katie%2BZacharia%2522%2Bfirst%2Bpress%2Bbriefing%2Bvideo%2BYouTube%2BFox%2BCSPAN%2BReuters%2BOctober%2B13&ec=futura_srp_og_si_72236_p
+  - generic [ref=f16e62]:
+    - navigation [ref=f16e68]:
+      - generic [ref=f16e74]:
+        - list [ref=f16e75]:
+          - listitem [ref=f16e76]:
+            - link "全部" [disabled] [ref=f16e77]
+          - listitem [ref=f16e80]:
+            - link "新闻" [ref=f16e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q0pQJegQIFxAB
+          - listitem [ref=f16e84]:
+            - link "视频" [ref=f16e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0QtKgLegQIFhAB
+          - listitem [ref=f16e88]:
+            - link "短视频" [ref=f16e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Qs6gLegQIFRAB
+          - listitem [ref=f16e92]:
+            - link "图片" [ref=f16e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0QtKgLegQIExAB
+          - listitem [ref=f16e96]:
+            - link "网页" [ref=f16e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Qs6gLegQIFBAB
+          - listitem [ref=f16e100]:
+            - link "图书" [ref=f16e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q0pQJegQIEhAB
+          - listitem [ref=f16e104]:
+            - button [ref=f16e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f16e106]: 更多
+        - button "工具" [ref=f16e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f16e120]
+    - main [ref=f16e126]:
+      - generic [ref=f16e130]:
+        - generic [ref=f16e134]:
+          - generic [ref=f16e136]:
+            - heading "视频" [level=2] [ref=f16e137]
+            - button "关于这条结果的详细信息" [ref=f16e142] [cursor=pointer]
+          - generic [ref=f16e148]:
+            - generic [ref=f16e153]:
+              - generic [ref=f16e154]:
+                - link [ref=f16e156] [cursor=pointer]:
+                  - /url: /goto?url=CAESwwEB6zswFeVTru8uCh3qhA4UTbrf40glEd0B0QO3uDmblXDJDPs0qFXRKYw1aob3ck6RVF-QYqULCQHpkVWMfTruQ2HXhBXF_EB6aGsY_CsiKLFls0tWIiv9zwuQJT8T_cc7aAdTymlbTmSLX--XrsS4ZBKgw8iinND_ajZQMoUSwiULVLlBedmX18_Tw31rgZwYEP57ik6tFRYVRU9CYAU1ybt1nV32MHHXf9OvOZdmfy-V6Cp_63gNcVvYKdJqIIdgRdI
+                  - heading "Katie Zacharia held her first White House press briefing ... Facebook C-SPAN 1 天前" [level=3] [ref=f16e157]:
+                    - generic [ref=f16e158]: Katie Zacharia held her first White House press briefing ...
+                    - generic [ref=f16e162]:
+                      - generic [ref=f16e163]:
+                        - text: Facebook
+                        - generic [ref=f16e164]: · C-SPAN
+                      - generic [ref=f16e165]: 1 天前
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic [aria-hidden]:
+                          - text: Facebook
+                          - generic: · C-SPAN
+                    - button "关于这条结果的详细信息" [ref=f16e169] [cursor=pointer]
+              - link "Katie Zacharia held her first White House press briefing ...，由C-SPAN上传到Facebook上. 在Facebook上播放. 2:20" [ref=f16e174] [cursor=pointer]:
+                - /url: /goto?url=CAESwwEB6zswFeVTru8uCh3qhA4UTbrf40glEd0B0QO3uDmblXDJDPs0qFXRKYw1aob3ck6RVF-QYqULCQHpkVWMfTruQ2HXhBXF_EB6aGsY_CsiKLFls0tWIiv9zwuQJT8T_cc7aAdTymlbTmSLX--XrsS4ZBKgw8iinND_ajZQMoUSwiULVLlBedmX18_Tw31rgZwYEP57ik6tFRYVRU9CYAU1ybt1nV32MHHXf9OvOZdmfy-V6Cp_63gNcVvYKdJqIIdgRdI
+                - generic [ref=f16e181]: 2:20
+            - generic [ref=f16e187]:
+              - generic [ref=f16e188]:
+                - link [ref=f16e190] [cursor=pointer]:
+                  - /url: /goto?url=CAESxAEB6zswFcwePPw4wWVAF1SKuXkc4CSQLi1Gsrhz6jGNu4sD8EFv3vPXowA03qgHyberUuWdNosUtzzfHuwqSyTdC9VDenkoB7hznAkjX13aLFweBp8kHejfnMaSoLxx7v6O90D4DemSEE4dhHtcJWvGSCsmm4tW33BDKNntZ-GJ3eCJk-rDlvevh-jkD2AjNo0H2lgh2ueEntzeZgX2QNYUzInH4njF1VgvbzjqxOFfuoKYnbCq8CPAmJgcL9Ky6ce7yqhp
+                  - heading "White House Press Secretary Katie Zacharia told reporters on ... Facebook C-SPAN 1 天前" [level=3] [ref=f16e191]:
+                    - generic [ref=f16e192]: White House Press Secretary Katie Zacharia told reporters on ...
+                    - generic [ref=f16e196]:
+                      - generic [ref=f16e197]:
+                        - text: Facebook
+                        - generic [ref=f16e198]: · C-SPAN
+                      - generic [ref=f16e199]: 1 天前
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic [aria-hidden]:
+                          - text: Facebook
+                          - generic: · C-SPAN
+                    - button "关于这条结果的详细信息" [ref=f16e203] [cursor=pointer]
+              - link "White House Press Secretary Katie Zacharia told reporters on ...，由C-SPAN上传到Facebook上. 在Facebook上播放. 0:24" [ref=f16e208] [cursor=pointer]:
+                - /url: /goto?url=CAESxAEB6zswFcwePPw4wWVAF1SKuXkc4CSQLi1Gsrhz6jGNu4sD8EFv3vPXowA03qgHyberUuWdNosUtzzfHuwqSyTdC9VDenkoB7hznAkjX13aLFweBp8kHejfnMaSoLxx7v6O90D4DemSEE4dhHtcJWvGSCsmm4tW33BDKNntZ-GJ3eCJk-rDlvevh-jkD2AjNo0H2lgh2ueEntzeZgX2QNYUzInH4njF1VgvbzjqxOFfuoKYnbCq8CPAmJgcL9Ky6ce7yqhp
+                - generic [ref=f16e215]: 0:24
+            - generic [ref=f16e223]:
+              - generic [ref=f16e224]:
+                - link [ref=f16e226] [cursor=pointer]:
+                  - /url: /goto?url=CAESZgHrOzAVJgKEeIJdVXxy_M4vyOsUaH1id4nP2R750ai9ilYdhMURI4RJvGoy1tcoDFQC62b5GRIGwaT2WMcrwsycwmT3Iau2kWlNLCWop2Qg7ket8J1dxIMmN-wEu8lkaQQ-rWj8Qg
+                  - heading "Sec. Marco Rubio testifies before Senate panel on State ... YouTube CNBC Television 2026年6月3日" [level=3] [ref=f16e227]:
+                    - generic [ref=f16e228]: Sec. Marco Rubio testifies before Senate panel on State ...
+                    - generic [ref=f16e232]:
+                      - generic [ref=f16e233]:
+                        - text: YouTube
+                        - generic [ref=f16e234]: · CNBC Television
+                      - generic [ref=f16e235]: 2026年6月3日
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic [aria-hidden]:
+                          - text: YouTube
+                          - generic: · CNBC Television
+                    - button "关于这条结果的详细信息" [ref=f16e239] [cursor=pointer]
+              - button "Sec. Marco Rubio testifies before Senate panel on State ...，由CNBC Television上传到YouTube上. 在 Google 上播放. 2:40:38" [ref=f16e244] [cursor=pointer]:
+                - generic [ref=f16e254]: 2:40:38
+            - generic [ref=f16e265]:
+              - generic [ref=f16e266]:
+                - link [ref=f16e268] [cursor=pointer]:
+                  - /url: /goto?url=CAESZgHrOzAVeUPvs6KC9QOC1Ciqsn6d6OM0MUiPdeJuOEZK7HRHWFAgxrIJVRscAIVfvhpIALnEcdqz-j9FVMtvmDC_cUwh8dPK881qP-zCnVEWPcI_ckniVGp6NH7PmhZO7yfjdm_2ZQ
+                  - heading "RFK Jr. testifies before House Education and Workforce ... YouTube 48 News 2026年4月18日" [level=3] [ref=f16e269]:
+                    - generic [ref=f16e270]: RFK Jr. testifies before House Education and Workforce ...
+                    - generic [ref=f16e274]:
+                      - generic [ref=f16e275]:
+                        - text: YouTube
+                        - generic [ref=f16e276]: · 48 News
+                      - generic [ref=f16e277]: 2026年4月18日
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic [aria-hidden]:
+                          - text: YouTube
+                          - generic: · 48 News
+                    - button "关于这条结果的详细信息" [ref=f16e281] [cursor=pointer]
+              - button "RFK Jr. testifies before House Education and Workforce ...，由48 News上传到YouTube上. 在 Google 上播放. 0:48" [ref=f16e286] [cursor=pointer]:
+                - generic [ref=f16e293]: 0:48
+          - link "查看所有视频" [ref=f16e301] [cursor=pointer]:
+            - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&udm=vids&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&sa=X&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8ccDKAJ6BAgcEAU
+            - separator [aria-hidden] [ref=f16e302]
+            - generic [ref=f16e303]: 查看全部
+        - generic [ref=f16e310]:
+          - heading "Web results" [level=2] [ref=f16e311]
+          - generic [ref=f16e312]:
+            - generic [ref=f16e315]:
+              - link "Cheering on Press Secretary Katie Zacharia at her first ... Facebook · Sandy Smith 50+ 个回应 · 1天前" [ref=f16e317] [cursor=pointer]:
+                - /url: /goto?url=CAESygEB6zswFRcekKb9featXygzSnmsHIFwDb7KxKYhhtNYX-JgGdlmFnUpgUkqPW0TpQxDNC9lkJpYPABiF3zwm9KOa5EEdJEBwLJ8kNvRl8m0VDBO2GhNc_CC0Mq4bpF9Hw3SAIcR8lV4ZwGEias3_Y60tPqPLp43WC7fVjtgpBDQoaZCWxliBNMzpDBnhprlLjEIKZVYwqMqBaa5pwQ0ZkWcYAdA3pZUoKDiW6yuSHp-rCEL23q4xrPXW_VC2URnYbJ_opo_e08YnfIU
+                - heading "Cheering on Press Secretary Katie Zacharia at her first ..." [level=3] [ref=f16e318]
+                - generic [ref=f16e324]:
+                  - generic [ref=f16e325]: Facebook · Sandy Smith
+                  - generic [ref=f16e327]: 50+ 个回应 · 1天前
+              - button "关于这条结果的详细信息" [ref=f16e333] [cursor=pointer]
+            - generic [ref=f16e340]:
+              - text: Cheering on
+              - emphasis [ref=f16e341]: Press
+              - text: Secretary
+              - emphasis [ref=f16e342]: Katie Zacharia
+              - text: at her
+              - emphasis [ref=f16e343]: first briefing
+              - text: today. ... " Full
+              - emphasis [ref=f16e344]: video
+              - text: "here: https://www."
+              - emphasis [ref=f16e345]: c-span
+              - text: . org/
+              - emphasis [ref=f16e346]: video
+              - text: /?520257-1 ...
+        - generic [ref=f16e350]:
+          - generic [ref=f16e353]:
+            - link "New Press Secretary Katie Zacharia Called Her Husband ... HuffPost https://www.huffpost.com › entry › new-pr..." [ref=f16e355] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFaAxv-iE5ZilVkASRsL6AsVq9ZQN78pZXG6twGOY9LcUa_kKm92Qsie1QCZHWddiRehRdrK4JajAcUi6kUltZYdOSRiJ50lbvuF0ZFXUMU6Q2lRNo5Pq61bARoHn32NPE6bWEyFWSbI60BseTCnH69znYvR6osQIik1g-InZYs5vuMje0kq-lLriTrQ1bmBCX6VbH7dux97QRmYPsOw40cC7sx7zu_WX8aMPrkZiONdymvZYvwVGRIulnq-VWOML
+              - heading "New Press Secretary Katie Zacharia Called Her Husband ..." [level=3] [ref=f16e356]
+              - generic [ref=f16e362]:
+                - generic [ref=f16e363]: HuffPost
+                - generic [ref=f16e365]: https://www.huffpost.com › entry › new-pr...
+            - generic [ref=f16e367]:
+              - generic [ref=f16e368]: ·
+              - link "翻译此页" [ref=f16e369] [cursor=pointer]:
+                - /url: /goto?url=CAESkwIB6zswFSpsJ9DSsJMSn5GQClSAgmOHv5XGQ9Uo5aI9SQSq3M9gFMbbgmYWLNJdJlsTI2CS1nd1eTgKkfxEc4fszvnS8C8ZQ97hO3ARyPG1Z6sWccN0_Oz7P0qrTv8Us-AqldkERjUdUng38RkLwVVTQBQLrzrvnqocwuv5_IkRQhjGQPAQn6rpOoB4-ELVjka2s-Lkrz9LunSvk8ylfSmlWSKFS6cUEpM5cbC1V_0GjuhWUPrJlkL7m6iETDGZABJZPjqVMHW6jU8wddKaG8erRiws-STe5O2OnWDR4qYzKIfULPSUFaaRTz2nFWgVa0l8yK2jZmCYe5gobq5usSwdK8OBQHcuo44JDvC3nX_Bd_CS6w
+            - button "关于这条结果的详细信息" [ref=f16e374] [cursor=pointer]
+          - generic [ref=f16e380]:
+            - generic [ref=f16e381]: 1天前 —
+            - generic [ref=f16e382]:
+              - text: White House
+              - emphasis [ref=f16e383]: press
+              - text: secretary
+              - emphasis [ref=f16e384]: Katie Zacharia
+              - text: conducts her
+              - emphasis [ref=f16e385]: first briefing
+              - text: where she addressed issues including the resignation of Kimberly ...
+        - generic [ref=f16e389]:
+          - generic [ref=f16e392]:
+            - link "Trump repeats false claim about Iran's nuclear weapons ... The Guardian https://www.theguardian.com › oct › 13" [ref=f16e394] [cursor=pointer]:
+              - /url: /goto?url=CAES5gEB6zswFeKqoQlNaWHW_S7_lTsB4VotkkZnoUuUQOp9wKz9G3fvotLzIffBANLnDH--Xo80SZRQn6ko6sUXH8Olx7_htby-LzjIBFH_us9SpOjx7cppBIpnkM5C4Abh0D0J2nVbOf3WlAIJtp3uQO42lSs-Pb4TqZYizERv8ZOMu1F7A5TQC9Pg-Q456ZTFBJ4sPCf3UrFJwhEaOZn9yJ2I5eIIBAx2WSHNJ6rmPqNjzMe_GJEg0PD3xR8lDnj9hiUluoHenaAVrehRDZMp6hLB74mQXSOV8ZSCgsKFPyvI7oy5r5n_mQ
+              - heading "Trump repeats false claim about Iran's nuclear weapons ..." [level=3] [ref=f16e395]
+              - generic [ref=f16e401]:
+                - generic [ref=f16e402]: The Guardian
+                - generic [ref=f16e404]: https://www.theguardian.com › oct › 13
+            - generic [ref=f16e406]:
+              - generic [ref=f16e407]: ·
+              - link "翻译此页" [ref=f16e408] [cursor=pointer]:
+                - /url: /goto?url=CAESuQIB6zswFTugh9AfEcgnxERwfCLDUrnXjM6iULVNAHvM7SHyhHLNtMvzj8LKYniuIRbH8J-sIJ678zN5lruj2ZlCWzlfePBHtVsmfuNDezg3Z4VaChxw8qGYRUi5VyoLThuz8QKCA3y6OABfwaQpUJoIigH-2Zt--JAZolqzCVabzDUe2fyHzTS-J15sswipWikzWqwh9yzaP6-Wm7PKBcCYMxaAGESOfm2tYg00L0y1j0Q5CJmbxcKAvkP2frcIb3GCGXs00wPel8M-F0uqa0JET2iEgRT4w3GwRc9QJbpsR0to5OnvvU-SSn6xPm-ztAxWM-gbe7v0pH6xJpCQk8wHV4Tex9e33anHCldwRdDnZYpvvgk4CWYl26644Jca6nhG4wnH9CVMdX8Ygw0Yiak3-MbePARBqiq2
+            - button "关于这条结果的详细信息" [ref=f16e413] [cursor=pointer]
+          - generic [ref=f16e419]:
+            - generic [ref=f16e420]: 2天前 —
+            - generic [ref=f16e421]:
+              - text: Earlier, at her
+              - emphasis [ref=f16e422]: first
+              - text: media
+              - emphasis [ref=f16e423]: briefing
+              - text: ", new White House"
+              - emphasis [ref=f16e424]: press
+              - text: secretary
+              - emphasis [ref=f16e425]: Katie Zacharia
+              - text: revealed that the administration had asked Guilfoyle to ...
+        - generic [ref=f16e429]:
+          - generic [ref=f16e432]:
+            - link "News YouTube https://www.youtube.com › channel" [ref=f16e434] [cursor=pointer]:
+              - /url: /goto?url=CAEScwHrOzAVJnCHwP4UPi-UoVDhZACpoVBoibO8QRautcppuei6nQZ67xop2omHY7xW5i8vUn-KU0Up22xNZA14G60H_JCWz1kTMhjiGzdswVFigmyTRV4NhyDt9GDYRrSJfKgi8JqWDlJC4rEo4Mr8UmTlfPU
+              - heading "News" [level=3] [ref=f16e435]
+              - generic [ref=f16e441]:
+                - generic [ref=f16e442]: YouTube
+                - generic [ref=f16e444]: https://www.youtube.com › channel
+            - button "关于这条结果的详细信息" [ref=f16e450] [cursor=pointer]
+          - generic [ref=f16e457]:
+            - emphasis [ref=f16e458]: Katie Zacharia
+            - text: makes debut as White House
+            - emphasis [ref=f16e459]: press
+            - text: secretary ; New Trump
+            - emphasis [ref=f16e460]: press
+            - text: secretary dogged by questions about her own claims. MS NOW · 15K views ; Trump
+            - emphasis [ref=f16e461]: press
+            - text: ...
+        - generic [ref=f16e468]:
+          - generic [ref=f16e471]:
+            - link "Trump interrupts announcement twice to drink water YouTube · Washington Post 10.3万+ 次观看 · 8年前" [ref=f16e473] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVkme9BYXgbBux3gyVbluf4Q_nO-zJe5y9qsMmIgDeDzyVCO17WhR1-w7dHccj_2VkSGLTb8N3T1TMRZc2MTGXiWmGHAXMfl73VLmG4BxN_crRczKm3XZK6QWVjXZ_ZZEPhw
+              - heading "Trump interrupts announcement twice to drink water" [level=3] [ref=f16e474]
+              - generic [ref=f16e480]:
+                - generic [ref=f16e481]: YouTube · Washington Post
+                - generic [ref=f16e483]: 10.3万+ 次观看 · 8年前
+            - button "关于这条结果的详细信息" [ref=f16e489] [cursor=pointer]
+          - generic [ref=f16e494]:
+            - button "Trump interrupts announcement twice to drink water，由Washington Post上传到YouTube上. 在 Google 上播放. 0:45" [ref=f16e495] [cursor=pointer]:
+              - generic [ref=f16e496]: 0:45
+            - generic [ref=f16e512]: "Comments · 'Quite unusual': Kaitlan Collins reacts to Katie Zacharia's first WH briefing · Politics Chat, October 13, 2026 · Trump rallies in ..."
+        - generic [ref=f16e517]:
+          - generic [ref=f16e520]:
+            - link "Katie Zacharia accidentally referred to her husband as 'my ... Facebook · Mirror US 50+ 个回应 · 13小时前" [ref=f16e522] [cursor=pointer]:
+              - /url: /goto?url=CAESygEB6zswFVIiNsvn4R3jfv6U9Bf1EolSxcU5x1TTfNVgp1xhp-W34ExkAXEnAt462_kKuIucdwOkkLqCNumrPSthvUEzm_frBa5ABdyJe1a2VY4eynbRx0gpPZYj0FY4w7fn0PSWqwBkvCR4x7_XycCCErR11XMRVvhD5Z0O9ZjUAUpZRZG3Zw0LiWaSRJr0lr3iu7cxUkedMgE3AWKi0HFDfYYd8nm8NlCPupNPNC4fnyHum_ne58jhkSo8Qlkl4Re-J07EV3udT8YM
+              - heading "Katie Zacharia accidentally referred to her husband as 'my ..." [level=3] [ref=f16e523]
+              - generic [ref=f16e529]:
+                - generic [ref=f16e530]: Facebook · Mirror US
+                - generic [ref=f16e532]: 50+ 个回应 · 13小时前
+            - button "关于这条结果的详细信息" [ref=f16e538] [cursor=pointer]
+          - generic [ref=f16e545]:
+            - emphasis [ref=f16e546]: Katie Zacharia
+            - text: "accidentally referred to her husband as 'my president' #KatieZacharia #DonaldTrump."
+        - generic [ref=f16e553]:
+          - generic [ref=f16e556]:
+            - link "Trump's plan for 'dreamers' will not include amnesty, White ... YouTube · Reuters 4260+ 次观看 · 6年前" [ref=f16e558] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVE3E_kgUGR33TGeppc7Dc2reHc94QAy3mt-vcIrty4C8MkfWMpzRKZ5YrtXxpNSOyRpMJ1yRCYbhnnNF8lKbRv0OkqrnbTWYLjzaXC0rpbnHzeS3kK5O5kSbvbmneF7S4OA
+              - heading "Trump's plan for 'dreamers' will not include amnesty, White ..." [level=3] [ref=f16e559]
+              - generic [ref=f16e565]:
+                - generic [ref=f16e566]: YouTube · Reuters
+                - generic [ref=f16e568]: 4260+ 次观看 · 6年前
+            - button "关于这条结果的详细信息" [ref=f16e574] [cursor=pointer]
+          - generic [ref=f16e579]:
+            - button "Trump's plan for 'dreamers' will not include amnesty, White ...，由Reuters上传到YouTube上. 在 Google 上播放. 1:22" [ref=f16e580] [cursor=pointer]:
+              - generic [ref=f16e581]: 1:22
+            - generic [ref=f16e597]: "Get the latest news on: http://reuters.com/ Follow Reuters on Facebook: / ... What Kaitlan Collins found 'bizarre' about Katie Zacharia's first WH ..."
+        - generic [ref=f16e602]:
+          - generic [ref=f16e605]:
+            - link "News YouTube https://www.youtube.com › news_destination" [ref=f16e607] [cursor=pointer]:
+              - /url: /goto?url=CAESaAHrOzAVXr15WFwbcYC7Lto2j5VVpjfaIxtOhoSk-NdsrQvgGpdsSBBufnuFL4dBKJqySFFZlOUmixttfCp3dy4vRJ1kx09Nfo_dcxU3h9Esz0rhc91vOfcOxvyzWSD7iPxz1EnuzBTX
+              - heading "News" [level=3] [ref=f16e608]
+              - generic [ref=f16e614]:
+                - generic [ref=f16e615]: YouTube
+                - generic [ref=f16e617]: https://www.youtube.com › news_destination
+            - generic [ref=f16e619]:
+              - generic [ref=f16e620]: ·
+              - link "翻译此页" [ref=f16e621] [cursor=pointer]:
+                - /url: /goto?url=CAEStwEB6zswFdPLFQqZhBBHIEcqSe_zOtwqC5xSoWlRUhH8CJlBLl7z-hedjQJ2D1ppBHNWgoqtFZiEHsYjh7XU9DuJAaVvVWabne24aNk9VvQojUdcLKCqfkciGDwwkdi1v7QX3MDIMdvZi5cv6iKDsYl7BEBzgJ3Ye-cD1SVJPN31FAh6iWsykxI1S-iH-tSlXMVgr_uPfnfKMHJg9Zkkl0WGyGNx08L3WVpFYiNsVJ8rNIjDyzjFvfQ
+            - button "关于这条结果的详细信息" [ref=f16e626] [cursor=pointer]
+          - generic [ref=f16e633]:
+            - emphasis [ref=f16e634]: Katie Zacharia
+            - text: makes debut as White House
+            - emphasis [ref=f16e635]: press
+            - text: secretary. 0:58 · Trump
+            - emphasis [ref=f16e636]: press
+            - text: secretary
+            - emphasis [ref=f16e637]: Katie Zacharia
+            - text: under scrutiny over legal credentials. KGET
+            - emphasis [ref=f16e638]: News
+            - text: •3K views ...
+      - navigation [ref=f16e641]:
+        - heading "网页导航" [level=1] [ref=f16e642]
+        - text: "1"
+        - link "Page 2" [ref=f16e645] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=10&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAE
+          - text: "2"
+        - link "Page 3" [ref=f16e647] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=20&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAG
+          - text: "3"
+        - link "Page 4" [ref=f16e649] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=30&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAI
+          - text: "4"
+        - link "Page 5" [ref=f16e651] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=40&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAK
+          - text: "5"
+        - link "Page 6" [ref=f16e653] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=50&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAM
+          - text: "6"
+        - link "Page 7" [ref=f16e655] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=60&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAO
+          - text: "7"
+        - link "Page 8" [ref=f16e657] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=70&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAQ
+          - text: "8"
+        - link "Page 9" [ref=f16e659] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=80&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAS
+          - text: "9"
+        - link "Page 10" [ref=f16e661] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=90&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8tMDegQIHRAU
+          - text: "10"
+        - heading [level=2] [ref=f16e663]:
+          - link "下一页" [ref=f16e664] [cursor=pointer]:
+            - /url: /search?q=%22Katie+Zacharia%22+first+press+briefing+video+YouTube+Fox+CSPAN+Reuters+October+13&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnsEHiTZ-8rIP4-kU9NSitNNFWXS_w:1792047258575&ei=mnjQat_lIuCxur8PhJOm6QI&start=10&sa=N&sstk=AS6-VmKBKVa9fXA2Z0WOLVQPrAlp3CfqdA6aiYAutW42ejidFv_xNVKgXJQsoiqwVzQxZU06RuYU4khmyuHeTtKOgCT4TDWqkuAZVg&ved=2ahUKEwjfmpKiuLuXAxXgmO4BHYSJKS0Q8NMDegQIHRAW
+      - navigation
+    - contentinfo [ref=f16e667]:
+      - heading "页脚链接" [level=1] [ref=f16e668]
+      - generic [ref=f16e672]:
+        - generic [ref=f16e676]:
+          - button "海口市 中国海南省 - 是根据您的 IP 地址推断出来的" [ref=f16e678] [cursor=pointer]:
+            - generic [ref=f16e679]: 海口市 中国海南省
+            - generic [ref=f16e681]:
+              - text: "-"
+              - generic [ref=f16e682]: 是根据您的 IP 地址推断出来的
+          - text: "-"
+          - button "更新位置信息" [ref=f16e684] [cursor=pointer]
+        - generic [ref=f16e687]:
+          - link "帮助" [ref=f16e688] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f16e690] [cursor=pointer]
+          - link "隐私权" [ref=f16e692] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f16e693] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

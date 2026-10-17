@@ -1,0 +1,568 @@
+- generic [ref=e2]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - button "导视" [ref=e9] [cursor=pointer]
+        - link "YouTube 首页" [ref=e14] [cursor=pointer]:
+          - /url: /
+        - button "跳过导航" [ref=e23] [cursor=pointer]
+      - generic [ref=e27]:
+        - search [ref=e28]:
+          - generic [ref=e30]:
+            - combobox "搜索" [expanded] [ref=e33]
+            - button "Search" [ref=e34] [cursor=pointer]
+        - generic [ref=e39]:
+          - button "通过语音搜索内容" [ref=e41] [cursor=pointer]
+          - tooltip "tooltip"
+      - generic [ref=e46]:
+        - button "设置" [ref=e51] [cursor=pointer]
+        - link "登录" [ref=e57] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3Dhttps%253A%252F%252Fwww.youtube.com%252Fwatch%253Fv%253DIySF_8OArvw&hl=zh-CN&ec=65620
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e65]:
+        - generic [ref=e68]:
+          - generic [aria-hidden] [ref=e71] [cursor=pointer]
+          - complementary [ref=e72]:
+            - generic "YouTube 视频播放器" [active] [ref=e75]:
+              - alert [ref=e77]:
+                - generic [ref=e78]: 视频无法播放
+              - generic [ref=e82]:
+                - slider "播放滑块" [ref=e84] [cursor=pointer]
+                - generic [ref=e92]:
+                  - generic [ref=e93]:
+                    - button "播放 (k)" [ref=e94] [cursor=pointer]
+                    - generic [ref=e95]:
+                      - button "静音 (m)" [ref=e97] [cursor=pointer]
+                      - slider "音量":
+                        - generic [ref=e98] [cursor=pointer]
+                    - button "0 分钟 0 秒/36 分钟 33 秒" [ref=e101] [cursor=pointer]: 0:00 / 36:33
+                  - generic [ref=e102]:
+                    - generic [ref=e103]:
+                      - button "自动播放模式已开启" [ref=e104] [cursor=pointer]
+                      - button "无法显示字幕" [ref=e107] [cursor=pointer]
+                      - button "设置" [ref=e109] [cursor=pointer]
+                    - generic [ref=e110]:
+                      - button "影院模式 (t)" [ref=e111] [cursor=pointer]
+                      - button "全屏 (f)" [ref=e112] [cursor=pointer]
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - generic [ref=e116]:
+              - heading "President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026" [level=1] [ref=e119]
+              - generic [ref=e120]:
+                - generic [ref=e121]:
+                  - generic [ref=e122]:
+                    - link [ref=e123] [cursor=pointer]:
+                      - /url: /@WhiteHouse
+                      - img "The White House" [ref=e125]
+                    - generic [ref=e126]:
+                      - generic [ref=e127]:
+                        - generic "The White House" [ref=e130]:
+                          - link "The White House" [ref=e131] [cursor=pointer]:
+                            - /url: /@WhiteHouse
+                        - img "已验证" [ref=e136]
+                      - generic "334万位订阅者" [ref=e140]
+                  - button "订阅“The White House”。" [ref=e146] [cursor=pointer]:
+                    - generic: 订阅
+                - generic [ref=e153]:
+                  - generic [ref=e154]:
+                    - generic [ref=e158]:
+                      - button "与另外 3,751 人一起顶此视频" [ref=e162] [cursor=pointer]:
+                        - generic: "3751"
+                      - button "不喜欢此视频" [ref=e169] [cursor=pointer]
+                    - button "分享" [ref=e175] [cursor=pointer]
+                  - button "其他操作" [ref=e180] [cursor=pointer]
+              - generic [ref=e186] [cursor=pointer]:
+                - generic [ref=e187]:
+                  - generic [ref=e188]:
+                    - generic "8万次观看" [ref=e189]:
+                      - generic [ref=e191]:
+                        - generic [ref=e192]:
+                          - generic [ref=e194]: "1"
+                          - generic [ref=e195]: "2"
+                          - generic [ref=e196]: "3"
+                          - generic [ref=e197]: "4"
+                          - generic [ref=e198]: "5"
+                          - generic [ref=e199]: "6"
+                          - generic [ref=e200]: "7"
+                          - generic [ref=e201]: "8"
+                          - generic [ref=e202]: "9"
+                          - generic [ref=e203]: "0"
+                          - generic [ref=e204]: "1"
+                          - generic [ref=e205]: "2"
+                          - generic [ref=e206]: "3"
+                          - generic [ref=e207]: "4"
+                          - generic [ref=e208]: "5"
+                          - generic [ref=e209]: "6"
+                          - generic [ref=e210]: "7"
+                          - generic [ref=e211]: "8"
+                          - generic [ref=e212]: "9"
+                          - generic [ref=e213]: "0"
+                          - generic [ref=e214]: "1"
+                          - generic [ref=e215]: "2"
+                          - generic [ref=e216]: "3"
+                          - generic [ref=e217]: "4"
+                          - generic [ref=e218]: "5"
+                          - generic [ref=e219]: "6"
+                          - generic [ref=e220]: "7"
+                          - generic [ref=e221]: "8"
+                          - generic [ref=e222]: "9"
+                        - generic [ref=e224]: 万
+                      - generic [aria-hidden] [ref=e228]: 次观看
+                    - generic "直播时间：19小时前" [ref=e229]:
+                      - generic [aria-hidden] [ref=e230]: 直播时间：
+                      - generic [ref=e232]:
+                        - generic [ref=e233]:
+                          - generic [ref=e235]: "1"
+                          - generic [ref=e236]: "2"
+                          - generic [ref=e237]: "3"
+                          - generic [ref=e238]: "4"
+                          - generic [ref=e239]: "5"
+                          - generic [ref=e240]: "6"
+                          - generic [ref=e241]: "7"
+                          - generic [ref=e242]: "8"
+                          - generic [ref=e243]: "9"
+                          - generic [ref=e244]: "0"
+                          - generic [ref=e245]: "1"
+                          - generic [ref=e246]: "2"
+                          - generic [ref=e247]: "3"
+                          - generic [ref=e248]: "4"
+                          - generic [ref=e249]: "5"
+                          - generic [ref=e250]: "6"
+                          - generic [ref=e251]: "7"
+                          - generic [ref=e252]: "8"
+                          - generic [ref=e253]: "9"
+                          - generic [ref=e254]: "0"
+                          - generic [ref=e255]: "1"
+                          - generic [ref=e256]: "2"
+                          - generic [ref=e257]: "3"
+                          - generic [ref=e258]: "4"
+                          - generic [ref=e259]: "5"
+                          - generic [ref=e260]: "6"
+                          - generic [ref=e261]: "7"
+                          - generic [ref=e262]: "8"
+                          - generic [ref=e263]: "9"
+                        - generic [ref=e265]:
+                          - generic [ref=e267]: "1"
+                          - generic [ref=e268]: "2"
+                          - generic [ref=e269]: "3"
+                          - generic [ref=e270]: "4"
+                          - generic [ref=e271]: "5"
+                          - generic [ref=e272]: "6"
+                          - generic [ref=e273]: "7"
+                          - generic [ref=e274]: "8"
+                          - generic [ref=e275]: "9"
+                          - generic [ref=e276]: "0"
+                          - generic [ref=e277]: "1"
+                          - generic [ref=e278]: "2"
+                          - generic [ref=e279]: "3"
+                          - generic [ref=e280]: "4"
+                          - generic [ref=e281]: "5"
+                          - generic [ref=e282]: "6"
+                          - generic [ref=e283]: "7"
+                          - generic [ref=e284]: "8"
+                          - generic [ref=e285]: "9"
+                          - generic [ref=e286]: "0"
+                          - generic [ref=e287]: "1"
+                          - generic [ref=e288]: "2"
+                          - generic [ref=e289]: "3"
+                          - generic [ref=e290]: "4"
+                          - generic [ref=e291]: "5"
+                          - generic [ref=e292]: "6"
+                          - generic [ref=e293]: "7"
+                          - generic [ref=e294]: "8"
+                          - generic [ref=e295]: "9"
+                      - generic [aria-hidden] [ref=e297]: 小时前
+                  - tooltip "tooltip"
+                - generic [ref=e298]:
+                  - generic [ref=e299]: The White House
+                  - button "...更多" [ref=e303]
+            - text: •
+          - generic [ref=e309]:
+            - text: 评论已关闭。
+            - link "了解详情" [ref=e310] [cursor=pointer]:
+              - /url: https://support.google.com/youtube/answer/9706180?hl=zh-CN
+      - generic [ref=e317]:
+        - generic [ref=e319] [cursor=pointer]:
+          - link [aria-hidden] [ref=e320]:
+            - /url: /watch?v=gTZBYTPaYlk
+            - img [ref=e326]:
+              - generic [aria-hidden] [ref=e327]: 21:06
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - heading "President Trump Participates in a Rose Garden Club Dinner with American Farmers" [level=3] [ref=e331]:
+                - link "President Trump Participates in a Rose Garden Club Dinner with American Farmers 21分钟" [ref=e332]:
+                  - /url: /watch?v=gTZBYTPaYlk
+                  - text: President Trump Participates in a Rose Garden Club Dinner with American Farmers
+              - generic [ref=e334]:
+                - group [ref=e335]:
+                  - generic [ref=e336]: The White House
+                  - generic "已验证" [ref=e337]
+                - group [ref=e340]:
+                  - generic "11万次观看" [ref=e344]: 11万
+                  - generic "3个月前" [ref=e345]
+            - button "其他操作" [ref=e348]
+        - generic [ref=e353] [cursor=pointer]:
+          - link [aria-hidden] [ref=e354]:
+            - /url: /watch?v=2lBpWI_-GMg
+            - img [ref=e360]:
+              - generic [aria-hidden] [ref=e361]: 2:20:19
+          - generic [ref=e363]:
+            - generic [ref=e364]:
+              - heading "250th Anniversary Celebration for the United States Marine Corps" [level=3] [ref=e365]:
+                - link "250th Anniversary Celebration for the United States Marine Corps 2小时20分钟" [ref=e366]:
+                  - /url: /watch?v=2lBpWI_-GMg
+                  - text: 250th Anniversary Celebration for the United States Marine Corps
+              - generic [ref=e368]:
+                - group [ref=e369]:
+                  - generic [ref=e370]: The White House
+                  - generic "已验证" [ref=e371]
+                - group [ref=e374]:
+                  - generic "46万次观看" [ref=e378]: 46万
+                  - generic "11个月前" [ref=e379]
+            - button "其他操作" [ref=e382]
+        - generic [ref=e387] [cursor=pointer]:
+          - link [aria-hidden] [ref=e388]:
+            - /url: /watch?v=Ho4Ym6rzfoo
+            - img [ref=e394]:
+              - generic [aria-hidden] [ref=e395]: 14:47
+          - generic [ref=e397]:
+            - generic [ref=e398]:
+              - 'heading "The Story of America: Benjamin Franklin" [level=3] [ref=e399]':
+                - 'link "The Story of America: Benjamin Franklin 14分钟47秒钟" [ref=e400]':
+                  - /url: /watch?v=Ho4Ym6rzfoo
+                  - text: "The Story of America: Benjamin Franklin"
+              - generic [ref=e402]:
+                - group [ref=e403]:
+                  - generic [ref=e404]: The White House
+                  - generic "已验证" [ref=e405]
+                - group [ref=e408]:
+                  - generic "13万次观看" [ref=e412]: 13万
+                  - generic "5个月前" [ref=e413]
+            - button "其他操作" [ref=e416]
+        - generic [ref=e421] [cursor=pointer]:
+          - link [aria-hidden] [ref=e422]:
+            - /url: /watch?v=oaWMke0cdLo
+            - img [ref=e428]:
+              - generic [aria-hidden] [ref=e429]: 17:44
+          - generic [ref=e431]:
+            - generic [ref=e432]:
+              - heading "President Trump Participates in a Bilateral Meeting with the Taoiseach of Ireland" [level=3] [ref=e433]:
+                - link "President Trump Participates in a Bilateral Meeting with the Taoiseach of Ireland 17分钟" [ref=e434]:
+                  - /url: /watch?v=oaWMke0cdLo
+                  - text: President Trump Participates in a Bilateral Meeting with the Taoiseach of Ireland
+              - generic [ref=e436]:
+                - group [ref=e437]:
+                  - generic [ref=e438]: The White House
+                  - generic "已验证" [ref=e439]
+                - group [ref=e442]:
+                  - generic "19万次观看" [ref=e446]: 19万
+                  - generic "1个月前" [ref=e447]
+            - button "其他操作" [ref=e450]
+        - generic [ref=e455] [cursor=pointer]:
+          - link [aria-hidden] [ref=e456]:
+            - /url: /watch?v=yXLDQma0lDc
+            - img [ref=e462]:
+              - generic [aria-hidden] [ref=e463]: 34:01
+          - generic [ref=e465]:
+            - generic [ref=e466]:
+              - heading "President Trump Greets Lifeguard Ryder Williams" [level=3] [ref=e467]:
+                - link "President Trump Greets Lifeguard Ryder Williams 34分钟" [ref=e468]:
+                  - /url: /watch?v=yXLDQma0lDc
+                  - text: President Trump Greets Lifeguard Ryder Williams
+              - generic [ref=e470]:
+                - group [ref=e471]:
+                  - generic [ref=e472]: The White House
+                  - generic "已验证" [ref=e473]
+                - group [ref=e476]:
+                  - generic "17万次观看" [ref=e480]: 17万
+                  - generic "1个月前" [ref=e481]
+            - button "其他操作" [ref=e484]
+        - generic [ref=e489] [cursor=pointer]:
+          - link [aria-hidden] [ref=e490]:
+            - /url: /watch?v=Lt-pBSqgtZE
+            - img [ref=e496]:
+              - generic [aria-hidden] [ref=e497]: 13:16
+          - generic [ref=e499]:
+            - generic [ref=e500]:
+              - 'heading "The Story of America: George Washington" [level=3] [ref=e501]':
+                - 'link "The Story of America: George Washington 13分钟16秒钟" [ref=e502]':
+                  - /url: /watch?v=Lt-pBSqgtZE
+                  - text: "The Story of America: George Washington"
+              - generic [ref=e504]:
+                - group [ref=e505]:
+                  - generic [ref=e506]: The White House
+                  - generic "已验证" [ref=e507]
+                - group [ref=e510]:
+                  - generic "22万次观看" [ref=e514]: 22万
+                  - generic "4个月前" [ref=e515]
+            - button "其他操作" [ref=e518]
+        - generic [ref=e523] [cursor=pointer]:
+          - link [aria-hidden] [ref=e524]:
+            - /url: /watch?v=Oh05NJy_SaM
+            - img [ref=e530]:
+              - generic [aria-hidden] [ref=e531]: 14:30
+          - generic [ref=e533]:
+            - generic [ref=e534]:
+              - heading "President Trump Gives the President of China a Tour of Marine One and the South Lawn Helipad" [level=3] [ref=e535]:
+                - link "President Trump Gives the President of China a Tour of Marine One and the South Lawn Helipad 14分钟30秒钟" [ref=e536]:
+                  - /url: /watch?v=Oh05NJy_SaM
+                  - text: President Trump Gives the President of China a Tour of Marine One and the South Lawn Helipad
+              - generic [ref=e538]:
+                - group [ref=e539]:
+                  - generic [ref=e540]: The White House
+                  - generic "已验证" [ref=e541]
+                - group [ref=e544]:
+                  - generic "90万次观看" [ref=e548]: 90万
+                  - generic "3周前" [ref=e549]
+            - button "其他操作" [ref=e552]
+        - generic [ref=e557] [cursor=pointer]:
+          - link [aria-hidden] [ref=e558]:
+            - /url: /watch?v=sJDUGSqSYIQ
+            - img [ref=e564]:
+              - generic [aria-hidden] [ref=e565]: 12:32
+          - generic [ref=e567]:
+            - generic [ref=e568]:
+              - 'heading "The Story of America: John and Abigail Adams" [level=3] [ref=e569]':
+                - 'link "The Story of America: John and Abigail Adams 12分钟32秒钟" [ref=e570]':
+                  - /url: /watch?v=sJDUGSqSYIQ
+                  - text: "The Story of America: John and Abigail Adams"
+              - generic [ref=e572]:
+                - group [ref=e573]:
+                  - generic [ref=e574]: The White House
+                  - generic "已验证" [ref=e575]
+                - group [ref=e578]:
+                  - generic "4.5万次观看" [ref=e582]: 4.5万
+                  - generic "5个月前" [ref=e583]
+            - button "其他操作" [ref=e586]
+        - generic [ref=e591] [cursor=pointer]:
+          - link [aria-hidden] [ref=e592]:
+            - /url: /watch?v=cGj7p9io4oc
+            - generic [ref=e593]:
+              - img [ref=e598]:
+                - generic [aria-hidden] [ref=e599]: 8:01
+              - img [ref=e602]:
+                - generic [aria-hidden] [ref=e603]: 新
+          - generic [ref=e605]:
+            - generic [ref=e606]:
+              - heading "Golden Age of Science Summit" [level=3] [ref=e607]:
+                - link "Golden Age of Science Summit 8分钟1秒钟" [ref=e608]:
+                  - /url: /watch?v=cGj7p9io4oc
+                  - text: Golden Age of Science Summit
+              - generic [ref=e610]:
+                - group [ref=e611]:
+                  - generic [ref=e612]: The White House
+                  - generic "已验证" [ref=e613]
+                - group [ref=e616]:
+                  - generic "2.4万次观看" [ref=e620]: 2.4万
+                  - generic "1天前" [ref=e621]
+            - button "其他操作" [ref=e624]
+        - generic [ref=e629] [cursor=pointer]:
+          - link [aria-hidden] [ref=e630]:
+            - /url: /watch?v=TmNee1tFImc
+            - img [ref=e636]:
+              - generic [aria-hidden] [ref=e637]: 43:20
+          - generic [ref=e639]:
+            - generic [ref=e640]:
+              - heading "President Trump Makes an Announcement, Sep. 28, 2026" [level=3] [ref=e641]:
+                - link "President Trump Makes an Announcement, Sep. 28, 2026 43分钟" [ref=e642]:
+                  - /url: /watch?v=TmNee1tFImc
+                  - text: President Trump Makes an Announcement, Sep. 28, 2026
+              - generic [ref=e644]:
+                - group [ref=e645]:
+                  - generic [ref=e646]: The White House
+                  - generic "已验证" [ref=e647]
+                - group [ref=e650]:
+                  - generic "50万次观看" [ref=e654]: 50万
+                  - generic "直播时间：2周前" [ref=e655]
+            - button "其他操作" [ref=e658]
+        - generic [ref=e663] [cursor=pointer]:
+          - link [aria-hidden] [ref=e664]:
+            - /url: /watch?v=64w2lEYtw8E
+            - img [ref=e670]:
+              - generic [aria-hidden] [ref=e671]: 56:41
+          - generic [ref=e673]:
+            - generic [ref=e674]:
+              - heading "President Trump Makes an Announcement with the Secretary of Commerce" [level=3] [ref=e675]:
+                - link "President Trump Makes an Announcement with the Secretary of Commerce 56分钟" [ref=e676]:
+                  - /url: /watch?v=64w2lEYtw8E
+                  - text: President Trump Makes an Announcement with the Secretary of Commerce
+              - generic [ref=e678]:
+                - group [ref=e679]:
+                  - generic [ref=e680]: The White House
+                  - generic "已验证" [ref=e681]
+                - group [ref=e684]:
+                  - generic "39万次观看" [ref=e688]: 39万
+                  - generic "直播时间：2周前" [ref=e689]
+            - button "其他操作" [ref=e692]
+        - generic [ref=e697] [cursor=pointer]:
+          - link [aria-hidden] [ref=e698]:
+            - /url: /watch?v=E8Io_bwl6jE
+            - img [ref=e704]:
+              - generic [aria-hidden] [ref=e705]: 15:31
+          - generic [ref=e707]:
+            - generic [ref=e708]:
+              - heading "President Trump Greets the Prime Minister of Israel at Mar-a-Lago" [level=3] [ref=e709]:
+                - link "President Trump Greets the Prime Minister of Israel at Mar-a-Lago 15分钟" [ref=e710]:
+                  - /url: /watch?v=E8Io_bwl6jE
+                  - text: President Trump Greets the Prime Minister of Israel at Mar-a-Lago
+              - generic [ref=e712]:
+                - group [ref=e713]:
+                  - generic [ref=e714]: The White House
+                  - generic "已验证" [ref=e715]
+                - group [ref=e718]:
+                  - generic "3.7万次观看" [ref=e722]: 3.7万
+                  - generic "9个月前" [ref=e723]
+            - button "其他操作" [ref=e726]
+        - generic [ref=e731] [cursor=pointer]:
+          - link [aria-hidden] [ref=e732]:
+            - /url: /watch?v=hC1lrkuqBBw
+            - img [ref=e738]:
+              - generic [aria-hidden] [ref=e739]: 30:13
+          - generic [ref=e741]:
+            - generic [ref=e742]:
+              - heading "President Trump Participates in a Bilateral Meeting with the President of the Republic of Lebanon" [level=3] [ref=e743]:
+                - link "President Trump Participates in a Bilateral Meeting with the President of the Republic of Lebanon 30分钟" [ref=e744]:
+                  - /url: /watch?v=hC1lrkuqBBw
+                  - text: President Trump Participates in a Bilateral Meeting with the President of the Republic of Lebanon
+              - generic [ref=e746]:
+                - group [ref=e747]:
+                  - generic [ref=e748]: The White House
+                  - generic "已验证" [ref=e749]
+                - group [ref=e752]:
+                  - generic "16万次观看" [ref=e756]: 16万
+                  - generic "2个月前" [ref=e757]
+            - button "其他操作" [ref=e760]
+        - generic [ref=e765] [cursor=pointer]:
+          - link [aria-hidden] [ref=e766]:
+            - /url: /watch?v=lUe8vwhnjbk
+            - img [ref=e772]:
+              - generic [aria-hidden] [ref=e773]: 18:41
+          - generic [ref=e775]:
+            - generic [ref=e776]:
+              - heading "Military Review with the President of China and Madame Peng" [level=3] [ref=e777]:
+                - link "Military Review with the President of China and Madame Peng 18分钟" [ref=e778]:
+                  - /url: /watch?v=lUe8vwhnjbk
+                  - text: Military Review with the President of China and Madame Peng
+              - generic [ref=e780]:
+                - group [ref=e781]:
+                  - generic [ref=e782]: The White House
+                  - generic "已验证" [ref=e783]
+                - group [ref=e786]:
+                  - generic "30万次观看" [ref=e790]: 30万
+                  - generic "直播时间：3周前" [ref=e791]
+            - button "其他操作" [ref=e794]
+        - generic [ref=e799] [cursor=pointer]:
+          - link [aria-hidden] [ref=e800]:
+            - /url: /watch?v=z5yUisX9H88
+            - img [ref=e806]:
+              - generic [aria-hidden] [ref=e807]: 12:08
+          - generic [ref=e809]:
+            - generic [ref=e810]:
+              - 'heading "The Story of America: Story of the American Soldier" [level=3] [ref=e811]':
+                - 'link "The Story of America: Story of the American Soldier 12分钟8秒钟" [ref=e812]':
+                  - /url: /watch?v=z5yUisX9H88
+                  - text: "The Story of America: Story of the American Soldier"
+              - generic [ref=e814]:
+                - group [ref=e815]:
+                  - generic [ref=e816]: The White House
+                  - generic "已验证" [ref=e817]
+                - group [ref=e820]:
+                  - generic "25万次观看" [ref=e824]: 25万
+                  - generic "11个月前" [ref=e825]
+            - button "其他操作" [ref=e828]
+        - generic [ref=e833] [cursor=pointer]:
+          - link [aria-hidden] [ref=e834]:
+            - /url: /watch?v=C_Y-udVHdb4
+            - img [ref=e840]:
+              - generic [aria-hidden] [ref=e841]: 20:46
+          - generic [ref=e843]:
+            - generic [ref=e844]:
+              - heading "President Trump Signs an Executive Order, Jul. 13, 2026" [level=3] [ref=e845]:
+                - link "President Trump Signs an Executive Order, Jul. 13, 2026 20分钟" [ref=e846]:
+                  - /url: /watch?v=C_Y-udVHdb4
+                  - text: President Trump Signs an Executive Order, Jul. 13, 2026
+              - generic [ref=e848]:
+                - group [ref=e849]:
+                  - generic [ref=e850]: The White House
+                  - generic "已验证" [ref=e851]
+                - group [ref=e854]:
+                  - generic "18万次观看" [ref=e858]: 18万
+                  - generic "直播时间：3个月前" [ref=e859]
+            - button "其他操作" [ref=e862]
+        - generic [ref=e867] [cursor=pointer]:
+          - link [aria-hidden] [ref=e868]:
+            - /url: /watch?v=sdLc4_GYWXc
+            - img [ref=e874]:
+              - generic [aria-hidden] [ref=e875]: 10:31
+          - generic [ref=e877]:
+            - generic [ref=e878]:
+              - 'heading "The Story of America: Crossing the Delaware" [level=3] [ref=e879]':
+                - 'link "The Story of America: Crossing the Delaware 10分钟31秒钟" [ref=e880]':
+                  - /url: /watch?v=sdLc4_GYWXc
+                  - text: "The Story of America: Crossing the Delaware"
+              - generic [ref=e882]:
+                - group [ref=e883]:
+                  - generic [ref=e884]: The White House
+                  - generic "已验证" [ref=e885]
+                - group [ref=e888]:
+                  - generic "9.6万次观看" [ref=e892]: 9.6万
+                  - generic "10个月前" [ref=e893]
+            - button "其他操作" [ref=e896]
+        - generic [ref=e901] [cursor=pointer]:
+          - link [aria-hidden] [ref=e902]:
+            - /url: /watch?v=vUV87DEi1yA
+            - img [ref=e908]:
+              - generic [aria-hidden] [ref=e909]: 17:55
+          - generic [ref=e911]:
+            - generic [ref=e912]:
+              - heading "President Trump Participates in a Rose Garden Dinner, Sep. 17, 2026" [level=3] [ref=e913]:
+                - link "President Trump Participates in a Rose Garden Dinner, Sep. 17, 2026 17分钟" [ref=e914]:
+                  - /url: /watch?v=vUV87DEi1yA
+                  - text: President Trump Participates in a Rose Garden Dinner, Sep. 17, 2026
+              - generic [ref=e916]:
+                - group [ref=e917]:
+                  - generic [ref=e918]: The White House
+                  - generic "已验证" [ref=e919]
+                - group [ref=e922]:
+                  - generic "12万次观看" [ref=e926]: 12万
+                  - generic "直播时间：4周前" [ref=e927]
+            - button "其他操作" [ref=e930]
+        - generic [ref=e935] [cursor=pointer]:
+          - link [aria-hidden] [ref=e936]:
+            - /url: /watch?v=OE2NtBhozT4
+            - img [ref=e942]:
+              - generic [aria-hidden] [ref=e943]: 22:01
+          - generic [ref=e945]:
+            - generic [ref=e946]:
+              - heading "President Trump Makes an Announcement, Jan. 29, 2026" [level=3] [ref=e947]:
+                - link "President Trump Makes an Announcement, Jan. 29, 2026 22分钟" [ref=e948]:
+                  - /url: /watch?v=OE2NtBhozT4
+                  - text: President Trump Makes an Announcement, Jan. 29, 2026
+              - generic [ref=e950]:
+                - group [ref=e951]:
+                  - generic [ref=e952]: The White House
+                  - generic "已验证" [ref=e953]
+                - group [ref=e956]:
+                  - generic "77万次观看" [ref=e960]: 77万
+                  - generic "直播时间：8个月前" [ref=e961]
+            - button "其他操作" [ref=e964]
+        - generic [ref=e969] [cursor=pointer]:
+          - link [aria-hidden] [ref=e970]:
+            - /url: /watch?v=6UBA8iL3x54
+            - img [ref=e976]:
+              - generic [aria-hidden] [ref=e977]: 4:12
+          - generic [ref=e979]:
+            - generic [ref=e980]:
+              - heading "President Trump Participates in a Meeting and Luncheon on Super Intelligence" [level=3] [ref=e981]:
+                - link "President Trump Participates in a Meeting and Luncheon on Super Intelligence 4分钟12秒钟" [ref=e982]:
+                  - /url: /watch?v=6UBA8iL3x54
+                  - text: President Trump Participates in a Meeting and Luncheon on Super Intelligence
+              - generic [ref=e984]:
+                - group [ref=e985]:
+                  - generic [ref=e986]: The White House
+                  - generic "已验证" [ref=e987]
+                - group [ref=e990]:
+                  - generic "16万次观看" [ref=e994]: 16万
+                  - generic "直播时间：2周前" [ref=e995]
+            - button "其他操作" [ref=e998]

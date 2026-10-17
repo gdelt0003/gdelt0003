@@ -1,0 +1,730 @@
+[    5622ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[    5871ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[    6124ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[    8562ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   36010ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[   38242ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[   40103ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[   40567ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   44465ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[   44979ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   54107ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[   54606ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   69006ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   70102ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   71037ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   72820ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   73456ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   73600ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=Uya88MLbHV0:0
+[   77144ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   78061ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   78349ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=jWTVCPMk3S4:0
+[   78993ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   80725ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   81239ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=jWTVCPMk3S4:0
+[   81312ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   83321ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://www.nytimes.com/video/us/politics/100000011212093/katie-zacharia-white-house-press-secretary.html:0
+[   85985ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   87049ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   89487ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   90582ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   90897ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=NcBo4MG8MnA:0
+[   91625ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[   93366ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[   93911ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=NcBo4MG8MnA:0
+[   93972ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[   96067ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://www.c-span.org/event/white-house-event/white-house-press-secretary-katie-zacharia-holds-first-briefing/448203:0
+[   96630ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://www.c-span.org/favicon.ico:0
+[   97036ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'attribution-reporting'. @ :0
+[   97036ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'shared-storage'. @ :0
+[   97036ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'. @ :0
+[  101539ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://www.facebook.com/CSPAN/videos/white-house-press-secretary-katie-zacharia-told-reporters-on-tuesday-during-a-pr/1509770514326571/:0
+[  101540ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://www.facebook.com/CSPAN/videos/white-house-press-secretary-katie-zacharia-told-reporters-on-tuesday-during-a-pr/1509770514326571/:0
+[  102197ms] [ERROR] ErrorUtils caught an error:
+
+terminate stream because StartStreamFailure with msg : UNAUTHENTICATED [Caught in: Subscription error in preprocessResponse]
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. {column: 180, clientTime: 1792031268, extra: Object, guardList: Array(0), hash: zof01v} @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:84
+[  102209ms] [LOG] 
+%c停下！ font-family:helvetica; font-size:20px; font-size:50px; font-weight:bold; color:red; -webkit-text-stroke:1px black; @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[  102210ms] [LOG] 
+%c此浏览器功能专供开发者使用。若某人让你在此复制粘贴某内容以启用某 Facebook 功能或“入侵”某人账户，此为欺诈，会使对方获权进入你的 Facebook 账户。 font-family:helvetica; font-size:20px;  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[  102210ms] [LOG] 
+%c更多信息请参见 https://www.facebook.com/selfxss。 font-family:helvetica; font-size:20px;  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[  102210ms] [LOG] 
+%c  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[  102729ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ https://static.xx.fbcdn.net/rsrc.php/v4/yj/r/atBZ6RzieZ4.js:59
+[  129941ms] [WARNING] [GPT] PubAdsService.getTargeting is deprecated, use googletag.getConfig('targeting') instead.
+https://goo.gle/gpt-message#200 @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  130531ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  130550ms] [LOG] Successfully registered GoogleTagManager to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  130551ms] [LOG] Successfully registered OneTrust to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  130585ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  130997ms] Uncaught TypeError: Cannot read properties of undefined (reading 'useCanonical')
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:304)
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:620)
+[  131142ms] [WARNING] [GPT] PubAdsService.getTargeting is deprecated, use googletag.getConfig('targeting') instead.
+https://goo.gle/gpt-message#200 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  131491ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  131520ms] [LOG] Successfully registered GoogleTagManager to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  131520ms] [LOG] Successfully registered OneTrust to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  132045ms] [ERROR] Access to fetch at 'https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/latest/&pixelId=58870' from origin 'https://www.ctvnews.ca' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.ctvnews.ca/video/latest/:0
+[  132046ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/latest/&pixelId=58870:0
+[  140589ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  141234ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  142882ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  145469ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  147730ms] [LOG] [BC]Send the facebook init event 1023886784662676 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  147775ms] [ERROR] logger: (checkStatsInterface) Unexpected cbc-stats interface, missing: 
+ - CBC.APP.DMP.LOTAME.audiences @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  147852ms] [WARNING] [GPT] Error in googletag.display: could not find div with id "risingstar-842475" in DOM for slot: /5876/news/world/story/top.
+https://goo.gle/gpt-message#23 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  148300ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  148400ms] [ERROR] logger: (checkStatsInterface) Unexpected cbc-stats interface, missing: 
+ - CBC.APP.DMP.LOTAME.audiences @ https://www.cbc.ca/a/scripts/oc-vendor-sentry.d7ad712b7f796e9f.js:14
+[  148430ms] [WARNING] [GPT] Error in googletag.display: could not find div with id "risingstar-240577" in DOM for slot: /5876/news/world/topic/tag/cbc/index.
+https://goo.gle/gpt-message#23 @ https://www.cbc.ca/a/scripts/oc-vendor-sentry.d7ad712b7f796e9f.js:14
+[  148889ms] [WARNING] [GPT] Error in googletag.display: could not find div with id "bigbox-170735" in DOM for slot: /5876/news/world/topic/tag/cbc/index.
+https://goo.gle/gpt-message#23 @ https://www.cbc.ca/a/scripts/oc-vendor-sentry.d7ad712b7f796e9f.js:14
+[  156892ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031322900, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  157449ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  157452ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  157748ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  159728ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  159729ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  159730ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  160597ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  161421ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031327429, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  161871ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  161872ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  161878ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  162111ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  162112ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  162112ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  162148ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  163852ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  165485ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031331494, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  165693ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  165694ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  165701ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  165937ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  165938ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  165939ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  165952ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  166014ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  167719ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031333727, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  167972ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  167975ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  167983ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  168213ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  168215ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  168216ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  168251ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  168295ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  170171ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031336180, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  170379ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  170380ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  170386ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  170639ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  170640ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  170641ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  170653ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  170693ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  170733ms] [INFO] [Faro] Initialized successfully @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170733ms] [LOG] Braze: Initialization Options: {
+  "baseUrl": "https://sdk.iad-07.braze.com",
+  "sessionTimeoutInSeconds": 1800,
+  "enableLogging": true,
+  "allowUserSuppliedJavascript": true
+} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170737ms] [LOG] Braze: Initialized for the Braze backend at "https://sdk.iad-07.braze.com" with API key "ea3bd648-fcff-4d3d-af01-910ab9a74b22". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170741ms] [INFO] %c🚀 Success! Braze Initialized! color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170742ms] [INFO] %c🚀 envStage: prod color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170742ms] [INFO] %c🚀 BRAZE_SDK_ENDPOINT: https://sdk.iad-07.braze.com color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170742ms] [INFO] %c🚀 window.brazeReady: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170742ms] [INFO] %c🚀 window.braze: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; object @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170742ms] [INFO] %c🔔 Push Primer: Plugin loaded color: #fff; background: linear-gradient(90deg, #FF6B35, #F7931E); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170787ms] [INFO] [Strike Debug] Attempt 1 to initialize FTS.ISA @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170788ms] [INFO] [Strike Debug] FTS.ISA available: true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170790ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold ProfileSDK not found (ad blocker or script load failure) @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170791ms] [INFO] [FoxKit] Fetching location from client-side IP... @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170791ms] [INFO] [PlatformLocation] Fetching location from SPS API: https://api-sps.foxtv.com/platform-locator/v1/location @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170794ms] [INFO] [FTSFoxPlayer] WPF Player is ready @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170795ms] [INFO] [FTS] Mounted! 11.14.0 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170796ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold No profileInstance - cannot authenticate @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170796ms] [INFO] %c🔐 Store Init ✓ color: #7ED321; font-weight: bold Auth: false | Token: ✗ | ID: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170797ms] [INFO] [FoxKit Store] getAccessToken called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170797ms] [INFO] [FoxKit Store] getProfileId called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170797ms] [INFO] %c🔐 Auth ⚠ color: #F5A623; font-weight: bold Not authenticated | Token: ✗ | ProfileId: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170817ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170817ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170818ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  170819ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  171633ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=alertBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  171668ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=siteBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  172838ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031338846, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  173066ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  173068ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  173074ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  173325ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  173327ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  173329ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  173342ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  173388ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  173434ms] [INFO] [Faro] Initialized successfully @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173435ms] [LOG] Braze: Initialization Options: {
+  "baseUrl": "https://sdk.iad-07.braze.com",
+  "sessionTimeoutInSeconds": 1800,
+  "enableLogging": true,
+  "allowUserSuppliedJavascript": true
+} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173439ms] [LOG] Braze: Initialized for the Braze backend at "https://sdk.iad-07.braze.com" with API key "ea3bd648-fcff-4d3d-af01-910ab9a74b22". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173446ms] [INFO] %c🚀 Success! Braze Initialized! color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173446ms] [INFO] %c🚀 envStage: prod color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173447ms] [INFO] %c🚀 BRAZE_SDK_ENDPOINT: https://sdk.iad-07.braze.com color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173447ms] [INFO] %c🚀 window.brazeReady: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173447ms] [INFO] %c🚀 window.braze: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; object @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173447ms] [INFO] %c🔔 Push Primer: Plugin loaded color: #fff; background: linear-gradient(90deg, #FF6B35, #F7931E); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173488ms] [INFO] [Strike Debug] Attempt 1 to initialize FTS.ISA @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173490ms] [INFO] [Strike Debug] FTS.ISA available: true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173492ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold ProfileSDK not found (ad blocker or script load failure) @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173494ms] [INFO] [FoxKit] Fetching location from client-side IP... @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173494ms] [INFO] [PlatformLocation] Fetching location from SPS API: https://api-sps.foxtv.com/platform-locator/v1/location @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173497ms] [INFO] [FTSFoxPlayer] WPF Player is ready @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173497ms] [INFO] [FTS] Mounted! 11.14.0 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173499ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold No profileInstance - cannot authenticate @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173500ms] [INFO] %c🔐 Store Init ✓ color: #7ED321; font-weight: bold Auth: false | Token: ✗ | ID: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173500ms] [INFO] [FoxKit Store] getAccessToken called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173500ms] [INFO] [FoxKit Store] getProfileId called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173501ms] [INFO] %c🔐 Auth ⚠ color: #F5A623; font-weight: bold Not authenticated | Token: ✗ | ProfileId: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173524ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=siteBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173525ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=alertBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173529ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173529ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173532ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  173532ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  174121ms] [ERROR] Failed to load resource: the server responded with a status of 406 () @ https://api-sps.foxtv.com/platform-locator/v1/location:0
+[  174122ms] [WARNING] [PlatformLocation] platform-locator returned non-OK status: 406 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  174122ms] [WARNING] [PlatformLocation] platform-locator returned incomplete geo fields; attempting legacy locator fallback {zip_code: undefined, metro_code: undefined, local_station_call_sign: undefined} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  180006ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms:5
+[  180008ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms:5
+[  181138ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms?teaserSource=trending:5
+[  181140ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms?teaserSource=trending:5
+[  182139ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/america-gov-launches-as-president-donald-trumps-new-ai-shortcut-to-federal-services-government-agencies-chief-design-officer-joe-gebbia:5
+[  182165ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/america-gov-launches-as-president-donald-trumps-new-ai-shortcut-to-federal-services-government-agencies-chief-design-officer-joe-gebbia:5
+[  182290ms] [WARNING] [GPT] PubAdsService.disableInitialLoad is deprecated, use googletag.setConfig({disableInitialLoad: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  183613ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2 @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5959
+[  183648ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2 @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5959
+[  183682ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2 @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5959
+[  183717ms] [ERROR] Permissions policy violation: compute-pressure is not allowed in this document. @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5420
+[  183722ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2 @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5959
+[  183833ms] [LOG] Ketch GTM consent template loaded successfully @ https://www.googletagmanager.com/gtm.js?id=GTM-MQJS9PH:956
+[  185000ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/racist-videos-from-georgia-football-coach-sparks-viral-social-media-outrage-black-athletes-facebook-twitter-red-flags-racism-stalking-charity-generosity-philanthropy-black-lives-matter-lynching-atlanta-shame:5
+[  185002ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/racist-videos-from-georgia-football-coach-sparks-viral-social-media-outrage-black-athletes-facebook-twitter-red-flags-racism-stalking-charity-generosity-philanthropy-black-lives-matter-lynching-atlanta-shame:5
+[  185119ms] [LOG] Ketch GTM consent template loaded successfully @ https://www.googletagmanager.com/gtm.js?id=GTM-MQJS9PH:956
+[  185171ms] [WARNING] [GPT] PubAdsService.disableInitialLoad is deprecated, use googletag.setConfig({disableInitialLoad: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  185949ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/arizona-congressman-introduces-bill-to-award-nick-shirley-with-congressional-gold-medal-tim-walz-somalians-minnesota:5
+[  185952ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/arizona-congressman-introduces-bill-to-award-nick-shirley-with-congressional-gold-medal-tim-walz-somalians-minnesota:5
+[  186019ms] [LOG] Ketch GTM consent template loaded successfully @ https://www.googletagmanager.com/gtm.js?id=GTM-MQJS9PH:956
+[  186065ms] [WARNING] [GPT] PubAdsService.disableInitialLoad is deprecated, use googletag.setConfig({disableInitialLoad: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  186542ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v48/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2 @ https://www.youtube.com/s/player/21090930/player_embed_es6.vflset/zh_CN/base.js:5959
+[  191792ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  191816ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  195222ms] [ERROR] Datadog Browser SDK: DD_RUM is already initialized. @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:0
+[  195643ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  196037ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  197129ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  197129ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  197849ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.nbcnews.com/akam/13/b848954:0
+[  198252ms] [WARNING] [DEPRECATED] Use `createWithEqualityFn` instead of `create` or use `useStoreWithEqualityFn` instead of `useStore`. They can be imported from 'zustand/traditional'. https://github.com/pmndrs/zustand/discussions/1937 @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:4
+[  198374ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  198904ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271494213830&site=nbcnews-bento&path=%2Fvideo%2Fkatie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Katie%20Zacharia%20holds%20first%20White%20House%20press%20briefing%20weeks%20before%20midterm%20elections&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/video/katie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830:0
+[  198904ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271494213830&site=nbcnews-bento&path=%2Fvideo%2Fkatie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Katie%20Zacharia%20holds%20first%20White%20House%20press%20briefing%20weeks%20before%20midterm%20elections&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  199350ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  199384ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  199497ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  199687ms] [WARNING] [DEPRECATED] Use `createWithEqualityFn` instead of `create` or use `useStoreWithEqualityFn` instead of `useStore`. They can be imported from 'zustand/traditional'. https://github.com/pmndrs/zustand/discussions/1937 @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:4
+[  199988ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  200761ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271449157991&site=nbcnews-bento&path=%2Fvideo%2Fwatch-live-white-house-press-secretary-katie-zacharia-holds-first-briefing-271449157991&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Watch%20live%3A%20White%20House%20press%20secretary%20Katie%20Zacharia%20holds%20first%20briefing&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/video/watch-live-white-house-press-secretary-katie-zacharia-holds-first-briefing-271449157991:0
+[  200761ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271449157991&site=nbcnews-bento&path=%2Fvideo%2Fwatch-live-white-house-press-secretary-katie-zacharia-holds-first-briefing-271449157991&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Watch%20live%3A%20White%20House%20press%20secretary%20Katie%20Zacharia%20holds%20first%20briefing&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  201465ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  202002ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  202175ms] [WARNING] [DEPRECATED] Use `createWithEqualityFn` instead of `create` or use `useStoreWithEqualityFn` instead of `useStore`. They can be imported from 'zustand/traditional'. https://github.com/pmndrs/zustand/discussions/1937 @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:4
+[  202231ms] Uncaught Error: Minified React error #425; visit https://reactjs.org/docs/error-decoder.html?invariant=425 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rh (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:40218)
+    at <anonymous> (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:100592)
+    at oD (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:106092)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:99056)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202231ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202231ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202231ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at lg (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:46509)
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120990)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:93939)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202232ms] Uncaught Error: Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at i (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:120649)
+    at oO (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98996)
+    at oM (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:98866)
+    at ox (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:95637)
+    at oS (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:94192)
+    at x (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:130623)
+    at T (https://nodeassets.nbcnews.com/_next/static/chunks/framework-54aa30f15a5ecfb0.js:0:131144)
+[  202364ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  202892ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo249802309590&site=nbcnews-bento&path=%2Fmeet-the-press%2Fvideo%2Fmeet-the-press-now-october-13-249802309590&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Meet%20the%20Press%20NOW%20%20October%2013&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/meet-the-press/video/meet-the-press-now-october-13-249802309590:0
+[  202892ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo249802309590&site=nbcnews-bento&path=%2Fmeet-the-press%2Fvideo%2Fmeet-the-press-now-october-13-249802309590&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Meet%20the%20Press%20NOW%20%20October%2013&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  203210ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  203219ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  203688ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  203858ms] [WARNING] [DEPRECATED] Use `createWithEqualityFn` instead of `create` or use `useStoreWithEqualityFn` instead of `useStore`. They can be imported from 'zustand/traditional'. https://github.com/pmndrs/zustand/discussions/1937 @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:4
+[  204066ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  204594ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo266816581983&site=nbcnews-bento&path=%2Fvideo%2Fnbc-news-correspondents-examine-trump-statements-on-election-integrity-266816581983&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=NBC%20News%20correspondents%20examine%20Trump%20statements%20on%20election%20integrity&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/video/nbc-news-correspondents-examine-trump-statements-on-election-integrity-266816581983:0
+[  204595ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo266816581983&site=nbcnews-bento&path=%2Fvideo%2Fnbc-news-correspondents-examine-trump-statements-on-election-integrity-266816581983&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=NBC%20News%20correspondents%20examine%20Trump%20statements%20on%20election%20integrity&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  204768ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  204826ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  205141ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  205454ms] [ERROR] Datadog Browser SDK: DD_RUM is already initialized. @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:0
+[  205620ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  206320ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=politics&cag%5Bplatform%5D=ramen&cag%5Bsentiment%5D=none&cag%5Btargeting%5D=news%7Cfromthepoliticsdesk%7Carticlenarrations&adunit=%2F2620%2Fnbcnews%2Fpolitics&type=bentoarticle&content_id=rcna603276&site=nbcnews-bento&path=%2Fpolitics%2Fpolitics-news%2Ftrumps-new-messenger-politics-desk-rcna603276&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&cag%5Badunit3%5D=politics&title=Trumps%20new%20messenger%3A%20From%20the%20Politics%20Desk&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/politics/politics-news/trumps-new-messenger-politics-desk-rcna603276:0
+[  206320ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=politics&cag%5Bplatform%5D=ramen&cag%5Bsentiment%5D=none&cag%5Btargeting%5D=news%7Cfromthepoliticsdesk%7Carticlenarrations&adunit=%2F2620%2Fnbcnews%2Fpolitics&type=bentoarticle&content_id=rcna603276&site=nbcnews-bento&path=%2Fpolitics%2Fpolitics-news%2Ftrumps-new-messenger-politics-desk-rcna603276&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&cag%5Badunit3%5D=politics&title=Trumps%20new%20messenger%3A%20From%20the%20Politics%20Desk&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  210905ms] [WARNING] <link rel=preload> must have a valid `as` value @ :1
+[  211035ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ https://nodeassets.nbcnews.com/jwplayer/jwplayer-8.30.1/jwplayer.js:8
+[  211119ms] [LOG] [Conviva] [1792031377.127] [INFO] [SDK] [CwsSession] sid=-313358643 start(): assetName=[now_current_allen_zacharia_first_261013] @ :9
+[  211120ms] [LOG] [Conviva] [1792031377.128] [DEBUG] [SDK] [CwsSession] sid=-313358643 Change frameworkName from null to JW Player @ :9
+[  211120ms] [LOG] [Conviva] [1792031377.128] [DEBUG] [SDK] [CwsSession] sid=-313358643 Change frameworkVersion from null to 8.30.1+commercial_master.549.hls.js@1.4.10.jwplayer@mono.jwplayer-ads-dai@mono.jwplayer-ads-freewheel@mono.jwplayer-ads-googima@mono.jwplayer-ads-header-bidding@github:jwplayer/jwplayer-ads-header-bidding#v7.4.5.jwplayer-ads-vast@mono.jwplayer-analytics@github:jwplayer/jwplayer-analytics#3.43.x.jwplayer-analytics-kraken@v0.0.4.jwplayer-plugin-gapro@mono @ :9
+[  211120ms] [LOG] [Conviva] [1792031377.129] [DEBUG] [SDK] [CwsSession] sid=-313358643 initialize() @ :9
+[  211121ms] [LOG] [Conviva] [1792031377.129] [DEBUG] [SDK] [CwsSession] sid=-313358643 setStatesFromContentMetadata() @ :9
+[  211121ms] [LOG] [Conviva] [1792031377.129] [INFO] [SDK] [CwsSession] sid=-313358643 Change isLive from null to false @ :9
+[  211121ms] [LOG] [Conviva] [1792031377.129] [INFO] [SDK] [CwsSession] sid=-313358643 Change assetName from null to [now_current_allen_zacharia_first_261013] @ :9
+[  211121ms] [LOG] [Conviva] [1792031377.130] [INFO] [SDK] [CwsSession] sid=-313358643 Change viewerId from null to 2704722219 @ :9
+[  211121ms] [LOG] [Conviva] [1792031377.130] [INFO] [SDK] [CwsSession] sid=-313358643 Change playerName from null to n @ :9
+[  211122ms] [LOG] [Conviva] [1792031377.130] [INFO] [SDK] [CwsSession] sid=-313358643 Change tags from Object{} to Object{undefined=155.0.0.0profile=2704722219playerVersion=8.30.1+commercial_master.549.hls.js@1.4.10.jwplayer@mono.jwplayer-ads-dai@mono.jwplayer-ads-freewheel@mono.jwplayer-ads-googima@mono.jwplayer-ads-header-bidding@github:jwplayer/jwplayer-ads-header-bidding#v7.4.5.jwplayer-ads-vast@mono.jwplayer-analytics@github:jwplayer/jwplayer-analytics#3.43.x.jwplayer-analytics-kraken@v0.0.4.jwplayer-plugin-gapro@monoplayerVendor=JW Playerproduct=nbcnewsdcType=4gc3.cm.contentType=VOD} @ :9
+[  211122ms] [WARNING] [Conviva] [1792031377.130] [WARNING] [SDK] [CwsSession] sid=-313358643 enqueueEventForContentMetadata(): defaultResource was not set. @ :9
+[  211122ms] [WARNING] [Conviva] [1792031377.131] [WARNING] [SDK] [CwsSession] sid=-313358643 enqueueEventForContentMetadata(): encodedFrameRate was not set. @ :9
+[  211123ms] [WARNING] [Conviva] [1792031377.131] [WARNING] [SDK] [CwsSession] sid=-313358643 Missing resource during session creation @ :9
+[  211123ms] [WARNING] [Conviva] [1792031377.132] [WARNING] [SDK] [CwsSession] sid=-313358643 Missing encodedFrameRate during session creation @ :9
+[  211124ms] [LOG] [Conviva] [1792031377.132] [DEBUG] [SDK] [CwsSession] sid=-313358643 Change screenWidth from null to 1138 @ :9
+[  211125ms] [LOG] [Conviva] [1792031377.133] [DEBUG] [SDK] [CwsSession] sid=-313358643 Change screenHeight from null to 640 @ :9
+[  211125ms] [LOG] [Conviva] [1792031377.133] [DEBUG] [SDK] [CwsSession] sid=-313358643 Change scaleFactor from null to 2.25 @ :9
+[  211135ms] [LOG] [Conviva] [1792031377.143] [INFO] [SDK] [CwsSession] sid=-313358643 postHeartbeat(): Send HB[0] @ :9
+[  213052ms] [LOG] >FW 29:39.046 FreeWheel Integration Runtime js-7.2.1-de2b533f-202405301537 @ https://mssl.fwmrm.net/libs/adm/7.2.1/AdManager.js:18
+[  213053ms] [LOG] >FW 29:39.061 Device: Desktop PLATFORM_IS_SAFARI: false PLATFORM_IS_CHROME: true @ https://mssl.fwmrm.net/libs/adm/7.2.1/AdManager.js:18
+[  214902ms] [LOG] [Conviva] [1792031380.910] [DEBUG] [SDK] [CwsSession] sid=-313358643 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  214902ms] [LOG] [Conviva] [1792031380.910] [DEBUG] [SDK] [CwsSession] sid=-313358643 onHeartbeatResponse(): setting the client id to 2020487493.1979648435.3340221838.1838829178 (from gateway) @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.911] [INFO] [SDK] [CwsSession] sid=-789876053 start() (global session) @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.911] [DEBUG] [SDK] [CwsSession] sid=-789876053 initialize() @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.911] [DEBUG] [SDK] [CwsSession] sid=-789876053 setStatesFromContentMetadata() @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.912] [INFO] [SDK] [CwsSession] sid=-789876053 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv4.cws.conviva.com} @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.912] [DEBUG] [SDK] [CwsSession] sid=-789876053 Change screenWidth from null to 1138 @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.912] [DEBUG] [SDK] [CwsSession] sid=-789876053 Change screenHeight from null to 640 @ :9
+[  214903ms] [LOG] [Conviva] [1792031380.912] [DEBUG] [SDK] [CwsSession] sid=-789876053 Change scaleFactor from null to 2.25 @ :9
+[  214909ms] [LOG] [Conviva] [1792031380.918] [INFO] [SDK] [CwsSession] sid=-789876053 postHeartbeat(): Send HB[0] (global session) @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.919] [INFO] [SDK] [CwsSession] sid=2055672226 start() (global session) @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.920] [DEBUG] [SDK] [CwsSession] sid=2055672226 initialize() @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.920] [DEBUG] [SDK] [CwsSession] sid=2055672226 setStatesFromContentMetadata() @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.920] [INFO] [SDK] [CwsSession] sid=2055672226 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv6.cws.conviva.com} @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.920] [DEBUG] [SDK] [CwsSession] sid=2055672226 Change screenWidth from null to 1138 @ :9
+[  214911ms] [LOG] [Conviva] [1792031380.920] [DEBUG] [SDK] [CwsSession] sid=2055672226 Change screenHeight from null to 640 @ :9
+[  214912ms] [LOG] [Conviva] [1792031380.920] [DEBUG] [SDK] [CwsSession] sid=2055672226 Change scaleFactor from null to 2.25 @ :9
+[  214915ms] [LOG] [Conviva] [1792031380.924] [INFO] [SDK] [CwsSession] sid=2055672226 postHeartbeat(): Send HB[0] (global session) @ :9
+[  214917ms] [LOG] [Conviva] [1792031380.925] [DEBUG] [SDK] [CwsSession] sid=-313358643 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  218357ms] [LOG] [Conviva] [1792031384.365] [DEBUG] [SDK] [CwsSession] sid=2055672226 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  218357ms] [LOG] [Conviva] [1792031384.365] [DEBUG] [SDK] [CwsSession] sid=2055672226 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  218371ms] [LOG] [Conviva] [1792031384.380] [DEBUG] [SDK] [CwsSession] sid=-789876053 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  218372ms] [LOG] [Conviva] [1792031384.380] [DEBUG] [SDK] [CwsSession] sid=-789876053 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  220002ms] [WARNING] [Conviva] [1792031386.011] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): assetName was not changed. @ :9
+[  220003ms] [WARNING] [Conviva] [1792031386.011] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): applicationName was not changed. @ :9
+[  220003ms] [WARNING] [Conviva] [1792031386.011] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): streamUrl was not changed. @ :9
+[  220003ms] [WARNING] [Conviva] [1792031386.011] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): viewerId was not changed. @ :9
+[  220003ms] [WARNING] [Conviva] [1792031386.012] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): duration was not changed. @ :9
+[  220003ms] [WARNING] [Conviva] [1792031386.012] [WARNING] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): streamType was not changed. @ :9
+[  220003ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.undefined was not changed. @ :9
+[  220003ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.profile was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.playerVersion was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.playerVendor was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.product was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.012] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.dcType was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.013] [INFO] [SDK] [CwsSession] sid=-313358643 mergeContentMetadata(): custom.c3.cm.contentType was not changed. @ :9
+[  220004ms] [LOG] [Conviva] [1792031386.013] [DEBUG] [SDK] [CwsSession] sid=-313358643 setStatesFromContentMetadata() @ :9
+[  220005ms] [LOG] [Conviva] [1792031386.013] [INFO] [SDK] [CwsSession] sid=-313358643 setPlayerState(): changing player state from UNKNOWN to PLAYING @ :9
+[  220006ms] [LOG] [Conviva] [1792031386.014] [INFO] [SDK] [CwsSession] sid=-313358643 Change bitrate from -2 to 4061 @ :9
+[  227951ms] Uncaught TypeError: Cannot read properties of undefined (reading 'useCanonical')
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:304)
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:620)
+[  228058ms] [ERROR] Access to fetch at 'https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/2026/10/14/katie-zacharia-takes-three-questions/&pixelId=58870' from origin 'https://www.ctvnews.ca' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.ctvnews.ca/video/2026/10/14/katie-zacharia-takes-three-questions/:0
+[  228059ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/2026/10/14/katie-zacharia-takes-three-questions/&pixelId=58870:0
+[  228223ms] [WARNING] [GPT] PubAdsService.getTargeting is deprecated, use googletag.getConfig('targeting') instead.
+https://goo.gle/gpt-message#200 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  228404ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  228414ms] [LOG] Successfully registered GoogleTagManager to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  228415ms] [LOG] Successfully registered OneTrust to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  228607ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  229140ms] Uncaught TypeError: Cannot read properties of undefined (reading 'useCanonical')
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:304)
+    at <anonymous> (https://static.chartbeat.com/js/chartbeat_mab.js:49:620)
+[  229284ms] [WARNING] [GPT] PubAdsService.getTargeting is deprecated, use googletag.getConfig('targeting') instead.
+https://goo.gle/gpt-message#200 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  229324ms] [ERROR] Access to fetch at 'https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/latest/&pixelId=58870' from origin 'https://www.ctvnews.ca' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.ctvnews.ca/video/latest/:103
+[  229324ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://ups.analytics.yahoo.com/ups/58870/fed?v=1&1p=0&gdpr=0&gdpr_consent=&us_privacy=&url=https://www.ctvnews.ca/video/latest/&pixelId=58870:0
+[  229449ms] [ERROR] No auth token provided for resizer @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  229458ms] [LOG] Successfully registered GoogleTagManager to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  229458ms] [LOG] Successfully registered OneTrust to your mParticle configuration @ https://www.ctvnews.ca/pf/resources/js/newrelic.js?d=233:5
+[  233196ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  235853ms] [WARNING] [GPT] PubAdsService.setTargeting is deprecated, use googletag.setConfig({targeting: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://browser.sentry-cdn.com/7.44.1/bundle.tracing.min.js:1
+[  238991ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031404999, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  239373ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  239374ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  239383ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  239603ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  239603ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  239603ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  239769ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  239820ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  239964ms] [INFO] [Faro] Initialized successfully @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239966ms] [LOG] Braze: Initialization Options: {
+  "baseUrl": "https://sdk.iad-07.braze.com",
+  "sessionTimeoutInSeconds": 1800,
+  "enableLogging": true,
+  "allowUserSuppliedJavascript": true
+} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239971ms] [LOG] Braze: Initialized for the Braze backend at "https://sdk.iad-07.braze.com" with API key "ea3bd648-fcff-4d3d-af01-910ab9a74b22". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239986ms] [INFO] %c🚀 Success! Braze Initialized! color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239987ms] [INFO] %c🚀 envStage: prod color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239987ms] [INFO] %c🚀 BRAZE_SDK_ENDPOINT: https://sdk.iad-07.braze.com color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239987ms] [INFO] %c🚀 window.brazeReady: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239988ms] [INFO] %c🚀 window.braze: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; object @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  239989ms] [INFO] %c🔔 Push Primer: Plugin loaded color: #fff; background: linear-gradient(90deg, #FF6B35, #F7931E); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240055ms] [INFO] [Strike Debug] Attempt 1 to initialize FTS.ISA @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240056ms] [INFO] [Strike Debug] FTS.ISA available: true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240061ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold ProfileSDK not found (ad blocker or script load failure) @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240062ms] [INFO] [FoxKit] Fetching location from client-side IP... @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240063ms] [INFO] [PlatformLocation] Fetching location from SPS API: https://api-sps.foxtv.com/platform-locator/v1/location @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240067ms] [INFO] [FTSFoxPlayer] WPF Player is ready @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240067ms] [INFO] [FTS] Mounted! 11.14.0 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240068ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold No profileInstance - cannot authenticate @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240069ms] [INFO] %c🔐 Store Init ✓ color: #7ED321; font-weight: bold Auth: false | Token: ✗ | ID: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240070ms] [INFO] [FoxKit Store] getAccessToken called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240070ms] [INFO] [FoxKit Store] getProfileId called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240070ms] [INFO] %c🔐 Auth ⚠ color: #F5A623; font-weight: bold Not authenticated | Token: ✗ | ProfileId: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240094ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=siteBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240100ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240101ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240102ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240102ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  240629ms] [WARNING] A parser-blocking, cross site (i.e. different eTLD+1) script, https://static.foxtv.com/static/orion/scripts/core/utils/geo.js?cb=1792031406637, is invoked via document.write. The network request for this script MAY be blocked by the browser in this or a future page load due to poor network connectivity. If blocked in this page load, it will be confirmed in a subsequent console message. See https://www.chromestatus.com/feature/5718547946799104 for more details. @ https://static.foxtv.com/static/isa/core.js:3
+[  240949ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  240950ms] [INFO] Strike will control ads on this page. Turning off ISA GPT Logic for: fts WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  240954ms] [LOG] [Polyfill] ReadableStream supported — no polyfill needed @ https://prod.player.fox.digitalvideoplatform.com/wpf/v3/3.5.1/wpf_player.js:1
+[  241215ms] [INFO] adobe key search: id=fts ; key=launch-e8071a0719c1 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  241217ms] [INFO] Admiral: Loading tag for station: WTTG_FOX5 PropID: A-66D7667314FD69BC4E4EC691-7 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  241218ms] [INFO] Admiral: Tag injected successfully for WTTG_FOX5 @ https://static.foxtv.com/static/isa/core-app.fts.js?v=20261012_1825:3
+[  241233ms] [LOG] Analytics provider:  adobe @ https://widgets.media.weather.com/wxwidget.loader.js?cid=996314550:1
+[  241272ms] [LOG] [FTS] Orion - Executing scripts @ https://static.foxtv.com/static/orion/scripts/core/ag.core.js:158
+[  241309ms] [INFO] [Faro] Initialized successfully @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241309ms] [LOG] Braze: Initialization Options: {
+  "baseUrl": "https://sdk.iad-07.braze.com",
+  "sessionTimeoutInSeconds": 1800,
+  "enableLogging": true,
+  "allowUserSuppliedJavascript": true
+} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241312ms] [LOG] Braze: Initialized for the Braze backend at "https://sdk.iad-07.braze.com" with API key "ea3bd648-fcff-4d3d-af01-910ab9a74b22". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241317ms] [INFO] %c🚀 Success! Braze Initialized! color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241317ms] [INFO] %c🚀 envStage: prod color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241317ms] [INFO] %c🚀 BRAZE_SDK_ENDPOINT: https://sdk.iad-07.braze.com color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241317ms] [INFO] %c🚀 window.brazeReady: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241317ms] [INFO] %c🚀 window.braze: color: #fff; background: linear-gradient(90deg, #1e90ff, #00ffcc); font-weight: bold; padding: 5px 15px; border-radius: 5px; object @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241318ms] [INFO] %c🔔 Push Primer: Plugin loaded color: #fff; background: linear-gradient(90deg, #FF6B35, #F7931E); font-weight: bold; padding: 5px 15px; border-radius: 5px; @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241352ms] [INFO] [Strike Debug] Attempt 1 to initialize FTS.ISA @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241352ms] [INFO] [Strike Debug] FTS.ISA available: true @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241355ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold ProfileSDK not found (ad blocker or script load failure) @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241355ms] [INFO] [FoxKit] Fetching location from client-side IP... @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241355ms] [INFO] [PlatformLocation] Fetching location from SPS API: https://api-sps.foxtv.com/platform-locator/v1/location @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241357ms] [INFO] [FTSFoxPlayer] WPF Player is ready @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241357ms] [INFO] [FTS] Mounted! 11.14.0 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241358ms] [ERROR] %c🔐 Store Init color: #D0021B; font-weight: bold No profileInstance - cannot authenticate @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241358ms] [INFO] %c🔐 Store Init ✓ color: #7ED321; font-weight: bold Auth: false | Token: ✗ | ID: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241358ms] [INFO] [FoxKit Store] getAccessToken called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241359ms] [INFO] [FoxKit Store] getProfileId called, value: null @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241359ms] [INFO] %c🔐 Auth ⚠ color: #F5A623; font-weight: bold Not authenticated | Token: ✗ | ProfileId: ✗ @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241376ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=siteBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241380ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241380ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241384ms] [LOG] Braze: Logged custom event "page_view". @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241384ms] [LOG] Braze: Trigger event custom_event did not match any trigger conditions. @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241512ms] [INFO]  Response: https://api.fox5dc.com/fts/prod/layouts?type=layout&size=1&subtype=alertBannerLayout&env=production @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241748ms] [LOG] MediaSDK: [10:30:07 GMT+0800 (中国标准时间).756] [Media] configure({
+    "trackingServer": "foxentertainment.hb-api.omtrdc.net",
+    "channel": "FTS Web",
+    "appVersion": "",
+    "playerName": "JavaScript",
+    "ssl": true,
+    "debugLogging": true
+}) @ https://assets.adobedtm.com/0f6bf904b609/6ddab5c174e7/launch-e8071a0719c1.min.js:3
+[  241749ms] [LOG] MediaSDK: [10:30:07 GMT+0800 (中国标准时间).757] [WebECResolver] OptIn service not used, defaulting privacy status to {
+    "ecid": "optin",
+    "analytics": "optin",
+    "mediaanalytics": "optin"
+} @ https://assets.adobedtm.com/0f6bf904b609/6ddab5c174e7/launch-e8071a0719c1.min.js:3
+[  241749ms] [LOG] MediaSDK: [10:30:07 GMT+0800 (中国标准时间).757] [MediaProcessor] Configured with resolver @ https://assets.adobedtm.com/0f6bf904b609/6ddab5c174e7/launch-e8071a0719c1.min.js:3
+[  241906ms] Cannot use import statement outside a module
+[  241907ms] [WARNING] %c📢 Prebid color: #F5A623; font-weight: bold Not available - ad blockers or network issues @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241951ms] [LOG] MediaSDK: [10:30:07 GMT+0800 (中国标准时间).960] [WebECResolver] AppMeasurement ready @ https://assets.adobedtm.com/0f6bf904b609/6ddab5c174e7/launch-e8071a0719c1.min.js:3
+[  241980ms] [ERROR] Failed to load resource: the server responded with a status of 406 () @ https://api-sps.foxtv.com/platform-locator/v1/location:0
+[  241980ms] [WARNING] [PlatformLocation] platform-locator returned non-OK status: 406 @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  241980ms] [WARNING] [PlatformLocation] platform-locator returned incomplete geo fields; attempting legacy locator fallback {zip_code: undefined, metro_code: undefined, local_station_call_sign: undefined} @ https://www.fox5dc.com/_wzln/2b4c389292a20eef0873.js:1
+[  245825ms] [LOG] Ketch GTM consent template loaded successfully @ https://www.googletagmanager.com/gtm.js?id=GTM-MQJS9PH:956
+[  245892ms] [WARNING] [GPT] PubAdsService.disableInitialLoad is deprecated, use googletag.setConfig({disableInitialLoad: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  246726ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms:5
+[  246728ms] [WARNING] A preload for 'https://13wham.com/resources/assets/wham/images/logos/wham-logo.svg' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ https://13wham.com/news/nation-world/kimberly-guilfoyle-to-resign-from-ambassadorship-white-house-admin-greece-press-secretary-katie-zacharia-confirms:5
+[  246832ms] [LOG] Ketch GTM consent template loaded successfully @ https://www.googletagmanager.com/gtm.js?id=GTM-MQJS9PH:956
+[  247098ms] [WARNING] [GPT] PubAdsService.disableInitialLoad is deprecated, use googletag.setConfig({disableInitialLoad: ...}) instead.
+https://goo.gle/gpt-message#170 @ https://securepubads.g.doubleclick.net/pagead/managed/js/gpt/m202610090101/pubads_impl.js:22
+[  249542ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  249570ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  250695ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  250797ms] [LOG] [Conviva] [1792031416.804] [INFO] [SDK] [CwsSession] sid=1239890414 start() (global session) @ :9
+[  250797ms] [LOG] [Conviva] [1792031416.806] [DEBUG] [SDK] [CwsSession] sid=1239890414 initialize() @ :9
+[  250798ms] [LOG] [Conviva] [1792031416.806] [DEBUG] [SDK] [CwsSession] sid=1239890414 setStatesFromContentMetadata() @ :9
+[  250798ms] [LOG] [Conviva] [1792031416.807] [INFO] [SDK] [CwsSession] sid=1239890414 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv4.cws.conviva.com} @ :9
+[  250799ms] [LOG] [Conviva] [1792031416.808] [DEBUG] [SDK] [CwsSession] sid=1239890414 Change screenWidth from null to 1138 @ :9
+[  250799ms] [LOG] [Conviva] [1792031416.808] [DEBUG] [SDK] [CwsSession] sid=1239890414 Change screenHeight from null to 640 @ :9
+[  250800ms] [LOG] [Conviva] [1792031416.808] [DEBUG] [SDK] [CwsSession] sid=1239890414 Change scaleFactor from null to 2.25 @ :9
+[  250815ms] [LOG] [Conviva] [1792031416.823] [INFO] [SDK] [CwsSession] sid=1239890414 postHeartbeat(): Send HB[0] (global session) @ :9
+[  250817ms] [LOG] [Conviva] [1792031416.825] [INFO] [SDK] [CwsSession] sid=-1157129745 start() (global session) @ :9
+[  250817ms] [LOG] [Conviva] [1792031416.826] [DEBUG] [SDK] [CwsSession] sid=-1157129745 initialize() @ :9
+[  250817ms] [LOG] [Conviva] [1792031416.826] [DEBUG] [SDK] [CwsSession] sid=-1157129745 setStatesFromContentMetadata() @ :9
+[  250817ms] [LOG] [Conviva] [1792031416.826] [INFO] [SDK] [CwsSession] sid=-1157129745 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv6.cws.conviva.com} @ :9
+[  250818ms] [LOG] [Conviva] [1792031416.826] [DEBUG] [SDK] [CwsSession] sid=-1157129745 Change screenWidth from null to 1138 @ :9
+[  250818ms] [LOG] [Conviva] [1792031416.826] [DEBUG] [SDK] [CwsSession] sid=-1157129745 Change screenHeight from null to 640 @ :9
+[  250818ms] [LOG] [Conviva] [1792031416.826] [DEBUG] [SDK] [CwsSession] sid=-1157129745 Change scaleFactor from null to 2.25 @ :9
+[  250823ms] [LOG] [Conviva] [1792031416.832] [INFO] [SDK] [CwsSession] sid=-1157129745 postHeartbeat(): Send HB[0] (global session) @ :9
+[  251008ms] [ERROR] Datadog Browser SDK: DD_RUM is already initialized. @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:0
+[  251339ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  251396ms] [LOG] [Conviva] [1792031417.405] [DEBUG] [SDK] [CwsSession] sid=-1157129745 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  251397ms] [LOG] [Conviva] [1792031417.405] [DEBUG] [SDK] [CwsSession] sid=-1157129745 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  251398ms] [LOG] [Conviva] [1792031417.407] [DEBUG] [SDK] [CwsSession] sid=1239890414 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  251398ms] [LOG] [Conviva] [1792031417.407] [DEBUG] [SDK] [CwsSession] sid=1239890414 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  251940ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  251963ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://s.go-mpulse.net/boomerang/QZZX4-MBWDA-VA3FP-ZCW7N-BZ29K:0
+[  252102ms] [LOG] Ramen overrides loaded in @ https://nodeassets.nbcnews.com/ramen-overrides.js:1
+[  252179ms] [LOG] [Conviva] [1792031418.186] [INFO] [SDK] [CwsSession] sid=2114917582 start() (global session) @ :9
+[  252179ms] [LOG] [Conviva] [1792031418.188] [DEBUG] [SDK] [CwsSession] sid=2114917582 initialize() @ :9
+[  252180ms] [LOG] [Conviva] [1792031418.188] [DEBUG] [SDK] [CwsSession] sid=2114917582 setStatesFromContentMetadata() @ :9
+[  252180ms] [LOG] [Conviva] [1792031418.188] [INFO] [SDK] [CwsSession] sid=2114917582 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv4.cws.conviva.com} @ :9
+[  252181ms] [LOG] [Conviva] [1792031418.190] [DEBUG] [SDK] [CwsSession] sid=2114917582 Change screenWidth from null to 1138 @ :9
+[  252181ms] [LOG] [Conviva] [1792031418.190] [DEBUG] [SDK] [CwsSession] sid=2114917582 Change screenHeight from null to 640 @ :9
+[  252182ms] [LOG] [Conviva] [1792031418.190] [DEBUG] [SDK] [CwsSession] sid=2114917582 Change scaleFactor from null to 2.25 @ :9
+[  252191ms] [LOG] [Conviva] [1792031418.199] [INFO] [SDK] [CwsSession] sid=2114917582 postHeartbeat(): Send HB[0] (global session) @ :9
+[  252192ms] [LOG] [Conviva] [1792031418.201] [INFO] [SDK] [CwsSession] sid=-2138132868 start() (global session) @ :9
+[  252192ms] [LOG] [Conviva] [1792031418.201] [DEBUG] [SDK] [CwsSession] sid=-2138132868 initialize() @ :9
+[  252193ms] [LOG] [Conviva] [1792031418.201] [DEBUG] [SDK] [CwsSession] sid=-2138132868 setStatesFromContentMetadata() @ :9
+[  252193ms] [LOG] [Conviva] [1792031418.201] [INFO] [SDK] [CwsSession] sid=-2138132868 Change tags from Object{} to Object{c3.IPV4IPV6GlobalSession=Tc3.domain=ipv6.cws.conviva.com} @ :9
+[  252193ms] [LOG] [Conviva] [1792031418.201] [DEBUG] [SDK] [CwsSession] sid=-2138132868 Change screenWidth from null to 1138 @ :9
+[  252193ms] [LOG] [Conviva] [1792031418.201] [DEBUG] [SDK] [CwsSession] sid=-2138132868 Change screenHeight from null to 640 @ :9
+[  252193ms] [LOG] [Conviva] [1792031418.201] [DEBUG] [SDK] [CwsSession] sid=-2138132868 Change scaleFactor from null to 2.25 @ :9
+[  252197ms] [LOG] [Conviva] [1792031418.205] [INFO] [SDK] [CwsSession] sid=-2138132868 postHeartbeat(): Send HB[0] (global session) @ :9
+[  252287ms] [WARNING] [DEPRECATED] Use `createWithEqualityFn` instead of `create` or use `useStoreWithEqualityFn` instead of `useStore`. They can be imported from 'zustand/traditional'. https://github.com/pmndrs/zustand/discussions/1937 @ https://nodeassets.nbcnews.com/_next/static/chunks/pages/_app-0e2487df77897ee6.js:4
+[  252631ms] [LOG] >FW 30:18.625 FreeWheel Integration Runtime js-7.2.1-de2b533f-202405301537 @ https://mssl.fwmrm.net/libs/adm/7.2.1/AdManager.js:18
+[  252632ms] [LOG] >FW 30:18.640 Device: Desktop PLATFORM_IS_SAFARI: false PLATFORM_IS_CHROME: true @ https://mssl.fwmrm.net/libs/adm/7.2.1/AdManager.js:18
+[  252640ms] [WARNING] <link rel=preload> must have a valid `as` value @ :1
+[  252733ms] [WARNING] [mps:hb:config] window.screen.width = 1138 @ https://mps.nbcuni.com/fetch/ext/load-nbcnews-bento.js?nowrite=jq:3181
+[  252773ms] [LOG] [Conviva] [1792031418.781] [DEBUG] [SDK] [CwsSession] sid=-2138132868 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  252773ms] [LOG] [Conviva] [1792031418.781] [DEBUG] [SDK] [CwsSession] sid=-2138132868 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  252988ms] [LOG] [Conviva] [1792031418.996] [INFO] [SDK] [CwsSession] sid=1253750979 start(): assetName=[now_current_allen_zacharia_first_261013] @ :9
+[  252989ms] [LOG] [Conviva] [1792031418.997] [DEBUG] [SDK] [CwsSession] sid=1253750979 Change frameworkName from null to JW Player @ :9
+[  252989ms] [LOG] [Conviva] [1792031418.998] [DEBUG] [SDK] [CwsSession] sid=1253750979 Change frameworkVersion from null to 8.30.1+commercial_master.549.hls.js@1.4.10.jwplayer@mono.jwplayer-ads-dai@mono.jwplayer-ads-freewheel@mono.jwplayer-ads-googima@mono.jwplayer-ads-header-bidding@github:jwplayer/jwplayer-ads-header-bidding#v7.4.5.jwplayer-ads-vast@mono.jwplayer-analytics@github:jwplayer/jwplayer-analytics#3.43.x.jwplayer-analytics-kraken@v0.0.4.jwplayer-plugin-gapro@mono @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.998] [DEBUG] [SDK] [CwsSession] sid=1253750979 initialize() @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.998] [DEBUG] [SDK] [CwsSession] sid=1253750979 setStatesFromContentMetadata() @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.998] [INFO] [SDK] [CwsSession] sid=1253750979 Change isLive from null to false @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.999] [INFO] [SDK] [CwsSession] sid=1253750979 Change assetName from null to [now_current_allen_zacharia_first_261013] @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.999] [INFO] [SDK] [CwsSession] sid=1253750979 Change viewerId from null to 2704722219 @ :9
+[  252990ms] [LOG] [Conviva] [1792031418.999] [INFO] [SDK] [CwsSession] sid=1253750979 Change playerName from null to n @ :9
+[  252991ms] [LOG] [Conviva] [1792031418.999] [INFO] [SDK] [CwsSession] sid=1253750979 Change tags from Object{} to Object{undefined=155.0.0.0profile=2704722219playerVersion=8.30.1+commercial_master.549.hls.js@1.4.10.jwplayer@mono.jwplayer-ads-dai@mono.jwplayer-ads-freewheel@mono.jwplayer-ads-googima@mono.jwplayer-ads-header-bidding@github:jwplayer/jwplayer-ads-header-bidding#v7.4.5.jwplayer-ads-vast@mono.jwplayer-analytics@github:jwplayer/jwplayer-analytics#3.43.x.jwplayer-analytics-kraken@v0.0.4.jwplayer-plugin-gapro@monoplayerVendor=JW Playerproduct=nbcnewsdcType=4gc3.cm.contentType=VOD} @ :9
+[  252991ms] [WARNING] [Conviva] [1792031418.999] [WARNING] [SDK] [CwsSession] sid=1253750979 enqueueEventForContentMetadata(): defaultResource was not set. @ :9
+[  252991ms] [WARNING] [Conviva] [1792031419.000] [WARNING] [SDK] [CwsSession] sid=1253750979 enqueueEventForContentMetadata(): encodedFrameRate was not set. @ :9
+[  252992ms] [WARNING] [Conviva] [1792031419.000] [WARNING] [SDK] [CwsSession] sid=1253750979 Missing resource during session creation @ :9
+[  252992ms] [WARNING] [Conviva] [1792031419.000] [WARNING] [SDK] [CwsSession] sid=1253750979 Missing encodedFrameRate during session creation @ :9
+[  252992ms] [LOG] [Conviva] [1792031419.000] [DEBUG] [SDK] [CwsSession] sid=1253750979 Change screenWidth from null to 1138 @ :9
+[  252992ms] [LOG] [Conviva] [1792031419.001] [DEBUG] [SDK] [CwsSession] sid=1253750979 Change screenHeight from null to 640 @ :9
+[  252992ms] [LOG] [Conviva] [1792031419.001] [DEBUG] [SDK] [CwsSession] sid=1253750979 Change scaleFactor from null to 2.25 @ :9
+[  252998ms] [LOG] [Conviva] [1792031419.006] [INFO] [SDK] [CwsSession] sid=1253750979 postHeartbeat(): Send HB[0] @ :9
+[  253035ms] [LOG] [Conviva] [1792031419.043] [DEBUG] [SDK] [CwsSession] sid=2114917582 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  253035ms] [LOG] [Conviva] [1792031419.043] [DEBUG] [SDK] [CwsSession] sid=2114917582 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  253575ms] [LOG] [Conviva] [1792031419.583] [DEBUG] [SDK] [CwsSession] sid=1253750979 onHeartbeatResponse(): received valid response for HB[0] @ :9
+[  253575ms] [LOG] [Conviva] [1792031419.583] [DEBUG] [SDK] [CwsSession] sid=1253750979 onHeartbeatResponse(): received hbIntervalMs from gateway: 40 @ :9
+[  254732ms] [ERROR] Access to XMLHttpRequest at 'https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271494213830&site=nbcnews-bento&path=%2Fvideo%2Fkatie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Katie%20Zacharia%20holds%20first%20White%20House%20press%20briefing%20weeks%20before%20midterm%20elections&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1' from origin 'https://www.nbcnews.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.nbcnews.com/video/katie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830:0
+[  254733ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://mps.nbcuni.com/request/page/json/params/?CALLBACK=mpsCallback&cat=home&cag%5Bplatform%5D=ramen&adunit=%2F2620%2Fnbcnews&type=bentovideo&content_id=mmvo271494213830&site=nbcnews-bento&path=%2Fvideo%2Fkatie-zacharia-holds-first-white-house-press-briefing-weeks-before-midterm-elections-271494213830&cag%5Badunit1%5D=2620&cag%5Badunit2%5D=nbcnews&title=Katie%20Zacharia%20holds%20first%20White%20House%20press%20briefing%20weeks%20before%20midterm%20elections&ismobile=false&cag%5Bisapp%5D=false&NOLOAD=mpstools&IRSOURCE=false&ASYNC=1:0
+[  256077ms] [WARNING] Placements With no Content: Below Video Taboola Feed @ https://cdn.taboola.com/libtrc/nbcnews/loader.js:46
+[  256079ms] [WARNING] Placements With no Content: Below Video Taboola Feed @ https://cdn.taboola.com/libtrc/nbcnews/loader.js:46
+[  256088ms] [WARNING] response is missing recommendation on all placements: "NO_ITEMS" @ https://cdn.taboola.com/libtrc/nbcnews/loader.js:46
+[  258199ms] [WARNING] [Conviva] [1792031424.207] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): assetName was not changed. @ :9
+[  258200ms] [WARNING] [Conviva] [1792031424.208] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): applicationName was not changed. @ :9
+[  258200ms] [WARNING] [Conviva] [1792031424.208] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): streamUrl was not changed. @ :9
+[  258200ms] [WARNING] [Conviva] [1792031424.208] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): viewerId was not changed. @ :9
+[  258200ms] [WARNING] [Conviva] [1792031424.209] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): duration was not changed. @ :9
+[  258200ms] [WARNING] [Conviva] [1792031424.209] [WARNING] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): streamType was not changed. @ :9
+[  258200ms] [LOG] [Conviva] [1792031424.209] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.undefined was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.209] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.profile was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.209] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.playerVersion was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.209] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.playerVendor was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.210] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.product was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.210] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.dcType was not changed. @ :9
+[  258201ms] [LOG] [Conviva] [1792031424.210] [INFO] [SDK] [CwsSession] sid=1253750979 mergeContentMetadata(): custom.c3.cm.contentType was not changed. @ :9
+[  258202ms] [LOG] [Conviva] [1792031424.210] [DEBUG] [SDK] [CwsSession] sid=1253750979 setStatesFromContentMetadata() @ :9
+[  258202ms] [LOG] [Conviva] [1792031424.211] [INFO] [SDK] [CwsSession] sid=1253750979 setPlayerState(): changing player state from UNKNOWN to PLAYING @ :9
+[  258203ms] [LOG] [Conviva] [1792031424.211] [INFO] [SDK] [CwsSession] sid=1253750979 Change bitrate from -2 to 4061 @ :9
+[  270702ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[  270951ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[  271501ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  272715ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  274133ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  274418ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=rQlpuY2tj-4:0
+[  274557ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  276049ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  276828ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  277301ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=c6Omy99Xhsc:0
+[  277371ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  278047ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  279753ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  280206ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=c6Omy99Xhsc:0
+[  280281ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  282237ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[  282650ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  283621ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  285644ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAAOAJI/d=1/br=1/rs=AGKMywEEgSk4UjvmftxplTNtqFpyM5Od0Q/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  286161ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  286604ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  288239ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  288732ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=Uya88MLbHV0&themeRefresh=1:0
+[  288812ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  289430ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  291408ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  291948ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=Uya88MLbHV0:0
+[  292017ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  292600ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  294096ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  294585ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=c6Omy99Xhsc:0
+[  294665ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  296482ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[  296906ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  298634ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  299482ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAAOAJI/d=1/br=1/rs=AGKMywEEgSk4UjvmftxplTNtqFpyM5Od0Q/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  299811ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  300111ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  301513ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  302008ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=azdo4ykxbG8&themeRefresh=1:0
+[  302073ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  302586ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  304157ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  304623ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=azdo4ykxbG8:0
+[  304735ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  305141ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  307045ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  307527ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=jWTVCPMk3S4:0
+[  307603ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  309503ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://www.google.com.hk'). @ https://www.youtube.com/s/player/21090930/www-widgetapi.vflset/www-widgetapi.js:163
+[  309947ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  311962ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  313043ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  313386ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=rDw_no4Rjk8:0
+[  314696ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  315495ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  316002ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=rDw_no4Rjk8:0
+[  316115ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[  316505ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[  318206ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[  318658ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=SOxY8SxGdfw:0
+[  320048ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0

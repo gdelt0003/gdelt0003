@@ -1,0 +1,288 @@
+- generic [ref=f6e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f6e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f6e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f6e8]:
+    - search [ref=f6e9]:
+      - generic [ref=f6e11]:
+        - link "Google 首页" [ref=f6e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQPHoECAYQBA
+        - generic [ref=f6e16]:
+          - generic [ref=f6e17]:
+            - combobox "搜索" [ref=f6e20]: "\"President Trump participates in a Rose Garden Lunch\" \"National Desk\" \"President Trump participates in a Rose Garden Lunch\" \"National Desk\""
+            - generic [ref=f6e21]:
+              - button "清除" [ref=f6e23] [cursor=pointer]
+              - generic [ref=f6e28]:
+                - button "按语音搜索" [ref=f6e29] [cursor=pointer]
+                - button "按图搜索" [ref=f6e32] [cursor=pointer]
+          - button "搜索" [ref=f6e35] [cursor=pointer]
+    - generic [ref=f6e40]:
+      - button "设置" [ref=f6e42] [cursor=pointer]
+      - button "分享" [ref=f6e47] [cursor=pointer]
+      - generic [ref=f6e53]:
+        - button "Google 应用" [ref=f6e55] [cursor=pointer]
+        - link "登录" [ref=f6e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522President%2BTrump%2Bparticipates%2Bin%2Ba%2BRose%2BGarden%2BLunch%2522%2B%2522National%2BDesk%2522&ec=futura_srp_og_si_72236_p
+  - generic [ref=f6e62]:
+    - navigation [ref=f6e68]:
+      - generic [ref=f6e74]:
+        - list [ref=f6e75]:
+          - listitem [ref=f6e76]:
+            - link "全部" [disabled] [ref=f6e77]
+          - listitem [ref=f6e80]:
+            - link "新闻" [ref=f6e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ0pQJegQIGRAB
+          - listitem [ref=f6e84]:
+            - link "图片" [ref=f6e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQtKgLegQIFxAB
+          - listitem [ref=f6e88]:
+            - link "视频" [ref=f6e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQtKgLegQIGBAB
+          - listitem [ref=f6e92]:
+            - link "短视频" [ref=f6e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQs6gLegQIFhAB
+          - listitem [ref=f6e96]:
+            - link "网页" [ref=f6e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQs6gLegQIFRAB
+          - listitem [ref=f6e100]:
+            - link "图书" [ref=f6e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ0pQJegQIGhAB
+          - listitem [ref=f6e104]:
+            - button [ref=f6e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f6e106]: 更多
+        - button "工具" [ref=f6e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f6e120]
+    - main [ref=f6e126]:
+      - generic [ref=f6e130]:
+        - generic [ref=f6e136]:
+          - generic [ref=f6e139]:
+            - link "President Trump participates in a Rose Garden Lunch Facebook · The National Desk - TND 10+ 个回应 · 19小时前" [ref=f6e141] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFantfpP-p-EHDApe5Zors63AjDKWrEzGVHT-cHkgJbBTRv6wLJHtwG93WQ80R38VDQLtLRAOAkhfMWhujPpyhLeNGk8HOi1CKmoy7zX2rKdItkfB7covyyicZHYTTcw8ouadsMagm-5rqsZr9Ml_svQJrAS-BQIOmg_OHEC7YmQEc5A7pJ76aSfjvDgeNSHTxtQsPbGvjyqNEoGJL0maNA
+              - heading "President Trump participates in a Rose Garden Lunch" [level=3] [ref=f6e142]
+              - generic [ref=f6e148]:
+                - generic [ref=f6e149]: Facebook · The National Desk - TND
+                - generic [ref=f6e151]: 10+ 个回应 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e157] [cursor=pointer]
+          - generic [ref=f6e162]:
+            - link "President Trump participates in a Rose Garden Lunch，由The National Desk - TND上传到Facebook上. 在Facebook上播放. 31:07" [ref=f6e163] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFantfpP-p-EHDApe5Zors63AjDKWrEzGVHT-cHkgJbBTRv6wLJHtwG93WQ80R38VDQLtLRAOAkhfMWhujPpyhLeNGk8HOi1CKmoy7zX2rKdItkfB7covyyicZHYTTcw8ouadsMagm-5rqsZr9Ml_svQJrAS-BQIOmg_OHEC7YmQEc5A7pJ76aSfjvDgeNSHTxtQsPbGvjyqNEoGJL0maNA
+              - generic [ref=f6e164]: 31:07
+            - generic [ref=f6e173]: President Trump participates in a Rose Garden Lunch. https ... Follow The National Desk - TND for live events, breaking news ...
+        - generic [ref=f6e180]:
+          - generic [ref=f6e183]:
+            - link "President Trump Participates in a Rose Garden Lunch YouTube · Mint 70+ 次观看 · 19小时前" [active] [ref=f6e185] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVupDBE8A7n0PRbBMg8oDJSoqLJ07nQRCmPlTL4jCMkTJp3R7KvNPIQKMPXIGVylk4_XfXY16OXNjo_VaTowClsnTxN8Uket67kCu-LlV6MO30zcYFu_Gd3Fr-I07TagFuuA
+              - heading "President Trump Participates in a Rose Garden Lunch" [level=3] [ref=f6e186]
+              - generic [ref=f6e192]:
+                - generic [ref=f6e193]: YouTube · Mint
+                - generic [ref=f6e195]: 70+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e201] [cursor=pointer]
+          - generic [ref=f6e206]:
+            - link "President Trump Participates in a Rose Garden Lunch，由Mint上传到YouTube上. 在YouTube上播放." [ref=f6e207] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVupDBE8A7n0PRbBMg8oDJSoqLJ07nQRCmPlTL4jCMkTJp3R7KvNPIQKMPXIGVylk4_XfXY16OXNjo_VaTowClsnTxN8Uket67kCu-LlV6MO30zcYFu_Gd3Fr-I07TagFuuA
+            - generic [ref=f6e215]: Donald Trump LIVE | President Trump Participates in a Rose Garden Lunch | White House LIVE ... Go to channel The National Desk · Trump calls El- ...
+        - generic [ref=f6e223]:
+          - generic [ref=f6e226]:
+            - link "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ... YouTube · The National Desk 1770+ 次观看 · 19小时前" [ref=f6e228] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV5x9Z1r-CSK1EbnfTVKAWYKdLljCJUdn-cMOW_E7VK5zkKR_k87a4xFDxQU9DF6_mkcNzG8ifvCpEvunoPlorcVb10CXE2T1BnZxJyWSiIhjPCCUylJdmE2-IquFRbPbFPw
+              - heading "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ..." [level=3] [ref=f6e229]
+              - generic [ref=f6e235]:
+                - generic [ref=f6e236]: YouTube · The National Desk
+                - generic [ref=f6e238]: 1770+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e244] [cursor=pointer]
+          - generic [ref=f6e249]:
+            - button "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ...，由The National Desk上传到YouTube上. 在 Google 上播放. 30:46" [ref=f6e250] [cursor=pointer]:
+              - generic [ref=f6e251]: 30:46
+            - generic [ref=f6e264]: President Trump participates in a Rose Garden Lunch. https ... The National Desk. New. 269 views · 6:15 · Go to channel Saturday Night Live ...
+        - generic [ref=f6e271]:
+          - generic [ref=f6e274]:
+            - link "Trump Hosts Law Enforcement and Firefighters at White House ... YouTube · APT 60+ 次观看 · 19小时前" [ref=f6e276] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV7T1HhJO3X2eti7QprtdVHgf3oQq-ZOdpvcASzekiwPhgbubO3f78OQZSvHTxLCa-Fixx0T_iMqqtGdrwp3GQX69mMPTbivUH-I6ikowxdABwlro8p91ndhjyqWSV3mWnOQ
+              - heading "Trump Hosts Law Enforcement and Firefighters at White House ..." [level=3] [ref=f6e277]
+              - generic [ref=f6e283]:
+                - generic [ref=f6e284]: YouTube · APT
+                - generic [ref=f6e286]: 60+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e292] [cursor=pointer]
+          - generic [ref=f6e297]:
+            - link "Trump Hosts Law Enforcement and Firefighters at White House ...，由APT上传到YouTube上. 在YouTube上播放." [ref=f6e298] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV7T1HhJO3X2eti7QprtdVHgf3oQq-ZOdpvcASzekiwPhgbubO3f78OQZSvHTxLCa-Fixx0T_iMqqtGdrwp3GQX69mMPTbivUH-I6ikowxdABwlro8p91ndhjyqWSV3mWnOQ
+            - generic [ref=f6e306]: "LIVE: President Trump participates in a \"Rose Garden\" Lunch - NBC 15 ... Go to channel The National Desk · New details in federal probe of ..."
+        - generic [ref=f6e311]:
+          - generic [ref=f6e314]:
+            - link "Rally crowd roars as Trump honors Charlie Kirk on what ... The National Desk https://thenationaldesk.com › news › politics" [ref=f6e316] [cursor=pointer]:
+              - /url: /goto?url=CAES4QIB6zswFZmcXhCPPbsQL7zHvLVz1fIBH6q_SwwyqoPm2IDoUS0O3mGAC0nDxi8XQCRzP05A9lIwrpuGBXjdsPm13D6VEq1KbBn4XosNYqR4Al1b4OkGQf12K6OzmCUkcvpnMjxo-9RBYw7OiQS_f1kzXqZdldgFBanHGR6AXjvTsQpFH2GwuIlL1hPIrVLyjI5Ilwu64JOQ_YFsY6zyrAP8W6-esIY394hWndOl5rixlXVB3u33Cfm0sPXOSRceMMPqF62JcFvm6uLnPcZVF_-m6tVpRa7Tk-UQz4-mSrGB-LmV1eC34C1wixjW2P0LgNaGwxJ0pmy24iirbcHFghIV6zD8xQ9Z6p1eSuVue2eT77NOCsYM6kIQ7c8UYkfNJAK0GUu54JHiigbUIaWNBjrhdwMlbrYdMEX7odfZXkbrK6jjr__eaImvCpOr1XOUAFN5GdFd36KRGfwYTtKjGghJQw
+              - heading "Rally crowd roars as Trump honors Charlie Kirk on what ..." [level=3] [ref=f6e317]
+              - generic [ref=f6e323]:
+                - generic [ref=f6e324]: The National Desk
+                - generic [ref=f6e326]: https://thenationaldesk.com › news › politics
+            - generic [ref=f6e328]:
+              - generic [ref=f6e329]: ·
+              - link "翻译此页" [ref=f6e330] [cursor=pointer]:
+                - /url: /goto?url=CAESsAMB6zswFaG8BSa07FZqdCrYORmh-kStA3pZAKBddrzekMTkBAbYL-9eIpT4JNIi0JcXs8thCS1ljFeUg2YjBNOEAm3Zv4B1CuEwLLRI4HTUdZ8_1R6uQQGwxTSzrN-9Pf8Z3JAi7t4V8dmnZqHiqguRqt8jBGbQUq_zh7-eRM5Nc6ElBhy89T8VkrRVW4x4LFYh5nPTRQuwYFfR9IFVFiIFpiw-UJUTuz0YwNhw8mt42h3BE-3ZmXEUZsSzPCBEOt1KqXU5xwjqR-5rxWFyV211GvAG9GNSOI3D8KIvrrNca6gO2dr9JZUHwmTrfqHBqh9LwSlAGZEsLUM87uy94BRBC3kF59quraz_1ebM-l2hUTbHFtpQiWXj4rJMJT8G9oJd4f_yjTtZTh4jmp3jdq0QGVUBR6qzrsnG3xI8TCoP7F7-4PqAiNYV7SJoohH7YLGBg7cZiUJ9YpZRKTTw3kUj4aNHOs4xzgLSV0ey-hYpVzqyHmnPNLKbVqLAjawX80g929D3-0sjWId9-Oy3fYh-UVmXuzVMy0tevUYQQLIAlHYoN6ttxfwN3ylYiLAj1oU
+            - button "关于这条结果的详细信息" [ref=f6e335] [cursor=pointer]
+          - generic [ref=f6e341]:
+            - generic [ref=f6e342]: 19小时前 —
+            - generic [ref=f6e343]:
+              - text: ...
+              - emphasis [ref=f6e344]: National Desk
+              - text: dark theme brand icon The
+              - emphasis [ref=f6e345]: National Desk
+              - text: light theme ...
+              - emphasis [ref=f6e346]: President Trump participates in a Rose Garden Lunch
+              - text: . WATCH.
+        - generic [ref=f6e352]:
+          - generic [ref=f6e355]:
+            - link "Trump says Iran war will end soon, oil prices will drop fast The National Desk https://thenationaldesk.com · 1天前" [ref=f6e357] [cursor=pointer]:
+              - /url: /goto?url=CAESsQEB6zswFeNK4zhZhUf7OCfoZL4JDr4HKAseplG3uSJBnYXJuQ0GvslwdUfINfIqCCtdtpdEDMQNdaQqFuGmPfImfcQuX4yddQol4TM7RbPrI50PeVvd1hOVBfwruhjJDP2pScxvvSg2kJTOwV84tFmuw1ZH-0Rp0FtkiFnhUr5tGFfZX2ZEPjZm-TM-P2CPpGcb6M95u9qnfp-fa52uNZho6FlOSvvgWfj__rwp_8tH7FE
+              - heading "Trump says Iran war will end soon, oil prices will drop fast" [level=3] [ref=f6e358]
+              - generic [ref=f6e364]:
+                - generic [ref=f6e365]: The National Desk
+                - generic [ref=f6e367]: https://thenationaldesk.com · 1天前
+            - button "关于这条结果的详细信息" [ref=f6e373] [cursor=pointer]
+          - generic [ref=f6e378]:
+            - link "The National Desk上的视频《Trump says Iran war will end soon, oil prices will drop fast》. 在The National Desk上播放. 2:27" [ref=f6e379] [cursor=pointer]:
+              - /url: /goto?url=CAESsQEB6zswFeNK4zhZhUf7OCfoZL4JDr4HKAseplG3uSJBnYXJuQ0GvslwdUfINfIqCCtdtpdEDMQNdaQqFuGmPfImfcQuX4yddQol4TM7RbPrI50PeVvd1hOVBfwruhjJDP2pScxvvSg2kJTOwV84tFmuw1ZH-0Rp0FtkiFnhUr5tGFfZX2ZEPjZm-TM-P2CPpGcb6M95u9qnfp-fa52uNZho6FlOSvvgWfj__rwp_8tH7FE
+              - generic [ref=f6e380]: 2:27
+            - generic [ref=f6e389]: ... National Desk dark theme brand icon The National Desk light theme ... President Trump participates in a Rose Garden Lunch. WATCH.
+        - generic [ref=f6e397]:
+          - generic [ref=f6e400]:
+            - link "Border Patrol union president praises Trump at White House ... YouTube · The National Desk 1250+ 次观看 · 12小时前" [ref=f6e402] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVdeYl_XCG7F8ajw2HVbF6GoUIK3hkola5x3i8GB7yeNSYlz4OkBmSN4CFWYAgzkYzwJ3-NgDxJrksHa6MvosIY8q5tTj0K2FmyFzPR3TyvPCsdjSiGLvOspgxZCIwfcrD3g
+              - heading "Border Patrol union president praises Trump at White House ..." [level=3] [ref=f6e403]
+              - generic [ref=f6e409]:
+                - generic [ref=f6e410]: YouTube · The National Desk
+                - generic [ref=f6e412]: 1250+ 次观看 · 12小时前
+            - button "关于这条结果的详细信息" [ref=f6e418] [cursor=pointer]
+          - generic [ref=f6e423]:
+            - button "Border Patrol union president praises Trump at White House ...，由The National Desk上传到YouTube上. 在 Google 上播放. 0:41" [ref=f6e424] [cursor=pointer]:
+              - generic [ref=f6e425]: 0:41
+            - generic [ref=f6e441]: ... National Desk (TND) brings you award-winning local storytelling from ... President Trump Participates in a Rose Garden Lunch, Oct. 15 ...
+        - generic [ref=f6e446]:
+          - generic [ref=f6e449]:
+            - link "Trump admin has asked Kimberly Guilfoyle to resign from ... The National Desk https://thenationaldesk.com › news › kimbe..." [ref=f6e451] [cursor=pointer]:
+              - /url: /goto?url=CAES4AEB6zswFYWHQntwAkTb7Vk1m-rO-cPTGuBaUi9tyjUlQOlk289EdFRjQUsNtP-mz_wdzHEn3YMljOUf2VBgi9XZXrWO57qIN4PYHi2aOiwSY7H8KL1lPat_NGsgaHHTIUJ-QIzVnXmE6XHd4boMqQAnqUkjRxvc0MyBc6xBrpkK8avHHBunO0WKUCV4phAVNsoEHwjdP6U7XV5kSWmsPcw6QJnw398mE_dvaqvRD1luexT2lYUvainXY4QYCBeRHp0Nl1XswNLLwo4PA2pnSmetVcSXT3rZwB8yFt_x-oXcsQ
+              - heading "Trump admin has asked Kimberly Guilfoyle to resign from ..." [level=3] [ref=f6e452]
+              - generic [ref=f6e458]:
+                - generic [ref=f6e459]: The National Desk
+                - generic [ref=f6e461]: https://thenationaldesk.com › news › kimbe...
+            - generic [ref=f6e463]:
+              - generic [ref=f6e464]: ·
+              - link "翻译此页" [ref=f6e465] [cursor=pointer]:
+                - /url: /goto?url=CAESrwIB6zswFV47bexctGKjTnCHpWRqU-oyyj6Isp4QonaITk-TwSFW0XWDxauBa1MIr7UmB9BTaxwoywJCbeSMI0QLkQGBlxDYRZcZ7B9jOqQOn1W_Nvdy3V_CFjl_CkIJyPqXeZoYpNj0Hg2MfcIO-egW2-a9O7N-EsZxGq0KARHB9Yp3YREVqM6LR0TtQVBfLNBHpo55UjdIl9ED0TFhC4Az3oKd5fC2Yv1eM0QlN2IGKjpXs3-BdOwKWx87RFBh_1aUp-eb-3KFppHkEgkAig-wTYIRnWKscl9y1FikqwOxdm_kTaRYSRogqXe78bu3yxh5ux2Psh0khoyQeioxcIg11BmQd1zqPdBh3C6_rb81H8QT94DLefNVILXnM1rKZiBzppYf-A2dbcuo69ReNjI
+            - button "关于这条结果的详细信息" [ref=f6e470] [cursor=pointer]
+          - generic [ref=f6e476]:
+            - generic [ref=f6e477]: 3天前 —
+            - generic [ref=f6e478]:
+              - text: ...
+              - emphasis [ref=f6e479]: National Desk
+              - text: dark theme brand icon The
+              - emphasis [ref=f6e480]: National Desk
+              - text: light theme ...
+              - emphasis [ref=f6e481]: President Trump participates in a Rose Garden Lunch
+              - text: . WATCH.
+        - generic [ref=f6e488]:
+          - generic [ref=f6e491]:
+            - link "\"We Don't Want Windmills\" President Trump at Rally in ... YouTube · Right Side Broadcasting Network 1.4万+ 次观看 · 5天前" [ref=f6e493] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVgsk5Pie1zWJQPN1Qw2ieXx2tbGaBwFrlkRXanVJm3fKb0A4k84o2S1A2RMOwYEz2kc8kNAsTUhVhsuiPJzKd_W6Xem44TLG3a0JBSDimdQybEEbtBWhedp6VoE4AJR1fKg
+              - heading "\"We Don't Want Windmills\" President Trump at Rally in ..." [level=3] [ref=f6e494]
+              - generic [ref=f6e500]:
+                - generic [ref=f6e501]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f6e503]: 1.4万+ 次观看 · 5天前
+            - button "关于这条结果的详细信息" [ref=f6e509] [cursor=pointer]
+          - generic [ref=f6e514]:
+            - button "\"We Don't Want Windmills\" President Trump at Rally in ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 9:02" [ref=f6e515] [cursor=pointer]:
+              - generic [ref=f6e516]: 9:02
+            - generic [ref=f6e532]: President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026 ... Go to channel The National Desk · Vice President JD Vance ...
+        - generic [ref=f6e537]:
+          - heading "图片" [level=2] [ref=f6e541]
+          - generic [ref=f6e545]:
+            - generic [ref=f6e549] [cursor=pointer]:
+              - link "President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook Facebook" [ref=f6e550]:
+                - /url: /goto?url=CAESpAEB6zswFantfpP-p-EHDApe5Zors63AjDKWrEzGVHT-cHkgJbBTRv6wLJHtwG93WQ80R38VDQLtLRAOAkhfMWhujPpyhLeNGk8HOi1CKmoy7zX2rKdItkfB7covyyicZHYTTcw8ouadsMagm-5rqsZr9Ml_svQJrAS-BQIOmg_OHEC7YmQEc5A7pJ76aSfjvDgeNSHTxtQsPbGvjyqNEoGJL0maNA
+              - button [ref=f6e552]:
+                - img "President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook" [ref=f6e555]
+                - generic [ref=f6e556]: 18 小时前
+              - generic [ref=f6e558]:
+                - generic [ref=f6e560]: President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook
+                - generic [ref=f6e561]:
+                  - generic [ref=f6e563]: Facebook
+                  - button "关于这条结果的详细信息" [ref=f6e573]
+            - generic [ref=f6e581] [cursor=pointer]:
+              - link "Donald Trump LIVE | President Trump Participates in a Rose ... YouTube" [ref=f6e582]:
+                - /url: /goto?url=CAESZgHrOzAVupDBE8A7n0PRbBMg8oDJSoqLJ07nQRCmPlTL4jCMkTJp3R7KvNPIQKMPXIGVylk4_XfXY16OXNjo_VaTowClsnTxN8Uket67kCu-LlV6MO30zcYFu_Gd3Fr-I07TagFuuA
+              - button [ref=f6e584]:
+                - img "Donald Trump LIVE | President Trump Participates in a Rose ..." [ref=f6e587]
+                - generic [ref=f6e588]: 18 小时前
+              - generic [ref=f6e590]:
+                - generic [ref=f6e592]: Donald Trump LIVE | President Trump Participates in a Rose ...
+                - generic [ref=f6e593]:
+                  - generic [ref=f6e595]: YouTube
+                  - button "关于这条结果的详细信息" [ref=f6e605]
+            - generic [ref=f6e613] [cursor=pointer]:
+              - link "Donald Trump LIVE | President Trump Participates in a Rose Garden Lunch | White House LIVE YouTube" [ref=f6e614]:
+                - /url: /goto?url=CAESZgHrOzAVupDBE8A7n0PRbBMg8oDJSoqLJ07nQRCmPlTL4jCMkTJp3R7KvNPIQKMPXIGVylk4_XfXY16OXNjo_VaTowClsnTxN8Uket67kCu-LlV6MO30zcYFu_Gd3Fr-I07TagFuuA
+              - button [ref=f6e616]:
+                - img "Donald Trump LIVE | President Trump Participates in a Rose Garden Lunch | White House LIVE" [ref=f6e619]
+                - generic [ref=f6e620]: 18 小时前
+              - generic [ref=f6e622]:
+                - generic [ref=f6e624]: Donald Trump LIVE | President Trump Participates in a Rose Garden Lunch | White House LIVE
+                - generic [ref=f6e625]:
+                  - generic [ref=f6e627]: YouTube
+                  - button "关于这条结果的详细信息" [ref=f6e637]
+          - button "显示更多图片" [ref=f6e643] [cursor=pointer]:
+            - separator [aria-hidden] [ref=f6e644]
+      - navigation [ref=f6e652]:
+        - heading "网页导航" [level=1] [ref=f6e653]
+        - text: "1"
+        - link "Page 2" [ref=f6e656] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=10&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAE
+          - text: "2"
+        - link "Page 3" [ref=f6e658] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=20&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAG
+          - text: "3"
+        - link "Page 4" [ref=f6e660] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=30&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAI
+          - text: "4"
+        - link "Page 5" [ref=f6e662] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=40&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAK
+          - text: "5"
+        - link "Page 6" [ref=f6e664] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=50&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAM
+          - text: "6"
+        - link "Page 7" [ref=f6e666] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=60&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAO
+          - text: "7"
+        - link "Page 8" [ref=f6e668] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=70&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAQ
+          - text: "8"
+        - link "Page 9" [ref=f6e670] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=80&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAS
+          - text: "9"
+        - link "Page 10" [ref=f6e672] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=90&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8tMDegQIGxAU
+          - text: "10"
+        - heading [level=2] [ref=f6e674]:
+          - link "下一页" [ref=f6e675] [cursor=pointer]:
+            - /url: /search?q=%22President+Trump+participates+in+a+Rose+Garden+Lunch%22+%22National+Desk%22&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnteQasiJLA0Ur57tWJknT6qXCmDuA:1792152134069&ei=RhLSavHpA7vDkPIPrZyRiQw&start=10&sa=N&sstk=AS6-VmK3WsYUNeSlaBwX9_Lx4J5MP3n_P8f-EGLf9I4Vilvf3MyrbrTbGCCsDEZqvy4VjKBnhN6ZxVlFJtsJn1Vf5wUeXRZVmWNGfg&ved=2ahUKEwjxpNb6vr6XAxW7IUQIHS1OJMEQ8NMDegQIGxAW
+      - navigation
+    - contentinfo [ref=f6e678]:
+      - heading "页脚链接" [level=1] [ref=f6e679]
+      - generic [ref=f6e683]:
+        - generic [ref=f6e687]:
+          - button "龙华区 中国海南省海口市 - 根据您的活动记录" [ref=f6e689] [cursor=pointer]:
+            - generic [ref=f6e690]: 龙华区 中国海南省海口市
+            - generic [ref=f6e692]:
+              - text: "-"
+              - generic [ref=f6e693]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f6e695] [cursor=pointer]
+        - generic [ref=f6e698]:
+          - link "帮助" [ref=f6e699] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f6e701] [cursor=pointer]
+          - link "隐私权" [ref=f6e703] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f6e704] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

@@ -1,0 +1,31 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - paragraph [ref=e4]: GITHUB ACTIONS · PAGES
+    - heading "白宫高光片段" [level=1] [ref=e5]
+    - paragraph [ref=e6]: 白宫官方长视频精选 · 1080 × 1920 竖屏 · 中英双语字幕
+    - paragraph [ref=e7]: 三个不同高亮时段，各含 Editorial 与 Punchy 两种剪辑版本。英文自动转写与机器翻译，请在发布前复核专名和数字。
+  - region [ref=e8]:
+    - generic [ref=e10]:
+      - paragraph [ref=e11]: WHITE HOUSE · FULL-LENGTH VIDEO
+      - heading "完整演讲 · 中英双语字幕" [level=2] [ref=e12]
+    - generic [ref=e13]: 你的浏览器不支持 HTML 视频。请使用下方下载链接观看。
+    - paragraph [ref=e14]:
+      - link "下载已烧录字幕的完整 MP4" [ref=e15] [cursor=pointer]:
+        - /url: https://github.com/gdelt0003/gdelt0003/releases/download/white-house-source-oW-PQlgw1wo/whitehouse-oW-PQlgw1wo-bilingual.mp4
+      - text: ·
+      - link "English SRT" [ref=e16] [cursor=pointer]:
+        - /url: generated/full-video/whitehouse-oW-PQlgw1wo.en.srt
+      - text: ·
+      - link "简体中文 SRT" [ref=e17] [cursor=pointer]:
+        - /url: generated/full-video/whitehouse-oW-PQlgw1wo.zh-Hans.srt
+      - text: ·
+      - link "中英双语 SRT" [ref=e18] [cursor=pointer]:
+        - /url: generated/full-video/whitehouse-oW-PQlgw1wo.en-zh.srt
+    - paragraph [ref=e19]: 字幕由 Whisper large-v3-turbo 自动转写、M2M100 单模型翻译，尚未经过十模型对比、多大模型评分或逐条新闻/字幕交叉复核；请勿视为已独立核验。视频来自白宫官方频道。
+  - region [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - paragraph [ref=e23]: WHITE HOUSE · BILINGUAL SHORTS
+        - heading "高清双语高光短片" [level=2] [ref=e24]
+      - status [ref=e25]: 正在读取分段链接…
+    - paragraph [ref=e26]: 选段时间以原片为准。每支短片均可在线播放、下载 MP4，并下载对应的中英 SRT 字幕。

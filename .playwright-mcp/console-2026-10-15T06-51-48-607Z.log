@@ -1,0 +1,16 @@
+[    4068ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://www.facebook.com/CSPAN/videos/white-house-press-secretary-katie-zacharia-told-reporters-on-tuesday-during-a-pr/1509770514326571/:0
+[    4376ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ https://static.xx.fbcdn.net/rsrc.php/v4/yj/r/atBZ6RzieZ4.js:59
+[    4860ms] [ERROR] ErrorUtils caught an error:
+
+terminate stream because StartStreamFailure with msg : UNAUTHENTICATED [Caught in: Subscription error in preprocessResponse]
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. {column: 180, clientTime: 1792047113, extra: Object, guardList: Array(0), hash: j2f5nz} @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:84
+[    4989ms] [LOG] 
+%c停下！ font-family:helvetica; font-size:20px; font-size:50px; font-weight:bold; color:red; -webkit-text-stroke:1px black; @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[    4989ms] [LOG] 
+%c此浏览器功能专供开发者使用。若某人让你在此复制粘贴某内容以启用某 Facebook 功能或“入侵”某人账户，此为欺诈，会使对方获权进入你的 Facebook 账户。 font-family:helvetica; font-size:20px;  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[    4989ms] [LOG] 
+%c更多信息请参见 https://www.facebook.com/selfxss。 font-family:helvetica; font-size:20px;  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[    4989ms] [LOG] 
+%c  @ https://static.xx.fbcdn.net/rsrc.php/v4/yC/r/gbg9zUHdHQP.js:251
+[   64487ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://www.facebook.com/CSPAN/videos/white-house-press-secretary-katie-zacharia-told-reporters-on-tuesday-during-a-pr/1509770514326571/:0
