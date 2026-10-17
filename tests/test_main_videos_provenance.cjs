@@ -125,8 +125,16 @@ async function main() {
   assert.equal(newsCards.length, 2, 'render both direct news article leads');
   assert.equal(socialCards.length, 5, 'render the direct social reaction attribution leads');
   assert.ok(
-    newsSection.children[0].textContent.includes('本静态目录当前未收录/本次检索未覆盖'),
-    'describe a zero or missing category as a static-directory gap, not as a global absence claim',
+    !newsSection.children[0].textContent.includes('如某类别显示 0 条'),
+    'nonzero sections should not append the zero-category disclaimer',
+  );
+  assert.ok(
+    !socialSection.children[0].textContent.includes('如某类别显示 0 条'),
+    'nonzero social sections should not append the zero-category disclaimer',
+  );
+  assert.ok(
+    !newsSection.children[0].textContent.includes('本静态目录当前未收录/本次检索未覆盖'),
+    'populated news sections should not carry the zero-category disclaimer',
   );
   assert.equal(cards[0].children[0].textContent, '#1');
   assert.equal(cards[0].children[1].textContent, 'Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026');
@@ -176,6 +184,55 @@ async function main() {
     ))),
     'unreviewed occlusion remains explicitly unknown',
   );
+
+  const emptyCategoryCatalog = JSON.parse(JSON.stringify(catalog));
+  const emptyCategoryVideo = emptyCategoryCatalog.videos.find(
+    (item) => item.id === sourceDetails.getAttribute('data-video-id'),
+  );
+  emptyCategoryVideo.provenance.sources = emptyCategoryVideo.provenance.sources.filter(
+    (source) => (source.category || context.MainVideoRanking.inferCategory(source)) === 'video',
+  );
+  const emptyDetails = new Element('div', {
+    'data-video-id': sourceDetails.getAttribute('data-video-id'),
+  });
+  const emptyElements = new Map([
+    ['mainVideoSourceDetails', emptyDetails],
+    ['mainVideoSourceStatus', new Element('span')],
+    ['mainVideoSourceTitle', new Element('h2')],
+    ['mainVideoSourceMeta', new Element('p')],
+    ['mainVideoArtifactDetails', new Element('div')],
+  ]);
+  const emptyDocument = {
+    baseURI: document.baseURI,
+    getElementById: (id) => emptyElements.get(id),
+    createElement: (tagName) => new Element(tagName),
+  };
+  const emptyContext = {
+    document: emptyDocument,
+    URL,
+    fetch: async () => ({ ok: true, json: async () => emptyCategoryCatalog }),
+    console,
+  };
+  vm.runInNewContext(
+    fs.readFileSync(path.join(root, 'assets', 'main-video-ranking.js'), 'utf8'),
+    emptyContext,
+  );
+  vm.runInNewContext(
+    fs.readFileSync(path.join(root, 'assets', 'main-video-sources.js'), 'utf8'),
+    emptyContext,
+  );
+  await new Promise((resolve) => setImmediate(resolve));
+  const emptySections = emptyDetails.children.filter(
+    (child) => child.className === 'main-video-source-category',
+  );
+  for (const label of ['新闻/媒体', '社交/平台']) {
+    const section = emptySections.find((item) => item.children[0].textContent.startsWith(label));
+    assert.ok(section.children[0].textContent.includes('如某类别显示 0 条'));
+    assert.ok(
+      section.children[1].children[0].textContent.includes('0 不代表全网不存在'),
+      'empty categories retain a scoped static-snapshot disclaimer',
+    );
+  }
   assert.ok(
     cards[0].children.some((child) => (
       child.className === 'main-video-source-trust-note'
@@ -300,10 +357,11 @@ async function main() {
   );
   assert.match(page, /视频源可信度与视频本身可信度/);
   assert.match(page, /不执行实时检索、夜间复核或自动验证/);
-  assert.match(page, /记录字段覆盖度 0–100/);
-  assert.match(page, /不是可信度、真实性或质量评分/);
+  assert.match(page, /证据覆盖分 0–100/);
+  assert.match(page, /不等同于来源真实性、可信度或质量评估/);
   assert.match(page, /0.*不代表全网不存在/);
   assert.match(page, /本静态目录当前未收录\/本次检索未覆盖/);
+  assert.doesNotMatch(page, /新闻\/社交\/其他类别为 0 条/);
   assert.match(page, /本静态快照中未检出更多已核验候选/);
   assert.match(page, /按视频\/新闻\/社交\/其他类别分组/);
   assert.match(page, /main-video-ranking\.js/);
