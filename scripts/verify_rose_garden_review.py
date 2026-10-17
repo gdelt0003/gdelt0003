@@ -505,6 +505,48 @@ def _process_full_video_module() -> ModuleType:
     return process_full_video
 
 
+def _manifest_caption_box(
+    manifest: dict[str, Any],
+    width: int,
+    height: int,
+) -> tuple[int, int, int, int] | None:
+    record = manifest.get("caption_box")
+    if record is None:
+        return None
+    if (
+        not isinstance(record, dict)
+        or record.get("coordinate_convention") != "half_open_xyxy"
+        or record.get("applied_source_resolution") != f"{width}x{height}"
+    ):
+        raise RuntimeError("Render manifest caption box metadata is invalid.")
+    bbox = record.get("applied_source_bbox_px")
+    if not isinstance(bbox, dict):
+        raise RuntimeError("Render manifest caption box coordinates are missing.")
+    coordinates = tuple(
+        bbox.get(name) for name in ("left", "top", "right", "bottom")
+    )
+    box_width = bbox.get("width")
+    box_height = bbox.get("height")
+    left, top, right, bottom = coordinates
+    if (
+        any(not isinstance(value, int) or isinstance(value, bool) for value in coordinates)
+        or not isinstance(box_width, int)
+        or isinstance(box_width, bool)
+        or not isinstance(box_height, int)
+        or isinstance(box_height, bool)
+        or left < 0
+        or top < 0
+        or right <= left
+        or bottom <= top
+        or right > width
+        or bottom > height
+        or box_width != right - left
+        or box_height != bottom - top
+    ):
+        raise RuntimeError("Render manifest caption box coordinates are invalid.")
+    return left, top, right, bottom
+
+
 def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     ass_name = manifest.get("subtitle_ass_file")
     expected_name = f"{ASSET_PREFIX}.en-zh.ass"
@@ -577,12 +619,17 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
         else []
     )
     occlusion = readability.get("caption_band_occlusion")
+    width, height = (
+        int(manifest["resolution"].split("x", maxsplit=1)[index])
+        for index in range(2)
+    )
+    caption_box = _manifest_caption_box(manifest, width, height)
     try:
         process_full_video._verify_rose_garden_ass(
             ass_path,
             cues,
-            int(manifest["resolution"].split("x", maxsplit=1)[0]),
-            int(manifest["resolution"].split("x", maxsplit=1)[1]),
+            width,
+            height,
             position,
             regions,
             isinstance(occlusion, dict)
@@ -592,6 +639,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
             else None,
             allow_unverified_estimate,
             overflow_records,
+            caption_box,
         )
     except (KeyError, ValueError, RuntimeError) as error:
         raise RuntimeError(f"Generated ASS caption geometry is invalid: {error}") from error

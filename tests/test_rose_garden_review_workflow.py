@@ -1550,6 +1550,84 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "SHA-256"):
                 review.validate_caption_ass(manifest, root)
 
+    def test_caption_ass_uses_the_manifest_caption_box_for_font_geometry(self):
+        cue = Cue(1, 3, "Hello, everybody.", "大家好。")
+        caption_box = (66, 883, 1852, 1022)
+        readability = verify_cues(
+            [cue],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="top",
+            caption_box=caption_box,
+        )["subtitle_readability"]
+        ass_name = f"{review.ASSET_PREFIX}.en-zh.ass"
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_ass(
+                root / ass_name,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_box=caption_box,
+            )
+            (root / f"{review.ASSET_PREFIX}.en.srt").write_text(
+                srt_text([cue], "en"),
+                encoding="utf-8",
+            )
+            (root / f"{review.ASSET_PREFIX}.zh-Hans.srt").write_text(
+                srt_text([cue], "zh"),
+                encoding="utf-8",
+            )
+            manifest = {
+                "subtitle_ass_file": ass_name,
+                "subtitle_ass_sha256": hashlib.sha256(
+                    (root / ass_name).read_bytes()
+                ).hexdigest(),
+                "resolution": "1920x1080",
+                "caption_box": {
+                    "coordinate_convention": "half_open_xyxy",
+                    "reference_resolution": "1920x1080",
+                    "reference_bbox_px": list(caption_box),
+                    "applied_source_resolution": "1920x1080",
+                    "applied_source_bbox_px": {
+                        "left": 66,
+                        "top": 883,
+                        "right": 1852,
+                        "bottom": 1022,
+                        "width": 1786,
+                        "height": 139,
+                    },
+                    "scaling": "proportional_x_and_y",
+                },
+                "subtitle_overflow_exceptions": [],
+                "quality_checks": {"subtitle_readability": readability},
+            }
+            frame = self.synthetic_caption_frame(
+                1920,
+                1080,
+                readability["caption_region_box_px"],
+            )
+            with patch.object(
+                review,
+                "render_caption_geometry_frame",
+                return_value=frame,
+            ):
+                result = review.validate_caption_ass(manifest, root)
+
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual(result["synthetic_libass_geometry_render"], "passed")
+
+            manifest["caption_box"] = None
+            with self.assertRaisesRegex(
+                RuntimeError,
+                r"expected English/Chinese 28/35px, found 26/32px",
+            ):
+                review.validate_caption_ass(manifest, root)
+
     def test_caption_ass_keeps_recorded_cue_50_overflow_manual_and_checks_other_cues(self):
         ordinary = Cue(1, 3, "A complete English sentence.", "完整的中文句子。")
         overflow = Cue(
