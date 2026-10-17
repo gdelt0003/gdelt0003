@@ -66,17 +66,28 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
     def test_validator_imports_as_script_and_package(self):
         repo_root = Path(__file__).resolve().parents[1]
         script_path = repo_root / "scripts" / "verify_rose_garden_review.py"
-        script_result = subprocess.run(
-            [sys.executable, str(script_path), "--help"],
-            cwd=repo_root,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        self.assertEqual(script_result.returncode, 0, script_result.stderr)
+        for argument in ("--help", "--validate-private-dispatch-inputs"):
+            with self.subTest(argument=argument):
+                script_result = subprocess.run(
+                    [sys.executable, "-S", str(script_path), argument],
+                    cwd=repo_root,
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(script_result.returncode, 0, script_result.stderr)
 
         package_result = subprocess.run(
-            [sys.executable, "-c", "import scripts.verify_rose_garden_review"],
+            [
+                sys.executable,
+                "-S",
+                "-c",
+                (
+                    "import sys; "
+                    "import scripts.verify_rose_garden_review; "
+                    "assert 'scripts.process_full_video' not in sys.modules"
+                ),
+            ],
             cwd=repo_root,
             check=False,
             capture_output=True,
@@ -644,11 +655,16 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 side_effect=lambda _path, width, height, _start: (
                     self.synthetic_caption_frame(width, height, mask)
                 ),
-            ):
+            ), patch.object(
+                review,
+                "_process_full_video_module",
+                wraps=review._process_full_video_module,
+            ) as load_renderer:
                 ass_validation = review.validate_caption_ass(
                     manifest,
                     output_dir,
                 )
+            load_renderer.assert_called_once_with()
 
         self.assertEqual(ass_validation["visual_frame_review"], "pending")
         source_review = readability["source_graphics_review"]

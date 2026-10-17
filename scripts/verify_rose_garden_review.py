@@ -13,23 +13,9 @@ import re
 import subprocess
 import tempfile
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 from urllib.parse import urlparse
-
-if __package__:
-    from .process_full_video import (
-        Cue,
-        _has_rose_overflow,
-        _verify_rose_garden_ass,
-        read_srt,
-    )
-else:
-    from process_full_video import (
-        Cue,
-        _has_rose_overflow,
-        _verify_rose_garden_ass,
-        read_srt,
-    )
 
 
 EVENT_ID = "rose-garden-lunch-2026-10-15"
@@ -511,6 +497,14 @@ def validate_caption_layout(
         raise RuntimeError("M2 event/source evidence must remain explicitly pending.")
 
 
+def _process_full_video_module() -> ModuleType:
+    if __package__:
+        from . import process_full_video
+    else:
+        import process_full_video
+    return process_full_video
+
+
 def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     ass_name = manifest.get("subtitle_ass_file")
     expected_name = f"{ASSET_PREFIX}.en-zh.ass"
@@ -523,15 +517,23 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     if manifest.get("subtitle_ass_sha256") != digest:
         raise RuntimeError("ASS subtitle SHA-256 does not match the render manifest.")
 
-    english = read_srt(output_dir / f"{ASSET_PREFIX}.en.srt")
-    chinese = read_srt(output_dir / f"{ASSET_PREFIX}.zh-Hans.srt")
+    process_full_video = _process_full_video_module()
+    english = process_full_video.read_srt(output_dir / f"{ASSET_PREFIX}.en.srt")
+    chinese = process_full_video.read_srt(output_dir / f"{ASSET_PREFIX}.zh-Hans.srt")
     if not english or len(english) != len(chinese):
         raise RuntimeError("English and Chinese SRT cue counts do not match.")
     cues = []
     for index, (en, zh) in enumerate(zip(english, chinese, strict=True), start=1):
         if abs(en[0] - zh[0]) > 0.01 or abs(en[1] - zh[1]) > 0.01:
             raise RuntimeError(f"Bilingual SRT timing mismatch at cue {index}.")
-        cues.append(Cue(en[0], en[1], en[2].replace("\n", " "), zh[2].replace("\n", "")))
+        cues.append(
+            process_full_video.Cue(
+                en[0],
+                en[1],
+                en[2].replace("\n", " "),
+                zh[2].replace("\n", ""),
+            )
+        )
     readability = manifest["quality_checks"]["subtitle_readability"]
     overflow_summary = readability.get("caption_overflow_exceptions")
     overflow_records = (
@@ -576,7 +578,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     )
     occlusion = readability.get("caption_band_occlusion")
     try:
-        _verify_rose_garden_ass(
+        process_full_video._verify_rose_garden_ass(
             ass_path,
             cues,
             int(manifest["resolution"].split("x", maxsplit=1)[0]),
@@ -626,7 +628,7 @@ def validate_caption_ass(manifest: dict[str, Any], output_dir: Path) -> dict[str
     non_overflow_captions = [
         (cue, event)
         for cue, event in indexed_captions
-        if not _has_rose_overflow(cue, overflow_records)
+        if not process_full_video._has_rose_overflow(cue, overflow_records)
     ]
     rendered_bounds = None
     if non_overflow_captions:
