@@ -9288,22 +9288,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:31+00:00",
-        "completed_at_utc": "2026-10-17T05:19:05+00:00",
-        "run_id": "39005770648",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39005770648",
+        "completed_at_utc": "2026-10-17T15:04:14+00:00",
+        "run_id": "39043406656",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Obamacare Refunds\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-17T05:18:53+00:00",
+          "researched_at_utc": "2026-10-17T15:04:02+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-17T05:18:53+00:00",
+        "additional_source_search_started_at_utc": "2026-10-17T15:04:02+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9378,6 +9378,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-17T15:04:02+00:00",
+            "completed_at_utc": "2026-10-17T15:04:14+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39043406656",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Obamacare Refunds\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-17T15:04:02+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -9430,22 +9449,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:31+00:00",
-        "completed_at_utc": "2026-10-17T05:19:16+00:00",
-        "run_id": "39005770648",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39005770648",
+        "completed_at_utc": "2026-10-17T15:04:26+00:00",
+        "run_id": "39043406656",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at First Tee Box Doonbeg, Sep. 13, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-17T05:19:05+00:00",
+          "researched_at_utc": "2026-10-17T15:04:14+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-17T05:19:05+00:00",
+        "additional_source_search_started_at_utc": "2026-10-17T15:04:14+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9520,6 +9539,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-17T15:04:14+00:00",
+            "completed_at_utc": "2026-10-17T15:04:26+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39043406656",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at First Tee Box Doonbeg, Sep. 13, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-17T15:04:14+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -9572,22 +9610,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:32+00:00",
-        "completed_at_utc": "2026-10-17T05:19:25+00:00",
-        "run_id": "39005770648",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39005770648",
+        "completed_at_utc": "2026-10-17T15:04:37+00:00",
+        "run_id": "39043406656",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"45/47\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-17T05:19:16+00:00",
+          "researched_at_utc": "2026-10-17T15:04:26+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-17T05:19:16+00:00",
+        "additional_source_search_started_at_utc": "2026-10-17T15:04:26+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9662,6 +9700,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-17T15:04:26+00:00",
+            "completed_at_utc": "2026-10-17T15:04:37+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39043406656",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"45/47\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-17T15:04:26+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -9714,22 +9771,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:32+00:00",
-        "completed_at_utc": "2026-10-17T05:19:34+00:00",
-        "run_id": "39005770648",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39005770648",
+        "completed_at_utc": "2026-10-17T15:04:48+00:00",
+        "run_id": "39043406656",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Making America Safe Again\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-17T05:19:25+00:00",
+          "researched_at_utc": "2026-10-17T15:04:37+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-17T05:19:25+00:00",
+        "additional_source_search_started_at_utc": "2026-10-17T15:04:37+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -9799,6 +9856,25 @@
               "query": "\"Making America Safe Again\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-17T05:19:25+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-17T15:04:37+00:00",
+            "completed_at_utc": "2026-10-17T15:04:48+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39043406656",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Making America Safe Again\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-17T15:04:37+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -10047,22 +10123,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:32+00:00",
-        "completed_at_utc": "2026-10-17T05:50:22+00:00",
-        "run_id": "39007676912",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39007676912",
+        "completed_at_utc": "2026-10-17T15:04:58+00:00",
+        "run_id": "39043406656",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Participates in a Bilateral Meeting with the Taoiseach of Ireland\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-17T05:50:10+00:00",
+          "researched_at_utc": "2026-10-17T15:04:48+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-10-17T05:50:10+00:00",
+        "additional_source_search_started_at_utc": "2026-10-17T15:04:48+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -10136,6 +10212,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-17T15:04:48+00:00",
+            "completed_at_utc": "2026-10-17T15:04:58+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "39043406656",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Participates in a Bilateral Meeting with the Taoiseach of Ireland\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-17T15:04:48+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
             }
           }
         ]
@@ -15808,10 +15903,10 @@
     }
   },
   "last_run": {
-    "run_id": "39041691424",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39041691424",
-    "started_at_utc": "2026-10-17T14:39:52+00:00",
-    "completed_at_utc": "2026-10-17T14:40:51+00:00",
+    "run_id": "39043406656",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39043406656",
+    "started_at_utc": "2026-10-17T15:04:01+00:00",
+    "completed_at_utc": "2026-10-17T15:04:58+00:00",
     "status": "success"
   }
 }
