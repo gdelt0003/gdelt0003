@@ -265,7 +265,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         capture.assert_called_once()
         self.assertTrue(
             any(
-                "chmod" in call.args[0] and "o+x" in call.args[0]
+                "cp" in call.args[0] and "-a" in call.args[0]
                 for call in run.call_args_list
             )
         )
@@ -274,6 +274,10 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         )
         self.assertTrue(
             any("chmod" in call.args[0] and "o+rwX" in call.args[0] for call in run.call_args_list)
+        )
+        self.assertEqual(
+            Path(popen.call_args.kwargs["cwd"]),
+            Path(popen.call_args.kwargs["cwd"]).parent / "repository",
         )
 
     def test_unavailable_sandbox_executable_is_recorded_as_skipped(self):
