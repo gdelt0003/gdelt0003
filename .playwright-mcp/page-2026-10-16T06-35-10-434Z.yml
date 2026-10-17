@@ -1,0 +1,201 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#wp--skip-link--target"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Download the Official White House App • Real-Time News • Live Updates • A Direct Line to the Administration →" [ref=e5] [cursor=pointer]:
+        - /url: https://www.whitehouse.gov/app
+        - generic [ref=e6]:
+          - generic [ref=e7]: Download the Official White House App • Real-Time News • Live Updates • A Direct Line to the Administration →
+          - generic [ref=e10]: Download the Official White House App • Real-Time News • Live Updates • A Direct Line to the Administration →
+          - generic [ref=e12]: Download the Official White House App • Real-Time News • Live Updates • A Direct Line to the Administration →
+      - generic [ref=e13]:
+        - generic [ref=e15]:
+          - button "Menu" [ref=e18] [cursor=pointer]
+          - link "The White House" [ref=e24] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov
+          - button "Search" [ref=e28] [cursor=pointer]
+        - navigation [ref=e33]:
+          - list [ref=e34]:
+            - listitem [ref=e35]:
+              - link "News" [ref=e36] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/news/
+            - listitem [ref=e37]:
+              - link "Gallery" [ref=e38] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/gallery/
+            - listitem [ref=e39]:
+              - link "Livestream" [ref=e40] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/live/
+            - listitem [ref=e41]:
+              - link "Election Integrity" [ref=e42] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/election-integrity/
+            - listitem [ref=e43]:
+              - link "SAVE America" [ref=e44] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/saveamerica/
+            - listitem [ref=e45]:
+              - link "Trump Accounts" [ref=e46] [cursor=pointer]:
+                - /url: https://trumpaccounts.gov
+            - listitem [ref=e47]:
+              - link "Trump TV" [ref=e48] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/trumptv/
+            - listitem [ref=e49]:
+              - link "Contact" [ref=e50] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/contact/
+          - button "Scroll Right" [ref=e51] [cursor=pointer]
+        - link "Official White House App" [ref=e55] [cursor=pointer]:
+          - /url: https://www.whitehouse.gov/app
+        - link "365 Days of Wins" [ref=e57] [cursor=pointer]:
+          - /url: https://www.whitehouse.gov/releases/2026/01/365-wins-in-365-days-president-trumps-return-marks-new-era-of-success-prosperity/
+    - main [ref=e59]:
+      - generic [ref=e62]:
+        - generic [ref=e63]: "Search results for:"
+        - search [ref=e66]:
+          - generic [ref=e67]: Search
+          - generic [ref=e68]:
+            - searchbox "Search" [ref=e69]: President Trump Participates in a Rose Garden Lunch
+            - button "Search" [ref=e70] [cursor=pointer]
+          - group [ref=e73]:
+            - generic [ref=e74] [cursor=pointer]:
+              - checkbox "Filter News" [ref=e75]
+              - text: Filter News
+            - generic [ref=e76] [cursor=pointer]:
+              - checkbox "Filter Gallery" [ref=e77]
+              - text: Filter Gallery
+            - generic [ref=e78] [cursor=pointer]:
+              - checkbox "Filter Videos" [ref=e79]
+              - text: Filter Videos
+      - list [ref=e81]:
+        - listitem [ref=e82]:
+          - generic [ref=e83]:
+            - figure [ref=e84]:
+              - link [ref=e85] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/videos/president-trump-participates-in-a-rose-garden-lunch-oct-15-2026/
+                - img "President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026" [ref=e86]
+            - generic [ref=e87]:
+              - heading [level=2] [ref=e88]:
+                - link "President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026" [ref=e89] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/videos/president-trump-participates-in-a-rose-garden-lunch-oct-15-2026/
+              - time [ref=e92]: October 15, 2026
+        - listitem [ref=e93]:
+          - generic [ref=e94]:
+            - figure [ref=e95]:
+              - link [ref=e96] [cursor=pointer]:
+                - /url: https://www.whitehouse.gov/videos/president-trump-participates-in-a-rose-garden-club-lunch-jul-6-2026/
+                - img "President Trump Participates in a Rose Garden Club Lunch, Jul. 6, 2026" [ref=e97]
+            - generic [ref=e98]:
+              - heading [level=2] [ref=e99]:
+                - link "President Trump Participates in a Rose Garden Club Lunch, Jul. 6, 2026" [ref=e100] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/videos/president-trump-participates-in-a-rose-garden-club-lunch-jul-6-2026/
+              - time [ref=e103]: July 6, 2026
+    - contentinfo [ref=e104]:
+      - generic [ref=e106]:
+        - generic [ref=e108]:
+          - navigation [ref=e110]:
+            - heading "About" [level=2] [ref=e111]
+            - list [ref=e112]:
+              - listitem [ref=e113]:
+                - link "Administration" [ref=e114] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/administration/
+              - listitem [ref=e115]:
+                - link "Contact" [ref=e116] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/contact/
+              - listitem [ref=e117]:
+                - link "Internships" [ref=e118] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/internships/
+              - listitem [ref=e119]:
+                - link "Stay Informed" [ref=e120] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/subscribe
+              - listitem [ref=e121]:
+                - link "Privacy Policy" [ref=e122] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/privacy/
+          - navigation [ref=e124]:
+            - heading "Media" [level=2] [ref=e125]
+            - list [ref=e126]:
+              - listitem [ref=e127]:
+                - link "News" [ref=e128] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/news/
+              - listitem [ref=e129]:
+                - link "Gallery" [ref=e130] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/gallery/
+              - listitem [ref=e131]:
+                - link "Video Library" [ref=e132] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/videos/
+              - listitem [ref=e133]:
+                - link "Media Offenders" [ref=e134] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/mediabias/
+              - listitem [ref=e135]:
+                - link "White House Wire" [ref=e136] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/wire/
+          - navigation [ref=e138]:
+            - heading "Initiatives" [level=2] [ref=e139]
+            - list [ref=e140]:
+              - listitem [ref=e141]:
+                - link "Freedom 250" [ref=e142] [cursor=pointer]:
+                  - /url: https://www.freedom250.org/
+              - listitem [ref=e143]:
+                - link "Investments" [ref=e144] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/investments/
+              - listitem [ref=e145]:
+                - link "Working Families Tax Cuts" [ref=e146] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/obbb/
+              - listitem [ref=e147]:
+                - link "AI.Gov" [ref=e148] [cursor=pointer]:
+                  - /url: https://ai.gov
+              - listitem [ref=e149]:
+                - link "DOGE" [ref=e150] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/priorities/doge/
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - heading "Subscribe to the WH Newsletter" [level=3] [ref=e153]
+              - group [ref=e156]:
+                - textbox "Your email" [ref=e158]
+                - generic [aria-hidden] [ref=e159]:
+                  - text: Please leave blank.
+                  - textbox [ref=e160]
+                - button "Sign Up" [ref=e162] [cursor=pointer]
+            - generic [ref=e163]:
+              - link "Click here" [ref=e167] [cursor=pointer]:
+                - /url: https://my.community.com/realdonaldtrump?t=VICTORY
+              - text: or text 45470 to receive updates
+            - generic [ref=e168]:
+              - heading "Download The White House App:" [level=3] [ref=e169]
+              - generic [ref=e170]:
+                - link "Available On The App Store" [ref=e171] [cursor=pointer]:
+                  - /url: https://apps.apple.com/us/app/the-white-house/id6759938088
+                - link "Get It On Google Play" [ref=e173] [cursor=pointer]:
+                  - /url: https://play.google.com/store/apps/details?id=gov.whitehouse.app&hl=en_US
+            - generic [ref=e175]:
+              - generic [ref=e176]:
+                - heading "Get Updates Straight to Your Desktop" [level=3] [ref=e177]
+                - generic [ref=e178]: Available On
+              - generic [ref=e180]:
+                - link "Download Browser Extension" [ref=e181] [cursor=pointer]:
+                  - /url: https://www.whitehouse.gov/get-the-browser-extension/
+                - generic [ref=e184]:
+                  - button "Enable Desktop Notifications" [ref=e185] [cursor=pointer]
+                  - status [ref=e186]
+        - generic [ref=e188]:
+          - link "The White House" [ref=e189] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov
+          - list [ref=e193]:
+            - listitem [ref=e194]:
+              - link "X" [ref=e195] [cursor=pointer]:
+                - /url: https://x.com/whitehouse
+            - listitem [ref=e199]:
+              - link "Instagram" [ref=e200] [cursor=pointer]:
+                - /url: https://www.instagram.com/whitehouse/
+            - listitem [ref=e204]:
+              - link "TikTok" [ref=e205] [cursor=pointer]:
+                - /url: https://www.tiktok.com/@WhiteHouse
+            - listitem [ref=e209]:
+              - link "Share Icon" [ref=e210] [cursor=pointer]:
+                - /url: https://truthsocial.com/@WhiteHouse
+            - listitem [ref=e216]:
+              - link "Share Icon" [ref=e217] [cursor=pointer]:
+                - /url: https://rumble.com/c/whitehouse
+            - listitem [ref=e221]:
+              - link "Facebook" [ref=e222] [cursor=pointer]:
+                - /url: https://www.facebook.com/WhiteHouse/
+            - listitem [ref=e226]:
+              - link "YouTube" [ref=e227] [cursor=pointer]:
+                - /url: https://www.youtube.com/@WhiteHouse

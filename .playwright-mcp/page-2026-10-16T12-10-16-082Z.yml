@@ -1,0 +1,263 @@
+- generic [ref=f6e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f6e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f6e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f6e8]:
+    - search [ref=f6e9]:
+      - generic [ref=f6e11]:
+        - link "Google 首页" [ref=f6e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQPHoECAYQBA
+        - generic [ref=f6e16]:
+          - generic [ref=f6e17]:
+            - combobox "搜索" [ref=f6e20]: "\"President Trump Participates in a Rose Garden Lunch\" -whitehouse video \"President Trump Participates in a Rose Garden Lunch\" -whitehouse video"
+            - generic [ref=f6e21]:
+              - button "清除" [ref=f6e23] [cursor=pointer]
+              - generic [ref=f6e28]:
+                - button "按语音搜索" [ref=f6e29] [cursor=pointer]
+                - button "按图搜索" [ref=f6e32] [cursor=pointer]
+          - button "搜索" [ref=f6e35] [cursor=pointer]
+    - generic [ref=f6e40]:
+      - button "设置" [ref=f6e42] [cursor=pointer]
+      - button "分享" [ref=f6e47] [cursor=pointer]
+      - generic [ref=f6e53]:
+        - button "Google 应用" [ref=f6e55] [cursor=pointer]
+        - link "登录" [ref=f6e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522President%2BTrump%2BParticipates%2Bin%2Ba%2BRose%2BGarden%2BLunch%2522%2B-whitehouse%2Bvideo&ec=futura_srp_og_si_72236_p
+  - generic [ref=f6e62]:
+    - navigation [ref=f6e68]:
+      - generic [ref=f6e74]:
+        - list [ref=f6e75]:
+          - listitem [ref=f6e76]:
+            - link "全部" [disabled] [ref=f6e77]
+          - listitem [ref=f6e80]:
+            - link "新闻" [ref=f6e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ0pQJegQIGBAB
+          - listitem [ref=f6e84]:
+            - link "视频" [ref=f6e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQtKgLegQIFxAB
+          - listitem [ref=f6e88]:
+            - link "短视频" [ref=f6e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQs6gLegQIFhAB
+          - listitem [ref=f6e92]:
+            - link "图片" [ref=f6e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQtKgLegQIFRAB
+          - listitem [ref=f6e96]:
+            - link "网页" [ref=f6e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQs6gLegQIExAB
+          - listitem [ref=f6e100]:
+            - link "图书" [ref=f6e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ0pQJegQIFBAB
+          - listitem [ref=f6e104]:
+            - button [ref=f6e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f6e106]: 更多
+        - button "工具" [ref=f6e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f6e120]
+    - main [ref=f6e126]:
+      - generic [ref=f6e130]:
+        - generic [ref=f6e137]:
+          - generic [ref=f6e140]:
+            - 'link "WATCH LIVE: Trump hosts lunch in the White House Rose ... YouTube · PBS NewsHour 7510+ 次观看 · 19小时前" [active] [ref=f6e142] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVBYiaL_ZiG--uTwe86mIPlsTjtfXV-ZHzgjGBTj3ND0vLaRWA3A4x2ecruMD0qv4oAYxmwp9Y6H2MxN1ecXejKU97fETviSmXHrdB9SCnygiKJiiLjZPUSzMZNAE0s7FAvA
+              - 'heading "WATCH LIVE: Trump hosts lunch in the White House Rose ..." [level=3] [ref=f6e143]'
+              - generic [ref=f6e149]:
+                - generic [ref=f6e150]: YouTube · PBS NewsHour
+                - generic [ref=f6e152]: 7510+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e158] [cursor=pointer]
+          - generic [ref=f6e163]:
+            - 'button "WATCH LIVE: Trump hosts lunch in the White House Rose ...，由PBS NewsHour上传到YouTube上. 在 Google 上播放. 38:55" [ref=f6e164] [cursor=pointer]':
+              - generic [ref=f6e165]: 38:55
+            - generic [ref=f6e181]: Video unavailable. This content isn't available. Watch PBS News ... President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026.
+        - generic [ref=f6e189]:
+          - generic [ref=f6e192]:
+            - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch ... YouTube · Right Side Broadcasting Network 8.2万+ 次观看 · 18小时前" [ref=f6e194] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVdFrLBi4W71RcjO-jVMWrLOOO6zEaknce3nDQ14ifVaT68L41GoaXqLeus62410nPv-tP0NeVEaBFvXEQZZMZjRkrHbdzP3eWNxUovZ3H8d5adBTQoPU_3UOC9x8DNsKPkw
+              - 'heading "FULL EVENT: President Trump Speaks at Rose Garden Lunch ..." [level=3] [ref=f6e195]'
+              - generic [ref=f6e201]:
+                - generic [ref=f6e202]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f6e204]: 8.2万+ 次观看 · 18小时前
+            - button "关于这条结果的详细信息" [ref=f6e210] [cursor=pointer]
+          - generic [ref=f6e215]:
+            - 'button "FULL EVENT: President Trump Speaks at Rose Garden Lunch ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 32:45" [ref=f6e216] [cursor=pointer]':
+              - generic [ref=f6e217]: 32:45
+            - generic [ref=f6e233]: Video unavailable. This content isn't available. President Trump ... President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026.
+        - generic [ref=f6e241]:
+          - generic [ref=f6e244]:
+            - link "President Trump participates in a \"Rose Garden\" Lunch - NBC 15 YouTube · NBC 15 20+ 次观看 · 19小时前" [ref=f6e246] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVPhBlm4pEeZgREDUSGkBLlrateSlOIZhRoWPcIm7tafqxga0McnMHXugkbqMllWbeC3BR_HVJVj08EEqhJjE9dkUxRNh9YEkZDuY7dRv7wSlyF6GH2XwpakTcoZY-zea0HA
+              - heading "President Trump participates in a \"Rose Garden\" Lunch - NBC 15" [level=3] [ref=f6e247]
+              - generic [ref=f6e253]:
+                - generic [ref=f6e254]: YouTube · NBC 15
+                - generic [ref=f6e256]: 20+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e262] [cursor=pointer]
+          - generic [ref=f6e267]:
+            - button "President Trump participates in a \"Rose Garden\" Lunch - NBC 15，由NBC 15上传到YouTube上. 在 Google 上播放. 1:45:12" [ref=f6e268] [cursor=pointer]:
+              - generic [ref=f6e269]: 1:45:12
+            - generic [ref=f6e282]: "LIVE: President Trump participates in a \"Rose Garden\" Lunch - NBC 15 ... Video unavailable. This content isn't available. LIVE ..."
+        - generic [ref=f6e287]:
+          - generic [ref=f6e290]:
+            - link "President Trump Participates in a Rose Garden Lunch, Oct. ... WKNO FM https://www.wknofm.org › president-trump..." [ref=f6e292] [cursor=pointer]:
+              - /url: /goto?url=CAESnAEB6zswFUz8HQMicESHru4LG7QY3CW2b5oL7L83FMpWGPQuq9x-J6JLUSp6r3Vc1OQkbWz48idwU06BYjdxDMZaPoooQW7-FfJCYJVZocUyjTaUs7OJcEfVU8FZjbg4KGuuXoBE6CdRoWnRZD5lMWfVCYF3QiuAGjQ2KM5_a8Rb2COjjgRdtleLheSoefcwV1WkEVKAp7fHPPgbljA
+              - heading "President Trump Participates in a Rose Garden Lunch, Oct. ..." [level=3] [ref=f6e293]
+              - generic [ref=f6e299]:
+                - generic [ref=f6e300]: WKNO FM
+                - generic [ref=f6e302]: https://www.wknofm.org › president-trump...
+            - generic [ref=f6e304]:
+              - generic [ref=f6e305]: ·
+              - link "翻译此页" [ref=f6e306] [cursor=pointer]:
+                - /url: /goto?url=CAES7AEB6zswFXLzfsOMuqdLJLPYH8ht_c5bWfGDkBhencX2SMs5cTMYGcY2LVERQ4WRtfs3tS9-OTTXg2_QN9lOerCPDD9_4iiOxC9qgmcNStHey6CsLNLS9xHReKT5H6uKrFtZUz5QQjrIGpGx7JWJzsRxwvzQ6Uok2D193Pcu-7XUWDRqMXSCWaNK9oupDQ_Vg7wGWGeRwcuiva8EvaekZSXnSSoUUAelclAujg4Wf43U5ACPT0xkDsxsZvDhHeic-kv9on3lRlAu_La59XMllHOJFnz0eZB1LWZM74oFXfFiAap99xectzeeVPI42A
+            - button "关于这条结果的详细信息" [ref=f6e311] [cursor=pointer]
+          - generic [ref=f6e317]:
+            - generic [ref=f6e318]: 18小时前 —
+            - generic [ref=f6e319]:
+              - text: Watch as
+              - emphasis [ref=f6e320]: President Trump participates in a Rose Garden Lunch
+              - text: .
+        - generic [ref=f6e324]:
+          - generic [ref=f6e327]:
+            - link "President Trump Participates in a Rose Garden Lunch Facebook · Diya TV 17小时前" [ref=f6e329] [cursor=pointer]:
+              - /url: /goto?url=CAESqgEB6zswFRs6WhZl1_MEFhgH-cXMgj_qDod4RCo8D75ozvinZ_uMHdrK1ta1xUmtDXbP7rd8ERdjb2AQDgGfZvlHqj8qSC-U9JekunDPaXf_QT6hrzOJESaD6eR_5Q3eyeYnAauN_TSk9fsLzR9VJe3k5fX3a-yVgj9q0jJK79DoeDqvHB2DhBitW2ugHuEGKRd5ZbQttJ4LeD_Myw9mM9DWhTehXWkpe2bQLA
+              - heading "President Trump Participates in a Rose Garden Lunch" [level=3] [ref=f6e330]
+              - generic [ref=f6e336]:
+                - generic [ref=f6e337]: Facebook · Diya TV
+                - generic [ref=f6e339]: 17小时前
+            - button "关于这条结果的详细信息" [ref=f6e345] [cursor=pointer]
+          - generic [ref=f6e352]:
+            - emphasis [ref=f6e353]: President Trump Participates in a Rose Garden Lunch
+            - text: "- 10/15/26 --- Find Diya TV previews, promos, clips, and digital exclusives here."
+        - generic [ref=f6e360]:
+          - generic [ref=f6e363]:
+            - link "President Trump Participates in a Rose Garden Lunch YouTube · Diya TV 160+ 次观看 · 17小时前" [ref=f6e365] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVEPvaITlQubCHYtrx6Sow9JGCrz41fok3CS5TdMNgRi8ZMdVvqdfslmVmBe42bMk3WWx-oH6WKwuqvZmP6vzBe0502E3r4ZiUiUQObH_qA9psplbP9yYe61Rsb8xBpmT1Vw
+              - heading "President Trump Participates in a Rose Garden Lunch" [level=3] [ref=f6e366]
+              - generic [ref=f6e372]:
+                - generic [ref=f6e373]: YouTube · Diya TV
+                - generic [ref=f6e375]: 160+ 次观看 · 17小时前
+            - button "关于这条结果的详细信息" [ref=f6e381] [cursor=pointer]
+          - generic [ref=f6e386]:
+            - button "President Trump Participates in a Rose Garden Lunch，由Diya TV上传到YouTube上. 在 Google 上播放. 48:28" [ref=f6e387] [cursor=pointer]:
+              - generic [ref=f6e388]: 48:28
+            - generic [ref=f6e401]: President Trump Participates in a Rose Garden Lunch - 10 ... Video unavailable. This content isn't available. President Trump ...
+        - generic [ref=f6e406]:
+          - generic [ref=f6e409]:
+            - 'link "LIVE: President Trump Participates in a Rose Garden Lunch X https://x.com › Live" [ref=f6e411] [cursor=pointer]':
+              - /url: /goto?url=CAESYwHrOzAVNwi9LuVvNC1C0QlvAay-7nPJqbejlvKd1p4RS_0EAOXuB4bNvxRQ8f6iK5nxzmI-ztxR2df1lMVY2QFTV3rT0bBrE6nvpi65rC_930OnKe6OPBUw_XNTmaTu4jDIPw
+              - 'heading "LIVE: President Trump Participates in a Rose Garden Lunch" [level=3] [ref=f6e412]'
+              - generic [ref=f6e418]:
+                - generic [ref=f6e419]: X
+                - generic [ref=f6e421]: https://x.com › Live
+            - generic [ref=f6e423]:
+              - generic [ref=f6e424]: ·
+              - link "翻译此页" [ref=f6e425] [cursor=pointer]:
+                - /url: /goto?url=CAESsgEB6zswFTu9jH3AjWiYv56UWiD50lD2IB296d6jnQjBsX7joH2ngbHSZdJPZSX5XMhXnsDIB-OwFuKIIxR30PfAjBUIwoP5hqTVRQRQx7QaDZb4xzOpKRlD_ZZY909G4mF1Hdsa_aLepZZgZqAcns2BIvEyPwU1fOSQhPxYF0jqEC4o9Rd0HUAH_9vY9SzFCm7pIONX3TEr4fgP8zmL2_mX7bVICRwyCPEF9I7WVcPMwfkD
+            - button "关于这条结果的详细信息" [ref=f6e430] [cursor=pointer]
+          - generic [ref=f6e436]:
+            - generic [ref=f6e437]: 19小时前 —
+            - generic [ref=f6e438]:
+              - text: "LIVE:"
+              - emphasis [ref=f6e439]: President Trump Participates in a Rose Garden Lunch
+              - text: .
+          - generic [ref=f6e441]:
+            - text: 缺少字词： video ‎| 必须包含：
+            - link "video" [ref=f6e442] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+%22video%22&sa=X&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ5t4CegQIMBAB
+        - generic [ref=f6e446]:
+          - generic [ref=f6e449]:
+            - link "Trump Rose Garden Lunch - Full Video And Transcript Substack · Tommy Christopher 13小时前" [ref=f6e451] [cursor=pointer]:
+              - /url: /goto?url=CAESgQEB6zswFQ__KIlTuapgJJ3LW7XWQNe_lWT4Fb8hbijX42ZJSl8rvuZCADcuDSzemnAmTAsfQMY-A2x-pEgnC-rPnof2yPONeZsk4P0oeq0XVJJFAjU9lIKs3XEch4v3SLDCBm3Ek96Q0Z0ZqvP9ivxEPJQUiujx1TIvjBDAgBQ5lBU
+              - heading "Trump Rose Garden Lunch - Full Video And Transcript" [level=3] [ref=f6e452]
+              - generic [ref=f6e458]:
+                - generic [ref=f6e459]: Substack · Tommy Christopher
+                - generic [ref=f6e461]: 13小时前
+            - button "关于这条结果的详细信息" [ref=f6e467] [cursor=pointer]
+          - generic [ref=f6e474]:
+            - emphasis [ref=f6e475]: President Trump Participates in a Rose Garden Lunch
+            - text: ", Oct. 15, 2026. ANNOUNCER: Ladies and gentlemen, the President of the United States ..."
+        - generic [ref=f6e482]:
+          - generic [ref=f6e485]:
+            - link "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ... YouTube · The National Desk 1770+ 次观看 · 19小时前" [ref=f6e487] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV2tHS3hE-1uUVeF3nyouiaHLTVt9ikky9EB9_hg5WBnyWstLivq4nBwjWmRW8RobD_Vg2BV7sbjZWjvF9tC21lxV8VtdML-g79n-WYs0o2O0Sxjyo43O_lf7FZzeQCHQW3w
+              - heading "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ..." [level=3] [ref=f6e488]
+              - generic [ref=f6e494]:
+                - generic [ref=f6e495]: YouTube · The National Desk
+                - generic [ref=f6e497]: 1770+ 次观看 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f6e503] [cursor=pointer]
+          - generic [ref=f6e508]:
+            - button "Trump calls El-Sayed 'MUSLIM BROTHERHOOD GUY' during ...，由The National Desk上传到YouTube上. 在 Google 上播放. 30:46" [ref=f6e509] [cursor=pointer]:
+              - generic [ref=f6e510]: 30:46
+            - generic [ref=f6e523]: "President Trump participates in a Rose Garden Lunch. https://thenationaldesk.com/news/americas-news-now #trump #rosegarden #politics #news ..."
+        - generic [ref=f6e528]:
+          - generic [ref=f6e531]:
+            - link "President Trump Participates in a Rose Garden Lunch, Oct. ... Ground News https://ground.news › article › white-house-..." [ref=f6e533] [cursor=pointer]:
+              - /url: /goto?url=CAESrwEB6zswFS23-46QXoxISqFpMBAdtFvbSttv2gBJ5QtbKUtMmhyU2nJniyBmto-F5Za1c8fVLl2I5BPhfW8v7D_lWfrTzAiRjvUOVZ8MirkVSmWjccxQxgPshjAhB5KSqcFKaz4tt_JB2w4nMqmlYEoiM5JfrjYw0_-NIFdlJZweaEqvLqGPs3TO7i109s48NvEMD2Y4KISnYQGY2x7YfbWIiuQuZe2uWI9FXO3pIZnI
+              - heading "President Trump Participates in a Rose Garden Lunch, Oct. ..." [level=3] [ref=f6e534]
+              - generic [ref=f6e540]:
+                - generic [ref=f6e541]: Ground News
+                - generic [ref=f6e543]: https://ground.news › article › white-house-...
+            - generic [ref=f6e545]:
+              - generic [ref=f6e546]: ·
+              - link "翻译此页" [ref=f6e547] [cursor=pointer]:
+                - /url: /goto?url=CAES_wEB6zswFc2l-o7293zPI6w9i7z1gwYVdXP1gwgXeyhhyFx_R62zOkKo8amc1StRR7LQuRUnJ0L4UTk3hoqsIRwkZY_Dp6c3n8QF_UCQr7wb5Kpy9je1Mtp2Y0LNc19pJE4io1d9MPN5jwpOiqEedK2ZS0umQVjmJb54be0xsHAlxxYKlxgoKlH-W_VAOTBiWgVMNIylR4ofuiC5ZCbSDr5fsN4XPf79FVM2PaohWQNGCgqYQj-2acgbc1eOCUiFwssZujahR3uDt3cySeWoqARsZW_YOsVGYTFZAlAX0NSp46M-MJ4CtQiSYw7jrxkZQr4pYliSXbiziSqGZLAdh_c
+            - button "关于这条结果的详细信息" [ref=f6e552] [cursor=pointer]
+          - generic [ref=f6e558]:
+            - generic [ref=f6e559]: 16小时前 —
+            - generic [ref=f6e560]:
+              - text: WHITE HOUSE
+              - emphasis [ref=f6e561]: VIDEO
+              - text: ":"
+              - emphasis [ref=f6e562]: President Trump Participates in a Rose Garden Lunch
+              - text: ", Oct. 15, 2026. Summary by U-S-NEWS.COM. The White House source Source."
+      - navigation [ref=f6e565]:
+        - heading "网页导航" [level=1] [ref=f6e566]
+        - text: "1"
+        - link "Page 2" [ref=f6e569] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=10&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAE
+          - text: "2"
+        - link "Page 3" [ref=f6e571] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=20&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAG
+          - text: "3"
+        - link "Page 4" [ref=f6e573] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=30&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAI
+          - text: "4"
+        - link "Page 5" [ref=f6e575] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=40&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAK
+          - text: "5"
+        - link "Page 6" [ref=f6e577] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=50&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAM
+          - text: "6"
+        - link "Page 7" [ref=f6e579] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=60&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAO
+          - text: "7"
+        - link "Page 8" [ref=f6e581] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=70&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAQ
+          - text: "8"
+        - link "Page 9" [ref=f6e583] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=80&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAS
+          - text: "9"
+        - link "Page 10" [ref=f6e585] [cursor=pointer]:
+          - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=90&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8tMDegQIHBAU
+          - text: "10"
+        - heading [level=2] [ref=f6e587]:
+          - link "下一页" [ref=f6e588] [cursor=pointer]:
+            - /url: /search?q=%22President+Trump+Participates+in+a+Rose+Garden+Lunch%22+-whitehouse+video&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsis_X6nhTXNG_jX6_E_1pVm4CWmQ:1792152572161&ei=_BPSaui_CdPPkPIPlN_b0Qk&start=10&sa=N&sstk=AS6-VmKbh6xyqr6QKA3YBj3x4VGoqHGb954JeNlFYszPKSGkJFljhIasxOjKb6_YWHFfltLwPDq3xumCrc3DzR12X1eXkq1arX-mag&ved=2ahUKEwjorcnLwL6XAxXTJ0QIHZTvNpoQ8NMDegQIHBAW
+      - navigation
+    - contentinfo [ref=f6e591]:
+      - heading "页脚链接" [level=1] [ref=f6e592]
+      - generic [ref=f6e596]:
+        - generic [ref=f6e600]:
+          - button "美兰区 中国海南省海口市 - 是根据您的 IP 地址推断出来的" [ref=f6e602] [cursor=pointer]:
+            - generic [ref=f6e603]: 美兰区 中国海南省海口市
+            - generic [ref=f6e605]:
+              - text: "-"
+              - generic [ref=f6e606]: 是根据您的 IP 地址推断出来的
+          - text: "-"
+          - button "更新位置信息" [ref=f6e608] [cursor=pointer]
+        - generic [ref=f6e611]:
+          - link "帮助" [ref=f6e612] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f6e614] [cursor=pointer]
+          - link "隐私权" [ref=f6e616] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f6e617] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

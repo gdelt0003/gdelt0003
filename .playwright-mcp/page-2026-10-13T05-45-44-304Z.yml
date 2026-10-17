@@ -1,0 +1,192 @@
+- generic [ref=f4e2]:
+  - banner [ref=f4e4]:
+    - generic [ref=f4e6]:
+      - generic [ref=f4e7]:
+        - button "导视" [ref=f4e9] [cursor=pointer]
+        - link "YouTube 首页" [ref=f4e14] [cursor=pointer]:
+          - /url: /
+        - button "跳过导航" [ref=f4e23] [cursor=pointer]
+      - generic [ref=f4e27]:
+        - search [ref=f4e28]:
+          - generic [ref=f4e30]:
+            - combobox "搜索" [expanded] [ref=f4e33]
+            - button "Search" [ref=f4e34] [cursor=pointer]
+        - generic [ref=f4e39]:
+          - button "通过语音搜索内容" [ref=f4e41] [cursor=pointer]
+          - tooltip "tooltip"
+      - generic [ref=f4e46]:
+        - button "设置" [ref=f4e51] [cursor=pointer]
+        - link "登录" [ref=f4e55] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3Dhttps%253A%252F%252Fwww.youtube.com%252Fwatch%253Fv%253DoW-PQlgw1wo&hl=zh-CN&ec=65620
+  - main [ref=f4e60]:
+    - generic [ref=f4e61]:
+      - generic [ref=f4e63]:
+        - generic [ref=f4e66]:
+          - generic [aria-hidden] [ref=f4e69] [cursor=pointer]
+          - complementary [ref=f4e70]:
+            - generic "YouTube 视频播放器" [active] [ref=f4e73]:
+              - button "播放" [ref=f4e77] [cursor=pointer]
+              - generic [ref=f4e78]:
+                - generic [ref=f4e79] [cursor=pointer]:
+                  - slider "播放滑块" [ref=f4e80]
+                  - generic:
+                    - generic:
+                      - generic:
+                        - slider "点击或滚动面板可进行精确跳转。"
+                - generic [ref=f4e89]:
+                  - generic [ref=f4e90]:
+                    - button "播放 (k)" [ref=f4e91] [cursor=pointer]
+                    - generic [ref=f4e92]:
+                      - button "静音 (m)" [ref=f4e94] [cursor=pointer]
+                      - slider "音量":
+                        - generic [ref=f4e95] [cursor=pointer]
+                    - button "0 分钟 0 秒/58 分钟 52 秒" [ref=f4e98] [cursor=pointer]: 0:00 / 58:52
+                  - generic [ref=f4e99]:
+                    - generic [ref=f4e100]:
+                      - button "无法显示字幕" [ref=f4e101] [cursor=pointer]
+                      - button "设置" [ref=f4e103] [cursor=pointer]
+                    - generic [ref=f4e104]:
+                      - button "影院模式 (t)" [ref=f4e105] [cursor=pointer]
+                      - button "全屏 (f)" [ref=f4e106] [cursor=pointer]
+        - generic [ref=f4e108]:
+          - generic [ref=f4e110]:
+            - heading "President Trump Delivers Remarks, Oct. 6, 2026" [level=1] [ref=f4e113]
+            - generic [ref=f4e114]:
+              - generic [ref=f4e115]:
+                - generic [ref=f4e116]:
+                  - link [ref=f4e117] [cursor=pointer]:
+                    - /url: /@WhiteHouse
+                    - img "The White House" [ref=f4e119]
+                  - generic [ref=f4e120]:
+                    - generic [ref=f4e121]:
+                      - generic "The White House" [ref=f4e124]:
+                        - link "The White House" [ref=f4e125] [cursor=pointer]:
+                          - /url: /@WhiteHouse
+                      - img "已验证" [ref=f4e130]
+                    - generic "334万位订阅者" [ref=f4e132]
+                - button "订阅“The White House”。" [ref=f4e138] [cursor=pointer]:
+                  - generic: 订阅
+              - generic [ref=f4e145]:
+                - generic [ref=f4e146]:
+                  - generic [ref=f4e150]:
+                    - button "与另外 2,170 人一起顶此视频" [ref=f4e154] [cursor=pointer]:
+                      - generic: "2170"
+                    - button "不喜欢此视频" [ref=f4e161] [cursor=pointer]
+                  - button "分享" [ref=f4e167] [cursor=pointer]
+                - button "其他操作" [ref=f4e172] [cursor=pointer]
+            - generic [ref=f4e178] [cursor=pointer]:
+              - generic [ref=f4e179]:
+                - generic [ref=f4e180]: 6.7万次观看 6天前
+                - tooltip "tooltip"
+              - generic [ref=f4e182]:
+                - generic [ref=f4e183]: Baltimore, MD
+                - button "...更多" [ref=f4e187]
+          - text: •
+      - generic [ref=f4e194]:
+        - generic [ref=f4e196] [cursor=pointer]:
+          - link [aria-hidden] [ref=f4e197]:
+            - /url: /watch?v=HEWlaWY9Qcs
+            - generic [ref=f4e198]:
+              - img [ref=f4e203]:
+                - generic [aria-hidden] [ref=f4e204]: 6:58
+              - img [ref=f4e207]:
+                - generic [aria-hidden] [ref=f4e208]: 新
+          - generic [ref=f4e210]:
+            - generic [ref=f4e211]:
+              - heading "President Trump Gaggles with Press Upon Departure from the White House, Oct. 12, 2026" [level=3] [ref=f4e212]:
+                - link "President Trump Gaggles with Press Upon Departure from the White House, Oct. 12, 2026 6分钟58秒钟" [ref=f4e213]:
+                  - /url: /watch?v=HEWlaWY9Qcs
+                  - text: President Trump Gaggles with Press Upon Departure from the White House, Oct. 12, 2026
+              - generic [ref=f4e215]:
+                - group [ref=f4e216]:
+                  - generic [ref=f4e217]: The White House
+                  - generic "已验证" [ref=f4e218]
+                - group [ref=f4e219]:
+                  - generic "3.7万次观看" [ref=f4e221]: 3.7万
+                  - generic "7小时前" [ref=f4e222]
+            - button "其他操作" [ref=f4e225]
+        - generic [ref=f4e230] [cursor=pointer]:
+          - link [aria-hidden] [ref=f4e231]:
+            - /url: /watch?v=7QAu9FOEOv8
+            - generic [ref=f4e232]:
+              - img [ref=f4e237]:
+                - generic [aria-hidden] [ref=f4e238]: 44:20
+              - img [ref=f4e241]:
+                - generic [aria-hidden] [ref=f4e242]: 新
+          - generic [ref=f4e244]:
+            - generic [ref=f4e245]:
+              - heading "Vice President JD Vance Holds Press Conference on Fighting Visa Fraud" [level=3] [ref=f4e246]:
+                - link "Vice President JD Vance Holds Press Conference on Fighting Visa Fraud 44分钟" [ref=f4e247]:
+                  - /url: /watch?v=7QAu9FOEOv8
+                  - text: Vice President JD Vance Holds Press Conference on Fighting Visa Fraud
+              - generic [ref=f4e249]:
+                - group [ref=f4e250]:
+                  - generic [ref=f4e251]: The White House
+                  - generic "已验证" [ref=f4e252]
+                - group [ref=f4e253]:
+                  - generic "15万次观看" [ref=f4e255]: 15万
+                  - generic "直播时间：4天前" [ref=f4e256]
+            - button "其他操作" [ref=f4e259]
+        - generic [ref=f4e264] [cursor=pointer]:
+          - link [aria-hidden] [ref=f4e265]:
+            - /url: /watch?v=2lBpWI_-GMg
+            - img [ref=f4e271]:
+              - generic [aria-hidden] [ref=f4e272]: 2:20:19
+          - generic [ref=f4e274]:
+            - generic [ref=f4e275]:
+              - heading "250th Anniversary Celebration for the United States Marine Corps" [level=3] [ref=f4e276]:
+                - link "250th Anniversary Celebration for the United States Marine Corps 2小时20分钟" [ref=f4e277]:
+                  - /url: /watch?v=2lBpWI_-GMg
+                  - text: 250th Anniversary Celebration for the United States Marine Corps
+              - generic [ref=f4e279]:
+                - group [ref=f4e280]:
+                  - generic [ref=f4e281]: The White House
+                  - generic "已验证" [ref=f4e282]
+                - group [ref=f4e283]:
+                  - generic "45万次观看" [ref=f4e285]: 45万
+                  - generic "11个月前" [ref=f4e286]
+            - button "其他操作" [ref=f4e289]
+        - generic [ref=f4e294] [cursor=pointer]:
+          - link [aria-hidden] [ref=f4e295]:
+            - /url: /watch?v=noI4BbQ2wZQ
+            - generic [ref=f4e296]:
+              - img [ref=f4e301]:
+                - generic [aria-hidden] [ref=f4e302]: 1:02:44
+              - img [ref=f4e305]:
+                - generic [aria-hidden] [ref=f4e306]: 新
+          - generic [ref=f4e308]:
+            - generic [ref=f4e309]:
+              - heading "President Trump Hosts a Columbus Day Celebration" [level=3] [ref=f4e310]:
+                - link "President Trump Hosts a Columbus Day Celebration 1小时2分钟" [ref=f4e311]:
+                  - /url: /watch?v=noI4BbQ2wZQ
+                  - text: President Trump Hosts a Columbus Day Celebration
+              - generic [ref=f4e313]:
+                - group [ref=f4e314]:
+                  - generic [ref=f4e315]: The White House
+                  - generic "已验证" [ref=f4e316]
+                - group [ref=f4e317]:
+                  - generic "9.9万次观看" [ref=f4e319]: 9.9万
+                  - generic "直播时间：3天前" [ref=f4e320]
+            - button "其他操作" [ref=f4e323]
+        - generic [ref=f4e328] [cursor=pointer]:
+          - link [aria-hidden] [ref=f4e329]:
+            - /url: /watch?v=KFHqevUWLWE
+            - generic [ref=f4e330]:
+              - img [ref=f4e335]:
+                - generic [aria-hidden] [ref=f4e336]: 49:50
+              - img [ref=f4e339]:
+                - generic [aria-hidden] [ref=f4e340]: 新
+          - generic [ref=f4e342]:
+            - generic [ref=f4e343]:
+              - heading "President Trump Makes an Announcement, Oct. 7, 2026" [level=3] [ref=f4e344]:
+                - link "President Trump Makes an Announcement, Oct. 7, 2026 49分钟" [ref=f4e345]:
+                  - /url: /watch?v=KFHqevUWLWE
+                  - text: President Trump Makes an Announcement, Oct. 7, 2026
+              - generic [ref=f4e347]:
+                - group [ref=f4e348]:
+                  - generic [ref=f4e349]: The White House
+                  - generic "已验证" [ref=f4e350]
+                - group [ref=f4e351]:
+                  - generic "39万次观看" [ref=f4e353]: 39万
+                  - generic "直播时间：5天前" [ref=f4e354]
+            - button "其他操作" [ref=f4e357]

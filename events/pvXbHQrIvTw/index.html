@@ -26,16 +26,16 @@
         <p><a id="source-link" href="https://www.youtube.com/watch?v=pvXbHQrIvTw" rel="noreferrer" target="_blank">查看来源视频页面</a></p>
       </header>
       <section class="panel preview-warning" aria-labelledby="preview-warning-title">
-        <p class="eyebrow">PROCESSING STATUS ONLY · MEDIA NOT PUBLISHED</p>
+        <p class="eyebrow">PUBLIC DRAFT PREVIEW · NOT A QUALITY PASS</p>
         <h2 id="preview-warning-title">AI 生成草稿，未经人工核验</h2>
-        <p>本页仅公布处理与审查状态，不提供生成视频或字幕文件。自动语音识别（ASR）和机器翻译（MT）不得视为准确、最终或经人工审校的内容。</p>
+        <p>本页提供一份由开源 SmartSub 3.9.0 烧录字幕的公开草稿预览，并明确标注其来源。Copilot coding agent 参与的是仓库工程开发，不是这份视频的渲染器；ASR 和机器翻译尚未人工核验，也不代表质量验收通过。</p>
         <ul>
           <li>内部检查记录了疑似 ASR 错误示例 “Hormone Strait” 和 “sharing intel with his brain”；均未依据源音校正或确认。</li>
           <li>58 条英文字幕超过 20 字符/秒，6 条中文字幕超过 10 字符/秒；这些阅读速度问题尚未修正。</li>
           <li>此前版本仅抽查 65 帧中的 5 帧，样本里中文看起来大于英文；本次草稿按 1.50 倍名义字号重排，但尚未完成人工全帧、下三分之一字幕条或关键画面遮挡检查。</li>
           <li>源音/ASR 准确性、翻译准确性和完整画面/样式审核均未验证；没有十模型比较或独立评审结果。</li>
         </ul>
-        <p><strong id="pvX-media-status">发布状态：视频与字幕尚未公开。</strong>本页的任何机器生成预览都不代表成片已获准确性、清晰度或字幕样式验收。</p>
+        <p><strong id="pvX-media-status">发布状态：正在读取草稿预览清单…</strong>公开预览不代表成片已获准确性、清晰度或字幕样式验收。</p>
       </section>
       <section class="comparison-grid" id="variants" aria-label="字幕方案">
         <article class="panel comparison-variant" id="variant-open-source" aria-labelledby="open-source-title">
@@ -48,6 +48,21 @@
           <h2 id="microsoft-title">Microsoft Copilot / GPT-6</h2>
           <div class="variant-content"></div>
         </article>
+        <article class="panel comparison-variant" id="variant-videocaptioner" aria-labelledby="videocaptioner-title">
+          <p class="eyebrow">JAPANESE VIDEO CAPTIONER</p>
+          <h2 id="videocaptioner-title">VideoCaptioner / 日语视频处理</h2>
+          <div class="variant-content"></div>
+        </article>
+        <article class="panel comparison-variant" id="variant-ytb2bili" aria-labelledby="ytb2bili-title">
+          <p class="eyebrow">YOUTUBE TO BILIBILI PIPELINE</p>
+          <h2 id="ytb2bili-title">ytb2bili / YouTube → Bilibili 工作流</h2>
+          <div class="variant-content"></div>
+        </article>
+        <article class="panel comparison-variant" id="variant-microsoft-frontier" aria-labelledby="microsoft-frontier-title">
+          <p class="eyebrow">MICROSOFT FRONTIER STACK</p>
+          <h2 id="microsoft-frontier-title">Microsoft frontier agent stack</h2>
+          <div class="variant-content"></div>
+        </article>
       </section>
       <section class="panel comparison-metrics" id="comparison" aria-labelledby="comparison-title">
         <p class="eyebrow">MEASURED SIDE-BY-SIDE</p>
@@ -56,7 +71,7 @@
         <div class="comparison-table-wrap">
           <table>
             <thead>
-              <tr><th scope="col">指标</th><th scope="col">开源基线</th><th scope="col">Microsoft / GPT-6</th><th scope="col">公平比较条件</th></tr>
+              <tr><th scope="col">指标</th><th scope="col">开源媒体工具</th><th scope="col">Copilot coding agent（非媒体处理）</th><th scope="col">公平比较条件</th></tr>
             </thead>
             <tbody id="comparison-rows"></tbody>
           </table>

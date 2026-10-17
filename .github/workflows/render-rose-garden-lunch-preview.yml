@@ -2,6 +2,42 @@ name: Render Rose Garden lunch bilingual preview
 
 on:
   workflow_dispatch:
+    inputs:
+      requester_authorized_processing:
+        description: I explicitly authorize this GitHub-hosted private preview render for this exact source
+        type: boolean
+        required: true
+        default: false
+      exact_event_match_confirmed:
+        description: I verified that the selected official video depicts this exact Rose Garden event
+        type: boolean
+        required: true
+        default: false
+      reuse_rights_confirmed:
+        description: I verified that the supplied evidence permits downloading and private rendering of this exact source
+        type: boolean
+        required: true
+        default: false
+      event_time_local:
+        description: Verified local event time if known; leave empty if evidence does not establish it
+        type: string
+        required: false
+      event_timezone:
+        description: Verified event timezone if known; leave empty if evidence does not establish it
+        type: string
+        required: false
+      identity_evidence_url:
+        description: HTTPS evidence for this event's identity
+        type: string
+        required: true
+      source_match_evidence_url:
+        description: HTTPS evidence for this exact source/event match
+        type: string
+        required: true
+      rights_evidence_url:
+        description: HTTPS evidence permitting download and private rendering of this exact source
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -39,23 +75,83 @@ jobs:
           ffprobe -version
 
       - name: Record supplied event identity
+        env:
+          EVENT_TIME_LOCAL: ${{ inputs.event_time_local }}
+          EVENT_TIMEZONE: ${{ inputs.event_timezone }}
         run: |
-          cat > "$RUNNER_TEMP/event-identity.json" <<'JSON'
-          {
-            "event_date": "2026-10-15",
-            "event_time_local": null,
-            "time_precision": "day",
-            "timezone": null,
-            "location": "White House Rose Garden, Washington, D.C.",
-            "event_type": "Rose Garden lunch",
-            "title": "President Trump Participates in a Rose Garden Lunch",
-            "participants": ["President Donald Trump"],
-            "official_video_url": "https://www.youtube.com/watch?v=IySF_8OArvw"
+          python - "$RUNNER_TEMP/event-identity.json" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          event_time = os.environ.get("EVENT_TIME_LOCAL", "").strip() or None
+          timezone = os.environ.get("EVENT_TIMEZONE", "").strip() or None
+          identity = {
+              "event_date": "2026-10-15",
+              "event_time_local": event_time,
+              "time_precision": "minute" if event_time else "day",
+              "timezone": timezone,
+              "location": "White House Rose Garden, Washington, D.C.",
+              "event_type": "Rose Garden lunch",
+              "title": "President Trump Participates in a Rose Garden Lunch",
+              "participants": ["President Donald Trump"],
+              "official_video_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
           }
-          JSON
+          Path(sys.argv[1]).write_text(
+              json.dumps(identity, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Check authorization, exact event match, and reuse rights before download
+        env:
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
+          IDENTITY_EVIDENCE_URL: ${{ inputs.identity_evidence_url }}
+          SOURCE_MATCH_EVIDENCE_URL: ${{ inputs.source_match_evidence_url }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+        run: |
+          for confirmation in \
+            "$PROCESSING_AUTHORIZED" \
+            "$EXACT_EVENT_MATCH_CONFIRMED" \
+            "$RIGHTS_CONFIRMED"; do
+            if [ "$confirmation" != "true" ]; then
+              echo "Required per-video authorization or confirmation is missing; no source will be downloaded or processed." >&2
+              exit 1
+            fi
+          done
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+
+          names = (
+              "IDENTITY_EVIDENCE_URL",
+              "SOURCE_MATCH_EVIDENCE_URL",
+              "RIGHTS_EVIDENCE_URL",
+          )
+          urls = [os.environ[name].strip() for name in names]
+          for name, value in zip(names, urls, strict=True):
+              parsed = urlparse(value)
+              if parsed.scheme != "https" or not parsed.netloc:
+                  raise SystemExit(f"{name} must be a valid HTTPS evidence URL.")
+          PY
+          python scripts/prepare_event_production.py \
+            --identity-json "$RUNNER_TEMP/event-identity.json" \
+            --source-url "https://www.youtube.com/watch?v=IySF_8OArvw" \
+            --identity-evidence-url "$IDENTITY_EVIDENCE_URL" \
+            --source-match-evidence-url "$SOURCE_MATCH_EVIDENCE_URL" \
+            --confirm-same-event-match \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --output "$RUNNER_TEMP/event-preflight.json"
 
       - name: Verify exact video metadata before downloading
         id: identity
+        env:
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          EXACT_EVENT_MATCH_CONFIRMED: ${{ inputs.exact_event_match_confirmed }}
+          RIGHTS_CONFIRMED: ${{ inputs.reuse_rights_confirmed }}
         run: |
           yt-dlp \
             --dump-single-json \
@@ -84,8 +180,9 @@ jobs:
               f"publisher={metadata.get('uploader') or metadata.get('channel')}"
           )
           PY
-          python - "$RUNNER_TEMP/event-identity.json" "$RUNNER_TEMP/source-metadata.json" "$RUNNER_TEMP/event-metadata.json" <<'PY'
+          python - "$RUNNER_TEMP/event-identity.json" "$RUNNER_TEMP/source-metadata.json" "$RUNNER_TEMP/event-preflight.json" "$RUNNER_TEMP/event-metadata.json" <<'PY'
           import json
+          import os
           import sys
           from datetime import datetime, timezone
           from pathlib import Path
@@ -94,6 +191,7 @@ jobs:
 
           identity = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           source = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+          preflight = json.loads(Path(sys.argv[3]).read_text(encoding="utf-8"))
           event_id = build_event_id(identity)
           metadata = {
               "schema_version": 1,
@@ -101,17 +199,20 @@ jobs:
               "identity": {key: value for key, value in identity.items() if key != "official_video_url"},
               "source_url": identity["official_video_url"],
               "official_video_url": identity["official_video_url"],
-              "identity_evidence_url": identity["official_video_url"],
-              "source_match_evidence_url": identity["official_video_url"],
+              "identity_evidence_url": preflight["identity_evidence_url"],
+              "source_match_evidence_url": preflight["source_match_evidence_url"],
               "source_title": source["title"],
               "source_publisher": source.get("uploader") or source.get("channel"),
-              "source_match_status": "title and publisher metadata matched; frame/audio review not verified",
-              "rights_evidence_url": "https://www.whitehouse.gov/copyright/",
-              "reuse_rights_status": "not independently verified; private preview only",
+              "source_match_status": "operator confirmed exact event; metadata matched; frame/audio review not verified",
+              "rights_evidence_url": preflight["rights_evidence_url"],
+              "reuse_rights_confirmed": os.environ["RIGHTS_CONFIRMED"] == "true",
+              "processing_authorized": os.environ["PROCESSING_AUTHORIZED"] == "true",
+              "exact_event_match_confirmed": os.environ["EXACT_EVENT_MATCH_CONFIRMED"] == "true",
+              "reuse_rights_status": "operator confirmed; independent rights review remains pending",
               "review_status": "private preview only; human review pending",
               "prepared_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
           }
-          Path(sys.argv[3]).write_text(
+          Path(sys.argv[4]).write_text(
               json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
@@ -151,7 +252,9 @@ jobs:
               for stream in probe.get("streams", [])
           )
           if video is None or video.get("width", 0) < 1920 or video.get("height", 0) < 1080:
-              raise SystemExit("The selected source is below 1920x1080; no upscaling is allowed.")
+              raise SystemExit(
+                  "The selected source is below 1920x1080; no upscaling is allowed."
+              )
           if not audio:
               raise SystemExit("The selected source has no audio stream.")
           hasher = hashlib.sha256()
@@ -192,7 +295,8 @@ jobs:
           python scripts/process_full_video.py \
             --input "$RUNNER_TEMP/event-source/source.mp4" \
             --output-dir "$RUNNER_TEMP/event-output" \
-            --asset-prefix IySF_8OArvw
+            --asset-prefix IySF_8OArvw \
+            --caption-box 66,883,1852,1022
           python scripts/verify_operation_audit.py \
             --audit "$RUNNER_TEMP/event-output/operation-audit.json" \
             --manifest "$RUNNER_TEMP/event-output/manifest.json"

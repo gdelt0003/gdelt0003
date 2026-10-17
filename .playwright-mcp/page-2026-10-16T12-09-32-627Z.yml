@@ -1,0 +1,642 @@
+- generic:
+  - generic [ref=e2]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - button "导视" [ref=e9] [cursor=pointer]
+          - link "YouTube 首页" [ref=e14] [cursor=pointer]:
+            - /url: /
+          - button "跳过导航" [ref=e23] [cursor=pointer]
+        - generic [ref=e27]:
+          - search [ref=e28]:
+            - generic [ref=e30]:
+              - combobox "搜索" [expanded] [ref=e33]
+              - button "Search" [ref=e34] [cursor=pointer]
+          - generic [ref=e39]:
+            - button "通过语音搜索内容" [ref=e41] [cursor=pointer]
+            - tooltip "tooltip"
+        - generic [ref=e46]:
+          - button "设置" [ref=e51] [cursor=pointer]
+          - link "登录" [ref=e57] [cursor=pointer]:
+            - /url: https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3Dhttps%253A%252F%252Fwww.youtube.com%252Fwatch%253Fv%253DP0CVe2WwH9g&hl=zh-CN&ec=65620
+    - main [ref=e62]:
+      - generic [ref=e63]:
+        - generic [ref=e65]:
+          - generic [ref=e68]:
+            - generic [aria-hidden] [ref=e71] [cursor=pointer]
+            - complementary [ref=e72]:
+              - generic "YouTube 视频播放器" [ref=e75]:
+                - alert [ref=e77]:
+                  - generic [ref=e78]: 视频无法播放
+                - generic [ref=e82]:
+                  - slider "播放滑块" [ref=e84] [cursor=pointer]
+                  - generic [ref=e92]:
+                    - generic [ref=e93]:
+                      - button "播放 (k)" [ref=e94] [cursor=pointer]
+                      - generic [ref=e95]:
+                        - button "静音 (m)" [ref=e97] [cursor=pointer]
+                        - slider "音量":
+                          - generic [ref=e98] [cursor=pointer]
+                      - button "0 分钟 0 秒/35 分钟 40 秒" [ref=e101] [cursor=pointer]: 0:00 / 35:40
+                    - generic [ref=e102]:
+                      - generic [ref=e103]:
+                        - button "自动播放模式已开启" [ref=e104] [cursor=pointer]
+                        - button "无法显示字幕" [ref=e107] [cursor=pointer]
+                        - button "设置" [ref=e109] [cursor=pointer]
+                      - generic [ref=e110]:
+                        - button "影院模式 (t)" [ref=e111] [cursor=pointer]
+                        - button "全屏 (f)" [ref=e112] [cursor=pointer]
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - generic [ref=e116]:
+                - 'heading "LIVE: President Trump Holds Rose Garden Lunch - 10/15/26" [level=1] [ref=e119]'
+                - generic [ref=e120]:
+                  - generic [ref=e121]:
+                    - generic [ref=e122]:
+                      - link [ref=e123] [cursor=pointer]:
+                        - /url: /@RSBN
+                        - img "Right Side Broadcasting Network" [ref=e125]
+                      - generic [ref=e126]:
+                        - generic [ref=e127]:
+                          - generic "Right Side Broadcasting Network" [ref=e130]:
+                            - link "Right Side Broadcasting Network" [ref=e131] [cursor=pointer]:
+                              - /url: /@RSBN
+                          - img "已验证" [ref=e136]
+                        - generic "209万位订阅者" [ref=e140]
+                    - button "订阅“Right Side Broadcasting Network”。" [ref=e146] [cursor=pointer]:
+                      - generic: 订阅
+                  - generic [ref=e153]:
+                    - generic [ref=e154]:
+                      - generic [ref=e158]:
+                        - button "与另外 1,318 人一起顶此视频" [ref=e162] [cursor=pointer]:
+                          - generic: "1318"
+                        - button "不喜欢此视频" [ref=e169] [cursor=pointer]
+                      - button "分享" [ref=e175] [cursor=pointer]
+                    - button "保存到播放列表" [ref=e182] [cursor=pointer]:
+                      - generic: 保存
+                    - button "其他操作" [ref=e187] [cursor=pointer]
+                - generic [ref=e191]:
+                  - generic [ref=e193] [cursor=pointer]:
+                    - generic [ref=e194]:
+                      - generic [ref=e195]:
+                        - generic "4.5万次观看" [ref=e196]:
+                          - generic [ref=e198]:
+                            - generic [ref=e199]:
+                              - generic [ref=e201]: "1"
+                              - generic [ref=e202]: "2"
+                              - generic [ref=e203]: "3"
+                              - generic [ref=e204]: "4"
+                              - generic [ref=e205]: "5"
+                              - generic [ref=e206]: "6"
+                              - generic [ref=e207]: "7"
+                              - generic [ref=e208]: "8"
+                              - generic [ref=e209]: "9"
+                              - generic [ref=e210]: "0"
+                              - generic [ref=e211]: "1"
+                              - generic [ref=e212]: "2"
+                              - generic [ref=e213]: "3"
+                              - generic [ref=e214]: "4"
+                              - generic [ref=e215]: "5"
+                              - generic [ref=e216]: "6"
+                              - generic [ref=e217]: "7"
+                              - generic [ref=e218]: "8"
+                              - generic [ref=e219]: "9"
+                              - generic [ref=e220]: "0"
+                              - generic [ref=e221]: "1"
+                              - generic [ref=e222]: "2"
+                              - generic [ref=e223]: "3"
+                              - generic [ref=e224]: "4"
+                              - generic [ref=e225]: "5"
+                              - generic [ref=e226]: "6"
+                              - generic [ref=e227]: "7"
+                              - generic [ref=e228]: "8"
+                              - generic [ref=e229]: "9"
+                            - generic [ref=e231]: .
+                            - generic [ref=e235]:
+                              - generic [ref=e237]: "1"
+                              - generic [ref=e238]: "2"
+                              - generic [ref=e239]: "3"
+                              - generic [ref=e240]: "4"
+                              - generic [ref=e241]: "5"
+                              - generic [ref=e242]: "6"
+                              - generic [ref=e243]: "7"
+                              - generic [ref=e244]: "8"
+                              - generic [ref=e245]: "9"
+                              - generic [ref=e246]: "0"
+                              - generic [ref=e247]: "1"
+                              - generic [ref=e248]: "2"
+                              - generic [ref=e249]: "3"
+                              - generic [ref=e250]: "4"
+                              - generic [ref=e251]: "5"
+                              - generic [ref=e252]: "6"
+                              - generic [ref=e253]: "7"
+                              - generic [ref=e254]: "8"
+                              - generic [ref=e255]: "9"
+                              - generic [ref=e256]: "0"
+                              - generic [ref=e257]: "1"
+                              - generic [ref=e258]: "2"
+                              - generic [ref=e259]: "3"
+                              - generic [ref=e260]: "4"
+                              - generic [ref=e261]: "5"
+                              - generic [ref=e262]: "6"
+                              - generic [ref=e263]: "7"
+                              - generic [ref=e264]: "8"
+                              - generic [ref=e265]: "9"
+                            - generic [ref=e267]: 万
+                          - generic [aria-hidden] [ref=e271]: 次观看
+                        - generic "直播时间：19小时前" [ref=e272]:
+                          - generic [aria-hidden] [ref=e273]: 直播时间：
+                          - generic [ref=e275]:
+                            - generic [ref=e276]:
+                              - generic [ref=e278]: "1"
+                              - generic [ref=e279]: "2"
+                              - generic [ref=e280]: "3"
+                              - generic [ref=e281]: "4"
+                              - generic [ref=e282]: "5"
+                              - generic [ref=e283]: "6"
+                              - generic [ref=e284]: "7"
+                              - generic [ref=e285]: "8"
+                              - generic [ref=e286]: "9"
+                              - generic [ref=e287]: "0"
+                              - generic [ref=e288]: "1"
+                              - generic [ref=e289]: "2"
+                              - generic [ref=e290]: "3"
+                              - generic [ref=e291]: "4"
+                              - generic [ref=e292]: "5"
+                              - generic [ref=e293]: "6"
+                              - generic [ref=e294]: "7"
+                              - generic [ref=e295]: "8"
+                              - generic [ref=e296]: "9"
+                              - generic [ref=e297]: "0"
+                              - generic [ref=e298]: "1"
+                              - generic [ref=e299]: "2"
+                              - generic [ref=e300]: "3"
+                              - generic [ref=e301]: "4"
+                              - generic [ref=e302]: "5"
+                              - generic [ref=e303]: "6"
+                              - generic [ref=e304]: "7"
+                              - generic [ref=e305]: "8"
+                              - generic [ref=e306]: "9"
+                            - generic [ref=e308]:
+                              - generic [ref=e310]: "1"
+                              - generic [ref=e311]: "2"
+                              - generic [ref=e312]: "3"
+                              - generic [ref=e313]: "4"
+                              - generic [ref=e314]: "5"
+                              - generic [ref=e315]: "6"
+                              - generic [ref=e316]: "7"
+                              - generic [ref=e317]: "8"
+                              - generic [ref=e318]: "9"
+                              - generic [ref=e319]: "0"
+                              - generic [ref=e320]: "1"
+                              - generic [ref=e321]: "2"
+                              - generic [ref=e322]: "3"
+                              - generic [ref=e323]: "4"
+                              - generic [ref=e324]: "5"
+                              - generic [ref=e325]: "6"
+                              - generic [ref=e326]: "7"
+                              - generic [ref=e327]: "8"
+                              - generic [ref=e328]: "9"
+                              - generic [ref=e329]: "0"
+                              - generic [ref=e330]: "1"
+                              - generic [ref=e331]: "2"
+                              - generic [ref=e332]: "3"
+                              - generic [ref=e333]: "4"
+                              - generic [ref=e334]: "5"
+                              - generic [ref=e335]: "6"
+                              - generic [ref=e336]: "7"
+                              - generic [ref=e337]: "8"
+                              - generic [ref=e338]: "9"
+                          - generic [aria-hidden] [ref=e340]: 小时前
+                      - tooltip "tooltip"
+                    - generic [ref=e341]:
+                      - generic [ref=e342]:
+                        - generic [ref=e343]: Join RSBN LIVE for full coverage of President Trump's Rose Garden Lunch.
+                        - generic: …
+                      - button "...更多" [ref=e346]
+                  - button "实时聊天重放" [ref=e348] [cursor=pointer]:
+                    - heading "实时聊天重放" [level=2] [ref=e352]
+                    - generic "实时聊天重放" [ref=e355]:
+                      - generic [ref=e356]:
+                        - generic [ref=e360]: 看看在此视频直播时其他人围绕此视频都聊了些什么。
+                        - button "打开面板" [disabled] [ref=e362]
+              - text: •
+            - heading "评论" [level=2] [ref=e369]
+        - generic [ref=e443]:
+          - iframe [ref=e446]:
+            - generic [ref=f3e6]:
+              - heading [ref=f3e7]:
+                - group [ref=f3e12]:
+                  - 'button "实时聊天模式选择: 重要消息重放" [ref=f3e14] [cursor=pointer]':
+                    - generic [ref=f3e15]: 重要消息重放
+                - button "更多选项" [ref=f3e22] [cursor=pointer]
+                - button "关闭" [ref=f3e33] [cursor=pointer]
+              - generic [ref=f3e41]:
+                - generic:
+                  - alert
+          - generic [ref=e451]:
+            - generic [ref=e453] [cursor=pointer]:
+              - link [aria-hidden] [ref=e454]:
+                - /url: /watch?v=yP9wGEo3NqI&pp=ugUHEgVlbi1VUw%3D%3D
+                - img [ref=e460]:
+                  - generic [aria-hidden] [ref=e461]: 11:34
+              - generic [ref=e463]:
+                - generic [ref=e464]:
+                  - heading "Brooks and Atkins Stohr on GOP vulnerabilities in the midterms" [level=3] [ref=e465]:
+                    - link "Brooks and Atkins Stohr on GOP vulnerabilities in the midterms 11分钟34秒钟" [ref=e466]:
+                      - /url: /watch?v=yP9wGEo3NqI&pp=ugUHEgVlbi1VUw%3D%3D
+                      - text: Brooks and Atkins Stohr on GOP vulnerabilities in the midterms
+                  - generic [ref=e468]:
+                    - group [ref=e469]:
+                      - generic [ref=e470]: PBS NewsHour
+                      - generic "已验证" [ref=e471]
+                    - group [ref=e474]:
+                      - generic "53万次观看" [ref=e478]: 53万
+                      - generic "13天前" [ref=e479]
+                    - group [ref=e480]:
+                      - generic [ref=e481]: 筹款活动
+                - button "其他操作" [ref=e487]
+            - generic [ref=e492] [cursor=pointer]:
+              - link [aria-hidden] [ref=e493]:
+                - /url: /watch?v=EAgn6J0fZA0&pp=ugUEEgJlbg%3D%3D
+                - img [ref=e499]:
+                  - generic [aria-hidden] [ref=e500]: 34:44
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - 'heading "FULL EVENT: President Trump Announces Major U.S. Mining Investments at Key Roundtable - 08/07/26" [level=3] [ref=e504]':
+                    - 'link "FULL EVENT: President Trump Announces Major U.S. Mining Investments at Key Roundtable - 08/07/26 34分钟" [ref=e505]':
+                      - /url: /watch?v=EAgn6J0fZA0&pp=ugUEEgJlbg%3D%3D
+                      - text: "FULL EVENT: President Trump Announces Major U.S. Mining Investments at Key Roundtable - 08/07/26"
+                  - generic [ref=e507]:
+                    - group [ref=e508]:
+                      - generic [ref=e509]: Right Side Broadcasting Network
+                      - generic "已验证" [ref=e510]
+                    - group [ref=e513]:
+                      - generic "2.6万次观看" [ref=e517]: 2.6万
+                      - generic "2个月前" [ref=e518]
+                - button "其他操作" [ref=e521]
+            - generic [ref=e526] [cursor=pointer]:
+              - link [aria-hidden] [ref=e527]:
+                - /url: /watch?v=0DzCOWl_-Fg
+                - generic [ref=e528]:
+                  - img [ref=e533]:
+                    - generic [aria-hidden] [ref=e534]: 31:14
+                  - img [ref=e537]:
+                    - generic [aria-hidden] [ref=e538]: 新
+              - generic [ref=e540]:
+                - generic [ref=e541]:
+                  - heading "Canada’s Plans for Donald Trump | The New Yorker Radio Hour" [level=3] [ref=e542]:
+                    - link "Canada’s Plans for Donald Trump | The New Yorker Radio Hour 31分钟" [ref=e543]:
+                      - /url: /watch?v=0DzCOWl_-Fg
+                      - text: Canada’s Plans for Donald Trump | The New Yorker Radio Hour
+                  - generic [ref=e545]:
+                    - group [ref=e546]:
+                      - generic [ref=e547]: The New Yorker
+                      - generic "已验证" [ref=e548]
+                    - group [ref=e551]:
+                      - generic "23万次观看" [ref=e555]: 23万
+                      - generic "1天前" [ref=e556]
+                - button "其他操作" [ref=e559]
+            - generic [ref=e564] [cursor=pointer]:
+              - link [aria-hidden] [ref=e565]:
+                - /url: /watch?v=nkKeIcaXefg&pp=ugUHEgVlbi1VUw%3D%3D
+                - generic [ref=e566]:
+                  - img [ref=e571]:
+                    - generic [aria-hidden] [ref=e572]: 43:38
+                  - img [ref=e575]:
+                    - generic [aria-hidden] [ref=e576]: 新
+              - generic [ref=e578]:
+                - generic [ref=e579]:
+                  - heading "🚨 DOJ Announces Significant Charges in First-Ever National Tax Fraud Enforcement Surge [LIVE]" [level=3] [ref=e580]:
+                    - link "🚨 DOJ Announces Significant Charges in First-Ever National Tax Fraud Enforcement Surge [LIVE] 43分钟" [ref=e581]:
+                      - /url: /watch?v=nkKeIcaXefg&pp=ugUHEgVlbi1VUw%3D%3D
+                      - text: 🚨 DOJ Announces Significant Charges in First-Ever National Tax Fraud Enforcement Surge [LIVE]
+                  - generic [ref=e583]:
+                    - group [ref=e584]:
+                      - generic [ref=e585]: MAGNO NEWS
+                      - generic "已验证" [ref=e586]
+                    - group [ref=e589]:
+                      - generic "11万次观看" [ref=e593]: 11万
+                      - generic "直播时间：1天前" [ref=e594]
+                - button "其他操作" [ref=e597]
+            - generic [ref=e602] [cursor=pointer]:
+              - link [aria-hidden] [ref=e603]:
+                - /url: /watch?v=muKrQluiCQo&pp=0gcJCUcMAYcqIYzv
+                - generic [ref=e604]:
+                  - img [ref=e609]:
+                    - generic [aria-hidden] [ref=e610]: 57:34
+                  - img [ref=e613]:
+                    - generic [aria-hidden] [ref=e614]: 新
+              - generic [ref=e616]:
+                - generic [ref=e617]:
+                  - 'heading "City Council Meeting: October 15, 2026" [level=3] [ref=e618]':
+                    - 'link "City Council Meeting: October 15, 2026 57分钟" [ref=e619]':
+                      - /url: /watch?v=muKrQluiCQo&pp=0gcJCUcMAYcqIYzv
+                      - text: "City Council Meeting: October 15, 2026"
+                  - generic [ref=e621]:
+                    - group [ref=e622]:
+                      - generic [ref=e623]: City of Fayetteville, Georgia
+                    - group [ref=e624]:
+                      - generic "62次观看" [ref=e628]: "62"
+                      - generic "直播时间：13小时前" [ref=e629]
+                - button "其他操作" [ref=e632]
+            - generic [ref=e637] [cursor=pointer]:
+              - link [aria-hidden] [ref=e638]:
+                - /url: /watch?v=UnoRco0pQhA
+                - generic [ref=e639]:
+                  - img [ref=e644]:
+                    - generic [aria-hidden] [ref=e645]: 15:21
+                  - img [ref=e648]:
+                    - generic [aria-hidden] [ref=e649]: 新
+              - generic [ref=e651]:
+                - generic [ref=e652]:
+                  - heading "GOP's money moves show 'they see a blue environment'" [level=3] [ref=e653]:
+                    - link "GOP's money moves show 'they see a blue environment' 15分钟" [ref=e654]:
+                      - /url: /watch?v=UnoRco0pQhA
+                      - text: GOP's money moves show 'they see a blue environment'
+                  - generic [ref=e656]:
+                    - group [ref=e657]:
+                      - generic [ref=e658]: NBC News
+                      - generic "已验证" [ref=e659]
+                    - group [ref=e662]:
+                      - generic "11万次观看" [ref=e666]: 11万
+                      - generic "14小时前" [ref=e667]
+                - button "其他操作" [ref=e670]
+            - generic [ref=e675] [cursor=pointer]:
+              - link [aria-hidden] [ref=e676]:
+                - /url: /watch?v=FGvlk9KbMfY&pp=ugUHEgVlbi1VUw%3D%3D
+                - img [ref=e682]:
+                  - generic [aria-hidden] [ref=e683]: 31:55
+              - generic [ref=e685]:
+                - generic [ref=e686]:
+                  - heading "Marco Rubio brutally shuts down reporter over absurd Iran war question in fiery exchange" [level=3] [ref=e687]:
+                    - link "Marco Rubio brutally shuts down reporter over absurd Iran war question in fiery exchange 31分钟" [ref=e688]:
+                      - /url: /watch?v=FGvlk9KbMfY&pp=ugUHEgVlbi1VUw%3D%3D
+                      - text: Marco Rubio brutally shuts down reporter over absurd Iran war question in fiery exchange
+                  - generic [ref=e690]:
+                    - group [ref=e691]:
+                      - generic [ref=e692]: News24
+                      - generic "已验证" [ref=e693]
+                    - group [ref=e696]:
+                      - generic "142万次观看" [ref=e700]: 142万
+                      - generic "2个月前" [ref=e701]
+                - button "其他操作" [ref=e704]
+            - generic [ref=e709] [cursor=pointer]:
+              - link [aria-hidden] [ref=e710]:
+                - /url: /watch?v=59bTAEaxMz0&pp=ugUEEgJlbg%3D%3D
+                - generic [ref=e711]:
+                  - img [ref=e716]:
+                    - generic [aria-hidden] [ref=e717]: 12:09
+                  - img [ref=e720]:
+                    - generic [aria-hidden] [ref=e721]: 新
+              - generic [ref=e723]:
+                - generic [ref=e724]:
+                  - heading "Nobody Is Ready For What Comes Next..." [level=3] [ref=e725]:
+                    - link "Nobody Is Ready For What Comes Next... 12分钟9秒钟" [ref=e726]:
+                      - /url: /watch?v=59bTAEaxMz0&pp=ugUEEgJlbg%3D%3D
+                      - text: Nobody Is Ready For What Comes Next...
+                  - generic [ref=e728]:
+                    - group [ref=e729]:
+                      - generic [ref=e730]: Max Velocity - Severe Weather Center
+                      - generic "已验证" [ref=e731]
+                    - group [ref=e734]:
+                      - generic "2.3万次观看" [ref=e738]: 2.3万
+                      - generic "56分钟前" [ref=e739]
+                - button "其他操作" [ref=e742]
+            - generic [ref=e747] [cursor=pointer]:
+              - link [aria-hidden] [ref=e748]:
+                - /url: /watch?v=c3n8f8VLE1w
+                - img [ref=e754]:
+                  - generic [aria-hidden] [ref=e755]: 51:21
+              - generic [ref=e757]:
+                - generic [ref=e758]:
+                  - 'heading "Donald Trump: The New York Years | That Was The News Then: Episode 20" [level=3] [ref=e759]':
+                    - 'link "Donald Trump: The New York Years | That Was The News Then: Episode 20 51分钟" [ref=e760]':
+                      - /url: /watch?v=c3n8f8VLE1w
+                      - text: "Donald Trump: The New York Years | That Was The News Then: Episode 20"
+                  - generic [ref=e762]:
+                    - group [ref=e763]:
+                      - generic [ref=e764]: FOX 5 New York
+                      - generic "已验证" [ref=e765]
+                    - group [ref=e768]:
+                      - generic "173万次观看" [ref=e772]: 173万
+                      - generic "1年前" [ref=e773]
+                - button "其他操作" [ref=e776]
+            - generic [ref=e781] [cursor=pointer]:
+              - link [aria-hidden] [ref=e782]:
+                - /url: /watch?v=Qn-F1i7yg9k&pp=ugUEEgJlbg%3D%3D
+                - generic [ref=e783]:
+                  - img [ref=e788]:
+                    - generic [aria-hidden] [ref=e789]: 18:17
+                  - img [ref=e792]:
+                    - generic [aria-hidden] [ref=e793]: 新
+              - generic [ref=e795]:
+                - generic [ref=e796]:
+                  - heading "Susie’s turn" [level=3] [ref=e797]:
+                    - link "Susie’s turn 18分钟" [ref=e798]:
+                      - /url: /watch?v=Qn-F1i7yg9k&pp=ugUEEgJlbg%3D%3D
+                      - text: Susie’s turn
+                  - generic [ref=e800]:
+                    - group [ref=e801]:
+                      - generic [ref=e802]: POLITICO
+                      - generic "已验证" [ref=e803]
+                    - group [ref=e806]:
+                      - generic "5.2万次观看" [ref=e810]: 5.2万
+                      - generic "1天前" [ref=e811]
+                - button "其他操作" [ref=e814]
+            - generic [ref=e819] [cursor=pointer]:
+              - link [aria-hidden] [ref=e820]:
+                - /url: /watch?v=kZTvyw55AdQ
+                - generic [ref=e821]:
+                  - img [ref=e826]:
+                    - generic [aria-hidden] [ref=e827]: 2:04:12
+                  - img [ref=e830]:
+                    - generic [aria-hidden] [ref=e831]: 新
+              - generic [ref=e833]:
+                - generic [ref=e834]:
+                  - heading "Kirkwood City Council Work Session | October 15, 2026" [level=3] [ref=e835]:
+                    - link "Kirkwood City Council Work Session | October 15, 2026 2小时4分钟" [ref=e836]:
+                      - /url: /watch?v=kZTvyw55AdQ
+                      - text: Kirkwood City Council Work Session | October 15, 2026
+                  - generic [ref=e838]:
+                    - group [ref=e839]:
+                      - generic [ref=e840]: City of Kirkwood, MO
+                    - group [ref=e841]:
+                      - generic "55次观看" [ref=e845]: "55"
+                      - generic "直播时间：13小时前" [ref=e846]
+                - button "其他操作" [ref=e849]
+            - generic [ref=e854] [cursor=pointer]:
+              - link [aria-hidden] [ref=e855]:
+                - /url: /watch?v=czcGECxfqQo
+                - img [ref=e861]:
+                  - generic [aria-hidden] [ref=e862]: 8:37
+              - generic [ref=e864]:
+                - generic [ref=e865]:
+                  - 'heading "Jesse Watters: This is what actually happened on Jan. 6" [level=3] [ref=e866]':
+                    - 'link "Jesse Watters: This is what actually happened on Jan. 6 8分钟37秒钟" [ref=e867]':
+                      - /url: /watch?v=czcGECxfqQo
+                      - text: "Jesse Watters: This is what actually happened on Jan. 6"
+                  - generic [ref=e869]:
+                    - group [ref=e870]:
+                      - generic [ref=e871]: Fox News
+                      - generic "已验证" [ref=e872]
+                    - group [ref=e875]:
+                      - generic "402万次观看" [ref=e879]: 402万
+                      - generic "1年前" [ref=e880]
+                - button "其他操作" [ref=e883]
+            - generic [ref=e888] [cursor=pointer]:
+              - link [aria-hidden] [ref=e889]:
+                - /url: /watch?v=1_aIDEAqqbU&pp=ugUHEgVlbi1VUw%3D%3D
+                - generic [ref=e890]:
+                  - img [ref=e895]:
+                    - generic [aria-hidden] [ref=e896]: 56:47
+                  - img [ref=e899]:
+                    - generic [aria-hidden] [ref=e900]: 新
+              - generic [ref=e902]:
+                - generic [ref=e903]:
+                  - heading "PBS News Hour full episode, Oct. 15, 2026" [level=3] [ref=e904]:
+                    - link "PBS News Hour full episode, Oct. 15, 2026 56分钟" [ref=e905]:
+                      - /url: /watch?v=1_aIDEAqqbU&pp=ugUHEgVlbi1VUw%3D%3D
+                      - text: PBS News Hour full episode, Oct. 15, 2026
+                  - generic [ref=e907]:
+                    - group [ref=e908]:
+                      - generic [ref=e909]: PBS NewsHour
+                      - generic "已验证" [ref=e910]
+                    - group [ref=e913]:
+                      - generic "15万次观看" [ref=e917]: 15万
+                      - generic "12小时前" [ref=e918]
+                    - group [ref=e919]:
+                      - generic [ref=e920]: 筹款活动
+                - button "其他操作" [ref=e926]
+            - generic [ref=e931] [cursor=pointer]:
+              - link [aria-hidden] [ref=e932]:
+                - /url: /watch?v=YC4EI3ZU1WY
+                - generic [ref=e933]:
+                  - img [ref=e938]:
+                    - generic [aria-hidden] [ref=e939]: 2:55:42
+                  - img [ref=e942]:
+                    - generic [aria-hidden] [ref=e943]: 新
+              - generic [ref=e945]:
+                - generic [ref=e946]:
+                  - heading "Live Indian Wells City Council Meeting" [level=3] [ref=e947]:
+                    - link "Live Indian Wells City Council Meeting 2小时55分钟" [ref=e948]:
+                      - /url: /watch?v=YC4EI3ZU1WY
+                      - text: Live Indian Wells City Council Meeting
+                  - generic [ref=e950]:
+                    - group [ref=e951]:
+                      - generic [ref=e952]: CityofIndianWells
+                    - group [ref=e953]:
+                      - generic "335次观看" [ref=e957]: "335"
+                      - generic "直播时间：12小时前" [ref=e958]
+                - button "其他操作" [ref=e961]
+            - generic [ref=e966] [cursor=pointer]:
+              - link [aria-hidden] [ref=e967]:
+                - /url: /watch?v=zsEgP2gvxTs&pp=ugUEEgJlbg%3D%3D
+                - generic [ref=e968]:
+                  - img [ref=e973]:
+                    - generic [aria-hidden] [ref=e974]: 12:47
+                  - img [ref=e977]:
+                    - generic [aria-hidden] [ref=e978]: 新
+              - generic [ref=e980]:
+                - generic [ref=e981]:
+                  - heading "Young Voters Helped Trump Win. How Do They Feel Now? | WSJ" [level=3] [ref=e982]:
+                    - link "Young Voters Helped Trump Win. How Do They Feel Now? | WSJ 12分钟47秒钟" [ref=e983]:
+                      - /url: /watch?v=zsEgP2gvxTs&pp=ugUEEgJlbg%3D%3D
+                      - text: Young Voters Helped Trump Win. How Do They Feel Now? | WSJ
+                  - generic [ref=e985]:
+                    - group [ref=e986]:
+                      - generic [ref=e987]: The Wall Street Journal
+                      - generic "已验证" [ref=e988]
+                    - group [ref=e991]:
+                      - generic "30万次观看" [ref=e995]: 30万
+                      - generic "2天前" [ref=e996]
+                - button "其他操作" [ref=e999]
+            - generic [ref=e1004] [cursor=pointer]:
+              - link [aria-hidden] [ref=e1005]:
+                - /url: /watch?v=9arg3ae4Xbw
+                - generic [ref=e1006]:
+                  - img [ref=e1011]:
+                    - generic [aria-hidden] [ref=e1012]: 10:32
+                  - img [ref=e1015]:
+                    - generic [aria-hidden] [ref=e1016]: 新
+              - generic [ref=e1018]:
+                - generic [ref=e1019]:
+                  - 'heading "Lawrence: Trump says he has ''very severe problems.'' One appears to be declining cognitive ability." [level=3] [ref=e1020]':
+                    - 'link "Lawrence: Trump says he has ''very severe problems.'' One appears to be declining cognitive ability. 10分钟32秒钟" [ref=e1021]':
+                      - /url: /watch?v=9arg3ae4Xbw
+                      - text: "Lawrence: Trump says he has 'very severe problems.' One appears to be declining cognitive ability."
+                  - generic [ref=e1023]:
+                    - group [ref=e1024]:
+                      - generic [ref=e1025]: MS NOW
+                      - generic "已验证" [ref=e1026]
+                    - group [ref=e1029]:
+                      - generic "43万次观看" [ref=e1033]: 43万
+                      - generic "8小时前" [ref=e1034]
+                - button "其他操作" [ref=e1037]
+            - generic [ref=e1042] [cursor=pointer]:
+              - link [aria-hidden] [ref=e1043]:
+                - /url: /watch?v=WjqodCbQ7t8&pp=ugUEEgJlbg%3D%3D
+                - img [ref=e1049]:
+                  - generic [aria-hidden] [ref=e1050]: 22:55
+              - generic [ref=e1052]:
+                - generic [ref=e1053]:
+                  - heading "Rubio takes questions from reporters amid Iran conflict" [level=3] [ref=e1054]:
+                    - link "Rubio takes questions from reporters amid Iran conflict 22分钟" [ref=e1055]:
+                      - /url: /watch?v=WjqodCbQ7t8&pp=ugUEEgJlbg%3D%3D
+                      - text: Rubio takes questions from reporters amid Iran conflict
+                  - generic [ref=e1057]:
+                    - group [ref=e1058]:
+                      - generic [ref=e1059]: LiveNOW from FOX
+                      - generic "已验证" [ref=e1060]
+                    - group [ref=e1063]:
+                      - generic "15万次观看" [ref=e1067]: 15万
+                      - generic "5个月前" [ref=e1068]
+                - button "其他操作" [ref=e1071]
+            - generic [ref=e1076] [cursor=pointer]:
+              - link [aria-hidden] [ref=e1077]:
+                - /url: /watch?v=GF8J_vea64Y
+                - img [ref=e1083]:
+                  - generic [aria-hidden] [ref=e1084]: 52:32
+              - generic [ref=e1086]:
+                - generic [ref=e1087]:
+                  - heading "Colorado Chamber of Commerce 2026 Gubernatorial Forum" [level=3] [ref=e1088]:
+                    - link "Colorado Chamber of Commerce 2026 Gubernatorial Forum 52分钟" [ref=e1089]:
+                      - /url: /watch?v=GF8J_vea64Y
+                      - text: Colorado Chamber of Commerce 2026 Gubernatorial Forum
+                  - generic [ref=e1091]:
+                    - group [ref=e1092]:
+                      - generic [ref=e1093]: The Colorado Chamber of Commerce
+                    - group [ref=e1094]:
+                      - generic "2,476次观看" [ref=e1098]: "2476"
+                      - generic "7天前" [ref=e1099]
+                - button "其他操作" [ref=e1102]
+            - generic [ref=e1107] [cursor=pointer]:
+              - link [aria-hidden] [ref=e1108]:
+                - /url: /watch?v=OtZP9Omding&pp=ugUEEgJlbtIHCQlHDAGHKiGM7w%3D%3D
+                - img [ref=e1114]:
+                  - generic [aria-hidden] [ref=e1115]: 31:42
+              - generic [ref=e1117]:
+                - generic [ref=e1118]:
+                  - heading "Rubio reacts to Russia helping Iran target US troops" [level=3] [ref=e1119]:
+                    - link "Rubio reacts to Russia helping Iran target US troops 31分钟" [ref=e1120]:
+                      - /url: /watch?v=OtZP9Omding&pp=ugUEEgJlbtIHCQlHDAGHKiGM7w%3D%3D
+                      - text: Rubio reacts to Russia helping Iran target US troops
+                  - generic [ref=e1122]:
+                    - group [ref=e1123]:
+                      - generic [ref=e1124]: LiveNOW from FOX
+                      - generic "已验证" [ref=e1125]
+                    - group [ref=e1128]:
+                      - generic "131万次观看" [ref=e1132]: 131万
+                      - generic "2个月前" [ref=e1133]
+                - button "其他操作" [ref=e1136]
+  - generic [ref=e1164]:
+    - menu [ref=e1165]:
+      - menuitemcheckbox "循环播放" [active] [ref=e1166] [cursor=pointer]
+      - menuitem "迷你播放器" [ref=e1173] [cursor=pointer]
+      - menuitem "复制视频网址" [ref=e1179] [cursor=pointer]
+      - menuitem "复制当前时间的视频网址" [ref=e1185] [cursor=pointer]
+      - menuitem "复制嵌入代码" [ref=e1191] [cursor=pointer]
+      - menuitem "复制调试信息" [ref=e1197] [cursor=pointer]
+      - menuitem "排查播放问题" [ref=e1203] [cursor=pointer]
+      - menuitem "详细统计信息" [ref=e1209] [cursor=pointer]
+    - textbox [ref=e1216]

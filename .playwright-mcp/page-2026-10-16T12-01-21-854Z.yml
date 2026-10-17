@@ -1,0 +1,320 @@
+- generic [active] [ref=f5e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f5e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f5e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f5e8]:
+    - search [ref=f5e9]:
+      - generic [ref=f5e11]:
+        - link "Google 首页" [ref=f5e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQPHoECAYQBA
+        - generic [ref=f5e16]:
+          - generic [ref=f5e17]:
+            - combobox "搜索" [ref=f5e20]: "\"Rose Garden Lunch\" Trump October 15 2026 video -White House \"Rose Garden Lunch\" Trump October 15 2026 video -White House"
+            - generic [ref=f5e21]:
+              - button "清除" [ref=f5e23] [cursor=pointer]
+              - generic [ref=f5e28]:
+                - button "按语音搜索" [ref=f5e29] [cursor=pointer]
+                - button "按图搜索" [ref=f5e32] [cursor=pointer]
+          - button "搜索" [ref=f5e35] [cursor=pointer]
+    - generic [ref=f5e40]:
+      - button "设置" [ref=f5e42] [cursor=pointer]
+      - button "分享" [ref=f5e47] [cursor=pointer]
+      - generic [ref=f5e53]:
+        - button "Google 应用" [ref=f5e55] [cursor=pointer]
+        - link "登录" [ref=f5e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Rose%2BGarden%2BLunch%2522%2BTrump%2BOctober%2B15%2B2026%2Bvideo%2B-White%2BHouse&ec=futura_srp_og_si_72236_p
+  - generic [ref=f5e62]:
+    - navigation [ref=f5e68]:
+      - generic [ref=f5e74]:
+        - list [ref=f5e75]:
+          - listitem [ref=f5e76]:
+            - link "全部" [disabled] [ref=f5e77]
+          - listitem [ref=f5e80]:
+            - link "新闻" [ref=f5e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ0pQJegQIFRAB
+          - listitem [ref=f5e84]:
+            - link "视频" [ref=f5e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQtKgLegQIFhAB
+          - listitem [ref=f5e88]:
+            - link "图片" [ref=f5e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQtKgLegQIGhAB
+          - listitem [ref=f5e92]:
+            - link "短视频" [ref=f5e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQs6gLegQIGBAB
+          - listitem [ref=f5e96]:
+            - link "网页" [ref=f5e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQs6gLegQIGRAB
+          - listitem [ref=f5e100]:
+            - link "图书" [ref=f5e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ0pQJegQIFxAB
+          - listitem [ref=f5e104]:
+            - button [ref=f5e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f5e106]: 更多
+        - button "工具" [ref=f5e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f5e120]
+    - main [ref=f5e126]:
+      - generic [ref=f5e130]:
+        - generic [ref=f5e136]:
+          - generic [ref=f5e139]:
+            - link "President Trump participates in a Rose Garden Lunch Facebook · The National Desk - TND 10+ 个回应 · 19小时前" [ref=f5e141] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFUwANnZjrdtdV3BigIue1TQAGvG7Tpj2Kmh09qrPblCOLUk280VjdlukYRwROwAo2WEbeh1KZo6l0BooAZMEjN1G3UKftmvpJFn4TEdl5oBDZxxp0bqhEdUMxkHD_6MCxub0084uao1kC6js0S2pU8dYXwBPwXgWGt0fq6RRBaJd_xcYdsFB0dQTXC_qZRf-tYUy1IGA6JHJG7cjSJ8NdQ
+              - heading "President Trump participates in a Rose Garden Lunch" [level=3] [ref=f5e142]
+              - generic [ref=f5e148]:
+                - generic [ref=f5e149]: Facebook · The National Desk - TND
+                - generic [ref=f5e151]: 10+ 个回应 · 19小时前
+            - button "关于这条结果的详细信息" [ref=f5e157] [cursor=pointer]
+          - generic [ref=f5e162]:
+            - link "President Trump participates in a Rose Garden Lunch，由The National Desk - TND上传到Facebook上. 在Facebook上播放. 31:07" [ref=f5e163] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFUwANnZjrdtdV3BigIue1TQAGvG7Tpj2Kmh09qrPblCOLUk280VjdlukYRwROwAo2WEbeh1KZo6l0BooAZMEjN1G3UKftmvpJFn4TEdl5oBDZxxp0bqhEdUMxkHD_6MCxub0084uao1kC6js0S2pU8dYXwBPwXgWGt0fq6RRBaJd_xcYdsFB0dQTXC_qZRf-tYUy1IGA6JHJG7cjSJ8NdQ
+              - generic [ref=f5e164]: 31:07
+            - generic [ref=f5e173]: "President Trump participates in a Rose Garden Lunch. https ... Last viewed on: Oct 15, 2026 ..."
+          - generic [ref=f5e176]:
+            - text: 缺少字词： House ‎| 必须包含：
+            - link "House" [ref=f5e177] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+%22House%22&sa=X&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ5t4CegQIEhAS
+        - generic [ref=f5e183]:
+          - generic [ref=f5e186]:
+            - 'link "LIVE: President Trump delivers remarks at rally in Montana YouTube · FOX 4 Dallas-Fort Worth 6840+ 次观看 · 1天前" [ref=f5e188] [cursor=pointer]':
+              - /url: /goto?url=CAESfgHrOzAVaavRRGrRvwZQqbXEclNsyr6L-9AXtnY63naIIjNDH8_NVKrr8tXsLCmNZF4OAGpR9zscUHZFtaSHR7Tb91gBLli5k7Zffk3UT8J3lTo_vMwSVITt-CMxHep8hVX_bLW6-lUFPgguHBUiAwZ31QFnIn_AN-GxRdD0qw
+              - 'heading "LIVE: President Trump delivers remarks at rally in Montana" [level=3] [ref=f5e189]'
+              - generic [ref=f5e195]:
+                - generic [ref=f5e196]: YouTube · FOX 4 Dallas-Fort Worth
+                - generic [ref=f5e198]: 6840+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e204] [cursor=pointer]
+          - generic [ref=f5e209]:
+            - 'link "LIVE: President Trump delivers remarks at rally in Montana，由FOX 4 Dallas-Fort Worth上传到YouTube上. 在YouTube上播放. 2:49:45" [ref=f5e210] [cursor=pointer]':
+              - /url: /goto?url=CAESfgHrOzAVaavRRGrRvwZQqbXEclNsyr6L-9AXtnY63naIIjNDH8_NVKrr8tXsLCmNZF4OAGpR9zscUHZFtaSHR7Tb91gBLli5k7Zffk3UT8J3lTo_vMwSVITt-CMxHep8hVX_bLW6-lUFPgguHBUiAwZ31QFnIn_AN-GxRdD0qw
+              - generic [ref=f5e211]: 2:49:45
+            - generic [ref=f5e220]: "Top U.S. & World Headlines — October 15, 2026. Democracy Now ... LIVE: President Trump Holds Rose Garden Lunch - 10/15/26. Right Side ..."
+        - generic [ref=f5e225]:
+          - generic [ref=f5e228]:
+            - 'link "Exclusive Interview: Trump says Iran war will end soon, oil ... mynbc15.com https://mynbc15.com › news › nation-world" [ref=f5e230] [cursor=pointer]':
+              - /url: /goto?url=CAESsAEB6zswFXnRkgqMlFEoyFRbtPJGJccYo8jft09Un0pR2-BCQiP6zE7ZGw34hNDVS1nVQCiOPrhPwFNgBpyiV20CwY93qjVFRtQzB2d1G7r2RQVmnLdHayMdMXnM6E767lsfOkB7SY9dfj2lSqyZei2jRGdtG9b4X8uttguWoZ9CpxOCC6PYObO4Zp8DJ-XnBu9-ayx9OwusKFLT_lmzT9RqobPGP1HfVZ6Cye5Km8e3zg
+              - 'heading "Exclusive Interview: Trump says Iran war will end soon, oil ..." [level=3] [ref=f5e231]'
+              - generic [ref=f5e237]:
+                - generic [ref=f5e238]: mynbc15.com
+                - generic [ref=f5e240]: https://mynbc15.com › news › nation-world
+            - generic [ref=f5e242]:
+              - generic [ref=f5e243]: ·
+              - link "翻译此页" [ref=f5e244] [cursor=pointer]:
+                - /url: /goto?url=CAESgAIB6zswFTYYKJw_8QhDIf1RbB4dPgSGZsch1-ocGn-95m49Ffz41e8CUvS_IEPlCPbPiWHH5L1phu_cA5snylw6dFRYBEk_TQmdM9CvuPSPgfamW0lct_Dwha2FBXUkYMGlAJZ71h0hNWQwQJ_uXi8xHvK9qyGnWCM3ZwZHNvpmtcTWITWf9keAoVt4a--5sq8WAr0pjQIuT0hSnaP08YRfKMbocfTSRhCU7C_g2uH9WcW46f2-Zu-gb62cSzlNb7MEn1Dvgm4TjikMwD3lOpE882Jnvv_1Szw3F607tT_d8k-AW9DRRv6FWR8WZoBwHVk6CUUIedmNqDH_H3H2AWVS
+            - button "关于这条结果的详细信息" [ref=f5e249] [cursor=pointer]
+          - generic [ref=f5e255]:
+            - generic [ref=f5e256]: 2天前 —
+            - generic [ref=f5e257]:
+              - emphasis [ref=f5e258]: Trump
+              - text: at
+              - emphasis [ref=f5e259]: Rose Garden Lunch
+              - text: . President
+              - emphasis [ref=f5e260]: Trump
+              - text: participates in a
+              - emphasis [ref=f5e261]: Rose Garden Lunch
+              - text: ". WATCH. Exclusive Interview:"
+              - emphasis [ref=f5e262]: Trump
+              - text: ...
+        - generic [ref=f5e269]:
+          - generic [ref=f5e272]:
+            - link "Jon Bonck Shares His Testimony & Inspiring Message with ... YouTube · Right Side Broadcasting Network 920+ 次观看 · 5天前" [ref=f5e274] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV6DiXR8vaoPhLjB2VGYj1sgyb3VvuTCb6pphWGISQHA2gTCeD6VDT_macciG9HetcZfYOeRFMibjayuqMOVGP38VjtW7AEQpsfJ4R8J5S5fKiHuq1jMmr-cALKowqDRvNdQ
+              - heading "Jon Bonck Shares His Testimony & Inspiring Message with ..." [level=3] [ref=f5e275]
+              - generic [ref=f5e281]:
+                - generic [ref=f5e282]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f5e284]: 920+ 次观看 · 5天前
+            - button "关于这条结果的详细信息" [ref=f5e290] [cursor=pointer]
+          - generic [ref=f5e295]:
+            - button "Jon Bonck Shares His Testimony & Inspiring Message with ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 8:46" [ref=f5e296] [cursor=pointer]:
+              - generic [ref=f5e297]: 8:46
+            - generic [ref=f5e313]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26. Right Side Broadcasting Network. New. 34K views · 6:15."
+        - generic [ref=f5e318]:
+          - generic [ref=f5e321]:
+            - link "Trump says Iran war will end soon, oil prices will drop fast WSET https://wset.com › news › nation-world › e..." [ref=f5e323] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFXAW23_GVULrgSmIl8KYS3giLXkFOnXJ-Ob2fX09Ok1Fg5Cx5dG5c3nq-_4jBU1s755yhfsKutXp9j5dZRBJSEBmRtlrziRLLb8U4-6JMvQjP_UJJwORB3t22ZVbN1D6zNTOK5OXYhJmxU81UdAM-vXYlgZJzfBsdYrZ-ZBXAVKL_uW1ZOWmQ6-Ltt8Pf3_bGlRBLcy7dr7MqBbX9Ewj7n2Sii4lVoxRzNOP4QoKwJxZVdum6wSqGnW4N-e-q88S
+              - heading "Trump says Iran war will end soon, oil prices will drop fast" [level=3] [ref=f5e324]
+              - generic [ref=f5e330]:
+                - generic [ref=f5e331]: WSET
+                - generic [ref=f5e333]: https://wset.com › news › nation-world › e...
+            - generic [ref=f5e335]:
+              - generic [ref=f5e336]: ·
+              - link "翻译此页" [ref=f5e337] [cursor=pointer]:
+                - /url: /goto?url=CAESlQIB6zswFaIKscqBWC1ywoqhV6fpKhWPXjsvYCnKaM-mBwlqpQ_G1axl5fNNkIwAvG6He3BcyKAv1UXmDM7VPL73FsqD2Ud642njmUm9L8cZvkA0Eu3ParzrszflVCaWgA2hk2fP_V73yV5UwawFMao3SY9uTBJY3q7lHGuZs4pafvgco7RFgi67hP6d9YYu46zg9NC7kG_fp3q9y99rvDcrNwxuzbLGF87TN_Zy9j4BN7B9dGTZkOM4V73FsRttmtsBfJ-kqnUWRBa8QX_Naqt-fz7opRg5bvVLlyHbH8hgxTW6w-duHyA8sQvM42uqEqs87KSQYaxOOrTz4kiYgJuDiBOsHGUD6ZBKDCceCTNPv336IvXb
+            - button "关于这条结果的详细信息" [ref=f5e342] [cursor=pointer]
+          - generic [ref=f5e348]:
+            - generic [ref=f5e349]: 2天前 —
+            - generic [ref=f5e350]:
+              - emphasis [ref=f5e351]: Trump
+              - text: at
+              - emphasis [ref=f5e352]: Rose Garden Lunch
+              - text: . President
+              - emphasis [ref=f5e353]: Trump
+              - text: participates in a
+              - emphasis [ref=f5e354]: Rose Garden Lunch
+              - text: ". WATCH. Exclusive Interview:"
+              - emphasis [ref=f5e355]: Trump
+              - text: ...
+        - generic [ref=f5e362]:
+          - generic [ref=f5e365]:
+            - link "Police search for suspect accused of repeatedly damaging ... YouTube · Eyewitness News ABC7NY 40+ 次观看 · 14小时前" [ref=f5e367] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVZJbwKg1789F7OBcnvJaVX8K6TY-6JvQi4eQgdd_QW-UrRIUAWJ3IPbjLchtzn-xiernVpyEf-KFXj_zxMvQagzUBexuecK3f23ufmhaSJxbP2ih40cfQsRtopFThGA26mg
+              - heading "Police search for suspect accused of repeatedly damaging ..." [level=3] [ref=f5e368]
+              - generic [ref=f5e374]:
+                - generic [ref=f5e375]: YouTube · Eyewitness News ABC7NY
+                - generic [ref=f5e377]: 40+ 次观看 · 14小时前
+            - button "关于这条结果的详细信息" [ref=f5e383] [cursor=pointer]
+          - generic [ref=f5e388]:
+            - button "Police search for suspect accused of repeatedly damaging ...，由Eyewitness News ABC7NY上传到YouTube上. 在 Google 上播放. 0:45" [ref=f5e389] [cursor=pointer]:
+              - generic [ref=f5e390]: 0:45
+            - generic [ref=f5e403]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26. Right Side Broadcasting Network. New. 30K views · 34:14."
+        - generic [ref=f5e408]:
+          - heading "图片" [level=2] [ref=f5e412]
+          - generic [ref=f5e416]:
+            - generic [ref=f5e420] [cursor=pointer]:
+              - link "President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook Facebook" [ref=f5e421]:
+                - /url: /goto?url=CAESpAEB6zswFUwANnZjrdtdV3BigIue1TQAGvG7Tpj2Kmh09qrPblCOLUk280VjdlukYRwROwAo2WEbeh1KZo6l0BooAZMEjN1G3UKftmvpJFn4TEdl5oBDZxxp0bqhEdUMxkHD_6MCxub0084uao1kC6js0S2pU8dYXwBPwXgWGt0fq6RRBaJd_xcYdsFB0dQTXC_qZRf-tYUy1IGA6JHJG7cjSJ8NdQ
+              - button [ref=f5e423]:
+                - img "President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook" [ref=f5e426]
+                - generic [ref=f5e427]: 18 小时前
+              - generic [ref=f5e429]:
+                - generic [ref=f5e431]: President Trump participates in a Rose Garden Lunch., https://thenationaldesk.com/news/americas-news-now | The National Desk - TND | Facebook
+                - generic [ref=f5e432]:
+                  - generic [ref=f5e434]: Facebook
+                  - button "关于这条结果的详细信息" [ref=f5e444]
+            - generic [ref=f5e452] [cursor=pointer]:
+              - 'link "LIVE: President Trump delivers remarks at rally in Montana YouTube" [ref=f5e453]':
+                - /url: /goto?url=CAESfgHrOzAVaavRRGrRvwZQqbXEclNsyr6L-9AXtnY63naIIjNDH8_NVKrr8tXsLCmNZF4OAGpR9zscUHZFtaSHR7Tb91gBLli5k7Zffk3UT8J3lTo_vMwSVITt-CMxHep8hVX_bLW6-lUFPgguHBUiAwZ31QFnIn_AN-GxRdD0qw
+              - button [ref=f5e455]:
+                - 'img "LIVE: President Trump delivers remarks at rally in Montana" [ref=f5e457]'
+              - generic [ref=f5e459]:
+                - generic [ref=f5e461]: "LIVE: President Trump delivers remarks at rally in Montana"
+                - generic [ref=f5e462]:
+                  - generic [ref=f5e464]: YouTube
+                  - button "关于这条结果的详细信息" [ref=f5e474]
+            - generic [ref=f5e482] [cursor=pointer]:
+              - 'link "Fact Check Team: What Congress passed, and what stalled ... KRCR" [ref=f5e483]':
+                - /url: /goto?url=CAEStAIB6zswFZX6wkfGZWnf-ecSMWmTkMDm9Mr6pwqQM2rVmbKURhVRjYmYGb6pMSElvJzJlcXXM75kIa3uzAcsuX6scWSdfNgrYKqgTX8_KRfw13UzTBeXNz-eWxmMue0hqG4ilzQgAB8w5tJObP_7Wp2rMAKtVd58-Q1tI_2nnDO_GChRiaVfDWhQWBxRlkV5J3kIrB_MjJgd6T6SxeH1IVeiAg67_nwJU5VidelJLm27hJRg7pLHbYNPOxcuUbpGORt_uXbyh7OmyXq70Fdomptd34gC9-Y0O81QoBegWZgTMRdKvmBOsfb6AG0zQzTlGq8wWuW9FBWNSvm8FCYqj9e_rx0Mb_OKGIIfzkIbJ1wz_5hwNBJ30OQzqQevasGftZhSIdOXoBWR75DwXThj89fQyBmwlQ
+              - button [ref=f5e485]:
+                - 'img "Fact Check Team: What Congress passed, and what stalled ..." [ref=f5e487]'
+              - generic [ref=f5e489]:
+                - generic [ref=f5e491]: "Fact Check Team: What Congress passed, and what stalled ..."
+                - generic [ref=f5e492]:
+                  - generic [ref=f5e494]: KRCR
+                  - button "关于这条结果的详细信息" [ref=f5e504]
+          - button "显示更多图片" [ref=f5e510] [cursor=pointer]:
+            - separator [aria-hidden] [ref=f5e511]
+        - generic [ref=f5e523]:
+          - generic [ref=f5e526]:
+            - link "Feds Searched Ilhan Omar's Home. Here's What We Tried First YouTube · Nancy Mace 680+ 次观看 · 16小时前" [ref=f5e528] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVbS1IeC282-Kvz6ycl2roky1YchFoBAgtTmk6Or4ZRN_iuOgny_mcmR3Ny7U7Sjmlq6vax7PHVFyHoRdUabpdgmbKT2pJOZ71x1AlXUq727to6RdztEvmgHHDO0t1LbU_Pw
+              - heading "Feds Searched Ilhan Omar's Home. Here's What We Tried First" [level=3] [ref=f5e529]
+              - generic [ref=f5e535]:
+                - generic [ref=f5e536]: YouTube · Nancy Mace
+                - generic [ref=f5e538]: 680+ 次观看 · 16小时前
+            - button "关于这条结果的详细信息" [ref=f5e544] [cursor=pointer]
+          - generic [ref=f5e549]:
+            - button "Feds Searched Ilhan Omar's Home. Here's What We Tried First，由Nancy Mace上传到YouTube上. 在 Google 上播放. 1:38" [ref=f5e550] [cursor=pointer]:
+              - generic [ref=f5e551]: 1:38
+            - generic [ref=f5e567]: "Video unavailable. This content isn't available ... FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26."
+        - generic [ref=f5e572]:
+          - generic [ref=f5e575]:
+            - link "Trump announces new Montana 'super range' for DOD ... KMTR https://nbc16.com › news › nation-world" [ref=f5e577] [cursor=pointer]:
+              - /url: /goto?url=CAES2wEB6zswFfFRXXrv7VNrM8ob2z0RRL0Pc4ewRdcTQq2mPRcgwCDgUlchCA-iWSAmIohgqVjw03cFwOSvB6lN7PIlVHM4YHur_aLK283Ie9aS4lIe1U6RK8H76OTr45nEuRxpKNMjryLen1PUX5QqBqnNpIj9p4WEKHU6jAPkWBaf0DrG0dqV7B6_ZOs4s27q04ybqZiP90k5ugBvXc6H4ZnJCZHa5sduSYHvSALA7aEgyI8eg5O6y4VCEihdfecgaO2dUS4lNIism116rwv71ZSDNcWFvPqHOr10ogk
+              - heading "Trump announces new Montana 'super range' for DOD ..." [level=3] [ref=f5e578]
+              - generic [ref=f5e584]:
+                - generic [ref=f5e585]: KMTR
+                - generic [ref=f5e587]: https://nbc16.com › news › nation-world
+            - generic [ref=f5e589]:
+              - generic [ref=f5e590]: ·
+              - link "翻译此页" [ref=f5e591] [cursor=pointer]:
+                - /url: /goto?url=CAESqgIB6zswFd7lzfpQ1sgqCfB2Q_7PLmqFx_-4lYFrYe56VmFyG31VMMiBJ3RlI52zjXiWtY6sy02r8KXcc5S_BhxGpPFpPQysw_tYK61ew6MJoM6RE_Lqsto8Cs3EtcrV0pZSQCWoKlJJHgwt170JQLSiWclAtkPmZ50lp7yja6ZHqaOqizBgddfaqnCMsJHtspwHREX3ghZAd9X8ygElwpxZ10K0cL2cxlVEdS9xhUZXxTkEgVCYEAgDrF6KB2nuqj-hXUMhWdZJ0-hpPdo-JcFl1nBoW-VBRvmsTVUrrMz-CmzNdVo-9S4BuILTK4s7mXsEmvUkyUHcfMjAgUjDdEdFMaeStyfkpmiU3cFhAUNnnLTg0Ih46tpQs41FHun8vyaN2Ul_nMDRNKpQ
+            - button "关于这条结果的详细信息" [ref=f5e596] [cursor=pointer]
+          - generic [ref=f5e602]:
+            - generic [ref=f5e603]: 21小时前 —
+            - generic [ref=f5e604]:
+              - emphasis [ref=f5e605]: Trump
+              - text: at
+              - emphasis [ref=f5e606]: Rose Garden Lunch
+              - text: . President
+              - emphasis [ref=f5e607]: Trump
+              - text: participates in a
+              - emphasis [ref=f5e608]: Rose Garden Lunch
+              - text: . WATCH.
+              - emphasis [ref=f5e609]: Trump
+              - text: announces new Montana ...
+        - generic [ref=f5e613]:
+          - generic [ref=f5e616]:
+            - 'link "Fact Check Team: What Congress passed, and ... KRCR https://krcrtv.com › news › nation-world" [ref=f5e618] [cursor=pointer]':
+              - /url: /goto?url=CAEStAIB6zswFRfEcXnRznD6fIB8-NQEzAf_DmC1xEOyDy1IeyJy-kAofW3ea3W1lsu8qml-wH6Te9mvq1HbAvx7Y4zpKsKFYuq4Br4H0Ev6wqDFYrOuEGC3ANbK12klQ-le6tg-OVfiQd-9nLUWQPtsrnL25-J2BHUYlc0GLlLjv3oygYLEn4tcNysWJuE1RIzihk7yly9vmsRgDJEuMa6hkC0c5qjgRj6gskQraVz1r5NM0dzv-d4nUZaEQKqaL6RyufYTfzC4rcFLq7Yh4GvrLkD6a6cJQVmakkyGTED0H8pCNqG8449Y79GVd7_2BuV90I4ysHeNyWnBdLQ9iKhg-CxvFgsp9Nd68QgjFS48uOm2H5lAAWYxKVFnTjOb68rlqf3Y15b1SmRjWRMsX7Fbj52rT63RQg
+              - 'heading "Fact Check Team: What Congress passed, and ..." [level=3] [ref=f5e619]'
+              - generic [ref=f5e625]:
+                - generic [ref=f5e626]: KRCR
+                - generic [ref=f5e628]: https://krcrtv.com › news › nation-world
+            - generic [ref=f5e630]:
+              - generic [ref=f5e631]: ·
+              - link "翻译此页" [ref=f5e632] [cursor=pointer]:
+                - /url: /goto?url=CAESgwMB6zswFV5EA7tkAr4iTNMLBaPI4y6QIBLeDNaK6pj8pjlv32fvDPAPVWcj5Z4pTkob-8Py5DEoj4kZTgoicixd4SnVZIxKG3FGkfl3gfumWGL7Q8ayJjRzzyaBCx2rBwcBCvYHsTKn2rfI-XmZGUHpgF6iG7srh4CLIjZH5_gbM9GYbrCu7CZJhVlaN8QFIAasvjL5arc364kn2Fygk1Db9bQdiqMIZUY5pT55ohwptxJ9QH_CXsnzVSbZdplvQkE2eh_ruYFd00bOcl5WUB4rRPq4eLxMpvF2jtmRGGkP5oQ8yzacd2tOXt-w8bdBERKxlbdt6POjjXlnbDnHwn3i5ycdBaD7VfM5fiaH3by5Ix5z7XiFgRpcXLPB-0802FN8E68EIKZ1kPOGI4MzzdRmPDkVfOdWIKjlDGWKQiTAbyD2yCIOGivXc6V7_FzrJVjOBSkAwXJVNZGnCiyEe3XxCCvfEYr-NFVarPym_dHr_1Pajh4NZWCxxUxbppeHXugpSWk
+            - button "关于这条结果的详细信息" [ref=f5e637] [cursor=pointer]
+          - generic [ref=f5e643]:
+            - generic [ref=f5e644]: 3天前 —
+            - generic [ref=f5e645]:
+              - emphasis [ref=f5e646]: Trump
+              - text: at
+              - emphasis [ref=f5e647]: Rose Garden Lunch
+              - text: . President
+              - emphasis [ref=f5e648]: Trump
+              - text: participates in a
+              - emphasis [ref=f5e649]: Rose Garden Lunch
+              - text: ". WATCH. Fact Check Team: What ..."
+      - navigation [ref=f5e652]:
+        - heading "网页导航" [level=1] [ref=f5e653]
+        - text: "1"
+        - link "Page 2" [ref=f5e656] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=10&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAE
+          - text: "2"
+        - link "Page 3" [ref=f5e658] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=20&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAG
+          - text: "3"
+        - link "Page 4" [ref=f5e660] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=30&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAI
+          - text: "4"
+        - link "Page 5" [ref=f5e662] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=40&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAK
+          - text: "5"
+        - link "Page 6" [ref=f5e664] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=50&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAM
+          - text: "6"
+        - link "Page 7" [ref=f5e666] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=60&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAO
+          - text: "7"
+        - link "Page 8" [ref=f5e668] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=70&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAQ
+          - text: "8"
+        - link "Page 9" [ref=f5e670] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=80&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAS
+          - text: "9"
+        - link "Page 10" [ref=f5e672] [cursor=pointer]:
+          - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=90&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8tMDegQIGxAU
+          - text: "10"
+        - heading [level=2] [ref=f5e674]:
+          - link "下一页" [ref=f5e675] [cursor=pointer]:
+            - /url: /search?q=%22Rose+Garden+Lunch%22+Trump+October+15+2026+video+-White+House&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnuqbLMlcPMwQX2xP9x8PYduZWhDxw:1792152080473&ei=EBLSavi6HNfQkPIP0ZjHiQ0&start=10&sa=N&sstk=AS6-VmI0PECmy2PhD3Dm0XpQujyhiIPGIcSf6l7krsdI0YraQ3iwGkU9dC445_eguYbY0LKq46-krC5rZ564cEcEqSzdV08Ij_UCrA&ved=2ahUKEwj4go_hvr6XAxVXKEQIHVHMMdEQ8NMDegQIGxAW
+      - navigation
+    - contentinfo [ref=f5e678]:
+      - heading "页脚链接" [level=1] [ref=f5e679]
+      - generic [ref=f5e683]:
+        - generic [ref=f5e687]:
+          - button "海口市 中国海南省 - 根据您的活动记录" [ref=f5e689] [cursor=pointer]:
+            - generic [ref=f5e690]: 海口市 中国海南省
+            - generic [ref=f5e692]:
+              - text: "-"
+              - generic [ref=f5e693]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f5e695] [cursor=pointer]
+        - generic [ref=f5e698]:
+          - link "帮助" [ref=f5e699] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f5e701] [cursor=pointer]
+          - link "隐私权" [ref=f5e703] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f5e704] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

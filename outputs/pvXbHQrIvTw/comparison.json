@@ -8,20 +8,115 @@
     "location": "The White House",
     "participant": "President Trump",
     "source_url": "https://www.youtube.com/watch?v=pvXbHQrIvTw",
-    "source_match_status": "title_match_only",
-    "reuse_rights_status": "not_verified",
+    "source_match_status": "operator_attested_exact_event",
+    "reuse_rights_status": "operator_attested_for_processing_and_public_adaptation",
     "local_file_size_bytes": 262338614,
-    "input_sha256": null,
-    "input_size_bytes": null
+    "input_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+    "input_size_bytes": 262338614
   },
   "comparison_status": "not_run",
   "smartsub_preview": {
-    "status": "not_run",
-    "video_url": null,
+    "status": "public_unverified_preview",
+    "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
     "subtitles": {
-      "english": null,
-      "chinese": null,
-      "bilingual": null
+      "english": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en.srt",
+      "chinese": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt",
+      "bilingual": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+    },
+    "manifest_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft-manifest.json",
+    "source_sha256": "33bf25655531190a2d73510649b780b21343481b308f993c107d87053e067171",
+    "source_size_bytes": 262338614,
+    "review_status": {
+      "source_audio_and_asr_accuracy": "not_verified",
+      "translation_accuracy": "not_verified",
+      "clean_frame_and_style_review": "not_verified",
+      "release_gate": "blocked"
+    },
+    "render": {
+      "application": "SmartSub",
+      "version": "3.9.0",
+      "source_commit": "a2b164b3dd86388355c6a4b84e4a49825a0e7f57",
+      "compose": "hardcode",
+      "encoder": "CPU, high quality",
+      "subtitle_authoring": "pysubs2==1.8.0, explicit ASS font/color overrides",
+      "paid_services_used": false,
+      "voice_cloning_used": false
+    },
+    "measurements": {
+      "duration_seconds": 604.601,
+      "resolution": "1920x1080",
+      "output_size_bytes": 446302257,
+      "processing_seconds": 738,
+      "subtitle_cues": 173,
+      "english_to_chinese_font_ratio": 0.804,
+      "english_reading_speed_over_20_cps_cues": [
+        2,
+        3,
+        4,
+        10,
+        13,
+        15,
+        20,
+        24,
+        25,
+        33,
+        35,
+        42,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        54,
+        56,
+        59,
+        61,
+        63,
+        65,
+        82,
+        83,
+        89,
+        90,
+        92,
+        93,
+        94,
+        97,
+        98,
+        103,
+        105,
+        106,
+        107,
+        112,
+        115,
+        117,
+        118,
+        120,
+        130,
+        134,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        147,
+        153,
+        159,
+        160,
+        161,
+        163,
+        167,
+        168
+      ],
+      "chinese_reading_speed_over_10_cps_cues": [
+        25,
+        42,
+        59,
+        106,
+        140,
+        147
+      ]
     }
   },
   "variants": [
@@ -29,12 +124,50 @@
       "id": "open-source-baseline",
       "label": "开源基线",
       "description": "本仓库可复现基线；不以降低质量为目的。",
-      "status": "not_run",
+      "status": "preview_unverified",
       "models": {
-        "asr": "faster-whisper large-v3-turbo (repository pipeline)",
-        "translation": "facebook/m2m100_1.2B (repository pipeline)"
+        "asr": "large-v3-turbo",
+        "translation": "facebook/m2m100_1.2B"
       },
-      "render": "ffmpeg bilingual subtitle burn-in; current repository style",
+      "render": "SmartSub 3.9.0 hard-burn via hardcode (CPU, high quality); pysubs2==1.8.0, explicit ASS font/color overrides",
+      "audit": [],
+      "quality_checks": {
+        "source_audio_and_asr_accuracy": "not_verified",
+        "translation_accuracy": "not_verified",
+        "clean_frame_and_style_review": "not_verified",
+        "release_gate": "blocked"
+      },
+      "video_url": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.mp4",
+      "subtitles": {
+        "english": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en.srt",
+        "chinese": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.zh-Hans.srt",
+        "bilingual": "https://github.com/gdelt0003/gdelt0003/releases/download/pvXbHQrIvTw-smartsub-draft-38540536544/pvXbHQrIvTw-smartsub-draft.en-zh.srt"
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": 262338614,
+        "duration_seconds": 604.601,
+        "resolution": "1920x1080",
+        "processing_seconds": 738,
+        "cost_usd": 0,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    },
+    {
+      "id": "microsoft-copilot-gpt6",
+      "label": "Microsoft Copilot coding agent（截图显示产品内路由曾切换至 gpt-6-luna）",
+      "description": "用户提供的 Copilot 界面截图显示 agent 曾自动切换至 gpt-6-luna。此为产品内 agent 模型路由证据，不代表仓库应用直接调用模型 API，也不代表 GPT-6 处理了本视频。",
+      "status": "agent_route_observed_media_pipeline_not_run",
+      "models": {
+        "asr": "未用于本视频处理",
+        "translation": "未用于本视频处理"
+      },
+      "render": "Copilot coding agent 参与仓库工程开发；本视频由 SmartSub 3.9.0 开源工具渲染",
       "audit": [],
       "quality_checks": {
         "transcript_review": "not_run",
@@ -64,15 +197,91 @@
       }
     },
     {
-      "id": "microsoft-copilot-gpt6",
-      "label": "Microsoft Copilot / GPT-6（用户指定，未验证）",
-      "description": "只有在官方可用模型端点、模型 ID 和获授权凭证确认后才能运行；不以其他模型冒充。",
-      "status": "blocked_model_unavailable",
+      "id": "videocaptioner-japanese",
+      "label": "VideoCaptioner / 日语视频处理（独立工具）",
+      "description": "面向日语视频转录、字幕翻译、配音与烧录的独立 CLI/GUI 工具；支持 `videocaptioner process video.mp4 --target-language ja` 这一类全流程。",
+      "status": "not_run",
       "models": {
-        "asr": null,
-        "translation": null
+        "asr": "bijian / faster-whisper / whisper-compatible engines (upstream tool)",
+        "translation": "bing / google / optional LLM"
       },
-      "render": "同一双语字幕版式；待官方模型端点与可复现配置确认",
+      "render": "独立日语视频处理流水线；待同一输入复核后再作对照",
+      "audit": [],
+      "quality_checks": {
+        "transcript_review": "not_run",
+        "translation_review": "not_run",
+        "audio_alignment_review": "not_run",
+        "rendered_frame_review": "not_run"
+      },
+      "video_url": null,
+      "subtitles": {
+        "english": null,
+        "chinese": null,
+        "bilingual": null
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": null,
+        "duration_seconds": null,
+        "resolution": null,
+        "processing_seconds": null,
+        "cost_usd": null,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    },
+    {
+      "id": "ytb2bili-video-pipeline",
+      "label": "ytb2bili / YouTube → Bilibili 流程（独立工具）",
+      "description": "本工具强调本地视频翻译、双语播出与 YouTube 到 Bilibili 的端到端工作流；不等同于原生日语 ASR 评测，但具备独立的视频工作流与上传自动化。",
+      "status": "not_run",
+      "models": {
+        "asr": "upstream workflow-dependent; not fixed in this repo",
+        "translation": "workflow-dependent; not fixed in this repo"
+      },
+      "render": "本地工作流/上传自动化；待同一输入和同一字幕格式对照后再比较",
+      "audit": [],
+      "quality_checks": {
+        "transcript_review": "not_run",
+        "translation_review": "not_run",
+        "audio_alignment_review": "not_run",
+        "rendered_frame_review": "not_run"
+      },
+      "video_url": null,
+      "subtitles": {
+        "english": null,
+        "chinese": null,
+        "bilingual": null
+      },
+      "transcript": {
+        "english": null,
+        "chinese": null
+      },
+      "metrics": {
+        "processed_input_size_bytes": null,
+        "duration_seconds": null,
+        "resolution": null,
+        "processing_seconds": null,
+        "cost_usd": null,
+        "wer": null,
+        "translation_score": null,
+        "cue_sync_error_ms": null
+      }
+    },
+    {
+      "id": "microsoft-frontier-stack",
+      "label": "Microsoft Copilot agent 路线（工程工作流，不是媒体引擎）",
+      "description": "用户提供的界面截图显示 Copilot agent 曾自动切换至 gpt-6-luna；此证据只说明该会话的产品内模型路由，不代表所有租户都可用，也不构成视频 ASR/翻译/渲染结果。",
+      "status": "agent_route_observed_media_pipeline_not_run",
+      "models": {
+        "asr": "未用于本视频处理",
+        "translation": "未用于本视频处理"
+      },
+      "render": "仓库代码由 Copilot coding agent 参与开发；视频媒体处理使用单独登记的开源工具链",
       "audit": [],
       "quality_checks": {
         "transcript_review": "not_run",

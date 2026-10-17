@@ -56,8 +56,10 @@ function renderVariant(variant, elementId) {
   const state = document.createElement('p');
   state.className = 'comparison-state';
   state.dataset.state = variant.status || 'not_run';
-  state.textContent = variant.status === 'blocked_model_unavailable'
-    ? '未运行：尚无经确认的 Microsoft Copilot GPT-6 模型 ID、官方端点与授权凭证；未用其他模型冒充。'
+  state.textContent = variant.status === 'agent_route_observed_media_pipeline_not_run'
+    ? '已观察到 Copilot coding agent 的产品内模型路由证据；没有证据表明该 agent 或 GPT-6 处理了这份媒体。'
+    : variant.status === 'blocked_model_unavailable'
+      ? '未运行：尚无经确认的应用侧媒体模型处理配置；未用其他模型冒充。'
     : variant.status === 'preview_unverified'
       ? '公开机器生成草稿预览，未经人工核验；源音/ASR、翻译、阅读速度和全片画面检查仍未通过或未验证。'
     : variant.status === 'complete'
@@ -148,6 +150,9 @@ function renderComparison(manifest) {
   const byId = Object.fromEntries((manifest.variants || []).map((variant) => [variant.id, variant]));
   renderVariant(byId['open-source-baseline'] || {}, 'variant-open-source');
   renderVariant(byId['microsoft-copilot-gpt6'] || {}, 'variant-microsoft');
+  renderVariant(byId['videocaptioner-japanese'] || {}, 'variant-videocaptioner');
+  renderVariant(byId['ytb2bili-video-pipeline'] || {}, 'variant-ytb2bili');
+  renderVariant(byId['microsoft-frontier-stack'] || {}, 'variant-microsoft-frontier');
   const previewAvailable = manifest.smartsub_preview?.status === 'public_unverified_preview';
   $mediaStatus.textContent = previewAvailable
     ? '发布状态：仅公开机器生成、未经人工核验的草稿预览；正式发布门槛仍受阻。'

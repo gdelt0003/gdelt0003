@@ -1,0 +1,275 @@
+- generic [ref=f11e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f11e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f11e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f11e8]:
+    - search [ref=f11e9]:
+      - generic [ref=f11e11]:
+        - link "Google 首页" [ref=f11e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQPHoECAYQBA
+        - generic [ref=f11e16]:
+          - generic [ref=f11e17]:
+            - combobox "搜索" [ref=f11e20]: "\"FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders\" 10/15/26 RSBN \"FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders\" 10/15/26 RSBN"
+            - generic [ref=f11e21]:
+              - button "清除" [ref=f11e23] [cursor=pointer]
+              - generic [ref=f11e28]:
+                - button "按语音搜索" [ref=f11e29] [cursor=pointer]
+                - button "按图搜索" [ref=f11e32] [cursor=pointer]
+          - button "搜索" [ref=f11e35] [cursor=pointer]
+    - generic [ref=f11e40]:
+      - button "设置" [ref=f11e42] [cursor=pointer]
+      - button "分享" [ref=f11e47] [cursor=pointer]
+      - generic [ref=f11e53]:
+        - button "Google 应用" [ref=f11e55] [cursor=pointer]
+        - link "登录" [ref=f11e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522FULL%2BEVENT%253A%2BPresident%2BTrump%2BSpeaks%2Bat%2BRose%2BGarden%2BLunch%2Bfor%2BFirst%2BResponders%2522%2B10%252F15%252F26%2BRSBN&ec=futura_srp_og_si_72236_p
+  - generic [ref=f11e62]:
+    - navigation [ref=f11e68]:
+      - generic [ref=f11e74]:
+        - list [ref=f11e75]:
+          - listitem [ref=f11e76]:
+            - link "全部" [disabled] [ref=f11e77]
+          - listitem [ref=f11e80]:
+            - link "新闻" [ref=f11e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ0pQJegQIGRAB
+          - listitem [ref=f11e84]:
+            - link "视频" [ref=f11e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQtKgLegQIGBAB
+          - listitem [ref=f11e88]:
+            - link "短视频" [ref=f11e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQs6gLegQIFBAB
+          - listitem [ref=f11e92]:
+            - link "图片" [ref=f11e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQtKgLegQIFRAB
+          - listitem [ref=f11e96]:
+            - link "网页" [ref=f11e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQs6gLegQIFxAB
+          - listitem [ref=f11e100]:
+            - link "图书" [ref=f11e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ0pQJegQIFhAB
+          - listitem [ref=f11e104]:
+            - button [ref=f11e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f11e106]: 更多
+        - button "工具" [ref=f11e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f11e120]
+    - main [ref=f11e126]:
+      - generic [ref=f11e130]:
+        - generic [ref=f11e137]:
+          - generic [ref=f11e140]:
+            - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch ... YouTube · Right Side Broadcasting Network 8.2万+ 次观看 · 18小时前" [active] [ref=f11e142] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVpdVLQ0GUlHrLTBHC0w6fHcQKotyk8DOyoZUA93va-QuCm_ATdvnOqf7_EGoxWM-HI0NKmhsrZ5H6N94YBUw_j1Eotmj_96F4qQlgaQyRYtCHTAzLFFlSUTA-7VfepI5WaA
+              - 'heading "FULL EVENT: President Trump Speaks at Rose Garden Lunch ..." [level=3] [ref=f11e143]'
+              - generic [ref=f11e149]:
+                - generic [ref=f11e150]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f11e152]: 8.2万+ 次观看 · 18小时前
+            - button "关于这条结果的详细信息" [ref=f11e158] [cursor=pointer]
+          - generic [ref=f11e163]:
+            - 'button "FULL EVENT: President Trump Speaks at Rose Garden Lunch ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 32:45" [ref=f11e164] [cursor=pointer]':
+              - generic [ref=f11e165]: 32:45
+            - generic [ref=f11e181]: "... rsbn/id1556666942 Android/Android TV: https ... FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders ..."
+        - generic [ref=f11e188]:
+          - generic [ref=f11e191]:
+            - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch ... Facebook · Right Side Broadcasting 730+ 个回应 · 9小时前" [ref=f11e193] [cursor=pointer]':
+              - /url: /goto?url=CAESyAEB6zswFZfiqX2RrUe1tLWfPC51xhdo7VtgQE0kWm3OzSi--ELzncVCk6vaRVNiii8xz6DnFndK8yxfU6cmePm8ijdXK_RS01u6KRjMj3XDQu7mGkv9kKeMh7PiQClICcCiOYz6tuXIAETBWucdXKHbHXuJdqaA8OAjI7SRAA4wvcA6Sc9vZrPhHwKiympg7pD7gZOXB82hxL9K9Qw758JVlQ-Doqg-tFdz9G-gbAMbkDKO8IW2L0lAT6H_I5_C37C9GBPPzq4o0A
+              - 'heading "FULL EVENT: President Trump Speaks at Rose Garden Lunch ..." [level=3] [ref=f11e194]'
+              - generic [ref=f11e200]:
+                - generic [ref=f11e201]: Facebook · Right Side Broadcasting
+                - generic [ref=f11e203]: 730+ 个回应 · 9小时前
+            - button "关于这条结果的详细信息" [ref=f11e209] [cursor=pointer]
+          - generic [ref=f11e214]:
+            - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch ...，由Right Side Broadcasting上传到Facebook上. 在Facebook上播放. 32:45" [ref=f11e215] [cursor=pointer]':
+              - /url: /goto?url=CAESyAEB6zswFZfiqX2RrUe1tLWfPC51xhdo7VtgQE0kWm3OzSi--ELzncVCk6vaRVNiii8xz6DnFndK8yxfU6cmePm8ijdXK_RS01u6KRjMj3XDQu7mGkv9kKeMh7PiQClICcCiOYz6tuXIAETBWucdXKHbHXuJdqaA8OAjI7SRAA4wvcA6Sc9vZrPhHwKiympg7pD7gZOXB82hxL9K9Qw758JVlQ-Doqg-tFdz9G-gbAMbkDKO8IW2L0lAT6H_I5_C37C9GBPPzq4o0A
+              - generic [ref=f11e216]: 32:45
+            - generic [ref=f11e225]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26."
+        - generic [ref=f11e230]:
+          - generic [ref=f11e233]:
+            - link "Right Side Broadcasting Network YouTube · Right Side Broadcasting Network 超过 209万位关注者" [ref=f11e235] [cursor=pointer]:
+              - /url: /goto?url=CAESWAHrOzAVi6ncmM6CrW57qAeCqkdCfWhw6WeVHHs0zbqlaIWja2M4xWX99hyDSku_Rw7sY7m1GZyfqrcPNMhc1ODqWTMPPgJSLgad_TKtuuCtGxC28EaMLuk
+              - heading "Right Side Broadcasting Network" [level=3] [ref=f11e236]
+              - generic [ref=f11e242]:
+                - generic [ref=f11e243]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f11e245]: 超过 209万位关注者
+            - button "关于这条结果的详细信息" [ref=f11e251] [cursor=pointer]
+          - generic [ref=f11e258]:
+            - emphasis [ref=f11e259]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders"
+            - text: "-"
+            - emphasis [ref=f11e260]: 10/15/26
+            - text: · President Trump Details a Massive Drug Crackdown in the U.S. -
+            - emphasis [ref=f11e261]: 10/15/26
+            - text: .
+        - generic [ref=f11e268]:
+          - generic [ref=f11e271]:
+            - link "Kalispell Rally Begins with Emotional Prayer, Pledge, and ... YouTube · Right Side Broadcasting Network 8900+ 次观看 · 1天前" [ref=f11e273] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVqkSDDDOYKisv9UbpCpsNREDGhx_1KJBcEgmOXTMbp5PRxHP-Pj41hkQXqokhBy6mInVh2oaHQQprnz3PWOruksQZmmW13ELHKfXRMAciqxbEJNSazL7-WFq4FsGwZLKcYA
+              - heading "Kalispell Rally Begins with Emotional Prayer, Pledge, and ..." [level=3] [ref=f11e274]
+              - generic [ref=f11e280]:
+                - generic [ref=f11e281]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f11e283]: 8900+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=f11e289] [cursor=pointer]
+          - generic [ref=f11e294]:
+            - button "Kalispell Rally Begins with Emotional Prayer, Pledge, and ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 5:54" [ref=f11e295] [cursor=pointer]:
+              - generic [ref=f11e296]: 5:54
+            - generic [ref=f11e312]: "... rsbn/id1556666942 Android/Android TV: https ... FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders ..."
+        - generic [ref=f11e320]:
+          - generic [ref=f11e323]:
+            - link "President Trump Delivers Historic Announcement on America.gov YouTube · Right Side Broadcasting Network 17万+ 次观看 · 2周前" [ref=f11e325] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVMmjX5QGIRJIk1rKMkfpSmC_jdZxQ4OYYKy8lPbINQavlM5-3WP-xh6szQJy1mcSrsglt9ZisWnuKH3g_fhejwxn2DnGWlXqa890cPI3qtdnfKt0VxO8n-98KvSao575n2w
+              - heading "President Trump Delivers Historic Announcement on America.gov" [level=3] [ref=f11e326]
+              - generic [ref=f11e332]:
+                - generic [ref=f11e333]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f11e335]: 17万+ 次观看 · 2周前
+            - button "关于这条结果的详细信息" [ref=f11e341] [cursor=pointer]
+          - generic [ref=f11e346]:
+            - button "President Trump Delivers Historic Announcement on America.gov，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 3:41:56" [ref=f11e347] [cursor=pointer]:
+              - generic [ref=f11e348]: 3:41:56
+            - generic [ref=f11e364]: "... RSBN Go to http://kalshi.com/rsbn and get a $25 credit to ... FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders ..."
+        - generic [ref=f11e369]:
+          - generic [ref=f11e372]:
+            - 'link "BREAKING NEWS: President Trump Welcomes Chinese ... YouTube https://youtu.be › ..." [ref=f11e374] [cursor=pointer]':
+              - /url: /goto?url=CAESawHrOzAVcA_JpMpPiJaidt1I3Vaevi7oIOQW0UImprOB0aMPD_Jq2yrghUHrZvgaaibA72PMVG6A2KcYKC9VOv_HOVgF73WzzXslrnDI8-oa0l_j5Y1DyAO6ufAE5ZVOrIvJNan3W7fiLNbf
+              - 'heading "BREAKING NEWS: President Trump Welcomes Chinese ..." [level=3] [ref=f11e375]'
+              - generic [ref=f11e381]:
+                - generic [ref=f11e382]: YouTube
+                - generic [ref=f11e384]: https://youtu.be › ...
+            - button "关于这条结果的详细信息" [ref=f11e390] [cursor=pointer]
+          - generic [ref=f11e396]:
+            - generic [ref=f11e397]: 2026年9月23日 —
+            - generic [ref=f11e398]:
+              - emphasis [ref=f11e399]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders"
+              - text: "-"
+              - emphasis [ref=f11e400]: 10/15/26
+              - text: . Right Side Broadcasting Network. New. 13K views · 11:21.
+        - generic [ref=f11e406]:
+          - generic [ref=f11e409]:
+            - link "Shauna Hegna on How Republicans Are Allowing Alaskans to ... Facebook · Right Side Broadcasting 280+ 个回应 · 2天前" [ref=f11e411] [cursor=pointer]:
+              - /url: /goto?url=CAESvwEB6zswFbEd3cCGM1vSzBm7suK6lpqCoZdmKwwyatprn8Gry1VTt5JNa51LoUWSTv3wwr4LOW280ZfxIp1wZF-9z4gLPHJXIVxse5QPc77rk7STnvMU5YUYCzh7Io0LQVX7Fr2iL6uTtuUeIsZpEon6C7t2Sh5OBw6Ni77keUgJ1DZGAU2WEFqIiUdSEPw-D_a6yB6wIjTgQwNnirMrdS2sfxryf61Jdkvj9TeQ8583qM5N_YfXhia7CqTFYENuoQ
+              - heading "Shauna Hegna on How Republicans Are Allowing Alaskans to ..." [level=3] [ref=f11e412]
+              - generic [ref=f11e418]:
+                - generic [ref=f11e419]: Facebook · Right Side Broadcasting
+                - generic [ref=f11e421]: 280+ 个回应 · 2天前
+            - button "关于这条结果的详细信息" [ref=f11e427] [cursor=pointer]
+          - generic [ref=f11e432]:
+            - link "Shauna Hegna on How Republicans Are Allowing Alaskans to ...，由Right Side Broadcasting上传到Facebook上. 在Facebook上播放. 6:36" [ref=f11e433] [cursor=pointer]:
+              - /url: /goto?url=CAESvwEB6zswFbEd3cCGM1vSzBm7suK6lpqCoZdmKwwyatprn8Gry1VTt5JNa51LoUWSTv3wwr4LOW280ZfxIp1wZF-9z4gLPHJXIVxse5QPc77rk7STnvMU5YUYCzh7Io0LQVX7Fr2iL6uTtuUeIsZpEon6C7t2Sh5OBw6Ni77keUgJ1DZGAU2WEFqIiUdSEPw-D_a6yB6wIjTgQwNnirMrdS2sfxryf61Jdkvj9TeQ8583qM5N_YfXhia7CqTFYENuoQ
+              - generic [ref=f11e434]: 6:36
+            - generic [ref=f11e446]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders ... (RSBN), featuring a ticker with news about the 2028 ..."
+        - generic [ref=f11e451]:
+          - heading "图片" [level=2] [ref=f11e455]
+          - generic [ref=f11e459]:
+            - generic [ref=f11e463] [cursor=pointer]:
+              - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26 | Right Side Broadcasting | Facebook Facebook" [ref=f11e464]':
+                - /url: /goto?url=CAESyQEB6zswFVUFpEfznOR56epkBRbTBZroMh25fEgWUmkjL9neyo9szSh7sz70bU2TYhzo6eng6BwFoGk5s3ftJhgv_j4c99K0in-4rYnotTovy3d1ZluhwI02fWYYkkSltkF61-A4AVEa_HPfE-wc341vSNlWvmrmR4qaDM2gbiPFfG-ak53nGYHwU48i4ASkEav-K2NHPaZhthMo5yF0PbFVt-pC2ESxngVBN0nWCeEe4xXnjfqU6X_LuK1Pv7LP2gldrWRrizaj7I4
+              - button [ref=f11e466]:
+                - 'img "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26 | Right Side Broadcasting | Facebook" [ref=f11e469]'
+                - generic [ref=f11e470]: 17 小时前
+              - generic [ref=f11e472]:
+                - generic [ref=f11e474]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26 | Right Side Broadcasting | Facebook"
+                - generic [ref=f11e475]:
+                  - generic [ref=f11e477]: Facebook
+                  - button "关于这条结果的详细信息" [ref=f11e487]
+            - generic [ref=f11e495] [cursor=pointer]:
+              - link "President Trump Addresses Press Ahead of Packed Syracuse Rally - 10/09/26 YouTube" [ref=f11e496]:
+                - /url: /goto?url=CAESZgHrOzAV0KjxX0VdlqKcxhixe5fQHvFxwohnmnrIE-DpNucH2QCNhFjK0N3MsORoLUyFgONNRE-nV2FQTgsIUIdEDB_u5a8tK7p9WERUCg9hk79sBKP5Zm4V5gwEdx4qcjnMrBXkww
+              - button [ref=f11e498]:
+                - img "President Trump Addresses Press Ahead of Packed Syracuse Rally - 10/09/26" [ref=f11e501]
+                - generic [ref=f11e502]: 6 天前
+              - generic [ref=f11e504]:
+                - generic [ref=f11e506]: President Trump Addresses Press Ahead of Packed Syracuse Rally - 10/09/26
+                - generic [ref=f11e507]:
+                  - generic [ref=f11e509]: YouTube
+                  - button "关于这条结果的详细信息" [ref=f11e519]
+            - generic [ref=f11e527] [cursor=pointer]:
+              - 'link "FULL EVENT: President Trump Speaks at Rose Garden Lunch for ... Facebook" [ref=f11e528]':
+                - /url: /goto?url=CAESyAEB6zswFZfiqX2RrUe1tLWfPC51xhdo7VtgQE0kWm3OzSi--ELzncVCk6vaRVNiii8xz6DnFndK8yxfU6cmePm8ijdXK_RS01u6KRjMj3XDQu7mGkv9kKeMh7PiQClICcCiOYz6tuXIAETBWucdXKHbHXuJdqaA8OAjI7SRAA4wvcA6Sc9vZrPhHwKiympg7pD7gZOXB82hxL9K9Qw758JVlQ-Doqg-tFdz9G-gbAMbkDKO8IW2L0lAT6H_I5_C37C9GBPPzq4o0A
+              - button [ref=f11e530]:
+                - 'img "FULL EVENT: President Trump Speaks at Rose Garden Lunch for ..." [ref=f11e532]'
+              - generic [ref=f11e534]:
+                - generic [ref=f11e536]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for ..."
+                - generic [ref=f11e537]:
+                  - generic [ref=f11e539]: Facebook
+                  - button "关于这条结果的详细信息" [ref=f11e549]
+          - button "显示更多图片" [ref=f11e555] [cursor=pointer]:
+            - separator [aria-hidden] [ref=f11e556]
+        - generic [ref=f11e568]:
+          - generic [ref=f11e571]:
+            - link "President Trump Announces Massive Investments into Ohio & ... YouTube · Right Side Broadcasting Network 1.2万+ 次观看 · 3天前" [ref=f11e573] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVywXHnBYLbsNEMfQS2yGOTpfgDV74fAtvga4-Yse59SxCa1ksv3kC1hRTdc77jyZXnvhPxGYZ2wnXqn9iuKv9X7LMZphr-nUoSiGJ9w6ZngJA61ePs7HL5W5pJRBhbPtrTw
+              - heading "President Trump Announces Massive Investments into Ohio & ..." [level=3] [ref=f11e574]
+              - generic [ref=f11e580]:
+                - generic [ref=f11e581]: YouTube · Right Side Broadcasting Network
+                - generic [ref=f11e583]: 1.2万+ 次观看 · 3天前
+            - button "关于这条结果的详细信息" [ref=f11e589] [cursor=pointer]
+          - generic [ref=f11e594]:
+            - button "President Trump Announces Massive Investments into Ohio & ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 8:23" [ref=f11e595] [cursor=pointer]:
+              - generic [ref=f11e596]: 8:23
+            - generic [ref=f11e612]: "Comments · FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders - 10/15/26 · Republican Midterm Ads Cold Open - SNL · DOJ ..."
+        - generic [ref=f11e617]:
+          - generic [ref=f11e620]:
+            - link "Right Side Broadcasting | Auburn AL Facebook · Right Side Broadcasting 超过 250.6万位关注者" [ref=f11e622] [cursor=pointer]:
+              - /url: /goto?url=CAESXwHrOzAVvI6cmK3_X2j4AfoIJWncfn2DbxpxFinuU50-TPhvCwepT9CTE2WV0dUWvJ-AWbPQ0HMwoRUsxlneB0jI4MeJEY1DdFPTFEWaEi3YbFILwV6iqwN4gvz3d4g0
+              - heading "Right Side Broadcasting | Auburn AL" [level=3] [ref=f11e623]
+              - generic [ref=f11e629]:
+                - generic [ref=f11e630]: Facebook · Right Side Broadcasting
+                - generic [ref=f11e632]: 超过 250.6万位关注者
+            - button "关于这条结果的详细信息" [ref=f11e638] [cursor=pointer]
+          - generic [ref=f11e645]:
+            - emphasis [ref=f11e646]: "FULL EVENT: President Trump Speaks at Rose Garden Lunch for First Responders"
+            - text: "-"
+            - emphasis [ref=f11e647]: 10/15/26
+            - text: . 1.2K.
+          - img "评分为 4.8 星（最高 5 星）， (1,573) 条用户评价" [ref=f11e652]: 4.8(1,573)
+      - navigation [ref=f11e658]:
+        - heading "网页导航" [level=1] [ref=f11e659]
+        - text: "1"
+        - link "Page 2" [ref=f11e662] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=10&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAE
+          - text: "2"
+        - link "Page 3" [ref=f11e664] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=20&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAG
+          - text: "3"
+        - link "Page 4" [ref=f11e666] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=30&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAI
+          - text: "4"
+        - link "Page 5" [ref=f11e668] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=40&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAK
+          - text: "5"
+        - link "Page 6" [ref=f11e670] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=50&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAM
+          - text: "6"
+        - link "Page 7" [ref=f11e672] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=60&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAO
+          - text: "7"
+        - link "Page 8" [ref=f11e674] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=70&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAQ
+          - text: "8"
+        - link "Page 9" [ref=f11e676] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=80&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAS
+          - text: "9"
+        - link "Page 10" [ref=f11e678] [cursor=pointer]:
+          - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=90&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8tMDegQIJxAU
+          - text: "10"
+        - heading [level=2] [ref=f11e680]:
+          - link "下一页" [ref=f11e681] [cursor=pointer]:
+            - /url: /search?q=%22FULL+EVENT:+President+Trump+Speaks+at+Rose+Garden+Lunch+for+First+Responders%22+10/15/26+RSBN&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnsEQHTY0Mh73kI56DUsBxD0jOvh-w:1792152094783&ei=HhLSaoi8L8SkkPIP7PGKoAU&start=10&sa=N&sstk=AS6-VmJRqE0_wCRhpB3cQIrdzzL_4yiWN7rZooAgthKWkL2i_2tKGE1RPds0MrdD3fyzUyfPalqFjIZsPBvW41K_8-PszCAy5Y9qCg&ved=2ahUKEwiIw_jnvr6XAxVEEkQIHey4AlQQ8NMDegQIJxAW
+      - navigation
+    - contentinfo [ref=f11e684]:
+      - heading "页脚链接" [level=1] [ref=f11e685]
+      - generic [ref=f11e689]:
+        - generic [ref=f11e693]:
+          - button "龙华区 中国海南省海口市 - 根据您的活动记录" [ref=f11e695] [cursor=pointer]:
+            - generic [ref=f11e696]: 龙华区 中国海南省海口市
+            - generic [ref=f11e698]:
+              - text: "-"
+              - generic [ref=f11e699]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f11e701] [cursor=pointer]
+        - generic [ref=f11e704]:
+          - link "帮助" [ref=f11e705] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f11e707] [cursor=pointer]
+          - link "隐私权" [ref=f11e709] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f11e710] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

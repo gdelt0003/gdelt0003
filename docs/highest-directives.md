@@ -13,6 +13,8 @@
 > | [AI-Youtube-Shorts-Generator](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator) | 5,309；最近提交 [2026-10-11](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator/commit/3d11f2e6ecbb) | [MIT](https://github.com/Anil-matcha/AI-Youtube-Shorts-Generator/blob/main/LICENSE) | 走读了 `highlights.py` 和 `pipeline.py`：候选片段带评分、开场钩子和理由；长转录分块、去重并校验时间范围。只借鉴“候选需有理由、结果需校验”的思路；文件注明其算法来自第三方项目，因此不复制代码。 |
 > | [video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit) | 2,180；仓库最近推送 2026-10-06，默认分支最近提交 [2026-09-30](https://github.com/Hao0321/video-autopilot-kit/commit/b449e7a57076) | [MIT](https://github.com/Hao0321/video-autopilot-kit/blob/main/LICENSE) | 走读了 `tasks.py`、`store.py` 和批处理工作流：独立任务、原子持久化、来源/权限记录、失败隔离和可恢复状态。与本仓库独立入队、逐项显示结果及授权 gate 最相关。 |
 > | [yt-short-clipper](https://github.com/jipraks/yt-short-clipper) | 1,034；最近提交 [2026-09-20](https://github.com/jipraks/yt-short-clipper/commit/f6d6d98f3bce) | [MIT](https://github.com/jipraks/yt-short-clipper/blob/main/LICENSE) | 走读了 `highlight_finder.py`：多请求一些候选，再校验片段时长/时间戳，并尽量隔离格式错误结果。可用于未来短片切段阶段；当前仓库没有对应处理链，未移植。 |
+> | [VideoCaptioner](https://github.com/WEIFENG2333/VideoCaptioner) | 16,231；最近推送 2026-09-12（GitHub API 核验） | [GPL-3.0](https://github.com/WEIFENG2333/VideoCaptioner/blob/master/LICENSE) | 走读了仓库说明和 CLI：`videocaptioner process video.mp4 --target-language ja`、转录/字幕优化/翻译/烧录/下载等全流程，支持日语视频处理与长视频脚本化处理；与本仓库独立处理日语视频、字幕和合成流程最相关。需注意 GPL-3.0 许可证和本仓库 MIT 协作/移植边界，不直接复制上游代码。 |
+> | [ytb2bili](https://github.com/difyz9/ytb2bili) | GitHub 页面显示 Star/Badge 与 MIT 许可证 | [MIT](https://github.com/difyz9/ytb2bili/blob/main/LICENSE) | 走读了仓库说明和工作流：本地视频翻译、同步播放、Bilibili 发布、YouTube 采集/转换/字幕处理；与本仓库的独立视频工作流、上传自动化和多步处理链最相关。需要保持与本仓库 MIT/开放源码边界一致，不直接复制上游代码；它并非同一事件/源核验系统。 |
 
 落实时须按指定公开信息日期重新核实 Stars、许可证、推送/提交活跃度和文件内容，按 Stars 排序；只借鉴候选有理由、结果校验、原子持久化、权限来源、失败隔离和可恢复任务等思路，不复制第三方算法或代码。上表是用户提供的数据，尚非本次会话的独立核验结果。
 
@@ -33,6 +35,9 @@
 | “你没理解候选的意思 要分不同事件 同一事件 要白宫为基础 找更合适可信源” | 按事件分别建组；每个事件优先用该事件的白宫官方视频作为锚，只寻找同一事件的更清晰、更完整、同角或异角来源。不得拿另一事件、另一日期的视频当作替代候选。 | 已更正来源技能与 checklist，事件 A (10/6 shipyard remarks) 和事件 B (Columbus Day) 单独分组；Event B 视频绝不计为 Event A 候选。Event A 当前无合格同事件同时间干净替代源证据。 |
 | “哪造船哪个事件举例,10号不是一个时间不是同一事件 不存在同时间同事件候选” | 明确给造船事件的官方锚及事件标识；10/10 上传/其他日期内容不可被误当成同一事件或同一时刻。任何来源需先通过同事件、同时间片段匹配，才可比较。 | Event A 官方源是 2026-10-06 Baltimore shipyard remarks；Moneycontrol只报告为一句讲话的不同构图线索且带画面标记、机位来源未证，不计为合格替代源。10/10上传的 Columbus Day 视频是单独事件，上传日不能冒充发生时间。 |
 | “可以根据 事件 地点 时间 人物等要素唯一编码一个事件” | 使用可重复的复合事件键，至少纳入事件日期、时间与精度/时区、地点、事件类型/标题和参与者；未知时间/地点明确保留缺值并降级身份状态，不用上传时间伪造事件时间。不同事件的来源永不混池；编码键本身不替代画面/台词对照证据。 | 新增 `scripts/event_identity.py` 和 `outputs/event-catalog.json`。Event A 生成确定键 `evt-20261006-7794a6967fc9f877`（时间仅到日期，身份注明 `partial_time`）；Event B 日期/时间/地点未核，故 event_id 为 null，等待证据。新增稳定性、区分字段和缺失时间测试。 |
+| “界面要优化,排版ui类似youtube但比谷歌强” | 以 YouTube 排版 UI 为参考，并保留“比谷歌强”原话；不把该比较擅自改写成具体技术验收条件，也不复制品牌或特定页面。 | 已按最新原话记录；尚未确定目标页面和可验收设计标准，也未进行 UI 设计/实现或视觉验收。 |
+| “模块2部位下辖UI设计司,要专门出UI涉及 主页可以明显属实获取至少十条白宫最新视频,更多可以点more,每条视频有可信源调查页,即使没有原视频 也可已根据标题和rollcall 相关页比如包含不限于 日历https://rollcall.com/factbase/trump/topic/calendar/ 视频转录 https://rollcall.com/factbase/trump/search/ 社交等 全网查可信源 https://rollcall.com/factbase/trump/topic/social/ 每5分钟轮询一次,一旦有新视频就触发全流程 抓取全网包含不限于 视频 新闻 社交 国会 智库报告//逐条记录 并逐字督导执行” | 用户指定“UI设计司”归属于“模块2”，须保留这一组织归属要求，不推断仓库中已有此组织/模块。主页应醒目展示至少十条最新白宫视频，并可用 More 查看更多；每条视频均有独立可信来源调查页。即使未找到原视频，也要依据标题及用户给出的 Roll Call calendar、transcript-search、social 页面线索开展扩展来源调查。官方视频每 5 分钟轮询；发现新视频即启动该条全流程，调查视频、新闻、社交、国会、智库报告等来源并逐条记录证据。以上为操作化归纳，不替代逐字原文；Roll Call URL 是用户提供的检索参考，不代表已验证其可访问性、内容、相关性或授权。媒体处理/发布前仍须满足逐视频授权、权利及证据要求，不得将元数据线索说成已核实，也不得自动发布。 | **当前实现状态：部分未实现，不能报整体完成。** 首页目前的主视频目录有 2 条登记视频（`outputs/main-videos.json`），另有一个“最新视频与新闻文章发现线索”区块和 20 条静态发现线索；没有“至少十条最新白宫视频”的首页要求实现，也没有 More 控件。未发现给每条监控视频生成/链接独立可信来源调查页的实现；监控器只持久化逐视频 JSON 记录。每 5 分钟官方频道轮询与定时 Actions 触发器已实现；首次成功 hosted run [38904287014](https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014) 及 state/run JSON 验证了轮询和持久化，但该次 100 个条目里 98 个 GDELT 查询失败，另外 2 个查询返回的 12 条元数据候选均与标题不相关，不能作为核实来源。PR #65 合并后加入每成功 run 最多 5 项、GDELT 并发上限 2 的持久失败重试；hosted 验证 run [38907411619](https://github.com/gdelt0003/gdelt0003/actions/runs/38907411619) 仍在运行，尚不能据此声称来源研究成功。新视频触发的是官方页/GDELT 元数据发现，不是完整多源研究；当前五分钟监控未覆盖全网视频、新闻、社交、国会和智库来源，也未连接所列 Roll Call 页面。无视频下载、画面/音频检查、授权确认或自动发布。 |
+| “把最高指示挂到云端逐条执行 并核实,本地关机照样要核实 编码部署 CI CD” | 最高指示清单应持久存于仓库/云端工作流；逐条记录状态、证据链接及阻塞，通过 GitHub-hosted CI/CD 而非依赖本地机器执行。部署后要核对真实部署/功能，失败须有告警，并报告最近成功时间、run/commit、检查覆盖和未完成项。只有 schedule YAML、PR/CI 通过或一次手动 dispatch，不足以证明本地关机后持续核实；需确认工作流已合并并启用、至少有一次自动 schedule run，且状态跨运行持久化。不得声称云端可以自行解除未获授权/权利等阻塞。此段为操作化验收建议，不是原句。 | **当前实现状态：整体未实现。** 本文件在当前仓库记录最高指示；已有若干 GitHub-hosted CI/CD 和定时工作流（包括白宫视频监控），但没有统一把最高指示逐条映射为云端自动核验、证据/阻塞状态及覆盖报告的 workflow。监控 workflow 状态为 active，五分钟 schedule 已配置；截至本次核验，run [38904287014](https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014) 是手动 `workflow_dispatch` 且在 commit `0f06644c50ab768d2241d5dc954e0ba324981f80` 成功；尚未找到任何该 workflow 的 schedule-triggered run，因此不能声称已验证本地关机后自动持续核实。PR #65 已合并，手动验证 run [38907411619](https://github.com/gdelt0003/gdelt0003/actions/runs/38907411619) 正在运行；这仍不是 schedule 触发证据。state/run JSON 已持久化到独立 state branch，但这不覆盖全部最高指示，也不能解除授权、权利或来源核验阻塞。 |
 
 ## 不能伪称完成的验收项
 
@@ -104,3 +109,38 @@
 - 当前只有 White House YouTube 频道接入每日 metadata-only 自动 collector。Roll Call、Truth Social、GDELT Explorer、Polymarket、Kalshi、Forth、C-SPAN、X 与 stats 来源仅登记为待人工核验；没有声称已接入抓取、访问成功或许可审查。
 - `Events` 和 `New White House leads` 工作表预留事件日期/时间/地点、总统实际出席分钟数、演讲词数及语言/统计方法、来源支持的话题、发现/核验时间、来源数量、置信度和用户注解等列。没有来源支撑的字段为空或标未核实。不能从上传日期、页面标题、预测市场活动或视频时长推定实际出席/发言数据。
 - 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。此次只完成本地代码和数据结构的实现/验证，没有运行在线抓取、周期 workflow 或 Pages 部署。
+
+## 2026-10-16 White House 视频轮询与逐视频研究
+
+用户新增原话（逐字）：
+
+> “可以定action runner 周期从白宫官方 获取视频 最小间隔获取,获取到后就开始全量研究每个视频”
+
+落实要求及状态（记录者归纳）：
+
+- 目标是在 GitHub-hosted Actions 上以最短可用周期（计划为每 5 分钟；实际启动可能受 Actions 队列延迟影响）轮询 White House 官方视频来源；使用稳定视频 ID 去重，并为每个新视频保存独立来源、时间及 workflow run 证据。
+- 每发现一个新视频都要自动开始该视频的研究工作流。元数据搜索/来源页检索只是初始阶段，不能称为“全量研究完成”；须分别记录发现、元数据研究、源视频内容/音频画面核查和权利状态。
+- 若某视频的帧/音频检查、下载或其他媒体步骤因缺少该视频专属授权或适用权利证据而无法继续，必须记录具体缺项并及时通知用户；不得静默跳过，也不得把元数据阶段伪称为完整研究。不能从定时轮询要求推断对所有视频的 blanket reuse rights。
+- 任何媒体下载、探测、抽帧、ASR、渲染和编码都只能在授权 GitHub-hosted runner 上执行；不自动发布视频。来源、权利或内容状态保持真实记录，但不得成为获授权 pending Pages 更新的串行队列门槛。
+- 2026-10-16 状态：PR [#62](https://github.com/gdelt0003/gdelt0003/pull/62) 已合并至 main（`d46f0596f03fadaf1ba36d74f5de870934abbcb3`），启用 GitHub-hosted 每 5 分钟轮询、稳定视频 ID 去重、独立 state branch/run provenance、官方 YouTube 页面 metadata 读取，以及每视频标题驱动的 GDELT article metadata 搜索。PR CI 通过，但首次真实 hosted run [38903661071](https://github.com/gdelt0003/gdelt0003/actions/runs/38903661071) 在采集前以 `ModuleNotFoundError: No module named 'scripts'` 失败，后续 run-file 持久化因文件未生成而失败；状态分支未建立。因此轮询、研究或 provenance 均尚未由成功 hosted run 验证。
+- follow-up PR [#64](https://github.com/gdelt0003/gdelt0003/pull/64) 已合并至 main（`0f06644c50ab768d2241d5dc954e0ba324981f80`）：workflow 改用 `python -m scripts.monitor_official_whitehouse_videos`，并在持久化前显式验证 run/state 输出文件。聚焦 Python 测试 24 项通过、PR checks 通过。hosted run [38904287014](https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014) 成功并写入 state branch/run JSON：因初始 state 为空，当前频道 100 项都被记录为新条目；100 项均进入媒体授权 gate。GDELT 查询 98/100 失败（78 HTTP 429、12 响应结构无 articles、6 非 JSON、2 timeout）；另外 2 项返回 12 条标题不相关的候选，0 条通过事件相关性筛选。没有媒体下载/检查。轮询及持久化已验证，但逐视频来源检索可靠性不足。
+- follow-up PR [#65](https://github.com/gdelt0003/gdelt0003/pull/65) 已合并（merge SHA `a9872703ff917559ffb6e6f18367300696132a2e`；代码提交 `0d52c5a9361563432c56a624ae418e0d897f2583`），加入从持久 state 选择 oldest-first 失败查询、每次成功 run 最多重试 5 项、GDELT 并发最多 2、逐次尝试持久化以及 run summary 报告；20 个 monitor/workflow tests、4 个 GDELT tests 和 PR checks 通过。新 hosted 验证 run [38907411619](https://github.com/gdelt0003/gdelt0003/actions/runs/38907411619) 正在运行；需检查结果后再确认重试实际生效。无媒体处理/发布，也未放宽授权/权利门槛。
+- PR #62 的监控记录会将缺少授权/权利时的 media review 标为 `not_started_blocked_waiting_for_authorization_and_rights`，并注明通知目前仅显示在 Actions run summary 与 warning annotations（不是外部推送）。
+- PR #62/#64 已合并；hosted run [38904287014](https://github.com/gdelt0003/gdelt0003/actions/runs/38904287014) 已验证轮询、稳定 ID 去重和 provenance 写入，但 GDELT 搜索 98/100 失败，另两项的 12 条候选与标题不相关。候选文章页未打开或核验同一事件；事件时间/身份和权利仍未核验。流程不下载或发布视频；逐视频授权/权利缺项及待办状态只显示在 Actions run summary/annotations（没有外部推送）。失败查询的限量、低并发重试正在实现；任何媒体操作仍需精确视频授权和适用权利证据。
+- 扩展 Rose Garden hosted search run [38902079023](https://github.com/gdelt0003/gdelt0003/actions/runs/38902079023) 在 PR #61 merge SHA `016dfd91f82ee8c6960dc61d136dae4af94ea13b` 成功：40 个 DuckDuckGo/Bing provider/query 组合、0 query errors，18 个去重 raw leads（9 irrelevant、9 landing-page metadata unavailable），0 个合格活动视频页；无视频媒体下载或检查。≥10 个独立相关发布页目标仍未达到。
+- Rose 私有渲染 run [38895767927](https://github.com/gdelt0003/gdelt0003/actions/runs/38895767927) 已于 12:37:20Z 在旧 SHA `775c90e8f53aea473ef5556f0270d244e649e4b4` 失败：375/375 cue 翻译后，ASS geometry validator 报 cue 259；无 artifact。旧 run 不含 PR #59 merge 修复，且日志未说明失败的具体 geometry 子条件。先用代码/现有字幕证据诊断，不得本机下载/检查视频，也不得称为 cue overflow，除非证据支持。修复与 CI 通过后，依照用户指示准备 hosted rerender；但须先确保 exact video inputs 和适用的逐视频 rights/authorization evidence。
+- cue 259 后续代码诊断发现并复现 ASS 时间精度不匹配：ASS 按 centisecond 保存时间，而 validator 对毫秒 cue 时间做精确比较。PR [#63](https://github.com/gdelt0003/gdelt0003/pull/63) 已合并为 `16b5ef69b6726fea616218b4840c8165334db1fb`，validator 允许最多 5 ms 的序列化舍入误差；这属于可复现的 validator bug，但失败 run 没有 artifact，故不能确认它就是 cue 259 的确切失败子条件。PR checks 与 main 上新触发的 checks 均通过；尚无后续 hosted rerender 验证。
+
+## Rose Garden 字幕框坐标（用户更正）
+
+用户原话（逐字）：
+
+> “坐标是 **1920×1080** 画面中的横幅框，格式为 `[左, 上, 右, 下)`：**`[68, 885, 1850, 1020)`**。按每边外扩 2 px，字幕框是 **`[66, 883, 1852, 1022)`**，尺寸 **1786×139 px**。”
+
+按此更正，`[68, 885, 1850, 1020)` 是横幅框；向每边外扩 2 px 后的 `[66, 883, 1852, 1022)` 是用户指定的字幕框，参考半开矩形尺寸为 1786×139 px（基准 1920×1080）。当前工作区把此参考框换算为相对视频宽高的比例坐标，再映射到实际帧分辨率；字幕居中于映射框内，若任一语言超过单行则拒绝渲染，manifest 记录参考框、归一化坐标、应用后的像素框/分辨率及待做帧审查状态。媒体源仍执行至少 1920×1080 的既有门槛，不做低分辨率放大。预览 workflow 还要求逐视频处理授权、精确事件匹配/事件时间确认及互不重复的 HTTPS 身份、匹配、时间、源到成片链路和权利证据；缺少任一确认或证据即在下载前失败。实现及测试尚未完成云端运行/实际成片帧验证，不等于已有视频按此坐标刻录。此前 main 上的渲染仍使用底部居中及百分比边距；失败的旧 hosted run 没有产物，PR #63 后没有成功 hosted rerender 证明该框已应用。
+
+用户补充原话（逐字）：
+
+> “把参考框按基准画面 1920×1080 归一化，再按实际视频宽高换算成像素坐标；这样同一字幕框可用于不同分辨率，不会把坐标硬编码到 1080p。//尽快开始渲染rose”
+
+归一化换算对实际画面宽、高分别缩放参考框 x/y 坐标，采用四舍五入后的半开像素框；manifest 同时保存参考框、比例坐标和最终像素框。坐标换算不处理 letterbox/crop；若源内容存在黑边、裁切或非全画幅有效画面，实际字幕与横幅关系仍须由 hosted 渲染帧检查确认。静态坐标换算和单元测试不等于已开始/成功渲染 Rose 成片。

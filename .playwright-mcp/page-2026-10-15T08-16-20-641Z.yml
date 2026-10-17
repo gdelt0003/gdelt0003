@@ -1,0 +1,524 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - link [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Brave logo" [ref=e8]
+        - generic [ref=e10]:
+          - textbox "Search" [ref=e11]:
+            - /placeholder: 随心提问 随心查询…
+            - text: "\"Katie Zacharia\" White House briefing October 13"
+          - generic [ref=e12]:
+            - button "晴朗" [ref=e13] [cursor=pointer]
+            - button "搜索" [ref=e17] [cursor=pointer]
+            - button "询问" [ref=e20] [cursor=pointer]
+      - generic [ref=e29]:
+        - button "重新排序" [ref=e30] [cursor=pointer]
+        - button "快速设置" [ref=e36] [cursor=pointer]
+  - navigation [ref=e42]:
+    - list [ref=e43]:
+      - listitem [ref=e44]:
+        - link "询问" [ref=e45] [cursor=pointer]:
+          - /url: /ask?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e47]:
+        - link "全部" [ref=e48] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e50]:
+        - link "图片" [ref=e51] [cursor=pointer]:
+          - /url: /images?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e53]:
+        - link "新闻" [ref=e54] [cursor=pointer]:
+          - /url: /news?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e56]:
+        - link "视频" [ref=e57] [cursor=pointer]:
+          - /url: /videos?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e59]:
+        - link "地图" [ref=e60] [cursor=pointer]:
+          - /url: /maps/search?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+      - listitem [ref=e62]:
+        - link "Goggles" [ref=e63] [cursor=pointer]:
+          - /url: /goggles?q=%22Katie+Zacharia%22+White+House+briefing+October+13&source=web
+    - list [ref=e65]:
+      - button "筛选条件" [ref=e66] [cursor=pointer]
+  - main [ref=e70]:
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - text: 查询包含
+          - link "搜索运算符" [ref=e77] [cursor=pointer]:
+            - /url: /help/operators
+        - link "忽略运算符" [ref=e79] [cursor=pointer]:
+          - /url: /search?q=%22Katie%20Zacharia%22%20White%20House%20briefing%20October%2013&source=ignoreSiteOperators&keywords=0
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - button "激活 Goggle" [ref=e84] [cursor=pointer]: News from the Left
+          - button [ref=e86] [cursor=pointer]
+        - generic [ref=e89]:
+          - button "激活 Goggle" [ref=e90] [cursor=pointer]: News from the Right
+          - button [ref=e92] [cursor=pointer]
+        - button [ref=e96] [cursor=pointer]
+    - main [ref=e114]:
+      - generic [ref=e115]:
+        - generic [ref=e119]:
+          - link "🌐 The White House whitehouse.gov › home › past events › press secretary katie zacharia briefs members of the media, oct. 13, 2026 Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 – The White House" [ref=e120] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/
+            - generic [ref=e121]:
+              - img "🌐" [ref=e125]
+              - generic [ref=e126]:
+                - generic [ref=e127]: The White House
+                - generic [ref=e128]: whitehouse.gov › home › past events › press secretary katie zacharia briefs members of the media, oct. 13, 2026
+            - generic "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 – The White House" [ref=e130]
+          - generic [ref=e131]:
+            - link "14:26" [ref=e133] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/
+            - generic [ref=e138]:
+              - generic [ref=e139]: Featured Official White House App 365 Days of Wins About President Trump About Vice President Vance 365 Days of Wins Official White House App The Great Healthcare Plan INVESTMENT ANNOUNCEMENTS White House Wire First Year in Office America's Founding East Wing Expansion View Full Video Contact The White House · X · Instagram · TikTok · Share Icon · Share Icon · Facebook · YouTube · Videos · October 13, 2026 ·
+              - generic [ref=e141]:
+                - strong [ref=e142]: "已发布:"
+                - text: 1天前
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - link "🌐 White House whitehouse.gov › home › news › releases › katie zacharia delivers powerful inaugural briefing as the 37th white house press secretary Katie Zacharia Delivers Powerful Inaugural Briefing as the 37th White House Press Secretary – The White House" [ref=e147] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/releases/2026/10/katie-zacharia-delivers-powerful-inaugural-briefing-as-37th-white-house-press-secretary/
+              - generic [ref=e148]:
+                - img "🌐" [ref=e152]
+                - generic [ref=e153]:
+                  - generic [ref=e154]: White House
+                  - generic [ref=e155]: whitehouse.gov › home › news › releases › katie zacharia delivers powerful inaugural briefing as the 37th white house press secretary
+              - generic "Katie Zacharia Delivers Powerful Inaugural Briefing as the 37th White House Press Secretary – The White House" [ref=e157]
+            - generic [ref=e159]:
+              - text: 2天前 - The White House · October 13, 2026 · Today,
+              - strong [ref=e160]: Katie Zacharia delivered a commanding inaugural press briefing as the 37th White House Press Secretary
+              - text: .
+          - link [ref=e162] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/releases/2026/10/katie-zacharia-delivers-powerful-inaugural-briefing-as-37th-white-house-press-secretary/
+        - generic [ref=e163]:
+          - generic [ref=e164]: 最新消息
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - link "🌐 washingtonpost.com White House scrambles over questions on new press secretary’s background - The Washington Post 20小时前" [ref=e172] [cursor=pointer]:
+                - /url: https://www.washingtonpost.com/politics/2026/10/13/new-white-house-press-secretary-has-short-rocky-start/
+                - generic [ref=e175]:
+                  - generic [ref=e176]:
+                    - img "🌐" [ref=e177]
+                    - generic [ref=e178]: washingtonpost.com
+                  - generic [ref=e179]: White House scrambles over questions on new press secretary’s background - The Washington Post
+                  - generic [ref=e180]: 20小时前
+              - link "🌐 theguardian.com Trump’s new press secretary faces scrutiny over claims to be a lawyer | US news | The Guardian 6小时前" [ref=e183] [cursor=pointer]:
+                - /url: https://www.theguardian.com/us-news/2026/oct/14/trump-press-secretary-lawyer-zacharia
+                - generic [ref=e186]:
+                  - generic [ref=e187]:
+                    - img "🌐" [ref=e188]
+                    - generic [ref=e189]: theguardian.com
+                  - generic [ref=e190]: Trump’s new press secretary faces scrutiny over claims to be a lawyer | US news | The Guardian
+                  - generic [ref=e191]: 6小时前
+              - link "🌐 edition.cnn.com White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing | CNN Politics 1天前" [ref=e194] [cursor=pointer]:
+                - /url: https://edition.cnn.com/2026/10/13/politics/katie-zacharia-press-briefing
+                - generic [ref=e197]:
+                  - generic [ref=e198]:
+                    - img "🌐" [ref=e199]
+                    - generic [ref=e200]: edition.cnn.com
+                  - generic [ref=e201]: White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing | CNN Politics
+                  - generic [ref=e202]: 1天前
+              - link "🌐 cnn.com White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing | CNN Politics 1天前" [ref=e205] [cursor=pointer]:
+                - /url: https://www.cnn.com/2026/10/13/politics/katie-zacharia-press-briefing
+                - generic [ref=e208]:
+                  - generic [ref=e209]:
+                    - img "🌐" [ref=e210]
+                    - generic [ref=e211]: cnn.com
+                  - generic [ref=e212]: White House officials question how long Katie Zacharia can last after ‘brutal’ press briefing | CNN Politics
+                  - generic [ref=e213]: 1天前
+              - 'link "🌐 thehill.com Live updates: Donald Trump rallies in Alaska; Iowa, Maine, Georgia hold Senate debates 1天前" [ref=e216] [cursor=pointer]':
+                - /url: https://thehill.com/homenews/administration/6144742-live-updates-trump-alaska-zacharia-briefing-midterm-election-debates/
+                - generic [ref=e219]:
+                  - generic [ref=e220]:
+                    - img "🌐" [ref=e221]
+                    - generic [ref=e222]: thehill.com
+                  - generic [ref=e223]: "Live updates: Donald Trump rallies in Alaska; Iowa, Maine, Georgia hold Senate debates"
+                  - generic [ref=e224]: 1天前
+              - link "🌐 washingtonpost.com Katie Zacharia calls herself a lawyer. Legal experts aren’t sure. - The Washington Post 1天前" [ref=e227] [cursor=pointer]:
+                - /url: https://www.washingtonpost.com/business/2026/10/13/katie-zacharia-calls-herself-lawyer-legal-experts-arent-sure/
+                - generic [ref=e230]:
+                  - generic [ref=e231]:
+                    - img "🌐" [ref=e232]
+                    - generic [ref=e233]: washingtonpost.com
+                  - generic [ref=e234]: Katie Zacharia calls herself a lawyer. Legal experts aren’t sure. - The Washington Post
+                  - generic [ref=e235]: 1天前
+              - link "🌐 thehill.com White House press secretary Katie Zacharia faces criticism in debut briefing 1天前" [ref=e238] [cursor=pointer]:
+                - /url: https://thehill.com/homenews/administration/6146430-katie-zacharia-white-house-press-secretary-briefing/
+                - generic [ref=e241]:
+                  - generic [ref=e242]:
+                    - img "🌐" [ref=e243]
+                    - generic [ref=e244]: thehill.com
+                  - generic [ref=e245]: White House press secretary Katie Zacharia faces criticism in debut briefing
+                  - generic [ref=e246]: 1天前
+              - link "🌐 newsweek.com Katie Zacharia Responds After Criticism of First White House Briefing - Newsweek 17小时前" [ref=e249] [cursor=pointer]:
+                - /url: https://www.newsweek.com/katie-zacharia-responds-after-criticism-of-first-white-house-briefing-12562774
+                - generic [ref=e252]:
+                  - generic [ref=e253]:
+                    - img "🌐" [ref=e254]
+                    - generic [ref=e255]: newsweek.com
+                  - generic [ref=e256]: Katie Zacharia Responds After Criticism of First White House Briefing - Newsweek
+                  - generic [ref=e257]: 17小时前
+            - button "上一个" [disabled] [ref=e259]
+            - button "下一步" [disabled] [ref=e262]
+        - generic [ref=e267]:
+          - generic [ref=e268]:
+            - link "🌐 Fox News foxnews.com › live-news › white-house-press-secretary-katie-zacharia-briefing-october-13 White House asks Kimberly Guilfoyle to resign as Greece ambassador | Live Updates from Fox News Digital" [ref=e269] [cursor=pointer]:
+              - /url: https://www.foxnews.com/live-news/white-house-press-secretary-katie-zacharia-briefing-october-13
+              - generic [ref=e270]:
+                - img "🌐" [ref=e274]
+                - generic [ref=e275]:
+                  - generic [ref=e276]: Fox News
+                  - generic [ref=e277]: foxnews.com › live-news › white-house-press-secretary-katie-zacharia-briefing-october-13
+              - generic "White House asks Kimberly Guilfoyle to resign as Greece ambassador | Live Updates from Fox News Digital" [ref=e279]
+            - generic [ref=e280]: 2天前 - The White House press briefing room will see its first event under White House press secretary Katie Zacharia on Tuesday.
+          - link [ref=e283] [cursor=pointer]:
+            - /url: https://www.foxnews.com/live-news/white-house-press-secretary-katie-zacharia-briefing-october-13
+        - generic [ref=e284]:
+          - generic [ref=e285]: 视频
+          - generic [ref=e289]:
+            - link "15:26 🌐 YouTube Katie Zacharia holds first briefing as White House press secretary ... 2天前" [ref=e290] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=NQe35Oc6Do0
+              - generic [ref=e291]: 15:26
+              - generic [ref=e294]:
+                - generic [ref=e295]:
+                  - img "🌐" [ref=e296]
+                  - generic [ref=e297]: YouTube
+                - generic [ref=e298]: Katie Zacharia holds first briefing as White House press secretary ...
+                - generic [ref=e299]: 2天前
+            - 'link "49:56 🌐 YouTube LIVE: White House press secretary Katie Zacharia holds first briefing ... 2天前" [ref=e301] [cursor=pointer]':
+              - /url: https://www.youtube.com/watch?v=UgIivPOerNc
+              - generic [ref=e302]: 49:56
+              - generic [ref=e305]:
+                - generic [ref=e306]:
+                  - img "🌐" [ref=e307]
+                  - generic [ref=e308]: YouTube
+                - generic [ref=e309]: "LIVE: White House press secretary Katie Zacharia holds first briefing ..."
+                - generic [ref=e310]: 2天前
+            - link "15:01 🌐 YouTube White House Press Secretary Katie Zacharia Holds First Briefing ... 2天前" [ref=e312] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=Uya88MLbHV0
+              - generic [ref=e313]: 15:01
+              - generic [ref=e316]:
+                - generic [ref=e317]:
+                  - img "🌐" [ref=e318]
+                  - generic [ref=e319]: YouTube
+                - generic [ref=e320]: White House Press Secretary Katie Zacharia Holds First Briefing ...
+                - generic [ref=e321]: 2天前
+            - link "查看全部" [ref=e324] [cursor=pointer]:
+              - /url: /videos?q="Katie Zacharia" White House briefing October 13&source=vcluster
+        - generic [ref=e330]:
+          - generic [ref=e331]:
+            - link "🌐 White House whitehouse.gov › home › press secretary katie zacharia holds first press briefing in the james s. brady press briefing room, october 13, 2026 Press Secretary Katie Zacharia holds first press briefing in the James S. Brady Press Briefing Room, October 13, 2026 – The White House" [ref=e332] [cursor=pointer]:
+              - /url: https://www.whitehouse.gov/gallery/press-secretary-katie-zacharia-holds-first-press-briefing-in-the-james-s-brady-press-briefing-room-october-13-2026/
+              - generic [ref=e333]:
+                - img "🌐" [ref=e337]
+                - generic [ref=e338]:
+                  - generic [ref=e339]: White House
+                  - generic [ref=e340]: whitehouse.gov › home › press secretary katie zacharia holds first press briefing in the james s. brady press briefing room, october 13, 2026
+              - generic "Press Secretary Katie Zacharia holds first press briefing in the James S. Brady Press Briefing Room, October 13, 2026 – The White House" [ref=e342]
+            - generic [ref=e343]: 18小时前 - Skip to content · Search · Close · Featured · Official White House App 365 Days of Wins About President Trump About Vice President Vance 365 Days of Wins Official White House App The Great Healthcare Plan INVESTMENT ANNOUNCEMENTS White House Wire First Year in Office America's Founding ...
+          - link [ref=e346] [cursor=pointer]:
+            - /url: https://www.whitehouse.gov/gallery/press-secretary-katie-zacharia-holds-first-press-briefing-in-the-james-s-brady-press-briefing-room-october-13-2026/
+        - generic [ref=e349]:
+          - generic [ref=e350]:
+            - link "🌐 AP News apnews.com › article › trump-zacharia-press-secretary-first-briefing-cba18c265eec807976fcfbbafa39f5f5 Katie Zacharia, Trump's new White House press secretary, makes a brief appearance before reporters" [ref=e351] [cursor=pointer]:
+              - /url: https://apnews.com/article/trump-zacharia-press-secretary-first-briefing-cba18c265eec807976fcfbbafa39f5f5
+              - generic [ref=e352]:
+                - img "🌐" [ref=e356]
+                - generic [ref=e357]:
+                  - generic [ref=e358]: AP News
+                  - generic [ref=e359]: apnews.com › article › trump-zacharia-press-secretary-first-briefing-cba18c265eec807976fcfbbafa39f5f5
+              - generic "Katie Zacharia, Trump's new White House press secretary, makes a brief appearance before reporters" [ref=e361]
+            - generic [ref=e363]:
+              - text: 1天前 - White House press secretary Katie Zacharia
+              - strong [ref=e364]: concludes her first news conference in the James Brady Press Briefing Room at the White House, Tuesday, Oct. 13, 2026, in Washington
+              - text: .
+          - link [ref=e366] [cursor=pointer]:
+            - /url: https://apnews.com/article/trump-zacharia-press-secretary-first-briefing-cba18c265eec807976fcfbbafa39f5f5
+        - generic [ref=e369]:
+          - generic [ref=e370]:
+            - link "🌐 The New Republic newrepublic.com › post › 216542 › trump-press-secretary-katie-zacharia-awkward-first-briefing Trump’s New Press Secretary Holds Train-Wreck Debut Briefing | The New Republic" [ref=e371] [cursor=pointer]:
+              - /url: https://newrepublic.com/post/216542/trump-press-secretary-katie-zacharia-awkward-first-briefing
+              - generic [ref=e372]:
+                - img "🌐" [ref=e376]
+                - generic [ref=e377]:
+                  - generic [ref=e378]: The New Republic
+                  - generic [ref=e379]: newrepublic.com › post › 216542 › trump-press-secretary-katie-zacharia-awkward-first-briefing
+              - generic "Trump’s New Press Secretary Holds Train-Wreck Debut Briefing | The New Republic" [ref=e381]
+            - generic [ref=e383]:
+              - text: 2天前 -
+              - strong [ref=e384]: October 13, 2026/10:45 a.m. ET
+              - text: ... White House press secretary Katie Zacharia speaks during her first press briefing in the James Brady Briefing Room of the White House on October 13.
+          - link [ref=e386] [cursor=pointer]:
+            - /url: https://newrepublic.com/post/216542/trump-press-secretary-katie-zacharia-awkward-first-briefing
+        - generic [ref=e389]:
+          - generic [ref=e390]:
+            - link "🌐 Forbes forbes.com › sites › saradorn › 2026 › 10 › 13 › new-white-house-press-secretary-katie-zacharia-roasted-for-shaky-first-briefing Katie Zacharia Ridiculed For Rocky First White House Press Briefing—Amid Questions About Law Background" [ref=e391] [cursor=pointer]:
+              - /url: https://www.forbes.com/sites/saradorn/2026/10/13/new-white-house-press-secretary-katie-zacharia-roasted-for-shaky-first-briefing/
+              - generic [ref=e392]:
+                - img "🌐" [ref=e396]
+                - generic [ref=e397]:
+                  - generic [ref=e398]: Forbes
+                  - generic [ref=e399]: forbes.com › sites › saradorn › 2026 › 10 › 13 › new-white-house-press-secretary-katie-zacharia-roasted-for-shaky-first-briefing
+              - generic "Katie Zacharia Ridiculed For Rocky First White House Press Briefing—Amid Questions About Law Background" [ref=e401]
+            - generic [ref=e403]:
+              - text: 1天前 - White House Press Secretary Katie Zacharia
+              - strong [ref=e404]: speaks during a news briefing in the James S. Brady Press Briefing Room of the White House on October 13, 2026 in Washington, DC
+              - text: .
+          - link [ref=e406] [cursor=pointer]:
+            - /url: https://www.forbes.com/sites/saradorn/2026/10/13/new-white-house-press-secretary-katie-zacharia-roasted-for-shaky-first-briefing/
+        - generic [ref=e409]:
+          - generic [ref=e410]:
+            - link "🌐 The Conservative Treehouse theconservativetreehouse.com › home › white house press secretary katie zacharia delivers her first press briefing – 9:45am livestream White House Press Secretary Katie Zacharia Delivers Her First Press Briefing - 9:45am Livestream - The Last Refuge" [ref=e411] [cursor=pointer]:
+              - /url: https://theconservativetreehouse.com/blog/2026/10/13/white-house-press-secretary-katie-zacharia-delivers-her-first-press-briefing-945am-livestream/
+              - generic [ref=e412]:
+                - img "🌐" [ref=e416]
+                - generic [ref=e417]:
+                  - generic [ref=e418]: The Conservative Treehouse
+                  - generic [ref=e419]: theconservativetreehouse.com › home › white house press secretary katie zacharia delivers her first press briefing – 9:45am livestream
+              - generic "White House Press Secretary Katie Zacharia Delivers Her First Press Briefing - 9:45am Livestream - The Last Refuge" [ref=e421]
+            - generic [ref=e423]:
+              - text: 2天前 - Jim in TN on October 13th – 2026 Presidential Politics – Trump Administration Day 632 · White House Press Secretary Katie Zacharia Delivers Her First Press Briefing –
+              - strong [ref=e424]: 9:45am Livestream October 13, 2026
+              - text: · October 13th – 2026 Presidential ...
+          - link [ref=e426] [cursor=pointer]:
+            - /url: https://theconservativetreehouse.com/blog/2026/10/13/white-house-press-secretary-katie-zacharia-delivers-her-first-press-briefing-945am-livestream/
+        - generic [ref=e428]:
+          - generic [ref=e429]: 在其他地方查找
+          - generic [ref=e433]:
+            - link "Google" [ref=e434] [cursor=pointer]:
+              - /url: /search?q=%22Katie%20Zacharia%22%20White%20House%20briefing%20October%2013%20!g
+            - link "Bing" [ref=e435] [cursor=pointer]:
+              - /url: /search?q=%22Katie%20Zacharia%22%20White%20House%20briefing%20October%2013%20!b
+            - link "Mojeek" [ref=e436] [cursor=pointer]:
+              - /url: /search?q=%22Katie%20Zacharia%22%20White%20House%20briefing%20October%2013%20!mojeek
+        - generic [ref=e439]:
+          - generic [ref=e440]:
+            - 'link "🌐 Common Dreams commondreams.org › home › news › trump-administration ‘She Can Barely Read’: New Trump Press Secretary Katie Zacharia Faceplants in First Briefing | Common Dreams" [ref=e441] [cursor=pointer]':
+              - /url: https://www.commondreams.org/news/katie-zacharia-debut-briefing
+              - generic [ref=e442]:
+                - img "🌐" [ref=e446]
+                - generic [ref=e447]:
+                  - generic [ref=e448]: Common Dreams
+                  - generic [ref=e449]: commondreams.org › home › news › trump-administration
+              - 'generic "‘She Can Barely Read’: New Trump Press Secretary Katie Zacharia Faceplants in First Briefing | Common Dreams" [ref=e451]'
+            - generic [ref=e453]:
+              - text: 1天前 - Zacharia's first briefing, which lasted less than 15 minutes, was marked by
+              - strong [ref=e454]: halting speech and apparent difficulty in reading her prepared remarks
+              - text: . The Trump press secretary took just three questions from right-wing outlets—Fox News, The Daily ...
+          - link [ref=e456] [cursor=pointer]:
+            - /url: https://www.commondreams.org/news/katie-zacharia-debut-briefing
+        - generic [ref=e460]:
+          - link "🌐 Yahoo! yahoo.com › news › politics › articles › katie-zacharia-responds-criticism-first-185850417.html Katie Zacharia responds after criticism of first White House briefing" [ref=e461] [cursor=pointer]:
+            - /url: https://www.yahoo.com/news/politics/articles/katie-zacharia-responds-criticism-first-185850417.html
+            - generic [ref=e462]:
+              - img "🌐" [ref=e466]
+              - generic [ref=e467]:
+                - generic [ref=e468]: Yahoo!
+                - generic [ref=e469]: yahoo.com › news › politics › articles › katie-zacharia-responds-criticism-first-185850417.html
+            - generic "Katie Zacharia responds after criticism of first White House briefing" [ref=e471]
+          - generic [ref=e472]:
+            - link "14:25" [ref=e474] [cursor=pointer]:
+              - /url: https://www.yahoo.com/news/politics/articles/katie-zacharia-responds-criticism-first-185850417.html
+            - generic [ref=e479]:
+              - generic [ref=e480]:
+                - text: Zacharia began the briefing with
+                - strong [ref=e481]: prepared remarks highlighting Trump's campaign rallies ahead of the November 3 midterm elections and touting the administration's record on issues including energy, tariffs and immigration
+                - text: .
+              - generic [ref=e483]:
+                - strong [ref=e484]: "已发布:"
+                - text: 2天前
+        - generic [ref=e488]:
+          - 'link "🌐 YouTube youtube.com › watch FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26 - YouTube" [ref=e489] [cursor=pointer]':
+            - /url: https://www.youtube.com/watch?v=jWTVCPMk3S4
+            - generic [ref=e490]:
+              - img "🌐" [ref=e494]
+              - generic [ref=e495]:
+                - generic [ref=e496]: YouTube
+                - generic [ref=e497]: youtube.com › watch
+            - 'generic "FULL EVENT: Katie Zacharia Holds First Press Briefing as New White House Press Sec. - 10/13/26 - YouTube" [ref=e499]'
+          - generic [ref=e500]:
+            - link "14:08" [ref=e502] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=jWTVCPMk3S4
+            - generic [ref=e507]:
+              - generic [ref=e508]:
+                - strong [ref=e509]: Katie Zacharia Holds First Press Briefing as New White House Press Sec.
+                - text: October 13, 2026Join this channel to get access to perks:https://www.youtube.com/chan...
+              - generic [ref=e511]:
+                - strong [ref=e512]: "已发布:"
+                - text: 2天前
+        - generic [ref=e516]:
+          - link "🌐 NYTimes nytimes.com › u.s. › politics Katie Zacharia Makes Bumpy Debut as Trump’s New Press Secretary - The New York Times" [ref=e517] [cursor=pointer]:
+            - /url: https://www.nytimes.com/2026/10/13/us/politics/katie-zacharia-white-house-first-briefing.html
+            - generic [ref=e518]:
+              - img "🌐" [ref=e522]
+              - generic [ref=e523]:
+                - generic [ref=e524]: NYTimes
+                - generic [ref=e525]: nytimes.com › u.s. › politics
+            - generic "Katie Zacharia Makes Bumpy Debut as Trump’s New Press Secretary - The New York Times" [ref=e527]
+          - generic [ref=e528]:
+            - link "00:53" [ref=e530] [cursor=pointer]:
+              - /url: https://www.nytimes.com/2026/10/13/us/politics/katie-zacharia-white-house-first-briefing.html
+            - generic [ref=e535]:
+              - generic [ref=e536]:
+                - strong [ref=e537]: She read from a script for eight minutes, called on only three reporters and made an awkward slip-up
+                - text: .CreditCredit...Kenny Holston/The New York Times ... Oct. 13, 2026 ... See more of our coverage in your search results.Encuentra más de nuestra ...
+              - generic [ref=e539]:
+                - strong [ref=e540]: "已发布:"
+                - text: 1天前
+        - generic [ref=e543]:
+          - generic [ref=e544]:
+            - link "🌐 ABC17NEWS abc17news.com › home › white house officials question whether trump will keep zacharia in press secretary role after short first briefing White House official calls Katie Zacharia’s first press briefing ‘brutal’ - ABC17NEWS" [ref=e545] [cursor=pointer]:
+              - /url: https://abc17news.com/politics/national-politics/cnn-us-politics/2026/10/13/white-house-officials-question-whether-trump-will-keep-zacharia-in-press-secretary-role-after-short-first-briefing/
+              - generic [ref=e546]:
+                - img "🌐" [ref=e550]
+                - generic [ref=e551]:
+                  - generic [ref=e552]: ABC17NEWS
+                  - generic [ref=e553]: abc17news.com › home › white house officials question whether trump will keep zacharia in press secretary role after short first briefing
+              - generic "White House official calls Katie Zacharia’s first press briefing ‘brutal’ - ABC17NEWS" [ref=e555]
+            - generic [ref=e556]: 2天前 - Published October 13, 2026 10:50 AM · By Kaitlan Collins, Kristen Holmes, Alayna Treene, Kit Maher, CNN · (CNN) — Several White House officials are questioning how long Katie Zacharia will keep the press secretary job after her first briefing Tuesday, noting her performance was unlikely to satisfy President Donald Trump.
+          - link [ref=e559] [cursor=pointer]:
+            - /url: https://abc17news.com/politics/national-politics/cnn-us-politics/2026/10/13/white-house-officials-question-whether-trump-will-keep-zacharia-in-press-secretary-role-after-short-first-briefing/
+        - generic [ref=e562]:
+          - generic [ref=e563]:
+            - link "🌐 The Jerusalem Post jpost.com › jerusalem post › us politics Katie Zacharia's brief White House debut puts Trump's agenda front and center | The Jerusalem Post" [ref=e564] [cursor=pointer]:
+              - /url: https://www.jpost.com/international/article-911590
+              - generic [ref=e565]:
+                - img "🌐" [ref=e569]
+                - generic [ref=e570]:
+                  - generic [ref=e571]: The Jerusalem Post
+                  - generic [ref=e572]: jpost.com › jerusalem post › us politics
+              - generic "Katie Zacharia's brief White House debut puts Trump's agenda front and center | The Jerusalem Post" [ref=e574]
+            - generic [ref=e576]:
+              - text: 17小时前 - Incoming White House Press Secretary Katie Zacharia
+              - strong [ref=e577]: holds her first press briefing at the White House in Washington, DC, US, October 13, 2026
+              - text: .
+          - link [ref=e579] [cursor=pointer]:
+            - /url: https://www.jpost.com/international/article-911590
+        - generic [ref=e582]:
+          - generic [ref=e583]:
+            - link "🌐 Baltimore Sun baltimoresun.com › home › fox45 news › new white house press secretary says she’ll ‘amplify’ trump agenda as midterms near White House official calls Zacharia's first media briefing 'brutal,' CNN says" [ref=e584] [cursor=pointer]:
+              - /url: https://www.baltimoresun.com/2026/10/13/new-white-house-press-secretary-says-shell-amplify-trump-agenda-as-midterms-near/
+              - generic [ref=e585]:
+                - img "🌐" [ref=e589]
+                - generic [ref=e590]:
+                  - generic [ref=e591]: Baltimore Sun
+                  - generic [ref=e592]: baltimoresun.com › home › fox45 news › new white house press secretary says she’ll ‘amplify’ trump agenda as midterms near
+              - generic "White House official calls Zacharia's first media briefing 'brutal,' CNN says" [ref=e594]
+            - generic [ref=e595]: "2天前 - Tuesday, October 13th 2026 · Baltimore Sun eNewspaper · National News · Anne Arundel County · Baltimore City · Baltimore County · Carroll County · Harford County · Don't miss: News · National News · Share on Facebook (Opens in new window) Facebook · Share on X (Opens in new window) X · White House Press Secretary Katie Zacharia in the James Brady Press Briefing Room at the White House on Tuesday for her first media briefing."
+          - link [ref=e598] [cursor=pointer]:
+            - /url: https://www.baltimoresun.com/2026/10/13/new-white-house-press-secretary-says-shell-amplify-trump-agenda-as-midterms-near/
+        - generic [ref=e602]:
+          - link "🌐 MS NOW ms.now › home › peter alexander says a ‘key question’ was missing from zacharia’s first briefing Katie Zacharia’s first briefing missed a key question" [ref=e603] [cursor=pointer]:
+            - /url: https://www.ms.now/news/katie-zacharia-white-house-press-briefing-trump
+            - generic [ref=e604]:
+              - img "🌐" [ref=e608]
+              - generic [ref=e609]:
+                - generic [ref=e610]: MS NOW
+                - generic [ref=e611]: ms.now › home › peter alexander says a ‘key question’ was missing from zacharia’s first briefing
+            - generic "Katie Zacharia’s first briefing missed a key question" [ref=e613]
+          - generic [ref=e614]:
+            - link "11:40" [ref=e616] [cursor=pointer]:
+              - /url: https://www.ms.now/news/katie-zacharia-white-house-press-briefing-trump
+            - generic [ref=e621]:
+              - generic [ref=e622]:
+                - text: Katie Zacharia
+                - strong [ref=e623]: took questions from three outlets at her first briefing, but none asked whether she sees her primary role as serving the president or the truth.
+                - text: ... Oct. 13, 2026, 1:21 PM EDT · MS NOW’s Peter Alexander, who served as NBC News’ ...
+              - generic [ref=e625]:
+                - strong [ref=e626]: "已发布:"
+                - text: 1天前
+        - generic [ref=e629]:
+          - generic [ref=e630]:
+            - link "🌐 The Epoch Times theepochtimes.com › home › us › us politics › executive branch › katie zacharia holds 1st briefing as white house press secretary Katie Zacharia Holds 1st Briefing as White House Press Secretary | The Epoch Times" [ref=e631] [cursor=pointer]:
+              - /url: https://www.theepochtimes.com/us/katie-zacharia-holds-1st-briefing-as-white-house-press-secretary-6103024
+              - generic [ref=e632]:
+                - img "🌐" [ref=e636]
+                - generic [ref=e637]:
+                  - generic [ref=e638]: The Epoch Times
+                  - generic [ref=e639]: theepochtimes.com › home › us › us politics › executive branch › katie zacharia holds 1st briefing as white house press secretary
+              - generic "Katie Zacharia Holds 1st Briefing as White House Press Secretary | The Epoch Times" [ref=e641]
+            - generic [ref=e643]:
+              - text: 19小时前 - 12. “
+              - strong [ref=e644]: I am so honored to work for President Trump and the American people as the new White House press secretary
+              - text: ",” Zacharia said at the start of the Oct. 13 news briefing. “I want to thank President Trump for his trust that he has placed ..."
+          - link [ref=e646] [cursor=pointer]:
+            - /url: https://www.theepochtimes.com/us/katie-zacharia-holds-1st-briefing-as-white-house-press-secretary-6103024
+        - generic [ref=e649]:
+          - generic [ref=e650]:
+            - link "🌐 Tyla tyla.com › news › politics Trump’s new press secretary Katie Zacharia is already causing backlash on her first day" [ref=e651] [cursor=pointer]:
+              - /url: https://www.tyla.com/news/politics/katie-zacharia-new-white-house-press-secretary-briefing-152721-20261014
+              - generic [ref=e652]:
+                - img "🌐" [ref=e656]
+                - generic [ref=e657]:
+                  - generic [ref=e658]: Tyla
+                  - generic [ref=e659]: tyla.com › news › politics
+              - generic "Trump’s new press secretary Katie Zacharia is already causing backlash on her first day" [ref=e661]
+            - generic [ref=e663]:
+              - text: 1天前 - ... “
+              - strong [ref=e664]: I am so honoured to work for President Trump and the American people as the new White House press secretary
+              - text: ",” Zacharia began. “I want to thank President Trump for his trust that he has placed in me."
+          - link [ref=e666] [cursor=pointer]:
+            - /url: https://www.tyla.com/news/politics/katie-zacharia-new-white-house-press-secretary-briefing-152721-20261014
+        - generic [ref=e669]:
+          - generic [ref=e670]:
+            - 'link "🌐 The Guardian theguardian.com › us-news › 2026 › oct › 13 › katie-zacharia-trump-press-briefing Enter the Zachbot: Trump’s new press secretary malfunctions on podium debut | Donald Trump | The Guardian" [ref=e671] [cursor=pointer]':
+              - /url: https://www.theguardian.com/us-news/2026/oct/13/katie-zacharia-trump-press-briefing
+              - generic [ref=e672]:
+                - img "🌐" [ref=e676]
+                - generic [ref=e677]:
+                  - generic [ref=e678]: The Guardian
+                  - generic [ref=e679]: theguardian.com › us-news › 2026 › oct › 13 › katie-zacharia-trump-press-briefing
+              - 'generic "Enter the Zachbot: Trump’s new press secretary malfunctions on podium debut | Donald Trump | The Guardian" [ref=e681]'
+            - generic [ref=e682]: 1天前 - Wearing a dark jacket with big gold buttons on Tuesday morning, she entered the standing-room-only briefing room and stepped on to the podium as Trump’s sixth press secretary. For James Bond fans, that means we’ve reached the Daniel Craig era. For Doctor Who fans, it means the regeneration that brought us Colin Baker (not the show’s golden age). Zacharia has the blond hair, glossy makeup and Fox News aesthetic of her immediate predecessors Kayleigh McEnany and Karoline Leavitt (her name also begins with a “K” – surely a tell to the AI detectors).
+          - link [ref=e685] [cursor=pointer]:
+            - /url: https://www.theguardian.com/us-news/2026/oct/13/katie-zacharia-trump-press-briefing
+        - link "下一页" [ref=e688] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+White+House+briefing+October+13&offset=1&spellcheck=0
+  - contentinfo [ref=e692]:
+    - generic [ref=e695]:
+      - generic [ref=e696]:
+        - heading "资源" [level=6] [ref=e697]
+        - generic [ref=e698]:
+          - link "Brave 搜索高级版" [ref=e699] [cursor=pointer]:
+            - /url: https://account.brave.com/?intent=checkout&product=search
+          - link "Brave 搜索帮助" [ref=e700] [cursor=pointer]:
+            - /url: /help
+          - link "透明度报告" [ref=e701] [cursor=pointer]:
+            - /url: https://brave.com/transparency/
+          - link "举报安全问题" [ref=e702] [cursor=pointer]:
+            - /url: https://hackerone.com/brave
+          - link "状态" [ref=e703] [cursor=pointer]:
+            - /url: https://status.brave.app/
+      - generic [ref=e704]:
+        - heading "产品" [level=6] [ref=e705]
+        - generic [ref=e706]:
+          - link "Brave 浏览器" [ref=e707] [cursor=pointer]:
+            - /url: https://brave.com/download/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 搜索" [ref=e708] [cursor=pointer]:
+            - /url: https://search.brave.com
+          - link "Brave 钱包" [ref=e709] [cursor=pointer]:
+            - /url: https://brave.com/wallet/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 通话" [ref=e710] [cursor=pointer]:
+            - /url: https://talk.brave.com/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 防火墙+ VPN" [ref=e711] [cursor=pointer]:
+            - /url: https://brave.com/firewall-vpn/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 播放列表" [ref=e712] [cursor=pointer]:
+            - /url: https://brave.com/playlist/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 新闻" [ref=e713] [cursor=pointer]:
+            - /url: https://brave.com/brave-news/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 奖励" [ref=e714] [cursor=pointer]:
+            - /url: https://brave.com/brave-rewards/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 搜索 API" [ref=e715] [cursor=pointer]:
+            - /url: https://brave.com/search/api/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+          - link "Brave 广告" [ref=e716] [cursor=pointer]:
+            - /url: https://brave.com/brave-ads/?mtm_source=brave-search&mtm_medium=searchfooter&mtm_campaign=brave-search&mtm_content=evergreen
+      - generic [ref=e717]:
+        - heading "策略" [level=6] [ref=e718]
+        - generic [ref=e719]:
+          - link "隐私政策" [ref=e720] [cursor=pointer]:
+            - /url: /help/privacy-policy
+          - link "使用条款" [ref=e721] [cursor=pointer]:
+            - /url: https://brave.com/terms-of-use/

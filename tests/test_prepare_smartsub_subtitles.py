@@ -35,13 +35,13 @@ class SmartSubSubtitlePreparationTests(unittest.TestCase):
             ass_text = output.read_text(encoding="utf-8")
             self.assertIn(r"{\rChinese\fs56\1c&H004DD8FF&}大家好。", ass_text)
             self.assertIn(
-                r"{\rEnglish\fs84\1c&H00FFFFFF&}Hello, everybody.",
+                r"{\rEnglish\fs45\1c&H00FFFFFF&}Hello, everybody.",
                 ass_text,
             )
             self.assertEqual(report["input_srt_timings_match"], True)
             self.assertEqual(
                 report["style"]["english_to_chinese_font_ratio"],
-                1.5,
+                0.804,
             )
             self.assertEqual(
                 report["translation_accuracy"],

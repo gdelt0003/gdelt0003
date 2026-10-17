@@ -1,0 +1,6 @@
+[     368ms] [WARNING] Manifest: property 'migrate_from' ignored, manifest must specify an 'id' property in order to receive a migration. @ https://www.youtube.com/manifest.webmanifest:0
+[     750ms] [INFO] LegacyDataMixin will be applied to all legacy elements.
+Set `_legacyUndefinedCheck: true` on element class to enable. @ https://www.youtube.com/s/_/ytmainappweb/_/js/k=ytmainappweb.kevlar_base.en_US.xkT5eO4Yk2A.es5.O/am=AAAAgAAACEBK/d=1/br=1/rs=AGKMywHaodCc73Z5oKQF-B64AUcKpiPaLQ/m=kevlar_base_module,kevlar_main_module,kevlar_base_sync_mod_chunk:13102
+[    1268ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3D%252Fsignin_passive%26feature%3Dpassive&hl=zh-CN:0
+[    2403ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[    2828ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://www.youtube.com/watch?v=c6Omy99Xhsc:0

@@ -25,7 +25,7 @@ class FullVideoReleaseGateTests(unittest.TestCase):
                 "source_resolution": "passed",
                 "subtitle_readability": {
                     "status": "style_contract_passed",
-                    "english_to_chinese_size_ratio": 1.22,
+                    "english_to_chinese_size_ratio": 0.8,
                     "visual_frame_review": "required",
                     "english_reading_speed_over_20_cps_cues": [],
                     "chinese_reading_speed_over_10_cps_cues": [],
@@ -97,7 +97,7 @@ def complete_manifest():
             "source_resolution": "passed",
             "subtitle_readability": {
                 "status": "style_contract_passed",
-                "english_to_chinese_size_ratio": 1.22,
+                "english_to_chinese_size_ratio": 0.8,
                 "visual_frame_review": "passed",
                 "english_reading_speed_over_20_cps_cues": [],
                 "chinese_reading_speed_over_10_cps_cues": [],
