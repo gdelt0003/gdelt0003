@@ -277,66 +277,47 @@ def _sandbox_path() -> str:
     return os.pathsep.join(dict.fromkeys(paths))
 
 
-def _ensure_sandbox_path_traversal(
-    path: Path, sandbox_uid: int, sandbox_gid: int
-) -> list[str]:
-    def can_traverse() -> bool:
-        access = subprocess.run(
-            [
-                "sudo",
-                "-n",
-                "setpriv",
-                f"--reuid={sandbox_uid}",
-                f"--regid={sandbox_gid}",
-                "--init-groups",
-                "--",
-                "sh",
-                "-c",
-                'test -x "$1"; status=$?; if [ "$status" -eq 1 ]; then exit 10; fi; exit "$status"',
-                "sh",
-                str(path),
-            ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            timeout=15,
-            check=False,
-        )
-        if access.returncode == 0:
-            return True
-        if access.returncode == 10:
-            return False
-        raise RuntimeError(
-            "Sandbox traversal probe failed "
-            f"(exit {access.returncode}): {access.stdout[-1000:]}"
-        )
-
-    if can_traverse():
-        return []
-
-    changed_directories = []
-    directory = path
-    for _ in range(8):
-        if (
-            directory == Path(directory.anchor)
-            or directory.as_posix() in {"/", "/home/runner"}
-        ):
-            break
-        subprocess.run(
-            ["sudo", "-n", "chmod", "o+x", "--", str(directory)],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            timeout=15,
-        )
-        changed_directories.append(str(directory))
-        if can_traverse():
-            return changed_directories
-        directory = directory.parent
+def _sandbox_can_traverse(path: Path, sandbox_uid: int, sandbox_gid: int) -> bool:
+    access = subprocess.run(
+        [
+            "sudo",
+            "-n",
+            "setpriv",
+            f"--reuid={sandbox_uid}",
+            f"--regid={sandbox_gid}",
+            "--init-groups",
+            "--",
+            "sh",
+            "-c",
+            'test -d "$1" && test -x "$1"; status=$?; if [ "$status" -eq 1 ]; then exit 10; fi; exit "$status"',
+            "sh",
+            str(path),
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        timeout=15,
+        check=False,
+    )
+    if access.returncode == 0:
+        return True
+    if access.returncode == 10:
+        return False
     raise RuntimeError(
-        "Sandbox user cannot traverse the per-job runner temp path after "
-        "execute-only access was granted to its bounded ancestor chain."
+        "Sandbox traversal probe failed "
+        f"(exit {access.returncode}): {access.stdout[-1000:]}"
+    )
+
+
+def _select_sandbox_temp_parent(
+    candidates: list[Path], sandbox_uid: int, sandbox_gid: int
+) -> Path:
+    for candidate in candidates:
+        path = candidate.resolve()
+        if path.is_dir() and _sandbox_can_traverse(path, sandbox_uid, sandbox_gid):
+            return path
+    raise RuntimeError(
+        "Sandbox user cannot traverse any approved temporary directory."
     )
 
 
@@ -420,12 +401,9 @@ def _test_process(
             f"unshare exited {isolation.returncode}: {isolation.stdout[-1000:]}"
         )
 
-    runner_temp = Path(
-        os.environ.get("RUNNER_TEMP", tempfile.gettempdir())
-    ).resolve()
     try:
-        changed_directories = _ensure_sandbox_path_traversal(
-            runner_temp, sandbox_uid, sandbox_gid
+        temp_parent = _select_sandbox_temp_parent(
+            [Path("/tmp")], sandbox_uid, sandbox_gid
         )
     except (
         OSError,
@@ -434,27 +412,28 @@ def _test_process(
         subprocess.TimeoutExpired,
     ) as error:
         return "skipped", (
-            "Unable to grant execute-only traversal on this job's runner temp "
-            f"directory: {error}"
+            f"Unable to use an approved sandbox temporary directory: {error}"
         )
     traversal_note = (
-        "Sandbox path traversal required o+x on: "
-        + ", ".join(changed_directories)
-        + "\n"
-        if changed_directories
-        else "Sandbox path traversal preflight passed without permission changes.\n"
+        f"Sandbox path traversal preflight passed for {temp_parent}; "
+        "no parent permissions were changed.\n"
     )
-    temp_root = Path(
-        tempfile.mkdtemp(
-            prefix="subtitle-topic-sandbox-",
-            dir=str(runner_temp),
+    try:
+        temp_root = Path(
+            tempfile.mkdtemp(
+                prefix="subtitle-topic-sandbox-",
+                dir=str(temp_parent),
+            )
         )
-    )
-    os.chmod(temp_root, 0o711)
+    except OSError as error:
+        return "skipped", (
+            f"{traversal_note}Unable to create sandbox directory: {error}"
+        )
     test_root = temp_root / "repository"
     test_home = temp_root / "home"
     test_tmp = temp_root / "tmp"
     try:
+        os.chmod(temp_root, 0o711)
         for directory in (test_root, test_home, test_tmp):
             subprocess.run(
                 [
