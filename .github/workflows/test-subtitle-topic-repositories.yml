@@ -1,0 +1,218 @@
+name: Test subtitle topic repositories
+
+on:
+  workflow_dispatch:
+    inputs:
+      wave:
+        description: "256-repository rank range, sorted by stars (GitHub search is capped at 1,000)"
+        type: choice
+        required: true
+        default: "1"
+        options:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      total_count: ${{ steps.discover.outputs.total_count }}
+      accessible_count: ${{ steps.discover.outputs.accessible_count }}
+      result_cap: ${{ steps.discover.outputs.result_cap }}
+      wave_size: ${{ steps.discover.outputs.wave_size }}
+      wave: ${{ steps.discover.outputs.wave }}
+      wave_start: ${{ steps.discover.outputs.wave_start }}
+      wave_end: ${{ steps.discover.outputs.wave_end }}
+    steps:
+      - name: Check out trusted harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/subtitle_topic_test_matrix.py
+
+      - name: Search GitHub repositories by subtitle topic
+        id: discover
+        env:
+          MATRIX_GITHUB_TOKEN: ${{ github.token }}
+          WAVE: ${{ inputs.wave }}
+        run: python scripts/subtitle_topic_test_matrix.py discover --wave "$WAVE"
+
+      - name: Report search scope
+        env:
+          TOTAL_COUNT: ${{ steps.discover.outputs.total_count }}
+          ACCESSIBLE_COUNT: ${{ steps.discover.outputs.accessible_count }}
+          RESULT_CAP: ${{ steps.discover.outputs.result_cap }}
+          WAVE_SIZE: ${{ steps.discover.outputs.wave_size }}
+          WAVE: ${{ steps.discover.outputs.wave }}
+          WAVE_START: ${{ steps.discover.outputs.wave_start }}
+          WAVE_END: ${{ steps.discover.outputs.wave_end }}
+        run: |
+          {
+            echo "Search: \`topic:subtitle\`, sorted by stars descending. GitHub reported ${TOTAL_COUNT} results; ${ACCESSIBLE_COUNT} are retrievable under the ${RESULT_CAP}-result API cap."
+            echo
+            echo "Wave ${WAVE} covers ranks ${WAVE_START}-${WAVE_END} of batches up to ${WAVE_SIZE}. The GitHub Actions matrix limit is 256 jobs/run; actual simultaneous runners are plan/repository limited."
+            echo
+            echo "Each repository uses a separate ephemeral hosted runner. No repository Actions workflow is invoked and no dependencies are installed."
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  test:
+    if: github.ref == 'refs/heads/main'
+    needs: discover
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 256
+      matrix:
+        repository: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - name: Check out trusted harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          path: harness
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/subtitle_topic_test_matrix.py
+
+      - name: Resolve repository commit SHA
+        id: pin
+        env:
+          MATRIX_GITHUB_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ matrix.repository.full_name }}
+          DEFAULT_BRANCH: ${{ matrix.repository.default_branch }}
+          WAVE: ${{ needs.discover.outputs.wave }}
+          SEARCH_POSITION: ${{ matrix.repository.search_position }}
+          OUTPUT_DIR: ${{ runner.temp }}/subtitle-topic/${{ matrix.repository.search_position }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python harness/scripts/subtitle_topic_test_matrix.py pin \
+            --repository "$REPOSITORY" \
+            --branch "$DEFAULT_BRANCH" \
+            --wave "$WAVE" \
+            --search-position "$SEARCH_POSITION" \
+            --output-dir "$OUTPUT_DIR" \
+            --run-url "$RUN_URL"
+
+      - name: Check out pinned public repository without media blobs
+        id: candidate
+        if: steps.pin.outputs.sha != ''
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ${{ matrix.repository.full_name }}
+          ref: ${{ steps.pin.outputs.sha }}
+          token: ${{ github.token }}
+          path: candidate
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /**
+            !**/*.mp4
+            !**/*.m4v
+            !**/*.mov
+            !**/*.mkv
+            !**/*.webm
+            !**/*.avi
+            !**/*.mpeg
+            !**/*.mpg
+            !**/*.wmv
+            !**/*.flv
+            !**/*.3gp
+            !**/*.MP4
+            !**/*.M4V
+            !**/*.MOV
+            !**/*.MKV
+            !**/*.WEBM
+            !**/*.AVI
+            !**/*.MPEG
+            !**/*.MPG
+            !**/*.WMV
+            !**/*.FLV
+            !**/*.3GP
+            !**/*.wav
+            !**/*.mp3
+            !**/*.flac
+            !**/*.ogg
+            !**/*.aac
+            !**/*.m4a
+            !**/*.opus
+            !**/*.WAV
+            !**/*.MP3
+            !**/*.FLAC
+            !**/*.OGG
+            !**/*.AAC
+            !**/*.M4A
+            !**/*.OPUS
+
+      - name: Run detected test suite with network disabled
+        id: run-tests
+        if: steps.candidate.outcome == 'success'
+        env:
+          REPOSITORY: ${{ matrix.repository.full_name }}
+          REPOSITORY_SHA: ${{ steps.pin.outputs.sha }}
+          REPOSITORY_LANGUAGE: ${{ matrix.repository.language }}
+          WAVE: ${{ needs.discover.outputs.wave }}
+          SEARCH_POSITION: ${{ matrix.repository.search_position }}
+          OUTPUT_DIR: ${{ runner.temp }}/subtitle-topic/${{ matrix.repository.search_position }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python harness/scripts/subtitle_topic_test_matrix.py run \
+            --root candidate \
+            --output-dir "$OUTPUT_DIR" \
+            --repository "$REPOSITORY" \
+            --sha "$REPOSITORY_SHA" \
+            --language "$REPOSITORY_LANGUAGE" \
+            --wave "$WAVE" \
+            --search-position "$SEARCH_POSITION" \
+            --run-url "$RUN_URL"
+
+      - name: Record pin or checkout failure
+        if: always() && (steps.pin.outputs.sha == '' || steps.candidate.outcome != 'success')
+        env:
+          REPOSITORY: ${{ matrix.repository.full_name }}
+          REPOSITORY_SHA: ${{ steps.pin.outputs.sha }}
+          WAVE: ${{ needs.discover.outputs.wave }}
+          SEARCH_POSITION: ${{ matrix.repository.search_position }}
+          OUTPUT_DIR: ${{ runner.temp }}/subtitle-topic/${{ matrix.repository.search_position }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PIN_ERROR: ${{ steps.pin.outputs.pin_error }}
+          CHECKOUT_OUTCOME: ${{ steps.candidate.outcome }}
+        run: |
+          reason="${PIN_ERROR:-Pinned repository checkout did not complete successfully (outcome: ${CHECKOUT_OUTCOME}).}"
+          python harness/scripts/subtitle_topic_test_matrix.py failure \
+            --output-dir "$OUTPUT_DIR" \
+            --repository "$REPOSITORY" \
+            --sha "$REPOSITORY_SHA" \
+            --wave "$WAVE" \
+            --search-position "$SEARCH_POSITION" \
+            --run-url "$RUN_URL" \
+            --reason "$reason"
+
+      - name: Upload per-repository evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: subtitle-topic-${{ matrix.repository.search_position }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/subtitle-topic/${{ matrix.repository.search_position }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail if pinning or checkout failed
+        if: always() && (steps.pin.outputs.sha == '' || steps.candidate.outcome != 'success')
+        run: exit 1
