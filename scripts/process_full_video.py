@@ -63,6 +63,14 @@ ROSE_CAPTION_POSITIONS = {
 }
 
 
+def _resolve_english_to_chinese_font_ratio(ratio: float | None) -> float:
+    if ratio is None:
+        return ENGLISH_TO_CHINESE_FONT_RATIO
+    if not math.isfinite(ratio) or ratio <= 0:
+        raise ValueError("English-to-Chinese font ratio must be finite and positive.")
+    return ratio
+
+
 def _rose_garden_review_module():
     if __package__:
         from . import verify_rose_garden_review
@@ -2210,6 +2218,7 @@ def write_ass(
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
     caption_box: tuple[int, int, int, int] | None = None,
+    english_to_chinese_font_ratio: float | None = None,
 ) -> bool:
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
         _chinese_font, _english_font, _max_chinese, max_english = (
@@ -2232,7 +2241,12 @@ def write_ass(
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
             34,
-            round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+            round(
+                chinese_font
+                * _resolve_english_to_chinese_font_ratio(
+                    english_to_chinese_font_ratio
+                )
+            ),
         )
         safe_width = round(width * 0.78)
         max_english = max(
@@ -2357,7 +2371,12 @@ def write_ass(
     chinese_font = max(32, round(height * 0.052))
     english_font = max(
         34,
-        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+        round(
+            chinese_font
+            * _resolve_english_to_chinese_font_ratio(
+                english_to_chinese_font_ratio
+            )
+        ),
     )
     safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
@@ -2470,6 +2489,7 @@ def verify_cues(
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
     caption_box: tuple[int, int, int, int] | None = None,
+    english_to_chinese_font_ratio: float | None = None,
 ) -> dict[str, object]:
     if not cues:
         raise RuntimeError("Caption verification failed: there are no cues.")
@@ -2620,9 +2640,17 @@ def verify_cues(
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
             34,
-            round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+            round(
+                chinese_font
+                * _resolve_english_to_chinese_font_ratio(
+                    english_to_chinese_font_ratio
+                )
+            ),
         )
-        if english_font / chinese_font < 1.20:
+        if (
+            english_to_chinese_font_ratio is None
+            and english_font / chinese_font < 1.20
+        ):
             raise RuntimeError(
                 "Caption verification failed: English text is not at least "
                 "20% larger."

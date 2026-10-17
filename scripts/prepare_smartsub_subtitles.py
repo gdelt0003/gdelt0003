@@ -12,6 +12,9 @@ else:
     from process_full_video import Cue, read_srt, verify_cues, write_ass
 
 
+SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO = 45 / 56
+
+
 def prepare(
     english_path: Path,
     chinese_path: Path,
@@ -33,8 +36,20 @@ def prepare(
             raise ValueError(f"Subtitle cue {index} has mismatched language timings.")
         cues.append(Cue(en[0], en[1], en[2], zh[2]))
 
-    write_ass(output_path, cues, width, height)
-    checks = verify_cues(cues, duration=duration, width=width, height=height)
+    write_ass(
+        output_path,
+        cues,
+        width,
+        height,
+        english_to_chinese_font_ratio=SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO,
+    )
+    checks = verify_cues(
+        cues,
+        duration=duration,
+        width=width,
+        height=height,
+        english_to_chinese_font_ratio=SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO,
+    )
     readability = checks["subtitle_readability"]
     report = {
         "subtitle_cues": len(cues),
