@@ -357,32 +357,9 @@ def _test_process(
             f"unshare exited {isolation.returncode}: {isolation.stdout[-1000:]}"
         )
 
-    root_path = root.resolve()
     runner_temp = Path(
         os.environ.get("RUNNER_TEMP", tempfile.gettempdir())
     ).resolve()
-    try:
-        shared_root = Path(
-            os.path.commonpath((str(root_path), str(runner_temp)))
-        )
-    except ValueError as error:
-        return "skipped", f"Repository and runner temp are on different roots: {error}"
-    if shared_root == Path(shared_root.anchor):
-        return "skipped", (
-            "Repository checkout and runner temp do not share a bounded "
-            "workspace ancestor."
-        )
-    traversal_dirs = []
-    ancestor = root_path.parent
-    while ancestor != shared_root:
-        if shared_root not in ancestor.parents or len(traversal_dirs) == 8:
-            return "skipped", (
-                "Repository checkout is too far from runner temp to safely "
-                "grant sandbox traversal."
-            )
-        traversal_dirs.append(ancestor)
-        ancestor = ancestor.parent
-
     temp_root = Path(
         tempfile.mkdtemp(
             prefix="subtitle-topic-sandbox-",
@@ -390,10 +367,11 @@ def _test_process(
         )
     )
     os.chmod(temp_root, 0o711)
+    test_root = temp_root / "repository"
     test_home = temp_root / "home"
     test_tmp = temp_root / "tmp"
     try:
-        for directory in (test_home, test_tmp):
+        for directory in (test_root, test_home, test_tmp):
             subprocess.run(
                 [
                     "sudo",
@@ -413,22 +391,22 @@ def _test_process(
                 text=True,
                 timeout=15,
             )
-        if traversal_dirs:
-            subprocess.run(
-                [
-                    "sudo",
-                    "-n",
-                    "chmod",
-                    "o+x",
-                    "--",
-                    *[str(directory) for directory in traversal_dirs],
-                ],
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                timeout=15,
-            )
+        subprocess.run(
+            [
+                "sudo",
+                "-n",
+                "cp",
+                "-a",
+                "--",
+                f"{root.resolve()}/.",
+                f"{test_root}/",
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=60,
+        )
         subprocess.run(
             [
                 "sudo",
@@ -437,7 +415,7 @@ def _test_process(
                 "-R",
                 "o+rwX",
                 "--",
-                str(root.resolve()),
+                str(test_root),
             ],
             check=True,
             stdout=subprocess.PIPE,
@@ -492,7 +470,7 @@ def _test_process(
         try:
             preflight = subprocess.run(
                 [*sandbox_prefix, *sandbox_environment, *version_command],
-                cwd=root,
+                cwd=test_root,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 text=True,
@@ -510,7 +488,7 @@ def _test_process(
 
         process = subprocess.Popen(
             [*sandbox_prefix, *sandbox_environment, *command],
-            cwd=root,
+            cwd=test_root,
             env={"PATH": os.environ.get("PATH", "/usr/local/bin:/usr/bin:/bin")},
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
