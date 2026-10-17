@@ -577,6 +577,7 @@ def reflow_rose_garden_cues(
     english_font: int,
     safe_height: int | None = None,
     overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> list[Cue]:
     reflowed: list[Cue] = []
     for cue_index, cue in enumerate(cues, start=1):
@@ -584,6 +585,39 @@ def reflow_rose_garden_cues(
         if duration <= 0:
             reflowed.append(cue)
             continue
+        if safe_height is not None:
+            try:
+                english_lines, chinese_lines = _fit_rose_caption_lines(
+                    cue,
+                    safe_width=safe_width,
+                    safe_height=safe_height,
+                    chinese_font=chinese_font,
+                    english_font=english_font,
+                )
+            except ValueError:
+                pass
+            else:
+                if (
+                    overflow_records is not None
+                    and (len(english_lines) > 1 or len(chinese_lines) > 1)
+                ):
+                    overflow_records.append(
+                        _rose_layout_record(
+                            cue_index,
+                            cue,
+                            fit_status="within_box",
+                            reason="explicit_line_wrap_required",
+                            english_lines=english_lines,
+                            chinese_lines=chinese_lines,
+                            english_font=english_font,
+                            chinese_font=chinese_font,
+                            safe_width=safe_width,
+                            safe_height=safe_height,
+                            caption_box=caption_box,
+                        )
+                    )
+                reflowed.append(cue)
+                continue
         try:
             english_lines = _wrap_english_to_width(
                 cue.english, safe_width, english_font
@@ -601,23 +635,9 @@ def reflow_rose_garden_cues(
                     (chinese_font, chinese_lines),
                 )
             )
-            if safe_height is not None and estimated_height > safe_height:
-                if overflow_records is not None:
-                    overflow_records.append(
-                        _rose_overflow_record(
-                            cue_index,
-                            cue,
-                            reason="bilingual_caption_exceeds_safe_region_height",
-                            english_font=english_font,
-                            chinese_font=chinese_font,
-                            safe_width=safe_width,
-                            safe_height=safe_height,
-                        )
-                    )
+            if safe_height is None or estimated_height <= safe_height:
                 reflowed.append(cue)
                 continue
-            reflowed.append(cue)
-            continue
         clauses = _split_aligned_clauses(
             cue.english,
             cue.chinese,
@@ -635,6 +655,7 @@ def reflow_rose_garden_cues(
                         chinese_font=chinese_font,
                         safe_width=safe_width,
                         safe_height=safe_height,
+                        caption_box=caption_box,
                     )
                 )
             reflowed.append(cue)
@@ -669,6 +690,7 @@ def reflow_rose_garden_cues(
                         chinese_font=chinese_font,
                         safe_width=safe_width,
                         safe_height=safe_height,
+                        caption_box=caption_box,
                     )
                 )
             reflowed.append(cue)
@@ -685,6 +707,7 @@ def reflow_rose_garden_cues(
                         chinese_font=chinese_font,
                         safe_width=safe_width,
                         safe_height=safe_height,
+                        caption_box=caption_box,
                     )
                 )
             reflowed.append(cue)
@@ -713,6 +736,7 @@ def _rose_overflow_record(
     chinese_font: int,
     safe_width: int,
     safe_height: int | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, object]:
     english_lines = _wrap_english_to_width(
         cue.english,
@@ -727,26 +751,19 @@ def _rose_overflow_record(
         chinese_font,
         max_lines=None,
     )
-    estimated_text_height = sum(
-        round(font * 1.2) * len(lines)
-        for font, lines in (
-            (english_font, english_lines),
-            (chinese_font, chinese_lines),
-        )
+    return _rose_layout_record(
+        cue_index,
+        cue,
+        fit_status="outside_box" if caption_box is not None else "unresolved",
+        reason=reason,
+        english_lines=english_lines,
+        chinese_lines=chinese_lines,
+        english_font=english_font,
+        chinese_font=chinese_font,
+        safe_width=safe_width,
+        safe_height=safe_height,
+        caption_box=caption_box,
     )
-    return {
-        "source_cue_index": cue_index,
-        "start_seconds": round(cue.start, 3),
-        "end_seconds": round(cue.end, 3),
-        "reason": reason,
-        "review_status": "manual_review_required",
-        "fallback": "preserved_complete_bilingual_cue; render_with_overflow",
-        "safe_width_px": safe_width,
-        "english_lines_required": len(english_lines),
-        "chinese_lines_required": len(chinese_lines),
-        "estimated_text_height_px": estimated_text_height,
-        "safe_height_px": safe_height,
-    }
 
 
 def _has_rose_overflow(
@@ -761,6 +778,25 @@ def _has_rose_overflow(
         and abs(float(record["start_seconds"]) - cue.start) < 0.001
         and abs(float(record["end_seconds"]) - cue.end) < 0.001
         for record in overflow_records
+    )
+
+
+def _rose_layout_record_for_cue(
+    cue: Cue,
+    records: list[dict[str, object]] | None,
+) -> dict[str, object] | None:
+    if not records:
+        return None
+    return next(
+        (
+            record
+            for record in records
+            if isinstance(record.get("start_seconds"), (int, float))
+            and isinstance(record.get("end_seconds"), (int, float))
+            and abs(float(record["start_seconds"]) - cue.start) < 0.001
+            and abs(float(record["end_seconds"]) - cue.end) < 0.001
+        ),
+        None,
     )
 
 
@@ -867,6 +903,66 @@ def _pixel_region(
     }
 
 
+CAPTION_BOX_REFERENCE_WIDTH = 1920
+CAPTION_BOX_REFERENCE_HEIGHT = 1080
+
+
+def parse_caption_box(value: str) -> tuple[int, int, int, int]:
+    try:
+        coordinates = tuple(int(part.strip()) for part in value.split(","))
+    except ValueError as error:
+        raise ValueError(
+            "Caption box must contain four comma-separated integer coordinates."
+        ) from error
+    if (
+        len(coordinates) != 4
+        or coordinates[0] < 0
+        or coordinates[1] < 0
+        or coordinates[2] <= coordinates[0]
+        or coordinates[3] <= coordinates[1]
+        or coordinates[2] > CAPTION_BOX_REFERENCE_WIDTH
+        or coordinates[3] > CAPTION_BOX_REFERENCE_HEIGHT
+    ):
+        raise ValueError(
+            "Caption box must be a non-empty half-open x1,y1,x2,y2 rectangle "
+            "inside the 1920x1080 reference frame."
+        )
+    return (
+        coordinates[0],
+        coordinates[1],
+        coordinates[2],
+        coordinates[3],
+    )
+
+
+def map_caption_box(
+    box: tuple[int, int, int, int],
+    width: int,
+    height: int,
+) -> tuple[int, int, int, int]:
+    if width <= 0 or height <= 0:
+        raise ValueError("Caption box mapping requires positive frame dimensions.")
+    left, top, right, bottom = box
+    return (
+        round(left * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(top * height / CAPTION_BOX_REFERENCE_HEIGHT),
+        round(right * width / CAPTION_BOX_REFERENCE_WIDTH),
+        round(bottom * height / CAPTION_BOX_REFERENCE_HEIGHT),
+    )
+
+
+def _caption_box_region(box: tuple[int, int, int, int]) -> dict[str, int]:
+    left, top, right, bottom = box
+    return {
+        "left": left,
+        "top": top,
+        "right": right,
+        "bottom": bottom,
+        "width": right - left,
+        "height": bottom - top,
+    }
+
+
 def rose_caption_region(
     width: int,
     height: int,
@@ -874,7 +970,10 @@ def rose_caption_region(
     source_graphics_regions: list[dict[str, float | str]] | None = None,
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
+    if caption_box is not None:
+        return _caption_box_region(caption_box)
     if position in ROSE_CAPTION_POSITIONS:
         top_percent, bottom_percent = ROSE_CAPTION_POSITIONS[position]
         left_percent = (100 - ROSE_CAPTION_SAFE_WIDTH_PERCENT) / 2
@@ -1052,6 +1151,7 @@ def validate_rose_caption_placement(
     occlusion_exception_authorized: bool = False,
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
     if position not in ROSE_CAPTION_POSITIONS and position != "mask-lower-third":
         raise ValueError(f"Unsupported Rose Garden caption position: {position!r}.")
@@ -1067,6 +1167,7 @@ def validate_rose_caption_placement(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
     if not is_masking:
         return region
@@ -1241,6 +1342,148 @@ def _wrap_english_to_width(
     return lines
 
 
+def _fit_rose_caption_lines(
+    cue: Cue,
+    *,
+    safe_width: int,
+    safe_height: int,
+    chinese_font: int,
+    english_font: int,
+) -> tuple[list[str], list[str]]:
+    def try_line_limits(
+        max_english_lines: int,
+        max_chinese_lines: int,
+    ) -> tuple[list[str], list[str]] | None:
+        try:
+            english_lines = _wrap_english_to_width(
+                cue.english,
+                safe_width,
+                english_font,
+                max_lines=max_english_lines,
+            )
+            chinese_lines = _wrap_chinese_to_width(
+                cue.chinese,
+                safe_width,
+                chinese_font,
+                max_lines=max_chinese_lines,
+            )
+        except ValueError:
+            return None
+        text_height = sum(
+            round(font * 1.2) * len(lines)
+            for font, lines in (
+                (english_font, english_lines),
+                (chinese_font, chinese_lines),
+            )
+        )
+        if text_height > safe_height:
+            return None
+        return english_lines, chinese_lines
+
+    wrapped = try_line_limits(2, 2)
+    if wrapped is not None:
+        return wrapped
+
+    english_line_height = max(1, round(english_font * 1.2))
+    chinese_line_height = max(1, round(chinese_font * 1.2))
+    max_total_lines = safe_height // min(english_line_height, chinese_line_height)
+    for total_lines in range(3, max_total_lines + 1):
+        candidates = sorted(
+            (
+                (english_count, total_lines - english_count)
+                for english_count in range(1, total_lines)
+            ),
+            key=lambda counts: abs(counts[0] - counts[1]),
+        )
+        for english_count, chinese_count in candidates:
+            wrapped = try_line_limits(
+                english_count,
+                chinese_count,
+            )
+            if wrapped is not None:
+                return wrapped
+    raise ValueError(
+        "Bilingual text cannot fit within the caption box at the configured "
+        f"font sizes (safe_width={safe_width}px, safe_height={safe_height}px, "
+        f"english_font={english_font}px, chinese_font={chinese_font}px)."
+    )
+
+
+def _rose_layout_record(
+    cue_index: int,
+    cue: Cue,
+    *,
+    fit_status: str,
+    reason: str,
+    english_lines: list[str],
+    chinese_lines: list[str],
+    english_font: int,
+    chinese_font: int,
+    safe_width: int,
+    safe_height: int | None,
+    caption_box: tuple[int, int, int, int] | None,
+) -> dict[str, object]:
+    english_line_height = round(english_font * 1.2)
+    chinese_line_height = round(chinese_font * 1.2)
+    text_height = (
+        len(english_lines) * english_line_height
+        + len(chinese_lines) * chinese_line_height
+    )
+    english_max_width = max(
+        (_estimated_text_width(line, english_font) for line in english_lines),
+        default=0,
+    )
+    chinese_max_width = max(
+        (_estimated_text_width(line, chinese_font) for line in chinese_lines),
+        default=0,
+    )
+    required_width = round(max(english_max_width, chinese_max_width))
+    return {
+        "source_cue_index": cue_index,
+        "start_seconds": round(cue.start, 3),
+        "end_seconds": round(cue.end, 3),
+        "reason": reason,
+        "fit_status": fit_status,
+        "review_status": "manual_review_required",
+        "fallback": (
+            "preserved_complete_bilingual_cue; rendered_within_region"
+            if fit_status == "within_box"
+            else "preserved_complete_bilingual_cue; rendered_with_explicit_lines; "
+            "overflow_recorded"
+        ),
+        "caption_box_px": list(caption_box) if caption_box else None,
+        "safe_width_px": safe_width,
+        "safe_height_px": safe_height,
+        "english_font_px": english_font,
+        "chinese_font_px": chinese_font,
+        "english_lines_required": len(english_lines),
+        "chinese_lines_required": len(chinese_lines),
+        "language_diagnostics": {
+            "english": {
+                "text": cue.english,
+                "characters": len(cue.english),
+                "lines_required": len(english_lines),
+                "font_px": english_font,
+                "estimated_required_width_px": round(english_max_width),
+                "safe_width_px": safe_width,
+            },
+            "chinese": {
+                "text": cue.chinese,
+                "characters": len(cue.chinese),
+                "lines_required": len(chinese_lines),
+                "font_px": chinese_font,
+                "estimated_required_width_px": round(chinese_max_width),
+                "safe_width_px": safe_width,
+            },
+        },
+        "required_dimensions_px": {
+            "width": required_width,
+            "height": text_height,
+        },
+        "estimated_text_height_px": text_height,
+    }
+
+
 def _wrap_chinese_to_width(
     text: str,
     max_width: int,
@@ -1279,11 +1522,16 @@ def _rose_caption_geometry(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     allow_overflow: bool = False,
+    max_lines_per_language: int = 2,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, int]:
     if not allow_overflow and (
-        len(english_lines) > 2 or len(chinese_lines) > 2
+        len(english_lines) > max_lines_per_language
+        or len(chinese_lines) > max_lines_per_language
     ):
-        raise ValueError("Caption language exceeds the two-line layout limit.")
+        raise ValueError(
+            f"Caption language exceeds the {max_lines_per_language}-line limit."
+        )
     region = rose_caption_region(
         width,
         height,
@@ -1291,6 +1539,7 @@ def _rose_caption_geometry(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
@@ -1343,6 +1592,7 @@ def _write_rose_garden_source_aware_ass(
     word_timings: tuple[tuple[TimedWord, ...], ...] | None = None,
     allow_unverified_estimate: bool = False,
     overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> bool:
     chinese_font, english_font, *_ = _rose_garden_wrap_limits(width, height)
     caption_region = validate_rose_caption_placement(
@@ -1354,8 +1604,9 @@ def _write_rose_garden_source_aware_ass(
         occlusion_exception_authorized=occlusion_exception_authorized,
         mask_padding_px_per_edge=mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
-    if caption_position == "mask-lower-third":
+    if caption_position == "mask-lower-third" or caption_box is not None:
         chinese_font, english_font = _rose_garden_font_sizes_for_region(
             chinese_font,
             english_font,
@@ -1369,21 +1620,36 @@ def _write_rose_garden_source_aware_ass(
     english_lines_by_cue = []
     chinese_lines_by_cue = []
     for index, cue in enumerate(cues, start=1):
-        allow_overflow = _has_rose_overflow(cue, overflow_records)
+        layout_record = _rose_layout_record_for_cue(cue, overflow_records)
+        allow_overflow = (
+            layout_record is not None
+            and layout_record.get("fit_status") != "within_box"
+            if layout_record is not None
+            else _has_rose_overflow(cue, overflow_records)
+        )
         try:
-            english_lines = _wrap_english_to_width(
-                cue.english,
-                safe_width,
-                english_font,
-                max_lines=None if allow_overflow else 2,
-                allow_oversized_tokens=allow_overflow,
-            )
-            chinese_lines = _wrap_chinese_to_width(
-                cue.chinese,
-                safe_width,
-                chinese_font,
-                max_lines=None if allow_overflow else 2,
-            )
+            if not allow_overflow:
+                english_lines, chinese_lines = _fit_rose_caption_lines(
+                    cue,
+                    safe_width=safe_width,
+                    safe_height=caption_region["height"],
+                    chinese_font=chinese_font,
+                    english_font=english_font,
+                )
+            else:
+                english_lines = _wrap_english_to_width(
+                    cue.english,
+                    safe_width,
+                    english_font,
+                    max_lines=None if allow_overflow else 2,
+                    allow_oversized_tokens=allow_overflow,
+                )
+                chinese_lines = _wrap_chinese_to_width(
+                    cue.chinese,
+                    safe_width,
+                    chinese_font,
+                    max_lines=None if allow_overflow else 2,
+                )
             _rose_caption_geometry(
                 english_lines,
                 chinese_lines,
@@ -1396,12 +1662,41 @@ def _write_rose_garden_source_aware_ass(
                 mask_padding_px_per_edge=mask_padding_px_per_edge,
                 allow_unverified_estimate=allow_unverified_estimate,
                 allow_overflow=allow_overflow,
+                max_lines_per_language=(
+                    max(len(english_lines), len(chinese_lines))
+                    if not allow_overflow
+                    else 2
+                ),
+                caption_box=caption_box,
             )
         except ValueError as error:
-            raise ValueError(
-                f"Rose Garden caption cue {index} at {cue.start:.3f}s cannot "
-                "fit completely inside the reviewed caption region."
-            ) from error
+            if overflow_records is not None and layout_record is None:
+                overflow_records.append(
+                    _rose_overflow_record(
+                        index,
+                        cue,
+                        reason=str(error),
+                        english_font=english_font,
+                        chinese_font=chinese_font,
+                        safe_width=safe_width,
+                        safe_height=caption_region["height"],
+                        caption_box=caption_box,
+                    )
+                )
+            allow_overflow = True
+            english_lines = _wrap_english_to_width(
+                cue.english,
+                safe_width,
+                english_font,
+                max_lines=None,
+                allow_oversized_tokens=True,
+            )
+            chinese_lines = _wrap_chinese_to_width(
+                cue.chinese,
+                safe_width,
+                chinese_font,
+                max_lines=None,
+            )
         if not english_lines or not chinese_lines:
             raise ValueError(f"Rose Garden caption cue {index} is missing a language.")
         english_lines_by_cue.append(english_lines)
@@ -1505,8 +1800,8 @@ def _write_rose_garden_source_aware_ass(
                     (
                         f"{{\\an8\\pos({round(width / 2)},"
                         f"{caption_region['top']})}}"
-                        if caption_position == "top"
-                        else f"{{\\an5\\pos({round(width / 2)},"
+                        if caption_position == "top" and caption_box is None
+                        else f"{{\\an5\\pos({round((caption_region['left'] + caption_region['right']) / 2)},"
                         f"{round((caption_region['top'] + caption_region['bottom']) / 2)})}}"
                     )
                     + r"\N".join(caption_lines)
@@ -1525,6 +1820,7 @@ def _write_rose_garden_source_aware_ass(
         mask_padding_px_per_edge,
         allow_unverified_estimate,
         overflow_records,
+        caption_box,
     )
     return word_timings is not None
 
@@ -1540,6 +1836,7 @@ def _verify_rose_garden_ass(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> None:
     subtitles = pysubs2.load(str(path), encoding="utf-8")
     has_mask = caption_position == "mask-lower-third"
@@ -1559,8 +1856,9 @@ def _verify_rose_garden_ass(
         source_graphics_regions,
         mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
+        caption_box=caption_box,
     )
-    if has_mask:
+    if has_mask or caption_box is not None:
         chinese_font, english_font = _rose_garden_font_sizes_for_region(
             chinese_font,
             english_font,
@@ -1568,16 +1866,29 @@ def _verify_rose_garden_ass(
         )
     expected_position = (
         f"\\pos({round(width / 2)},{region['top']})"
-        if caption_position == "top"
-        else f"\\pos({round(width / 2)},{round((region['top'] + region['bottom']) / 2)})"
+        if caption_position == "top" and caption_box is None
+        else (
+            f"\\pos({round((region['left'] + region['right']) / 2)},"
+            f"{round((region['top'] + region['bottom']) / 2)})"
+        )
     )
     if (
         subtitles.styles["English"].fontsize != english_font
         or subtitles.styles["Chinese"].fontsize != chinese_font
     ):
         raise RuntimeError("Caption ASS font geometry validation failed.")
+    safe_width = min(
+        round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
+        region["width"] - 2 * region.get("mask_padding_px_per_edge", 0),
+    )
     for index, cue in enumerate(cues):
-        allow_overflow = _has_rose_overflow(cue, overflow_records)
+        layout_record = _rose_layout_record_for_cue(cue, overflow_records)
+        allow_overflow = (
+            layout_record is not None
+            and layout_record.get("fit_status") != "within_box"
+            if layout_record is not None
+            else _has_rose_overflow(cue, overflow_records)
+        )
         if has_mask:
             panel, caption = subtitles.events[index * 2:index * 2 + 2]
             if (
@@ -1592,25 +1903,28 @@ def _verify_rose_garden_ass(
                 )
         else:
             caption = subtitles.events[index]
-        english_lines = _wrap_english_to_width(
-            cue.english,
-            min(
-                round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
-                region["width"] - 2 * region.get("mask_padding_px_per_edge", 0),
-            ),
-            english_font,
-            max_lines=None if allow_overflow else 2,
-            allow_oversized_tokens=allow_overflow,
-        )
-        chinese_lines = _wrap_chinese_to_width(
-            cue.chinese,
-            min(
-                round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
-                region["width"] - 2 * region.get("mask_padding_px_per_edge", 0),
-            ),
-            chinese_font,
-            max_lines=None if allow_overflow else 2,
-        )
+        if not allow_overflow:
+            english_lines, chinese_lines = _fit_rose_caption_lines(
+                cue,
+                safe_width=safe_width,
+                safe_height=region["height"],
+                chinese_font=chinese_font,
+                english_font=english_font,
+            )
+        else:
+            english_lines = _wrap_english_to_width(
+                cue.english,
+                safe_width,
+                english_font,
+                max_lines=None if allow_overflow else 2,
+                allow_oversized_tokens=allow_overflow,
+            )
+            chinese_lines = _wrap_chinese_to_width(
+                cue.chinese,
+                safe_width,
+                chinese_font,
+                max_lines=None if allow_overflow else 2,
+            )
         _rose_caption_geometry(
             english_lines,
             chinese_lines,
@@ -1623,6 +1937,12 @@ def _verify_rose_garden_ass(
             mask_padding_px_per_edge=mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
             allow_overflow=allow_overflow,
+            max_lines_per_language=(
+                max(len(english_lines), len(chinese_lines))
+                if not allow_overflow
+                else 2
+            ),
+            caption_box=caption_box,
         )
         if (
             caption.layer != (1 if has_mask else 0)
@@ -1883,6 +2203,7 @@ def write_ass(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> bool:
     if layout_profile == KATIE_SUBTITLE_LAYOUT:
         _chinese_font, _english_font, _max_chinese, max_english = (
@@ -1924,34 +2245,73 @@ def write_ass(
             source_graphics_regions or [],
             mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
+            caption_box=caption_box,
         )
-        if caption_position == "mask-lower-third":
+        if caption_position == "mask-lower-third" or caption_box is not None:
             _chinese_font, english_font = _rose_garden_font_sizes_for_region(
                 _chinese_font,
                 english_font,
                 caption_region["height"],
             )
-        safe_width = round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100)
+        safe_width = min(
+            round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
+            caption_region["width"]
+            - 2 * caption_region.get("mask_padding_px_per_edge", 0),
+        )
         wrapped_lines = []
         for cue_index, cue in enumerate(cues, start=1):
-            allow_overflow = _has_rose_overflow(
+            layout_record = _rose_layout_record_for_cue(
                 cue, caption_overflow_records
             )
+            allow_overflow = (
+                layout_record is not None
+                and layout_record.get("fit_status") != "within_box"
+                if layout_record is not None
+                else _has_rose_overflow(cue, caption_overflow_records)
+            )
             try:
+                if not allow_overflow:
+                    english_lines, _ = _fit_rose_caption_lines(
+                        cue,
+                        safe_width=safe_width,
+                        safe_height=caption_region["height"],
+                        chinese_font=_chinese_font,
+                        english_font=english_font,
+                    )
+                    wrapped_lines.append(english_lines)
+                else:
+                    wrapped_lines.append(
+                        _wrap_english_to_width(
+                            cue.english,
+                            safe_width,
+                            english_font,
+                            max_lines=None if allow_overflow else 2,
+                            allow_oversized_tokens=allow_overflow,
+                        )
+                    )
+            except ValueError as error:
+                if caption_overflow_records is not None and layout_record is None:
+                    caption_overflow_records.append(
+                        _rose_overflow_record(
+                            cue_index,
+                            cue,
+                            reason=str(error),
+                            english_font=english_font,
+                            chinese_font=_chinese_font,
+                            safe_width=safe_width,
+                            safe_height=caption_region["height"],
+                            caption_box=caption_box,
+                        )
+                    )
                 wrapped_lines.append(
                     _wrap_english_to_width(
                         cue.english,
                         safe_width,
                         english_font,
-                        max_lines=None if allow_overflow else 2,
-                        allow_oversized_tokens=allow_overflow,
+                        max_lines=None,
+                        allow_oversized_tokens=True,
                     )
                 )
-            except ValueError as error:
-                raise ValueError(
-                    f"Rose Garden caption cue {cue_index} at {cue.start:.3f}s "
-                    "cannot fit completely inside the 68% caption-safe width."
-                ) from error
     else:
         raise ValueError(f"Unsupported subtitle layout profile: {layout_profile}")
 
@@ -1985,6 +2345,7 @@ def write_ass(
             word_timings,
             allow_unverified_estimate,
             caption_overflow_records,
+            caption_box,
         )
 
     chinese_font = max(32, round(height * 0.052))
@@ -2102,11 +2463,14 @@ def verify_cues(
     mask_padding_px_per_edge: int | None = None,
     allow_unverified_estimate: bool = False,
     caption_overflow_records: list[dict[str, object]] | None = None,
+    caption_box: tuple[int, int, int, int] | None = None,
 ) -> dict[str, object]:
     if not cues:
         raise RuntimeError("Caption verification failed: there are no cues.")
     if width <= 0 or height <= 0:
         raise RuntimeError("Caption verification failed: invalid video dimensions.")
+    if caption_overflow_records is None:
+        caption_overflow_records = []
     previous_end = 0.0
     english_rate_flags = []
     chinese_rate_flags = []
@@ -2166,8 +2530,9 @@ def verify_cues(
             occlusion_exception_authorized=occlusion_exception_authorized,
             mask_padding_px_per_edge=mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
+            caption_box=caption_box,
         )
-        if caption_position == "mask-lower-third":
+        if caption_position == "mask-lower-third" or caption_box is not None:
             chinese_font, english_font = _rose_garden_font_sizes_for_region(
                 chinese_font,
                 english_font,
@@ -2179,23 +2544,38 @@ def verify_cues(
             - 2 * caption_region.get("mask_padding_px_per_edge", 0),
         )
         for index, cue in enumerate(cues, start=1):
-            allow_overflow = _has_rose_overflow(
+            layout_record = _rose_layout_record_for_cue(
                 cue, caption_overflow_records
             )
+            allow_overflow = (
+                layout_record is not None
+                and layout_record.get("fit_status") != "within_box"
+                if layout_record is not None
+                else _has_rose_overflow(cue, caption_overflow_records)
+            )
             try:
-                english_lines = _wrap_english_to_width(
-                    cue.english,
-                    safe_width,
-                    english_font,
-                    max_lines=None if allow_overflow else 2,
-                    allow_oversized_tokens=allow_overflow,
-                )
-                chinese_lines = _wrap_chinese_to_width(
-                    cue.chinese,
-                    safe_width,
-                    chinese_font,
-                    max_lines=None if allow_overflow else 2,
-                )
+                if not allow_overflow:
+                    english_lines, chinese_lines = _fit_rose_caption_lines(
+                        cue,
+                        safe_width=safe_width,
+                        safe_height=caption_region["height"],
+                        chinese_font=chinese_font,
+                        english_font=english_font,
+                    )
+                else:
+                    english_lines = _wrap_english_to_width(
+                        cue.english,
+                        safe_width,
+                        english_font,
+                        max_lines=None if allow_overflow else 2,
+                        allow_oversized_tokens=allow_overflow,
+                    )
+                    chinese_lines = _wrap_chinese_to_width(
+                        cue.chinese,
+                        safe_width,
+                        chinese_font,
+                        max_lines=None if allow_overflow else 2,
+                    )
                 _rose_caption_geometry(
                     english_lines,
                     chinese_lines,
@@ -2208,12 +2588,28 @@ def verify_cues(
                     mask_padding_px_per_edge=mask_padding_px_per_edge,
                     allow_unverified_estimate=allow_unverified_estimate,
                     allow_overflow=allow_overflow,
+                    max_lines_per_language=(
+                        max(len(english_lines), len(chinese_lines))
+                        if not allow_overflow
+                        else 2
+                    ),
+                    caption_box=caption_box,
                 )
             except ValueError as error:
-                raise RuntimeError(
-                    f"Caption verification failed: Rose Garden cue {index} "
-                    "does not fit completely inside the selected caption region."
-                ) from error
+                if layout_record is None:
+                    caption_overflow_records.append(
+                        _rose_overflow_record(
+                            index,
+                            cue,
+                            reason=str(error),
+                            english_font=english_font,
+                            chinese_font=chinese_font,
+                            safe_width=safe_width,
+                            safe_height=caption_region["height"],
+                            caption_box=caption_box,
+                        )
+                    )
+                continue
     elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
@@ -2441,7 +2837,7 @@ def verify_cues(
             ),
             "rose_source_evidence": (
                 {
-                    "classification": "official_event_anchor_only",
+                    "classification": "pinned_source_reference_only",
                     "source_url": "https://www.youtube.com/watch?v=IySF_8OArvw",
                     "whitehouse_search": {
                         "url": (
@@ -2462,6 +2858,36 @@ def verify_cues(
                         ),
                         "channel": "The White House",
                         "player_duration": "36:33",
+                    },
+                    "metadata_search": {
+                        "run_url": (
+                            "https://github.com/gdelt0003/gdelt0003/actions/"
+                            "runs/38915918932"
+                        ),
+                        "artifact_name": (
+                            "rose-garden-source-metadata-38915918932"
+                        ),
+                        "public_search_providers": 2,
+                        "queries": 40,
+                        "raw_leads": 18,
+                        "qualifying_event_relevant_video_page_leads": 0,
+                        "landing_page_fetch_errors": 7,
+                        "verified_candidates": [],
+                        "raw_leads_promoted_to_video_candidates": False,
+                        "media_downloaded": False,
+                        "frames_or_audio_inspected": False,
+                        "rights_or_content_review": "not_performed",
+                        "coverage": "limited metadata search; not an exhaustive web census",
+                        "not_covered_examples": [
+                            "Roll Call",
+                            "congressional archives",
+                            "social media",
+                            "think tanks",
+                        ],
+                        "interpretation": (
+                            "No qualifying video page lead was identified in "
+                            "this run; this does not establish that no sources exist."
+                        ),
                     },
                     "event_match": "pending",
                     "exact_event_time_and_timezone": "pending",
@@ -2775,6 +3201,14 @@ def main() -> None:
         choices=("top", "center", "mask-lower-third"),
         default="top",
     )
+    parser.add_argument(
+        "--caption-box",
+        default="",
+        help=(
+            "Optional half-open x1,y1,x2,y2 caption rectangle in a 1920x1080 "
+            "reference frame; scaled proportionally to source dimensions."
+        ),
+    )
     parser.add_argument("--caption-safe-region-reviewed", action="store_true")
     parser.add_argument("--source-graphics-regions-json", default="[]")
     parser.add_argument("--source-frame-review-record-json", default="{}")
@@ -2801,6 +3235,13 @@ def main() -> None:
         help="Explicitly disable spoken-word highlighting.",
     )
     args = parser.parse_args()
+    reference_caption_box = (
+        parse_caption_box(args.caption_box) if args.caption_box else None
+    )
+    if reference_caption_box is not None and (
+        args.subtitle_layout != ROSE_GARDEN_SUBTITLE_LAYOUT
+    ):
+        parser.error("--caption-box is only supported by the Rose Garden layout.")
     source_graphics_regions = (
         parse_source_graphics_regions(
             args.source_graphics_regions_json,
@@ -2830,6 +3271,11 @@ def main() -> None:
     )
 
     duration, width, height = probe_video(source)
+    applied_caption_box = (
+        map_caption_box(reference_caption_box, width, height)
+        if reference_caption_box is not None
+        else None
+    )
     trusted_frame_review = require_trusted_mask_review(
         args.caption_position,
         source_path=source,
@@ -3069,8 +3515,12 @@ def main() -> None:
                 source_graphics_regions,
                 args.mask_padding_px_per_edge,
                 allow_unverified_estimate=allow_unverified_estimate,
+                caption_box=applied_caption_box,
             )
-            if args.caption_position == "mask-lower-third":
+            if (
+                args.caption_position == "mask-lower-third"
+                or applied_caption_box is not None
+            ):
                 chinese_font, english_font = _rose_garden_font_sizes_for_region(
                     chinese_font,
                     english_font,
@@ -3088,6 +3538,7 @@ def main() -> None:
                 english_font=english_font,
                 safe_height=caption_region["height"],
                 overflow_records=caption_overflow_records,
+                caption_box=applied_caption_box,
             )
         else:
             cues = reflow_cues(
@@ -3140,6 +3591,7 @@ def main() -> None:
             mask_padding_px_per_edge=args.mask_padding_px_per_edge,
             allow_unverified_estimate=allow_unverified_estimate,
             caption_overflow_records=caption_overflow_records,
+            caption_box=applied_caption_box,
         )
         if (
             word_highlighting["status"] == "enabled"
@@ -3203,6 +3655,7 @@ def main() -> None:
         mask_padding_px_per_edge=args.mask_padding_px_per_edge,
         allow_unverified_estimate=allow_unverified_estimate,
         caption_overflow_records=caption_overflow_records,
+        caption_box=applied_caption_box,
     )
     quality_checks["word_highlighting"] = word_highlighting
 
@@ -3314,6 +3767,24 @@ def main() -> None:
         "word_highlighting": word_highlighting,
         "quality_checks": quality_checks,
         "source_resolution_preserved": True,
+        "caption_box": (
+            {
+                "coordinate_convention": "half_open_xyxy",
+                "reference_resolution": (
+                    f"{CAPTION_BOX_REFERENCE_WIDTH}x"
+                    f"{CAPTION_BOX_REFERENCE_HEIGHT}"
+                ),
+                "reference_bbox_px": list(reference_caption_box),
+                "applied_source_resolution": f"{width}x{height}",
+                "applied_source_bbox_px": _caption_box_region(
+                    applied_caption_box
+                ),
+                "scaling": "proportional_x_and_y",
+            }
+            if reference_caption_box is not None
+            and applied_caption_box is not None
+            else None
+        ),
         "operation_audit_file": "operation-audit.json",
         "processing_operations": audit.records,
         "whisper_detected_language_probability": (

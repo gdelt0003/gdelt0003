@@ -100,10 +100,11 @@
 落实及边界（记录者归纳）：
 
 - 新增 `config/event-discovery-sources.json`，逐字收录用户列出的 12 个来源 URL；来源可通过事件工作簿的 `Source Directory` sheet 手工增补，定时工作流会导入该 sheet、记下来源状态并重新生成 Excel/Pages。
-- 将用户后来举例的 `https://www.forth.news/lists/trumpts` 作为第 13 个用户提议来源登记；页面可用性、覆盖、许可和可信度未独立核实，未接入自动抓取。
-- 当前只有 White House YouTube 频道接入每日 metadata-only 自动 collector。Roll Call、Truth Social、GDELT Explorer、Polymarket、Kalshi、Forth、C-SPAN、X 与 stats 来源仅登记为待人工核验；没有声称已接入抓取、访问成功或许可审查。
+- 将用户后来举例的 `https://www.forth.news/lists/trumpts` 作为第 13 个用户提议来源登记。此前只登记未检查；当前访问尝试、错误和覆盖边界以该 source-attempt workflow 的逐次 Actions artifact 为准，不代表许可或来源可信度已核验。
+- 事件发现源目录中的每日自动采集仍限于 White House YouTube 上传元数据和 GDELT article metadata API；其它源不作为事件事实采集器。下方 Rose Garden source-attempt follow-up 是独立的逐 URL 可达性/HTML 元数据尝试，不等同于持续数据连接。
+- Follow-up source-research workflow: `.github/workflows/research-rose-garden-source-attempts.yml` attempts all 13 exact user-listed inventory URLs separately and runs additional media/news/social/congress/think-tank/archive search queries. Per-run UTC timestamps, access/result/error state, extracted URLs with provenance, and explicit coverage limits are retained in its Actions artifact. This is page/search metadata only: URLs are unverified leads, inaccessible pages are not evidence of source absence, and no media or event facts are verified.
 - `Events` 和 `New White House leads` 工作表预留事件日期/时间/地点、总统实际出席分钟数、演讲词数及语言/统计方法、来源支持的话题、发现/核验时间、来源数量、置信度和用户注解等列。没有来源支撑的字段为空或标未核实。不能从上传日期、页面标题、预测市场活动或视频时长推定实际出席/发言数据。
-- 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。此次只完成本地代码和数据结构的实现/验证，没有运行在线抓取、周期 workflow 或 Pages 部署。
+- 工作簿 `User Instructions` sheet 保留上列用户原话及术语澄清；`Source Directory` 的用户链接逐项映射到原始来源列表，用户没有为某一来源单独写注解时，注解栏为空。逐源可达性/HTML 元数据检查与按源类别的网页搜索由独立工作流执行；其 Actions artifact 才是每次运行尝试及覆盖范围的依据，不能据此推断已完成事件内容核验或 Pages 部署。
 
 ## V0.03 单例发布范围与验收状态（2026-10-14）
 
@@ -159,6 +160,19 @@ PVX 页面只提供一份明确标为未核验的 SmartSub 3.9.0 公开机器生
 - 用户报告私有 run `38895767927` 可与代码工作并行；本记录没有其完成状态或输出证据，因此不声称该 run 成功、失败或发布。
 - 未在开发者工作站下载或处理视频；本节不记录任何本地渲染或视频内容审查结论。
 
+### 横幅、台标与 clean-feed 判定（2026-10-16）
+
+用户最新原话（逐字）：
+
+> “类似乱七八糟横幅和logo 只白宫等在底部添加的横幅 或者台标 是不干净视频源”
+
+操作化解释（非逐字）：若机构或媒体横幅、台标/bug/logo 已合成或录入视频源画面（包括白宫等机构在画面底部添加的标识），该来源即为不干净视频源；不因标识是官方添加、位于底部或内容有用而例外。必须区分源画面内的标识与 YouTube/浏览器等播放器控件、播放器边框或其他播放界面 chrome：播放器 chrome 本身不等于源视频内嵌标识，也不能据此判定源画面干净。不得擦除、裁切、模糊或覆盖源画面标识来伪造 clean feed；字幕或其他叠加也不得遮住该标识。优先寻找并核验真实无标识的 clean-feed 来源；记录来源 URL、来源/发布者、检查时间码/帧及画面证据，并说明检查范围。只检查到局部样帧时不得推断全片干净；未获得直接证据时标为未核实/不干净候选，不得宣称 clean feed。
+
+### Rose Garden 最新 hosted run 与 overflow 修复状态（2026-10-16）
+
+- Actions run [38922325220](https://github.com/gdelt0003/gdelt0003/actions/runs/38922325220) 于 `2026-10-16T16:24:36Z` 在 SHA `8286d00956af67d6d204e2cb1ec2d5fc0626c61e` 失败。授权检查和 pinned source SHA 下载均通过；随后 render step 实际运行，但 post-render validation 失败，异常为 `ModuleNotFoundError: No module named 'scripts'`，发生于 `scripts/verify_rose_garden_review.py:511` 的 `validate_caption_ass`。该 run 产生 0 artifacts；没有 manifest 或帧检查，也没有质量或视觉验收通过。失败原因**不是** `RIGHTS_EVIDENCE_URL`。
+- 单条字幕 overflow repair PR [#72](https://github.com/gdelt0003/gdelt0003/pull/72) 已合并到 `main`；该修复没有产出 artifact。不得把修复合并或上述失败 run 表述成已有重跑、渲染产物或视觉验收结果。
+
 ## 最高指示文本、实现门槛与外部限制的区分
 
 用户最新更正（逐字）：
@@ -202,3 +216,10 @@ PVX 页面只提供一份明确标为未核验的 SmartSub 3.9.0 公开机器生
 - 面向公开 Rose Garden 审查页的 UI 实施会话已独立启动，目前仍在进行，尚未部署；不得将其描述为完成或已上线。
 
 以上区分原始用户指示、操作化解释及可观察状态；配置存在、CI 通过、单次手动运行成功，均不能替代 schedule 运行、完整来源调查、逐视频核实或 UI 部署证据。
+### Rose Garden 个别字幕溢出处理指示（2026-10-16）
+
+用户原话（逐字）：
+
+> “任一条被估算成换行，就触发了整次任务失败。 税收全额.明确告诉你个别超出记录,你为啥屡次不执行”
+
+操作解释（非逐字）：单条字幕预测需要换行或可能溢出时，必须逐条记录 cue 序号、双语原文、字体与预测所需宽高、可用尺寸、字幕框边界及适配状态，并继续处理其余字幕及整次渲染；不得因单条 cue 的布局估算而中止整个任务、静默删除文本、改变含义/配对/时间，或扩大用户指定的字幕框。先在原框内自适应排版；无法安全适配时仍保留并渲染完整原文，记录 `outside_box`/待人工复核状态，整体 visual review 保持未验证/待复核。无字幕框、全局尺寸或输入结构无效等全局错误仍可失败。该指示不代表任何视频已重跑或通过视觉复核。
