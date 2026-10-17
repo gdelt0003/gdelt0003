@@ -236,14 +236,21 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         ):
             run.return_value.returncode = 0
             run.return_value.stdout = ""
-            root = Path(directory)
+            base = Path(directory)
+            root = base / "workspace" / "repo"
+            root.mkdir(parents=True)
+            runner_temp = base / "runner-temp"
+            runner_temp.mkdir()
             (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
             (root / "tests").mkdir()
             (root / "tests" / "test_basic.py").write_text("import unittest\n")
 
-            outcome, log = matrix._test_process(
-                matrix.detect_test_plan(root, "Python"), root
-            )
+            with patch.dict(
+                os.environ, {"RUNNER_TEMP": str(runner_temp)}, clear=False
+            ):
+                outcome, log = matrix._test_process(
+                    matrix.detect_test_plan(root, "Python"), root
+                )
 
         invocation = popen.call_args.args[0]
         self.assertEqual(outcome, "passed")
@@ -257,8 +264,52 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         self.assertGreaterEqual(run.call_count, 4)
         capture.assert_called_once()
         self.assertTrue(
+            any(
+                "chmod" in call.args[0] and "o+x" in call.args[0]
+                for call in run.call_args_list
+            )
+        )
+        self.assertTrue(
+            any("--version" in call.args[0] for call in run.call_args_list)
+        )
+        self.assertTrue(
             any("chmod" in call.args[0] and "o+rwX" in call.args[0] for call in run.call_args_list)
         )
+
+    def test_unavailable_sandbox_executable_is_recorded_as_skipped(self):
+        def run_command(command, **_kwargs):
+            return matrix.subprocess.CompletedProcess(
+                command,
+                126 if "--version" in command else 0,
+                stdout="env: cargo: Permission denied\n" if "--version" in command else "",
+            )
+
+        with (
+            patch.object(matrix, "_sandbox_ids", return_value=(65534, 65534)),
+            patch.object(matrix.subprocess, "Popen") as popen,
+            patch.object(matrix.subprocess, "run", side_effect=run_command),
+            tempfile.TemporaryDirectory() as directory,
+        ):
+            base = Path(directory)
+            root = base / "workspace" / "repo"
+            root.mkdir(parents=True)
+            runner_temp = base / "runner-temp"
+            runner_temp.mkdir()
+            (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
+            (root / "tests").mkdir()
+            (root / "tests" / "test_basic.py").write_text("import unittest\n")
+
+            with patch.dict(
+                os.environ, {"RUNNER_TEMP": str(runner_temp)}, clear=False
+            ):
+                outcome, log = matrix._test_process(
+                    matrix.detect_test_plan(root, "Python"), root
+                )
+
+        self.assertEqual(outcome, "skipped")
+        self.assertIn("Test executable is unavailable", log)
+        self.assertIn("preflight exited 126", log)
+        popen.assert_not_called()
 
 
 class SubtitleTopicMatrixWorkflowTests(unittest.TestCase):
