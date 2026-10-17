@@ -357,10 +357,36 @@ def _test_process(
             f"unshare exited {isolation.returncode}: {isolation.stdout[-1000:]}"
         )
 
+    root_path = root.resolve()
+    runner_temp = Path(
+        os.environ.get("RUNNER_TEMP", tempfile.gettempdir())
+    ).resolve()
+    try:
+        shared_root = Path(
+            os.path.commonpath((str(root_path), str(runner_temp)))
+        )
+    except ValueError as error:
+        return "skipped", f"Repository and runner temp are on different roots: {error}"
+    if shared_root == Path(shared_root.anchor):
+        return "skipped", (
+            "Repository checkout and runner temp do not share a bounded "
+            "workspace ancestor."
+        )
+    traversal_dirs = []
+    ancestor = root_path.parent
+    while ancestor != shared_root:
+        if shared_root not in ancestor.parents or len(traversal_dirs) == 8:
+            return "skipped", (
+                "Repository checkout is too far from runner temp to safely "
+                "grant sandbox traversal."
+            )
+        traversal_dirs.append(ancestor)
+        ancestor = ancestor.parent
+
     temp_root = Path(
         tempfile.mkdtemp(
             prefix="subtitle-topic-sandbox-",
-            dir=os.environ.get("RUNNER_TEMP", tempfile.gettempdir()),
+            dir=str(runner_temp),
         )
     )
     os.chmod(temp_root, 0o711)
@@ -380,6 +406,22 @@ def _test_process(
                     str(sandbox_gid),
                     "--",
                     str(directory),
+                ],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                timeout=15,
+            )
+        if traversal_dirs:
+            subprocess.run(
+                [
+                    "sudo",
+                    "-n",
+                    "chmod",
+                    "o+x",
+                    "--",
+                    *[str(directory) for directory in traversal_dirs],
                 ],
                 check=True,
                 stdout=subprocess.PIPE,
@@ -421,7 +463,7 @@ def _test_process(
         "GOSUMDB": "off",
         "CARGO_NET_OFFLINE": "true",
     }
-    isolated_command = [
+    sandbox_prefix = [
         "prlimit",
         "--cpu=480:480",
         "--nproc=128:128",
@@ -437,14 +479,37 @@ def _test_process(
         f"--regid={sandbox_gid}",
         "--init-groups",
         "--",
+    ]
+    sandbox_environment = [
         "env",
         "-i",
         *[f"{key}={value}" for key, value in clean_environment.items()],
-        *command,
     ]
     try:
+        version_command = (
+            [command[0], "version"] if plan.stack == "Go" else [command[0], "--version"]
+        )
+        try:
+            preflight = subprocess.run(
+                [*sandbox_prefix, *sandbox_environment, *version_command],
+                cwd=root,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired) as error:
+            return "skipped", f"Test executable preflight failed: {error}"
+        if preflight.returncode != 0:
+            return "skipped", (
+                "Test executable is unavailable to the unprivileged sandbox user "
+                f"(preflight exited {preflight.returncode}): "
+                f"{preflight.stdout[-1000:]}"
+            )
+
         process = subprocess.Popen(
-            isolated_command,
+            [*sandbox_prefix, *sandbox_environment, *command],
             cwd=root,
             env={"PATH": os.environ.get("PATH", "/usr/local/bin:/usr/bin:/bin")},
             stdout=subprocess.PIPE,
