@@ -173,6 +173,7 @@ PVX 页面只提供一份明确标为未核验的 SmartSub 3.9.0 公开机器生
 - Actions run [38922325220](https://github.com/gdelt0003/gdelt0003/actions/runs/38922325220) 于 `2026-10-16T16:24:36Z` 在 SHA `8286d00956af67d6d204e2cb1ec2d5fc0626c61e` 失败。授权检查和 pinned source SHA 下载均通过；随后 render step 实际运行，但 post-render validation 失败，异常为 `ModuleNotFoundError: No module named 'scripts'`，发生于 `scripts/verify_rose_garden_review.py:511` 的 `validate_caption_ass`。该 run 产生 0 artifacts；没有 manifest 或帧检查，也没有质量或视觉验收通过。失败原因**不是** `RIGHTS_EVIDENCE_URL`。
 - 单条字幕 overflow repair PR [#72](https://github.com/gdelt0003/gdelt0003/pull/72) 已合并到 `main`；该修复没有产出 artifact。不得把修复合并或上述失败 run 表述成已有重跑、渲染产物或视觉验收结果。
 - 后续 validator-import 修复 PR [#74](https://github.com/gdelt0003/gdelt0003/pull/74) 已合并至当前 `main`（merge commit `190ff190892cce72a2c5276123e74ce43dba2473`），其 Frontend checks 与 Rose Garden Python checks 均通过。此修复不改变 run `38922325220` 的历史失败事实，也不代表该 run 有产物、重跑或完成视觉验收。
+- 随后在该 `main` SHA 上触发的 Actions run [38989376862](https://github.com/gdelt0003/gdelt0003/actions/runs/38989376862) 于 `2026-10-17T01:05:59Z` 在 preflight 阶段失败，artifact 数量为 0。失败栈为 `scripts/verify_rose_garden_review.py` 导入 `process_full_video` 时，后者在依赖安装步骤之前导入 `pysubs2`，异常为 `ModuleNotFoundError: No module named 'pysubs2'`；授权输入为 true，但 pinned source 下载、渲染、上传步骤均跳过，未生成 manifest 或视频帧检查。此为独立于旧 run `38922325220` 的 `ModuleNotFoundError: No module named 'scripts'` 的另一项失败；不得将其表述为成功渲染或待处理中的 run。
 
 ## 最高指示文本、实现门槛与外部限制的区分
 
