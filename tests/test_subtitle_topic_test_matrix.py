@@ -2,7 +2,7 @@ import json
 import os
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from unittest.mock import patch
 
 from scripts import subtitle_topic_test_matrix as matrix
@@ -225,6 +225,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
     ):
         with (
             patch.object(matrix, "_sandbox_ids", return_value=(65534, 65534)),
+            patch.object(matrix, "_select_sandbox_temp_parent") as select_temp_parent,
             patch.object(matrix.subprocess, "Popen") as popen,
             patch.object(matrix.subprocess, "run") as run,
             patch.object(
@@ -232,6 +233,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
                 "_capture_process_output",
                 return_value=(0, "tests passed\n", False),
             ) as capture,
+            patch.object(matrix.os, "chmod", wraps=os.chmod) as chmod,
             tempfile.TemporaryDirectory() as directory,
         ):
             run.return_value.returncode = 0
@@ -241,6 +243,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             root.mkdir(parents=True)
             runner_temp = base / "runner-temp"
             runner_temp.mkdir()
+            select_temp_parent.return_value = runner_temp
             (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
             (root / "tests").mkdir()
             (root / "tests" / "test_basic.py").write_text("import unittest\n")
@@ -270,18 +273,28 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             )
         )
         self.assertTrue(
-            any(
-                "chmod" in call.args[0]
-                and "o+x" in call.args[0]
-                and Path(call.args[0][-1]).name == "runner-temp"
+            all(
+                "chmod" not in call.args[0]
+                or (
+                    call.args[0][0:3] == ["sudo", "-n", "chmod"]
+                    and call.args[0][-1]
+                    == str(Path(popen.call_args.kwargs["cwd"]).parent / "repository")
+                )
                 for call in run.call_args_list
             )
+        )
+        select_temp_parent.assert_called_once_with([Path("/tmp")], 65534, 65534)
+        chmod.assert_called_once_with(
+            Path(popen.call_args.kwargs["cwd"]).parent, 0o711
         )
         self.assertTrue(
             any("--version" in call.args[0] for call in run.call_args_list)
         )
         self.assertTrue(
-            any("chmod" in call.args[0] and "o+rwX" in call.args[0] for call in run.call_args_list)
+            any(
+                "chmod" in call.args[0] and "o+rwX" in call.args[0]
+                for call in run.call_args_list
+            )
         )
         self.assertEqual(
             Path(popen.call_args.kwargs["cwd"]),
@@ -298,6 +311,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
 
         with (
             patch.object(matrix, "_sandbox_ids", return_value=(65534, 65534)),
+            patch.object(matrix, "_select_sandbox_temp_parent") as select_temp_parent,
             patch.object(matrix.subprocess, "Popen") as popen,
             patch.object(matrix.subprocess, "run", side_effect=run_command),
             tempfile.TemporaryDirectory() as directory,
@@ -307,6 +321,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             root.mkdir(parents=True)
             runner_temp = base / "runner-temp"
             runner_temp.mkdir()
+            select_temp_parent.return_value = runner_temp
             (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
             (root / "tests").mkdir()
             (root / "tests" / "test_basic.py").write_text("import unittest\n")
@@ -322,6 +337,77 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         self.assertIn("Test executable is unavailable", log)
         self.assertIn("preflight exited 126", log)
         popen.assert_not_called()
+
+    @patch.object(matrix, "_sandbox_can_traverse")
+    def test_sandbox_temp_selection_preflights_candidates_as_sandbox_user(
+        self, can_traverse
+    ):
+        with tempfile.TemporaryDirectory() as directory:
+            blocked = Path(directory) / "blocked"
+            available = Path(directory) / "available"
+            blocked.mkdir()
+            available.mkdir()
+            can_traverse.side_effect = [False, True]
+
+            selected = matrix._select_sandbox_temp_parent(
+                [blocked, available], 65534, 65534
+            )
+
+        self.assertEqual(selected, available.resolve())
+        self.assertEqual(
+            can_traverse.call_args_list,
+            [
+                unittest.mock.call(blocked.resolve(), 65534, 65534),
+                unittest.mock.call(available.resolve(), 65534, 65534),
+            ],
+        )
+
+    @patch.object(matrix.subprocess, "run")
+    def test_sandbox_traversal_preflight_uses_sandbox_uid_without_chmod(self, run):
+        run.return_value = matrix.subprocess.CompletedProcess([], 0, stdout="")
+
+        self.assertTrue(
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
+        )
+
+        command = run.call_args.args[0]
+        self.assertIn("--reuid=65534", command)
+        self.assertIn("--regid=65534", command)
+        self.assertEqual(command[-1], "/tmp")
+        self.assertNotIn("chmod", command)
+
+    @patch.object(matrix.subprocess, "run")
+    def test_sandbox_traversal_probe_distinguishes_denial_from_execution_error(
+        self, run
+    ):
+        run.side_effect = [
+            matrix.subprocess.CompletedProcess([], 10, stdout=""),
+            matrix.subprocess.CompletedProcess(
+                [], 127, stdout="setpriv failed to execute\n"
+            ),
+        ]
+
+        self.assertFalse(
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
+        )
+        with self.assertRaisesRegex(RuntimeError, "probe failed"):
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
+
+        self.assertEqual(run.call_count, 2)
+        self.assertTrue(all("chmod" not in call.args[0] for call in run.call_args_list))
+
+    @patch.object(matrix, "_sandbox_can_traverse", return_value=False)
+    def test_sandbox_temp_selection_fails_without_chmod_when_all_candidates_blocked(
+        self, can_traverse
+    ):
+        with tempfile.TemporaryDirectory() as directory:
+            inaccessible = Path(directory) / "inaccessible"
+            inaccessible.mkdir()
+
+            with self.assertRaisesRegex(RuntimeError, "approved temporary directory"):
+                matrix._select_sandbox_temp_parent([inaccessible], 65534, 65534)
+
+        can_traverse.assert_called_once()
 
 
 class SubtitleTopicMatrixWorkflowTests(unittest.TestCase):

@@ -1872,11 +1872,17 @@ def _verify_rose_garden_ass(
             f"{round((region['top'] + region['bottom']) / 2)})"
         )
     )
+    actual_english_font = subtitles.styles["English"].fontsize
+    actual_chinese_font = subtitles.styles["Chinese"].fontsize
     if (
-        subtitles.styles["English"].fontsize != english_font
-        or subtitles.styles["Chinese"].fontsize != chinese_font
+        actual_english_font != english_font
+        or actual_chinese_font != chinese_font
     ):
-        raise RuntimeError("Caption ASS font geometry validation failed.")
+        raise RuntimeError(
+            "Caption ASS font geometry validation failed: expected "
+            f"English/Chinese {english_font}/{chinese_font}px, found "
+            f"{actual_english_font:g}/{actual_chinese_font:g}px."
+        )
     safe_width = min(
         round(width * ROSE_CAPTION_SAFE_WIDTH_PERCENT / 100),
         region["width"] - 2 * region.get("mask_padding_px_per_edge", 0),
