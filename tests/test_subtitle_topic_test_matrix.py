@@ -271,9 +271,9 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
-                "chmod" in call.args[0]
-                and "o+x" in call.args[0]
-                and Path(call.args[0][-1]).name == "runner-temp"
+                "test" in call.args[0]
+                and "-x" in call.args[0]
+                and call.args[0][-1] == str(runner_temp.resolve())
                 for call in run.call_args_list
             )
         )
@@ -322,6 +322,40 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         self.assertIn("Test executable is unavailable", log)
         self.assertIn("preflight exited 126", log)
         popen.assert_not_called()
+
+    @patch.object(matrix.subprocess, "run")
+    def test_runner_temp_traversal_stops_at_first_accessible_ancestor(self, run):
+        with tempfile.TemporaryDirectory() as directory:
+            runner_temp = Path(directory) / "runner-temp"
+            run.side_effect = [
+                matrix.subprocess.CompletedProcess([], 1),
+                matrix.subprocess.CompletedProcess([], 0),
+                matrix.subprocess.CompletedProcess([], 1),
+                matrix.subprocess.CompletedProcess([], 0),
+                matrix.subprocess.CompletedProcess([], 0),
+            ]
+
+            changed_directories = matrix._ensure_sandbox_path_traversal(
+                runner_temp, 65534, 65534
+            )
+
+        calls = [call.args[0] for call in run.call_args_list]
+        changed_commands = [
+            Path(command[-1]).name
+            for command in calls
+            if command[0:4] == ["sudo", "-n", "chmod", "o+x"]
+        ]
+        self.assertEqual(changed_commands, ["runner-temp", Path(directory).name])
+        self.assertEqual(
+            changed_directories,
+            [str(runner_temp), str(Path(directory))],
+        )
+        self.assertEqual(
+            changed_directories, [str(runner_temp), str(runner_temp.parent)]
+        )
+        self.assertEqual(calls[0][calls[0].index("test") + 1], "-x")
+        self.assertEqual(calls[2][calls[2].index("test") + 1], "-x")
+        self.assertEqual(calls[4][calls[4].index("test") + 1], "-x")
 
 
 class SubtitleTopicMatrixWorkflowTests(unittest.TestCase):
