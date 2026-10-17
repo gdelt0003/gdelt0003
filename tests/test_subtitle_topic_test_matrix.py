@@ -225,6 +225,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
     ):
         with (
             patch.object(matrix, "_sandbox_ids", return_value=(65534, 65534)),
+            patch.object(matrix, "_select_sandbox_temp_parent") as select_temp_parent,
             patch.object(matrix.subprocess, "Popen") as popen,
             patch.object(matrix.subprocess, "run") as run,
             patch.object(
@@ -232,6 +233,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
                 "_capture_process_output",
                 return_value=(0, "tests passed\n", False),
             ) as capture,
+            patch.object(matrix.os, "chmod", wraps=os.chmod) as chmod,
             tempfile.TemporaryDirectory() as directory,
         ):
             run.return_value.returncode = 0
@@ -241,6 +243,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             root.mkdir(parents=True)
             runner_temp = base / "runner-temp"
             runner_temp.mkdir()
+            select_temp_parent.return_value = runner_temp
             (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
             (root / "tests").mkdir()
             (root / "tests" / "test_basic.py").write_text("import unittest\n")
@@ -270,18 +273,28 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             )
         )
         self.assertTrue(
-            any(
-                "test -x" in " ".join(call.args[0])
-                and "sh" in call.args[0]
-                and call.args[0][-1] == str(runner_temp.resolve())
+            all(
+                "chmod" not in call.args[0]
+                or (
+                    call.args[0][0:3] == ["sudo", "-n", "chmod"]
+                    and call.args[0][-1]
+                    == str(Path(popen.call_args.kwargs["cwd"]).parent / "repository")
+                )
                 for call in run.call_args_list
             )
+        )
+        select_temp_parent.assert_called_once_with([Path("/tmp")], 65534, 65534)
+        chmod.assert_called_once_with(
+            Path(popen.call_args.kwargs["cwd"]).parent, 0o711
         )
         self.assertTrue(
             any("--version" in call.args[0] for call in run.call_args_list)
         )
         self.assertTrue(
-            any("chmod" in call.args[0] and "o+rwX" in call.args[0] for call in run.call_args_list)
+            any(
+                "chmod" in call.args[0] and "o+rwX" in call.args[0]
+                for call in run.call_args_list
+            )
         )
         self.assertEqual(
             Path(popen.call_args.kwargs["cwd"]),
@@ -298,6 +311,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
 
         with (
             patch.object(matrix, "_sandbox_ids", return_value=(65534, 65534)),
+            patch.object(matrix, "_select_sandbox_temp_parent") as select_temp_parent,
             patch.object(matrix.subprocess, "Popen") as popen,
             patch.object(matrix.subprocess, "run", side_effect=run_command),
             tempfile.TemporaryDirectory() as directory,
@@ -307,6 +321,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             root.mkdir(parents=True)
             runner_temp = base / "runner-temp"
             runner_temp.mkdir()
+            select_temp_parent.return_value = runner_temp
             (root / "pyproject.toml").write_text("[project]\nname='sample'\n")
             (root / "tests").mkdir()
             (root / "tests" / "test_basic.py").write_text("import unittest\n")
@@ -323,79 +338,76 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         self.assertIn("preflight exited 126", log)
         popen.assert_not_called()
 
-    @patch.object(matrix.subprocess, "run")
-    def test_runner_temp_traversal_stops_at_first_accessible_ancestor(self, run):
+    @patch.object(matrix, "_sandbox_can_traverse")
+    def test_sandbox_temp_selection_preflights_candidates_as_sandbox_user(
+        self, can_traverse
+    ):
         with tempfile.TemporaryDirectory() as directory:
-            runner_temp = Path(directory) / "runner-temp"
-            run.side_effect = [
-                matrix.subprocess.CompletedProcess([], 10),
-                matrix.subprocess.CompletedProcess([], 0),
-                matrix.subprocess.CompletedProcess([], 10),
-                matrix.subprocess.CompletedProcess([], 0),
-                matrix.subprocess.CompletedProcess([], 0),
-            ]
+            blocked = Path(directory) / "blocked"
+            available = Path(directory) / "available"
+            blocked.mkdir()
+            available.mkdir()
+            can_traverse.side_effect = [False, True]
 
-            changed_directories = matrix._ensure_sandbox_path_traversal(
-                runner_temp, 65534, 65534
+            selected = matrix._select_sandbox_temp_parent(
+                [blocked, available], 65534, 65534
             )
 
-        calls = [call.args[0] for call in run.call_args_list]
-        changed_commands = [
-            Path(command[-1]).name
-            for command in calls
-            if command[0:4] == ["sudo", "-n", "chmod", "o+x"]
-        ]
-        self.assertEqual(changed_commands, ["runner-temp", Path(directory).name])
+        self.assertEqual(selected, available.resolve())
         self.assertEqual(
-            changed_directories,
-            [str(runner_temp), str(Path(directory))],
-        )
-        self.assertEqual(
-            changed_directories, [str(runner_temp), str(runner_temp.parent)]
-        )
-        self.assertEqual(
-            sum("test -x" in str(command) for command in calls), 3
+            can_traverse.call_args_list,
+            [
+                unittest.mock.call(blocked.resolve(), 65534, 65534),
+                unittest.mock.call(available.resolve(), 65534, 65534),
+            ],
         )
 
     @patch.object(matrix.subprocess, "run")
-    def test_runner_temp_traversal_stops_before_home_runner(self, run):
+    def test_sandbox_traversal_preflight_uses_sandbox_uid_without_chmod(self, run):
+        run.return_value = matrix.subprocess.CompletedProcess([], 0, stdout="")
+
+        self.assertTrue(
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
+        )
+
+        command = run.call_args.args[0]
+        self.assertIn("--reuid=65534", command)
+        self.assertIn("--regid=65534", command)
+        self.assertEqual(command[-1], "/tmp")
+        self.assertNotIn("chmod", command)
+
+    @patch.object(matrix.subprocess, "run")
+    def test_sandbox_traversal_probe_distinguishes_denial_from_execution_error(
+        self, run
+    ):
         run.side_effect = [
-            matrix.subprocess.CompletedProcess([], 10),
-            matrix.subprocess.CompletedProcess([], 0),
-            matrix.subprocess.CompletedProcess([], 10),
-            matrix.subprocess.CompletedProcess([], 0),
-            matrix.subprocess.CompletedProcess([], 10),
+            matrix.subprocess.CompletedProcess([], 10, stdout=""),
+            matrix.subprocess.CompletedProcess(
+                [], 127, stdout="setpriv failed to execute\n"
+            ),
         ]
 
-        with self.assertRaisesRegex(RuntimeError, "bounded ancestor chain"):
-            matrix._ensure_sandbox_path_traversal(
-                PurePosixPath("/home/runner/work/_temp"), 65534, 65534
-            )
-
-        changed_paths = [
-            command[-1]
-            for command in (call.args[0] for call in run.call_args_list)
-            if command[0:4] == ["sudo", "-n", "chmod", "o+x"]
-        ]
-        self.assertEqual(
-            changed_paths,
-            ["/home/runner/work/_temp", "/home/runner/work"],
+        self.assertFalse(
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
         )
-        self.assertNotIn("/home/runner", changed_paths)
-
-    @patch.object(matrix.subprocess, "run")
-    def test_runner_temp_traversal_probe_errors_do_not_expand_permissions(self, run):
-        run.return_value = matrix.subprocess.CompletedProcess(
-            [], 127, stdout="setpriv failed to execute\n"
-        )
-
         with self.assertRaisesRegex(RuntimeError, "probe failed"):
-            matrix._ensure_sandbox_path_traversal(
-                PurePosixPath("/home/runner/work/_temp"), 65534, 65534
-            )
+            matrix._sandbox_can_traverse(PurePosixPath("/tmp"), 65534, 65534)
 
-        self.assertEqual(run.call_count, 1)
-        self.assertNotIn("chmod", run.call_args.args[0])
+        self.assertEqual(run.call_count, 2)
+        self.assertTrue(all("chmod" not in call.args[0] for call in run.call_args_list))
+
+    @patch.object(matrix, "_sandbox_can_traverse", return_value=False)
+    def test_sandbox_temp_selection_fails_without_chmod_when_all_candidates_blocked(
+        self, can_traverse
+    ):
+        with tempfile.TemporaryDirectory() as directory:
+            inaccessible = Path(directory) / "inaccessible"
+            inaccessible.mkdir()
+
+            with self.assertRaisesRegex(RuntimeError, "approved temporary directory"):
+                matrix._select_sandbox_temp_parent([inaccessible], 65534, 65534)
+
+        can_traverse.assert_called_once()
 
 
 class SubtitleTopicMatrixWorkflowTests(unittest.TestCase):
