@@ -273,7 +273,7 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
             any(
                 "chmod" in call.args[0]
                 and "o+x" in call.args[0]
-                and str(runner_temp) in call.args[0]
+                and Path(call.args[0][-1]).name == "runner-temp"
                 for call in run.call_args_list
             )
         )
