@@ -360,6 +360,20 @@ def _test_process(
     runner_temp = Path(
         os.environ.get("RUNNER_TEMP", tempfile.gettempdir())
     ).resolve()
+    try:
+        subprocess.run(
+            ["sudo", "-n", "chmod", "o+x", "--", str(runner_temp)],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+        return "skipped", (
+            "Unable to grant execute-only traversal on this job's runner temp "
+            f"directory: {error}"
+        )
     temp_root = Path(
         tempfile.mkdtemp(
             prefix="subtitle-topic-sandbox-",
