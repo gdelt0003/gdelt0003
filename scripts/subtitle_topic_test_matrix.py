@@ -290,8 +290,10 @@ def _ensure_sandbox_path_traversal(
                 f"--regid={sandbox_gid}",
                 "--init-groups",
                 "--",
-                "test",
-                "-x",
+                "sh",
+                "-c",
+                'test -x "$1"; status=$?; if [ "$status" -eq 1 ]; then exit 10; fi; exit "$status"',
+                "sh",
                 str(path),
             ],
             stdout=subprocess.PIPE,
@@ -300,7 +302,14 @@ def _ensure_sandbox_path_traversal(
             timeout=15,
             check=False,
         )
-        return access.returncode == 0
+        if access.returncode == 0:
+            return True
+        if access.returncode == 10:
+            return False
+        raise RuntimeError(
+            "Sandbox traversal probe failed "
+            f"(exit {access.returncode}): {access.stdout[-1000:]}"
+        )
 
     if can_traverse():
         return []
@@ -308,7 +317,10 @@ def _ensure_sandbox_path_traversal(
     changed_directories = []
     directory = path
     for _ in range(8):
-        if directory == Path(directory.anchor):
+        if (
+            directory == Path(directory.anchor)
+            or directory.as_posix() in {"/", "/home/runner"}
+        ):
             break
         subprocess.run(
             ["sudo", "-n", "chmod", "o+x", "--", str(directory)],

@@ -2,7 +2,7 @@ import json
 import os
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from unittest.mock import patch
 
 from scripts import subtitle_topic_test_matrix as matrix
@@ -271,8 +271,8 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
-                "test" in call.args[0]
-                and "-x" in call.args[0]
+                "test -x" in " ".join(call.args[0])
+                and "sh" in call.args[0]
                 and call.args[0][-1] == str(runner_temp.resolve())
                 for call in run.call_args_list
             )
@@ -328,9 +328,9 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             runner_temp = Path(directory) / "runner-temp"
             run.side_effect = [
-                matrix.subprocess.CompletedProcess([], 1),
+                matrix.subprocess.CompletedProcess([], 10),
                 matrix.subprocess.CompletedProcess([], 0),
-                matrix.subprocess.CompletedProcess([], 1),
+                matrix.subprocess.CompletedProcess([], 10),
                 matrix.subprocess.CompletedProcess([], 0),
                 matrix.subprocess.CompletedProcess([], 0),
             ]
@@ -353,9 +353,49 @@ class SubtitleTopicMatrixTests(unittest.TestCase):
         self.assertEqual(
             changed_directories, [str(runner_temp), str(runner_temp.parent)]
         )
-        self.assertEqual(calls[0][calls[0].index("test") + 1], "-x")
-        self.assertEqual(calls[2][calls[2].index("test") + 1], "-x")
-        self.assertEqual(calls[4][calls[4].index("test") + 1], "-x")
+        self.assertEqual(
+            sum("test -x" in str(command) for command in calls), 3
+        )
+
+    @patch.object(matrix.subprocess, "run")
+    def test_runner_temp_traversal_stops_before_home_runner(self, run):
+        run.side_effect = [
+            matrix.subprocess.CompletedProcess([], 10),
+            matrix.subprocess.CompletedProcess([], 0),
+            matrix.subprocess.CompletedProcess([], 10),
+            matrix.subprocess.CompletedProcess([], 0),
+            matrix.subprocess.CompletedProcess([], 10),
+        ]
+
+        with self.assertRaisesRegex(RuntimeError, "bounded ancestor chain"):
+            matrix._ensure_sandbox_path_traversal(
+                PurePosixPath("/home/runner/work/_temp"), 65534, 65534
+            )
+
+        changed_paths = [
+            command[-1]
+            for command in (call.args[0] for call in run.call_args_list)
+            if command[0:4] == ["sudo", "-n", "chmod", "o+x"]
+        ]
+        self.assertEqual(
+            changed_paths,
+            ["/home/runner/work/_temp", "/home/runner/work"],
+        )
+        self.assertNotIn("/home/runner", changed_paths)
+
+    @patch.object(matrix.subprocess, "run")
+    def test_runner_temp_traversal_probe_errors_do_not_expand_permissions(self, run):
+        run.return_value = matrix.subprocess.CompletedProcess(
+            [], 127, stdout="setpriv failed to execute\n"
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "probe failed"):
+            matrix._ensure_sandbox_path_traversal(
+                PurePosixPath("/home/runner/work/_temp"), 65534, 65534
+            )
+
+        self.assertEqual(run.call_count, 1)
+        self.assertNotIn("chmod", run.call_args.args[0])
 
 
 class SubtitleTopicMatrixWorkflowTests(unittest.TestCase):
