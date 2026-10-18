@@ -1809,22 +1809,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:26+00:00",
-        "completed_at_utc": "2026-10-18T04:17:52+00:00",
-        "run_id": "39096568127",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39096568127",
+        "completed_at_utc": "2026-10-18T14:08:58+00:00",
+        "run_id": "39134654808",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"$5000 to Americans\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T04:17:41+00:00",
+          "researched_at_utc": "2026-10-18T14:08:50+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T04:17:41+00:00",
+        "additional_source_search_started_at_utc": "2026-10-18T14:08:50+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -1956,6 +1956,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-18T14:08:50+00:00",
+            "completed_at_utc": "2026-10-18T14:08:58+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39134654808",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"$5000 to Americans\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-18T14:08:50+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -2008,22 +2027,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:26+00:00",
-        "completed_at_utc": "2026-10-18T04:18:04+00:00",
-        "run_id": "39096568127",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39096568127",
+        "completed_at_utc": "2026-10-18T14:09:07+00:00",
+        "run_id": "39134654808",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Every Democrat Voted Against No Tax on Tips\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T04:17:52+00:00",
+          "researched_at_utc": "2026-10-18T14:08:58+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T04:17:52+00:00",
+        "additional_source_search_started_at_utc": "2026-10-18T14:08:58+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2155,6 +2174,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-18T14:08:58+00:00",
+            "completed_at_utc": "2026-10-18T14:09:07+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39134654808",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Every Democrat Voted Against No Tax on Tips\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-18T14:08:58+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -2207,22 +2245,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:26+00:00",
-        "completed_at_utc": "2026-10-18T04:18:19+00:00",
-        "run_id": "39096568127",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39096568127",
+        "completed_at_utc": "2026-10-18T14:09:16+00:00",
+        "run_id": "39134654808",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"If You Steal From The American People, You Will Go To Prison\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T04:18:04+00:00",
+          "researched_at_utc": "2026-10-18T14:09:07+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T04:18:04+00:00",
+        "additional_source_search_started_at_utc": "2026-10-18T14:09:07+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2354,6 +2392,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-10-18T14:09:07+00:00",
+            "completed_at_utc": "2026-10-18T14:09:16+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39134654808",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"If You Steal From The American People, You Will Go To Prison\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-18T14:09:07+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -2406,22 +2463,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:26+00:00",
-        "completed_at_utc": "2026-10-18T04:18:35+00:00",
-        "run_id": "39096568127",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39096568127",
+        "completed_at_utc": "2026-10-18T14:09:32+00:00",
+        "run_id": "39134654808",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"No Tax on Overtime: Promises Made, Promises Kept\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T04:18:19+00:00",
+          "researched_at_utc": "2026-10-18T14:09:16+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-18T04:18:19+00:00",
+        "additional_source_search_started_at_utc": "2026-10-18T14:09:16+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2553,6 +2610,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-10-18T14:09:16+00:00",
+            "completed_at_utc": "2026-10-18T14:09:32+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "39134654808",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"No Tax on Overtime: Promises Made, Promises Kept\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-18T14:09:16+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -2605,22 +2681,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:27+00:00",
-        "completed_at_utc": "2026-10-18T04:52:43+00:00",
-        "run_id": "39098596107",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39098596107",
+        "completed_at_utc": "2026-10-18T14:09:42+00:00",
+        "run_id": "39134654808",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Oct. 10, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T04:52:34+00:00",
+          "researched_at_utc": "2026-10-18T14:09:32+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T04:52:34+00:00",
+        "additional_source_search_started_at_utc": "2026-10-18T14:09:32+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2747,6 +2823,25 @@
               "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Oct. 10, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-18T04:52:34+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-18T14:09:32+00:00",
+            "completed_at_utc": "2026-10-18T14:09:42+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39134654808",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Oct. 10, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-18T14:09:32+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -20665,10 +20760,10 @@
     }
   },
   "last_run": {
-    "run_id": "39132992335",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39132992335",
-    "started_at_utc": "2026-10-18T13:46:21+00:00",
-    "completed_at_utc": "2026-10-18T13:47:25+00:00",
+    "run_id": "39134654808",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39134654808",
+    "started_at_utc": "2026-10-18T14:08:49+00:00",
+    "completed_at_utc": "2026-10-18T14:09:42+00:00",
     "status": "success"
   }
 }
