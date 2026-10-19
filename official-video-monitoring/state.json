@@ -11428,22 +11428,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:20+00:00",
-        "completed_at_utc": "2026-10-18T17:51:59+00:00",
-        "run_id": "39151478633",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39151478633",
+        "completed_at_utc": "2026-10-19T03:10:49+00:00",
+        "run_id": "39193411789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"2025 United Nations General Assembly Highlights\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T17:51:51+00:00",
+          "researched_at_utc": "2026-10-19T03:10:38+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-18T17:51:51+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T03:10:38+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -11594,6 +11594,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T03:10:38+00:00",
+            "completed_at_utc": "2026-10-19T03:10:49+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "39193411789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"2025 United Nations General Assembly Highlights\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T03:10:38+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -11646,22 +11665,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:20+00:00",
-        "completed_at_utc": "2026-10-18T17:52:07+00:00",
-        "run_id": "39151478633",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39151478633",
+        "completed_at_utc": "2026-10-19T03:11:07+00:00",
+        "run_id": "39193411789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"16 Months of Zero Releases at The Border\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T17:51:59+00:00",
+          "researched_at_utc": "2026-10-19T03:10:49+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-18T17:51:59+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T03:10:49+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -11812,6 +11831,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T03:10:49+00:00",
+            "completed_at_utc": "2026-10-19T03:11:07+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "39193411789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"16 Months of Zero Releases at The Border\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T03:10:49+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -11864,22 +11902,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:20+00:00",
-        "completed_at_utc": "2026-10-18T17:52:15+00:00",
-        "run_id": "39151478633",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39151478633",
+        "completed_at_utc": "2026-10-19T03:11:17+00:00",
+        "run_id": "39193411789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Arrival at Charlotte, NC, Sep. 16, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T17:52:07+00:00",
+          "researched_at_utc": "2026-10-19T03:11:07+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T17:52:07+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T03:11:07+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12030,6 +12068,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T03:11:07+00:00",
+            "completed_at_utc": "2026-10-19T03:11:17+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39193411789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Arrival at Charlotte, NC, Sep. 16, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T03:11:07+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -12082,22 +12139,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:21+00:00",
-        "completed_at_utc": "2026-10-18T18:11:57+00:00",
-        "run_id": "39153012882",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39153012882",
+        "completed_at_utc": "2026-10-19T03:11:37+00:00",
+        "run_id": "39193411789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"25th Anniversary of 9/11 at the Pentagon\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T18:11:48+00:00",
+          "researched_at_utc": "2026-10-19T03:11:27+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T18:11:48+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T03:11:27+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12248,6 +12305,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T03:11:27+00:00",
+            "completed_at_utc": "2026-10-19T03:11:37+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39193411789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"25th Anniversary of 9/11 at the Pentagon\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T03:11:27+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -12300,22 +12376,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:21+00:00",
-        "completed_at_utc": "2026-10-18T18:11:48+00:00",
-        "run_id": "39153012882",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39153012882",
+        "completed_at_utc": "2026-10-19T03:11:27+00:00",
+        "run_id": "39193411789",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"It’s Saturday in America. 🏈🦅\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-18T18:11:36+00:00",
+          "researched_at_utc": "2026-10-19T03:11:17+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-18T18:11:36+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T03:11:17+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -12465,6 +12541,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
+            }
+          },
+          {
+            "started_at_utc": "2026-10-19T03:11:17+00:00",
+            "completed_at_utc": "2026-10-19T03:11:27+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39193411789",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"It’s Saturday in America. 🏈🦅\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T03:11:17+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ]
@@ -23350,10 +23445,10 @@
     }
   },
   "last_run": {
-    "run_id": "39190784224",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39190784224",
-    "started_at_utc": "2026-10-19T02:36:56+00:00",
-    "completed_at_utc": "2026-10-19T02:37:49+00:00",
+    "run_id": "39193411789",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39193411789",
+    "started_at_utc": "2026-10-19T03:10:36+00:00",
+    "completed_at_utc": "2026-10-19T03:11:37+00:00",
     "status": "success"
   }
 }
