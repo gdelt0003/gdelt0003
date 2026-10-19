@@ -5451,22 +5451,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:37+00:00",
-        "completed_at_utc": "2026-10-19T11:40:19+00:00",
-        "run_id": "39246184690",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39246184690",
+        "completed_at_utc": "2026-10-19T23:45:28+00:00",
+        "run_id": "39343482508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 5, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T11:40:05+00:00",
+          "researched_at_utc": "2026-10-19T23:45:16+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T11:40:05+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T23:45:16+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -5655,6 +5655,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T23:45:16+00:00",
+            "completed_at_utc": "2026-10-19T23:45:28+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39343482508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 5, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T23:45:16+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -5707,22 +5726,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:37+00:00",
-        "completed_at_utc": "2026-10-19T11:40:31+00:00",
-        "run_id": "39246184690",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39246184690",
+        "completed_at_utc": "2026-10-19T23:45:39+00:00",
+        "run_id": "39343482508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Americans across the country are thanking President Trump for delivering on No Tax on Tips\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T11:40:19+00:00",
+          "researched_at_utc": "2026-10-19T23:45:28+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T11:40:19+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T23:45:28+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -5911,6 +5930,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T23:45:28+00:00",
+            "completed_at_utc": "2026-10-19T23:45:39+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39343482508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Americans across the country are thanking President Trump for delivering on No Tax on Tips\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T23:45:28+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -5963,22 +6001,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:37+00:00",
-        "completed_at_utc": "2026-10-19T12:15:13+00:00",
-        "run_id": "39250548501",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39250548501",
+        "completed_at_utc": "2026-10-19T23:45:50+00:00",
+        "run_id": "39343482508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 3, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T12:14:59+00:00",
+          "researched_at_utc": "2026-10-19T23:45:39+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T12:14:59+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T23:45:39+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -6167,6 +6205,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T23:45:39+00:00",
+            "completed_at_utc": "2026-10-19T23:45:50+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39343482508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 3, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T23:45:39+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -6219,22 +6276,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:37+00:00",
-        "completed_at_utc": "2026-10-19T12:15:26+00:00",
-        "run_id": "39250548501",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39250548501",
+        "completed_at_utc": "2026-10-19T23:46:02+00:00",
+        "run_id": "39343482508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Minimum Sentences on Fraudsters\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T12:15:13+00:00",
+          "researched_at_utc": "2026-10-19T23:45:50+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T12:15:13+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T23:45:50+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -6423,6 +6480,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-19T23:45:50+00:00",
+            "completed_at_utc": "2026-10-19T23:46:02+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39343482508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Minimum Sentences on Fraudsters\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T23:45:50+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -6475,22 +6551,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:46+00:00",
-        "completed_at_utc": "2026-10-19T12:15:38+00:00",
-        "run_id": "39250548501",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39250548501",
+        "completed_at_utc": "2026-10-19T23:46:12+00:00",
+        "run_id": "39343482508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Donald J. Trump Announces Medicare Improvement Fund Payments for Seniors\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T12:15:26+00:00",
+          "researched_at_utc": "2026-10-19T23:46:02+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T12:15:26+00:00",
+        "additional_source_search_started_at_utc": "2026-10-19T23:46:02+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -6674,6 +6750,25 @@
               "query": "\"President Donald J. Trump Announces Medicare Improvement Fund Payments for Seniors\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-19T12:15:26+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-19T23:46:02+00:00",
+            "completed_at_utc": "2026-10-19T23:46:12+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39343482508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Donald J. Trump Announces Medicare Improvement Fund Payments for Seniors\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-19T23:46:02+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -26614,10 +26709,10 @@
     }
   },
   "last_run": {
-    "run_id": "39339946280",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39339946280",
-    "started_at_utc": "2026-10-19T23:11:16+00:00",
-    "completed_at_utc": "2026-10-19T23:11:58+00:00",
+    "run_id": "39343482508",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39343482508",
+    "started_at_utc": "2026-10-19T23:45:14+00:00",
+    "completed_at_utc": "2026-10-19T23:46:12+00:00",
     "status": "success"
   }
 }
