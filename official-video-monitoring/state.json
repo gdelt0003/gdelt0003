@@ -14788,22 +14788,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:21+00:00",
-        "completed_at_utc": "2026-10-19T16:24:40+00:00",
-        "run_id": "39285077861",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39285077861",
+        "completed_at_utc": "2026-10-20T03:52:17+00:00",
+        "run_id": "39366512784",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press on Air Force One En Route Joint Base Andrews, Sep. 13, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T16:24:30+00:00",
+          "researched_at_utc": "2026-10-20T03:52:08+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T16:24:30+00:00",
+        "additional_source_search_started_at_utc": "2026-10-20T03:52:08+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -14992,6 +14992,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-20T03:52:08+00:00",
+            "completed_at_utc": "2026-10-20T03:52:17+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39366512784",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press on Air Force One En Route Joint Base Andrews, Sep. 13, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-20T03:52:08+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -15044,22 +15063,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:23+00:00",
-        "completed_at_utc": "2026-10-19T17:02:22+00:00",
-        "run_id": "39290599678",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39290599678",
+        "completed_at_utc": "2026-10-20T03:52:35+00:00",
+        "run_id": "39366512784",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from Shannon, Ireland, Sep. 13, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T17:02:03+00:00",
+          "researched_at_utc": "2026-10-20T03:52:26+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T17:02:03+00:00",
+        "additional_source_search_started_at_utc": "2026-10-20T03:52:26+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -15248,6 +15267,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-20T03:52:26+00:00",
+            "completed_at_utc": "2026-10-20T03:52:35+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39366512784",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from Shannon, Ireland, Sep. 13, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-20T03:52:26+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -15298,26 +15336,38 @@
         "canonical_url": "undefined"
       },
       "event_source_research": {
-        "status": "completed_with_search_failure",
+        "status": "completed_with_unverified_leads",
         "started_at_utc": "2026-10-16T12:59:31+00:00",
-        "completed_at_utc": "2026-10-19T17:02:34+00:00",
-        "run_id": "39290599678",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39290599678",
+        "completed_at_utc": "2026-10-20T03:52:46+00:00",
+        "run_id": "39366512784",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
         "official_page_research_status": "completed",
         "additional_source_search": {
-          "status": "failed",
+          "status": "completed_with_candidates",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"America Will Never Be a Communist Country\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T17:02:22+00:00",
-          "research_scope": "GDELT article metadata search only",
-          "candidate_count": 0,
-          "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "max_records": 10,
+          "researched_at_utc": "2026-10-20T03:52:35+00:00",
+          "research_scope": "GDELT article metadata search only; candidates are unverified leads",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "title": "Socialism Glossy Makeover Hides a Graveyard – One America News Network",
+              "publisher": "oann.com",
+              "url": "https://www.oann.com/commentary/socialisms-glossy-makeover-hides-a-graveyard/",
+              "seen_date_utc_metadata": "20261019T184500Z",
+              "language": "English",
+              "source_country": "United States",
+              "event_id": null,
+              "event_date": null,
+              "assignment_status": "unassigned_event_lead",
+              "evidence_status": "article_metadata_only"
+            }
+          ]
         },
-        "additional_source_search_started_at_utc": "2026-10-19T17:02:22+00:00",
+        "additional_source_search_started_at_utc": "2026-10-20T03:52:35+00:00",
         "missing_items": [
-          "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
           "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
           "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
@@ -15503,6 +15553,38 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-20T03:52:35+00:00",
+            "completed_at_utc": "2026-10-20T03:52:46+00:00",
+            "status": "completed_with_candidates",
+            "error": null,
+            "run_id": "39366512784",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+            "result": {
+              "status": "completed_with_candidates",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"America Will Never Be a Communist Country\"",
+              "timespan": "1w",
+              "max_records": 10,
+              "researched_at_utc": "2026-10-20T03:52:35+00:00",
+              "research_scope": "GDELT article metadata search only; candidates are unverified leads",
+              "candidate_count": 1,
+              "candidates": [
+                {
+                  "title": "Socialism Glossy Makeover Hides a Graveyard – One America News Network",
+                  "publisher": "oann.com",
+                  "url": "https://www.oann.com/commentary/socialisms-glossy-makeover-hides-a-graveyard/",
+                  "seen_date_utc_metadata": "20261019T184500Z",
+                  "language": "English",
+                  "source_country": "United States",
+                  "event_id": null,
+                  "event_date": null,
+                  "assignment_status": "unassigned_event_lead",
+                  "evidence_status": "article_metadata_only"
+                }
+              ]
             }
           }
         ]
@@ -15837,22 +15919,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:31+00:00",
-        "completed_at_utc": "2026-10-19T17:03:00+00:00",
-        "run_id": "39290599678",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39290599678",
+        "completed_at_utc": "2026-10-20T03:53:06+00:00",
+        "run_id": "39366512784",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at First Tee Box Doonbeg, Sep. 13, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T17:02:48+00:00",
+          "researched_at_utc": "2026-10-20T03:52:46+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-19T17:02:48+00:00",
+        "additional_source_search_started_at_utc": "2026-10-20T03:52:46+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -16040,6 +16122,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-20T03:52:46+00:00",
+            "completed_at_utc": "2026-10-20T03:53:06+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "39366512784",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at First Tee Box Doonbeg, Sep. 13, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-20T03:52:46+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
             }
           }
         ]
@@ -26314,22 +26415,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T19:13:23+00:00",
-        "completed_at_utc": "2026-10-19T16:24:50+00:00",
-        "run_id": "39285077861",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39285077861",
+        "completed_at_utc": "2026-10-20T03:52:26+00:00",
+        "run_id": "39366512784",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 16, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-19T16:24:40+00:00",
+          "researched_at_utc": "2026-10-20T03:52:17+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-19T16:24:40+00:00",
+        "additional_source_search_started_at_utc": "2026-10-20T03:52:17+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-16T19:13:24+00:00",
@@ -26481,6 +26582,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-20T03:52:17+00:00",
+            "completed_at_utc": "2026-10-20T03:52:26+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39366512784",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 16, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-20T03:52:17+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ],
@@ -27279,10 +27399,10 @@
     }
   },
   "last_run": {
-    "run_id": "39363113168",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39363113168",
-    "started_at_utc": "2026-10-20T03:13:15+00:00",
-    "completed_at_utc": "2026-10-20T03:14:08+00:00",
+    "run_id": "39366512784",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39366512784",
+    "started_at_utc": "2026-10-20T03:52:06+00:00",
+    "completed_at_utc": "2026-10-20T03:53:06+00:00",
     "status": "success"
   }
 }
