@@ -1,9 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-19T02:47:30+00:00",
+  "checked_at_utc": "2026-10-20T02:48:59+00:00",
   "channel_url": "https://www.youtube.com/@WhiteHouse/videos",
   "identity_rule": "Upload metadata is not event time. Leads stay unassigned until event date/time, location, people, and content are independently checked.",
   "leads": [
+    {
+      "video_id": "5YerQHGsX04",
+      "title": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 19, 2026",
+      "publisher": "The White House",
+      "url": "https://www.youtube.com/watch?v=5YerQHGsX04",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 1187,
+      "event_id": null,
+      "event_date": null,
+      "event_time_local": null,
+      "assignment_status": "unassigned_event_lead",
+      "evidence_status": "metadata_only"
+    },
     {
       "video_id": "tq0vsyBcvos",
       "title": "President Trump Gaggles with Press Upon Arrival at Hebron, KY, Oct. 17, 2026",
@@ -20,7 +34,7 @@
     },
     {
       "video_id": "4U9Xp744Jp8",
-      "title": "President Trump Hosts First Responders",
+      "title": "President Trump Hosts First Responders: Postcard Edition",
       "publisher": "The White House",
       "url": "https://www.youtube.com/watch?v=4U9Xp744Jp8",
       "published_timestamp_unix": null,
@@ -264,20 +278,6 @@
       "published_timestamp_unix": null,
       "upload_date_metadata": null,
       "duration_seconds": 367,
-      "event_id": null,
-      "event_date": null,
-      "event_time_local": null,
-      "assignment_status": "unassigned_event_lead",
-      "evidence_status": "metadata_only"
-    },
-    {
-      "video_id": "7YPNA4ZHa1o",
-      "title": "Trump Accounts Turn Dreams Into Possibilities",
-      "publisher": "The White House",
-      "url": "https://www.youtube.com/watch?v=7YPNA4ZHa1o",
-      "published_timestamp_unix": null,
-      "upload_date_metadata": null,
-      "duration_seconds": 44,
       "event_id": null,
       "event_date": null,
       "event_time_local": null,
