@@ -1,0 +1,7 @@
+# Run manifest contract
+
+Reusable processing workflows may represent one run with a versioned JSON manifest. `scripts/run_manifest.py` provides `create_run_manifest` for an explicit in-progress record and `validate_run_manifest` for strict structural and state validation. This contract is standalone; it does not change or invoke a media workflow.
+
+The schema requires `schema_version`, `run_id`, UTC `started_at` and nullable `ended_at`, separate `processing_status`, `publication_status`, and `content_review_status`, nullable `failed_at` and `failure_reason`, a non-empty `inputs` array of unique IDs with lowercase SHA-256 digests, and a non-empty `tool_versions` object. The helper initializes processing as `running`, publication as `not_published`, and content review as `not_verified`; none imply success. Supported processing states are `running`, `succeeded`, and `failed`; publication states are `not_published`, `published`, and `failed`; review states are `not_verified`, `in_progress`, `passed`, and `failed`. Unknown fields and statuses are rejected.
+
+Finished processing requires `ended_at`. Any failed state requires a UTC `failed_at` no earlier than `started_at`, an `ended_at` at or after `failed_at`, and a non-empty `failure_reason`; failure details are forbidden when no state failed. Validation checks the recorded contract, not whether a workflow is authorized to publish: callers must apply their own publication policy, and must not treat a valid manifest as proof that content review passed.
