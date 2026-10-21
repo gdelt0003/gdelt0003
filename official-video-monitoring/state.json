@@ -18587,22 +18587,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:43+00:00",
-        "completed_at_utc": "2026-10-20T04:58:20+00:00",
-        "run_id": "39372331852",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39372331852",
+        "completed_at_utc": "2026-10-21T20:08:56+00:00",
+        "run_id": "39667662236",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Sep. 11, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-20T04:58:11+00:00",
+          "researched_at_utc": "2026-10-21T20:08:46+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-20T04:58:11+00:00",
+        "additional_source_search_started_at_utc": "2026-10-21T20:08:46+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -18810,6 +18810,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-21T20:08:46+00:00",
+            "completed_at_utc": "2026-10-21T20:08:56+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39667662236",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Sep. 11, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-21T20:08:46+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -18862,22 +18881,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:43+00:00",
-        "completed_at_utc": "2026-10-20T04:22:16+00:00",
-        "run_id": "39369105253",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39369105253",
+        "completed_at_utc": "2026-10-21T20:08:36+00:00",
+        "run_id": "39667662236",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"America Will Never Be A Socialist/Communist Country\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-20T04:22:05+00:00",
+          "researched_at_utc": "2026-10-21T20:08:26+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-20T04:22:05+00:00",
+        "additional_source_search_started_at_utc": "2026-10-21T20:08:26+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -19085,6 +19104,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-21T20:08:26+00:00",
+            "completed_at_utc": "2026-10-21T20:08:36+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39667662236",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"America Will Never Be A Socialist/Communist Country\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-21T20:08:26+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -19137,22 +19175,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:43+00:00",
-        "completed_at_utc": "2026-10-20T04:58:30+00:00",
-        "run_id": "39372331852",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39372331852",
+        "completed_at_utc": "2026-10-21T20:09:06+00:00",
+        "run_id": "39667662236",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"The Story of Resilience\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-20T04:58:20+00:00",
+          "researched_at_utc": "2026-10-21T20:08:56+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-20T04:58:20+00:00",
+        "additional_source_search_started_at_utc": "2026-10-21T20:08:56+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -19360,6 +19398,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-10-21T20:08:56+00:00",
+            "completed_at_utc": "2026-10-21T20:09:06+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39667662236",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"The Story of Resilience\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-21T20:08:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -19412,22 +19469,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:59:43+00:00",
-        "completed_at_utc": "2026-10-20T04:58:38+00:00",
-        "run_id": "39372331852",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39372331852",
+        "completed_at_utc": "2026-10-21T20:09:17+00:00",
+        "run_id": "39667662236",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"UFC\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-20T04:58:30+00:00",
+          "researched_at_utc": "2026-10-21T20:09:06+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-10-20T04:58:30+00:00",
+        "additional_source_search_started_at_utc": "2026-10-21T20:09:06+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -19634,6 +19691,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-21T20:09:06+00:00",
+            "completed_at_utc": "2026-10-21T20:09:17+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "39667662236",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"UFC\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-21T20:09:06+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
             }
           }
         ]
@@ -28495,22 +28571,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T20:07:44+00:00",
-        "completed_at_utc": "2026-10-20T04:58:11+00:00",
-        "run_id": "39372331852",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39372331852",
+        "completed_at_utc": "2026-10-21T20:08:46+00:00",
+        "run_id": "39667662236",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Laken Riley Is Our Why\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-20T04:58:03+00:00",
+          "researched_at_utc": "2026-10-21T20:08:36+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-20T04:58:03+00:00",
+        "additional_source_search_started_at_utc": "2026-10-21T20:08:36+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-16T20:07:45+00:00",
@@ -28677,6 +28753,25 @@
               "query": "\"Laken Riley Is Our Why\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-20T04:58:03+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-21T20:08:36+00:00",
+            "completed_at_utc": "2026-10-21T20:08:46+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "39667662236",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Laken Riley Is Our Why\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-21T20:08:36+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -29299,10 +29394,10 @@
     }
   },
   "last_run": {
-    "run_id": "39631845701",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39631845701",
-    "started_at_utc": "2026-10-21T16:07:30+00:00",
-    "completed_at_utc": "2026-10-21T16:08:32+00:00",
+    "run_id": "39667662236",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/39667662236",
+    "started_at_utc": "2026-10-21T20:08:24+00:00",
+    "completed_at_utc": "2026-10-21T20:09:17+00:00",
     "status": "success"
   }
 }
