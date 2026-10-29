@@ -27409,22 +27409,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:26+00:00",
-        "completed_at_utc": "2026-10-25T11:27:54+00:00",
-        "run_id": "40188914023",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40188914023",
+        "completed_at_utc": "2026-10-29T12:54:24+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Lake America Executive Order Signing\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-25T11:27:42+00:00",
+          "researched_at_utc": "2026-10-29T12:54:11+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-25T11:27:42+00:00",
+        "additional_source_search_started_at_utc": "2026-10-29T12:54:11+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -27670,6 +27670,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-29T12:54:11+00:00",
+            "completed_at_utc": "2026-10-29T12:54:24+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Lake America Executive Order Signing\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:54:11+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -27722,22 +27741,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:30+00:00",
-        "completed_at_utc": "2026-10-25T11:28:04+00:00",
-        "run_id": "40188914023",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40188914023",
+        "completed_at_utc": "2026-10-29T12:54:34+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Back to School Event\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-25T11:27:54+00:00",
+          "researched_at_utc": "2026-10-29T12:54:24+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-25T11:27:54+00:00",
+        "additional_source_search_started_at_utc": "2026-10-29T12:54:24+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -27983,6 +28002,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-10-29T12:54:24+00:00",
+            "completed_at_utc": "2026-10-29T12:54:34+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Back to School Event\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:54:24+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -28035,22 +28073,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:31+00:00",
-        "completed_at_utc": "2026-10-25T15:01:52+00:00",
-        "run_id": "40204945654",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40204945654",
+        "completed_at_utc": "2026-10-29T12:55:07+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"IndyCar Freedom250 Grand Prix in Washington D.C.\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-25T15:01:35+00:00",
+          "researched_at_utc": "2026-10-29T12:54:44+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-25T15:01:35+00:00",
+        "additional_source_search_started_at_utc": "2026-10-29T12:54:44+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -28296,6 +28334,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-10-29T12:54:44+00:00",
+            "completed_at_utc": "2026-10-29T12:55:07+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"IndyCar Freedom250 Grand Prix in Washington D.C.\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:54:44+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -28348,22 +28405,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:32+00:00",
-        "completed_at_utc": "2026-10-25T15:02:08+00:00",
-        "run_id": "40204945654",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40204945654",
+        "completed_at_utc": "2026-10-29T12:55:18+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-25T15:01:52+00:00",
+          "researched_at_utc": "2026-10-29T12:55:07+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-25T15:01:52+00:00",
+        "additional_source_search_started_at_utc": "2026-10-29T12:55:07+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -28604,6 +28661,25 @@
               "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-25T15:01:52+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-29T12:55:07+00:00",
+            "completed_at_utc": "2026-10-29T12:55:18+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:55:07+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -33196,22 +33272,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-19T20:33:27+00:00",
-        "completed_at_utc": "2026-10-25T11:28:15+00:00",
-        "run_id": "40188914023",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40188914023",
+        "completed_at_utc": "2026-10-29T12:54:44+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 19, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-25T11:28:04+00:00",
+          "researched_at_utc": "2026-10-29T12:54:34+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-25T11:28:04+00:00",
+        "additional_source_search_started_at_utc": "2026-10-29T12:54:34+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-19T20:33:28+00:00",
@@ -33287,6 +33363,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
+          },
+          {
+            "started_at_utc": "2026-10-29T12:54:34+00:00",
+            "completed_at_utc": "2026-10-29T12:54:44+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 19, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:54:34+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ],
@@ -35140,13 +35235,117 @@
         "reuse_rights_status": "unknown_not_inferred",
         "publication_status": "not_published"
       }
+    },
+    "yNMNBcV2UKM": {
+      "video_id": "yNMNBcV2UKM",
+      "title": "President Trump Gaggles with Press at Joint Base Andrews, Oct. 27, 2026",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=yNMNBcV2UKM",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 186,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-10-29T12:53:58+00:00",
+        "completed_at_utc": "2026-10-29T12:54:00+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=yNMNBcV2UKM",
+        "final_url": "https://www.youtube.com/watch?v=yNMNBcV2UKM",
+        "http_status": 200,
+        "researched_at_utc": "2026-10-29T12:54:00+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_search_failure",
+        "started_at_utc": "2026-10-29T12:54:00+00:00",
+        "completed_at_utc": "2026-10-29T12:54:11+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "failed",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Oct. 27, 2026\"",
+          "timespan": "1w",
+          "researched_at_utc": "2026-10-29T12:54:00+00:00",
+          "research_scope": "GDELT article metadata search only",
+          "candidate_count": 0,
+          "candidates": [],
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+        },
+        "additional_source_search_started_at_utc": "2026-10-29T12:54:00+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-10-29T12:54:00+00:00",
+            "completed_at_utc": "2026-10-29T12:54:11+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "40877078209",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Oct. 27, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-10-29T12:54:00+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ],
+        "missing_items": [
+          "successful GDELT additional-source metadata search",
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-10-29T12:54:00+00:00",
+        "run_id": "40877078209",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+        "missing_items": [
+          "explicit processing authorization naming video ID yNMNBcV2UKM",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
     }
   },
   "last_run": {
-    "run_id": "40827097880",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40827097880",
-    "started_at_utc": "2026-10-29T06:05:26+00:00",
-    "completed_at_utc": "2026-10-29T06:06:31+00:00",
+    "run_id": "40877078209",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40877078209",
+    "started_at_utc": "2026-10-29T12:53:58+00:00",
+    "completed_at_utc": "2026-10-29T12:55:18+00:00",
     "status": "success"
   }
 }
