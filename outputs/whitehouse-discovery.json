@@ -1,9 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-28T08:37:37+00:00",
+  "checked_at_utc": "2026-10-29T08:33:53+00:00",
   "channel_url": "https://www.youtube.com/@WhiteHouse/videos",
   "identity_rule": "Upload metadata is not event time. Leads stay unassigned until event date/time, location, people, and content are independently checked.",
   "leads": [
+    {
+      "video_id": "C7OR400n_mc",
+      "title": "President Trump Gaggles with Press Upon Arrival at Joint Base Andrews, Oct. 28, 2026",
+      "publisher": "The White House",
+      "url": "https://www.youtube.com/watch?v=C7OR400n_mc",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 531,
+      "event_id": null,
+      "event_date": null,
+      "event_time_local": null,
+      "assignment_status": "unassigned_event_lead",
+      "evidence_status": "metadata_only"
+    },
     {
       "video_id": "sWRTm0t1ixE",
       "title": "Lego Music Video",
@@ -264,20 +278,6 @@
       "published_timestamp_unix": null,
       "upload_date_metadata": null,
       "duration_seconds": 71,
-      "event_id": null,
-      "event_date": null,
-      "event_time_local": null,
-      "assignment_status": "unassigned_event_lead",
-      "evidence_status": "metadata_only"
-    },
-    {
-      "video_id": "-uDuGJeTiOo",
-      "title": "President Trump Gaggles with Press Upon Departure from the White House, Oct. 16, 2026",
-      "publisher": "The White House",
-      "url": "https://www.youtube.com/watch?v=-uDuGJeTiOo",
-      "published_timestamp_unix": null,
-      "upload_date_metadata": null,
-      "duration_seconds": 1250,
       "event_id": null,
       "event_date": null,
       "event_time_local": null,
