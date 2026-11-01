@@ -1,9 +1,37 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-31T08:28:40+00:00",
+  "checked_at_utc": "2026-11-01T09:19:25+00:00",
   "channel_url": "https://www.youtube.com/@WhiteHouse/videos",
   "identity_rule": "Upload metadata is not event time. Leads stay unassigned until event date/time, location, people, and content are independently checked.",
   "leads": [
+    {
+      "video_id": "3oucO26En9g",
+      "title": "President Trump Gaggles with Press at a Halloween Party at Mar-a-Lago, Oct. 31, 2026",
+      "publisher": "The White House",
+      "url": "https://www.youtube.com/watch?v=3oucO26En9g",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 683,
+      "event_id": null,
+      "event_date": null,
+      "event_time_local": null,
+      "assignment_status": "unassigned_event_lead",
+      "evidence_status": "metadata_only"
+    },
+    {
+      "video_id": "uW6gG8q9fkg",
+      "title": "Halloween at the White House 2026",
+      "publisher": "The White House",
+      "url": "https://www.youtube.com/watch?v=uW6gG8q9fkg",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 55,
+      "event_id": null,
+      "event_date": null,
+      "event_time_local": null,
+      "assignment_status": "unassigned_event_lead",
+      "evidence_status": "metadata_only"
+    },
     {
       "video_id": "N464mBP5dmE",
       "title": "Hello, America",
@@ -187,20 +215,6 @@
       "evidence_status": "metadata_only"
     },
     {
-      "video_id": "QmERsPeqy1g",
-      "title": "The Cost of Socialism",
-      "publisher": "The White House",
-      "url": "https://www.youtube.com/watch?v=QmERsPeqy1g",
-      "published_timestamp_unix": null,
-      "upload_date_metadata": null,
-      "duration_seconds": 36,
-      "event_id": null,
-      "event_date": null,
-      "event_time_local": null,
-      "assignment_status": "unassigned_event_lead",
-      "evidence_status": "metadata_only"
-    },
-    {
       "video_id": "Gyt3oxK9G3Y",
       "title": "President Trump Gaggles with Press Upon Arrival at Palm Beach, FL, Oct. 23, 2026",
       "publisher": "The White House",
@@ -264,20 +278,6 @@
       "published_timestamp_unix": null,
       "upload_date_metadata": null,
       "duration_seconds": 52,
-      "event_id": null,
-      "event_date": null,
-      "event_time_local": null,
-      "assignment_status": "unassigned_event_lead",
-      "evidence_status": "metadata_only"
-    },
-    {
-      "video_id": "3OTUg2gbRqA",
-      "title": "President Trump Gaggles with Press at Joint Base Andrews, Oct. 21, 2026",
-      "publisher": "The White House",
-      "url": "https://www.youtube.com/watch?v=3OTUg2gbRqA",
-      "published_timestamp_unix": null,
-      "upload_date_metadata": null,
-      "duration_seconds": 253,
       "event_id": null,
       "event_date": null,
       "event_time_local": null,
