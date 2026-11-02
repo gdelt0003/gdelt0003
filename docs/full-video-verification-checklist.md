@@ -30,6 +30,20 @@ Pages may deploy before the post-deployment gate. Deployment success and release
 - Run downloads, frame extraction, probing, rendering and deployment on GitHub-hosted cloud runners only. Do not use local video files or local video processing.
 - Persist each ASR, translation batch/request, subtitle-export and subtitle-burn operation separately in `operation-audit.json`, with UTC start/end timestamps, task and asset IDs, model/tool and pipeline versions, status, retries and failure details. Translation pipeline summaries link to child timings and are inclusive (do not sum parent and child durations). Validate the audit before publishing; preserve it as a runner artifact even if processing fails.
 
+## M2 bilingual subtitle layout contract
+
+This is the acceptance contract for bilingual subtitle material reviewed under Module 2. It defines layout/occlusion requirements; it does not assert that a current render or profile has passed.
+
+- Reserve a fixed subtitle region in the bottom 30% of the frame. Keep both languages and any background panel inside 78% of frame width.
+- Set English font size to at least 1.20 times the Chinese font size. Keep English and Chinese in stable, fixed positions; each language may use no more than two lines.
+- Preserve every source word. Do not truncate, clip, or silently shrink text to fit. Use only explicit, authored line breaks at safe word or punctuation boundaries; disable secondary renderer/libass automatic wrapping. If text cannot fit in the safe region within two lines per language, fail closed and require phrase-level cue reflow/review.
+- If an opaque backing is used to cover an in-picture source lower-third, leave the original source video/frame intact and record the generated backing as a derived mask/occlusion in the manifest. This is not a clean-source claim. Record source-graphics review separately; require human visual review of runner-rendered frames and leave it `not_verified`/blocking until that review is documented.
+- Acceptance evidence must identify the profile/version, frame dimensions and measured region/safe-width/font ratio, demonstrate no extra automatic wraps or missing text in representative and flagged cues, and record mask bounds/source graphics and human review status. A successful encode or source-file inspection alone is not a visual pass.
+
+### Existing Katie profile comparison (not acceptance)
+
+The current `katie-fixed-lower-third-zh-first` implementation in `scripts/process_full_video.py` and its documentation describe an 89%-width, 20.5%-height panel, wrapping limits based on 82% width, Chinese above and larger than English, and FFmpeg/libass rendering. These values do **not** meet the M2 contract above: the bottom-region/panel geometry and safe width differ, and the language-size direction is reversed. Its authored line wrapping and fail-closed two-line guards do not by themselves prove that libass adds no wrapping in rendered frames. The current preview/render has not had the required human visual review. Track profile alignment and visual verification as pending; do not relabel the current profile as compliant or imply a render has passed.
+
 ## Implemented in the repository
 
 - [x] Group incomplete ASR subtitle fragments into phrase/sentence units before translation or re-rendering. The comma-alignment regression splits the greeting into `Good afternoon,` / `下午好,` and `everybody.` / `大家。` rather than mispairing fragments.
