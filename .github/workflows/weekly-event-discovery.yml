@@ -3,6 +3,7 @@ name: Refresh multi-source event discovery leads
 on:
   schedule:
     - cron: "15 2 * * *"
+    - cron: "15 12 * * *"
   workflow_dispatch:
 
 permissions:
@@ -25,6 +26,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Identify discovery pass
+        id: review_pass
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          case "$SCHEDULE" in
+            "15 2 * * *")
+              label="Daytime latest-event discovery (10:15 China Standard Time)"
+              detail="Refresh the latest metadata-only leads. Source dates remain unassigned until independently verified."
+              ;;
+            "15 12 * * *")
+              label="Evening cross-source review (20:15 China Standard Time)"
+              detail="Review the Candidate Review sheet alongside the Source Directory. Roll Call and other manual-review sources are not fetched."
+              ;;
+            *)
+              label="Manual discovery run"
+              detail="Review Candidate Review and the Source Directory; manual-review sources are not fetched."
+              ;;
+          esac
+          {
+            echo "label=$label"
+            echo "detail=$detail"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "### $label"
+            echo "$detail"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

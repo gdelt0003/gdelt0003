@@ -53,6 +53,8 @@ CAPTION_LOWER_MARGIN_PERCENT = 18
 ENGLISH_TO_CHINESE_FONT_RATIO = 1.50
 KATIE_CHINESE_TO_ENGLISH_FONT_RATIO = 1.25
 DEFAULT_SUBTITLE_LAYOUT = "default"
+SMARTSUB_SUBTITLE_LAYOUT = "smartsub"
+SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO = 0.804
 KATIE_SUBTITLE_LAYOUT = "katie-fixed-lower-third-zh-first"
 ROSE_GARDEN_SUBTITLE_LAYOUT = "rose-garden-source-aware-bilingual"
 ROSE_CAPTION_SAFE_WIDTH_PERCENT = 68
@@ -2228,11 +2230,18 @@ def write_ass(
                     f"maximum characters per line={max_english}); "
                     "manual bilingual phrase alignment is required."
                 ) from error
-    elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
+    elif layout_profile in {DEFAULT_SUBTITLE_LAYOUT, SMARTSUB_SUBTITLE_LAYOUT}:
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
             34,
-            round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+            round(
+                chinese_font
+                * (
+                    SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO
+                    if layout_profile == SMARTSUB_SUBTITLE_LAYOUT
+                    else ENGLISH_TO_CHINESE_FONT_RATIO
+                )
+            ),
         )
         safe_width = round(width * 0.78)
         max_english = max(
@@ -2357,7 +2366,14 @@ def write_ass(
     chinese_font = max(32, round(height * 0.052))
     english_font = max(
         34,
-        round(chinese_font * ENGLISH_TO_CHINESE_FONT_RATIO),
+        round(
+            chinese_font
+            * (
+                SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO
+                if layout_profile == SMARTSUB_SUBTITLE_LAYOUT
+                else ENGLISH_TO_CHINESE_FONT_RATIO
+            )
+        ),
     )
     safe_width = round(width * 0.78)
     max_english_chars = max(20, int(safe_width / (english_font * 0.55)))
@@ -2616,6 +2632,12 @@ def verify_cues(
                         )
                     )
                 continue
+    elif layout_profile == SMARTSUB_SUBTITLE_LAYOUT:
+        chinese_font = max(32, round(height * 0.052))
+        english_font = max(
+            34,
+            round(chinese_font * SMARTSUB_ENGLISH_TO_CHINESE_FONT_RATIO),
+        )
     elif layout_profile == DEFAULT_SUBTITLE_LAYOUT:
         chinese_font = max(32, round(height * 0.052))
         english_font = max(
@@ -2672,6 +2694,7 @@ def verify_cues(
                 if layout_profile in {
                     KATIE_SUBTITLE_LAYOUT,
                     ROSE_GARDEN_SUBTITLE_LAYOUT,
+                    SMARTSUB_SUBTITLE_LAYOUT,
                 }
                 else "default"
             ),
