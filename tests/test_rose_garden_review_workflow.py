@@ -84,6 +84,38 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 pixels[offset:offset + 3] = bytes((255, 255, 255))
         return bytes(pixels)
 
+    def test_validator_imports_as_script_and_package(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        script_path = repo_root / "scripts" / "verify_rose_garden_review.py"
+        for argument in ("--help", "--validate-private-dispatch-inputs"):
+            with self.subTest(argument=argument):
+                script_result = subprocess.run(
+                    [sys.executable, "-S", str(script_path), argument],
+                    cwd=repo_root,
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(script_result.returncode, 0, script_result.stderr)
+
+        package_result = subprocess.run(
+            [
+                sys.executable,
+                "-S",
+                "-c",
+                (
+                    "import sys; "
+                    "import scripts.verify_rose_garden_review; "
+                    "assert 'scripts.process_full_video' not in sys.modules"
+                ),
+            ],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(package_result.returncode, 0, package_result.stderr)
+
     def build_caption_ass_manifest(self, root, cues, overflow_records):
         regions = user_still_source_graphics_regions(1920, 1080)
         readability = verify_cues(
@@ -644,11 +676,16 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 side_effect=lambda _path, width, height, _start: (
                     self.synthetic_caption_frame(width, height, mask)
                 ),
-            ):
+            ), patch.object(
+                review,
+                "_process_full_video_module",
+                wraps=review._process_full_video_module,
+            ) as load_renderer:
                 ass_validation = review.validate_caption_ass(
                     manifest,
                     output_dir,
                 )
+            load_renderer.assert_called_once_with()
 
         self.assertEqual(ass_validation["visual_frame_review"], "pending")
         source_review = readability["source_graphics_review"]
@@ -1532,6 +1569,84 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
                 "resolution": "1920x1080",
             }
             with self.assertRaisesRegex(RuntimeError, "SHA-256"):
+                review.validate_caption_ass(manifest, root)
+
+    def test_caption_ass_uses_the_manifest_caption_box_for_font_geometry(self):
+        cue = Cue(1, 3, "Hello, everybody.", "大家好。")
+        caption_box = (66, 883, 1852, 1022)
+        readability = verify_cues(
+            [cue],
+            duration=10,
+            width=1920,
+            height=1080,
+            layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+            caption_position="top",
+            caption_box=caption_box,
+        )["subtitle_readability"]
+        ass_name = f"{review.ASSET_PREFIX}.en-zh.ass"
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_ass(
+                root / ass_name,
+                [cue],
+                1920,
+                1080,
+                layout_profile=ROSE_GARDEN_SUBTITLE_LAYOUT,
+                caption_box=caption_box,
+            )
+            (root / f"{review.ASSET_PREFIX}.en.srt").write_text(
+                srt_text([cue], "en"),
+                encoding="utf-8",
+            )
+            (root / f"{review.ASSET_PREFIX}.zh-Hans.srt").write_text(
+                srt_text([cue], "zh"),
+                encoding="utf-8",
+            )
+            manifest = {
+                "subtitle_ass_file": ass_name,
+                "subtitle_ass_sha256": hashlib.sha256(
+                    (root / ass_name).read_bytes()
+                ).hexdigest(),
+                "resolution": "1920x1080",
+                "caption_box": {
+                    "coordinate_convention": "half_open_xyxy",
+                    "reference_resolution": "1920x1080",
+                    "reference_bbox_px": list(caption_box),
+                    "applied_source_resolution": "1920x1080",
+                    "applied_source_bbox_px": {
+                        "left": 66,
+                        "top": 883,
+                        "right": 1852,
+                        "bottom": 1022,
+                        "width": 1786,
+                        "height": 139,
+                    },
+                    "scaling": "proportional_x_and_y",
+                },
+                "subtitle_overflow_exceptions": [],
+                "quality_checks": {"subtitle_readability": readability},
+            }
+            frame = self.synthetic_caption_frame(
+                1920,
+                1080,
+                readability["caption_region_box_px"],
+            )
+            with patch.object(
+                review,
+                "render_caption_geometry_frame",
+                return_value=frame,
+            ):
+                result = review.validate_caption_ass(manifest, root)
+
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual(result["synthetic_libass_geometry_render"], "passed")
+
+            manifest["caption_box"] = None
+            with self.assertRaisesRegex(
+                RuntimeError,
+                r"expected English/Chinese 28/35px, found 26/32px",
+            ):
                 review.validate_caption_ass(manifest, root)
 
     def test_caption_ass_keeps_recorded_cue_50_overflow_manual_and_checks_other_cues(self):

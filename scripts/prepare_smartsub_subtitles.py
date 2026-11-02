@@ -7,9 +7,21 @@ import json
 from pathlib import Path
 
 if __package__:
-    from .process_full_video import Cue, read_srt, verify_cues, write_ass
+    from .process_full_video import (
+        SMARTSUB_SUBTITLE_LAYOUT,
+        Cue,
+        read_srt,
+        verify_cues,
+        write_ass,
+    )
 else:
-    from process_full_video import Cue, read_srt, verify_cues, write_ass
+    from process_full_video import (
+        SMARTSUB_SUBTITLE_LAYOUT,
+        Cue,
+        read_srt,
+        verify_cues,
+        write_ass,
+    )
 
 
 def prepare(
@@ -33,8 +45,20 @@ def prepare(
             raise ValueError(f"Subtitle cue {index} has mismatched language timings.")
         cues.append(Cue(en[0], en[1], en[2], zh[2]))
 
-    write_ass(output_path, cues, width, height)
-    checks = verify_cues(cues, duration=duration, width=width, height=height)
+    write_ass(
+        output_path,
+        cues,
+        width,
+        height,
+        layout_profile=SMARTSUB_SUBTITLE_LAYOUT,
+    )
+    checks = verify_cues(
+        cues,
+        duration=duration,
+        width=width,
+        height=height,
+        layout_profile=SMARTSUB_SUBTITLE_LAYOUT,
+    )
     readability = checks["subtitle_readability"]
     report = {
         "subtitle_cues": len(cues),

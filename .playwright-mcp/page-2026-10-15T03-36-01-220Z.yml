@@ -1,0 +1,95 @@
+- main [ref=e2]:
+  - navigation "主要导航" [ref=e3]:
+    - link "GDELT · 事件视频" [ref=e4] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=e5]:
+      - link "Copilot 成果" [ref=e6] [cursor=pointer]:
+        - /url: "#copilot-results"
+      - link "主视频" [ref=e7] [cursor=pointer]:
+        - /url: "#featured-video"
+      - link "短片" [ref=e8] [cursor=pointer]:
+        - /url: "#highlights"
+      - link "事件与来源" [ref=e9] [cursor=pointer]:
+        - /url: "#event-research"
+      - link "机位证据" [ref=e10] [cursor=pointer]:
+        - /url: "#camera-map"
+  - generic [ref=e11]:
+    - paragraph [ref=e12]: GITHUB ACTIONS · PAGES
+    - heading "事件视频资料与高光片段" [level=1] [ref=e13]
+    - paragraph [ref=e14]: 全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态
+    - paragraph [ref=e15]: 本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。
+  - region [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - paragraph [ref=e19]: MICROSOFT / GITHUB COPILOT CODING AGENT
+        - heading "Copilot 协作开发成果" [level=2] [ref=e20]
+      - generic [ref=e21]: 已合并 · 已部署
+    - paragraph [ref=e22]: 这里展示 Copilot coding-agent 在 gdelt0003/gdelt0003 实现的工程交付，不把开源媒体工具的代码或生成结果冒领为微软成果。SmartSub 保持独立上游依赖与来源归属；本仓库贡献集中在 runner 编排、路径修复、证据登记和 Pages 发布。
+    - generic [ref=e23]:
+      - article [ref=e24]:
+        - heading "云端渲染链路" [level=3] [ref=e25]
+        - paragraph [ref=e26]: 修复固定版本 SmartSub 在 GitHub-hosted runner 上的启动路径，校验来源指纹并保存可追溯的运行清单。
+        - 'link "PR #21 · launcher 路径修复" [ref=e27] [cursor=pointer]':
+          - /url: https://github.com/gdelt0003/gdelt0003/pull/21
+        - 'link "Run #38540536544 · 云端生成的未核验草稿" [ref=e28] [cursor=pointer]':
+          - /url: https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544
+      - article [ref=e29]:
+        - heading "部署可靠性" [level=3] [ref=e30]
+        - paragraph [ref=e31]: 把 Pages 并发锁收窄到部署 job，避免慢速渲染占住站点发布队列。
+        - 'link "PR #23 · Pages 并发修复" [ref=e32] [cursor=pointer]':
+          - /url: https://github.com/gdelt0003/gdelt0003/pull/23
+      - article [ref=e33]:
+        - heading "结果进入首页与事件页" [level=3] [ref=e34]
+        - paragraph [ref=e35]: 登记预览、字幕和审查状态；Pages 成功部署。媒体仍标为未经核验，不代表最终发布质量通过。
+        - 'link "PR #25 · 预览登记与页面展示" [ref=e36] [cursor=pointer]':
+          - /url: https://github.com/gdelt0003/gdelt0003/pull/25
+        - 'link "Pages run #38544067659 · 部署成功" [ref=e37] [cursor=pointer]':
+          - /url: https://github.com/gdelt0003/gdelt0003/actions/runs/38544067659
+    - paragraph [ref=e38]: 此次视频渲染的媒体工具是 SmartSub 3.9.0；Copilot coding-agent 的会话模型未记录在该视频 provenance 中，因此不把视频标作 GPT-6 生成。开源工具及其许可证/署名继续按上游保留。
+  - region [ref=e39]:
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - paragraph [ref=e42]: FULL-LENGTH EVENT VIDEOS
+        - heading "主视频" [level=2] [ref=e43]
+      - status [ref=e44]: 正在读取主视频清单…
+    - paragraph [ref=e45]: 每条主视频独立展示，可继续按事件添加；来源、字幕和复核状态跟随各自视频，不会被合并成单一焦点播放器。
+  - region [ref=e46]:
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: WHITE HOUSE · BILINGUAL SHORTS
+        - heading "既有短片 · 推荐观看" [level=2] [ref=e50]
+      - status [ref=e51]: 竖屏 9:16 · 正在读取分段链接…
+    - paragraph [ref=e52]: 保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。
+  - region [ref=e53]:
+    - paragraph [ref=e54]: DEDICATED PATHWAY COMPARISON
+    - heading "开源媒体工具 × Copilot 工程路线" [level=2] [ref=e55]
+    - paragraph [ref=e56]: 开源工具候选、实际媒体产物与 Copilot coding-agent 的仓库工程交付在专页分栏展示。只对同输入、同任务且有证据的结果作质量比较；未运行或未核验项不会冒充成绩。
+    - paragraph [ref=e57]:
+      - link "打开 pvXbHQrIvTw 专属路线对比页" [ref=e58] [cursor=pointer]:
+        - /url: events/pvXbHQrIvTw/#pathways
+  - region [ref=e59]:
+    - generic [ref=e60]:
+      - generic [ref=e61]:
+        - paragraph [ref=e62]: EVENTS · SOURCE EVIDENCE
+        - heading "按事件整理的来源与候选" [level=2] [ref=e63]
+      - link "下载来源核验 Excel" [ref=e64] [cursor=pointer]:
+        - /url: outputs/event-source-review.xlsx
+    - paragraph [ref=e65]: 来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。
+    - generic [ref=e66]:
+      - heading "最新视频与新闻文章发现线索" [level=3] [ref=e67]
+      - status [ref=e68]: 等待云端例行检索…
+  - region [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - paragraph [ref=e72]: REVIEWED EVENT PRODUCTIONS
+        - heading "已审阅的事件短片" [level=2] [ref=e73]
+      - status [ref=e74]: 正在读取已发布作品…
+    - paragraph [ref=e75]: 只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。
+  - region [ref=e76]:
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: EVENT CAMERA GEOMETRY
+        - heading "活动 3D 机位图" [level=2] [ref=e80]
+      - status [ref=e81]: 正在读取测绘证据…
+    - list
+    - paragraph [ref=e83]: 仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。

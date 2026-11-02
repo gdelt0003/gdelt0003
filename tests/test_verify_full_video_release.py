@@ -25,7 +25,7 @@ class FullVideoReleaseGateTests(unittest.TestCase):
                 "source_resolution": "passed",
                 "subtitle_readability": {
                     "status": "style_contract_passed",
-                    "english_to_chinese_size_ratio": 1.22,
+                    "english_to_chinese_size_ratio": 0.8,
                     "visual_frame_review": "required",
                     "english_reading_speed_over_20_cps_cues": [],
                     "chinese_reading_speed_over_10_cps_cues": [],
@@ -87,6 +87,20 @@ class FullVideoReleaseGateTests(unittest.TestCase):
         )
         self.assertIn("visual frame review has not passed", blockers)
 
+    def test_rose_profile_uses_rose_bilingual_font_ratio(self):
+        manifest = complete_manifest()
+        readability = manifest["quality_checks"]["subtitle_readability"]
+        readability["layout_profile"] = "rose-garden-source-aware-bilingual"
+        self.assertNotIn(
+            "English subtitle font is not at least 20% smaller than Chinese font",
+            release_blockers(manifest),
+        )
+        readability["english_to_chinese_size_ratio"] = 1.0
+        self.assertIn(
+            "English subtitle font is not at least 20% smaller than Chinese font",
+            release_blockers(manifest),
+        )
+
     def test_asserted_statuses_without_records_or_artifacts_are_blocked(self):
         manifest = complete_manifest()
         blockers = release_blockers(manifest)
@@ -135,7 +149,8 @@ def complete_manifest():
             "source_resolution": "passed",
             "subtitle_readability": {
                 "status": "style_contract_passed",
-                "english_to_chinese_size_ratio": 1.22,
+                "layout_profile": "rose-garden-source-aware-bilingual",
+                "english_to_chinese_size_ratio": 0.8,
                 "visual_frame_review": "passed",
                 "english_reading_speed_over_20_cps_cues": [],
                 "chinese_reading_speed_over_10_cps_cues": [],

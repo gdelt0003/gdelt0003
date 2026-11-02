@@ -98,13 +98,13 @@ function renderSourceDetails(payload) {
     'p',
     'main-video-source-ranking-method',
     video.provenance.ranking_method
-      || '官方事件锚点始终保留并置顶；其余候选按事件匹配状态 → 内嵌图文状态 → 分辨率 → 时长 → 播放量排序。缺失值不补估，同级保持清单顺序。记录字段覆盖度为 0–100，仅表示当前静态快照已记录字段的完整程度，不表示视频源可信度、视频本身可信度或质量。',
+      || '官方事件锚点始终保留并置顶；其余候选按事件匹配状态 → 内嵌图文状态 → 分辨率 → 时长 → 播放量排序。缺失值不补估，同级保持清单顺序。证据覆盖分数为 0–100，仅表示当前静态快照中已记录事实的字段覆盖度，不等同于来源真实性、可信度或质量评估。',
   );
   addSourceText(
     $sourceDetails,
     'p',
     'main-video-source-score-rubric',
-    '记录字段覆盖度（0–100）: 直链 URL、标题/发布方、时间、分辨率、时长、画面评估、字幕核验与证据笔记各占一项；它只衡量“记录中是否有字段”，不是视频源可信度、视频本身可信度或客观真实性判断。未记录项显式标注 unknown/unreviewed。用户主观参考分保留在单独区块，不计入字段覆盖度。',
+    '证据覆盖分数（0–100）: 直链 URL、标题/发布方、时间、分辨率、时长、画面评估、字幕核验与证据笔记各占一项；它衡量“记录中是否有证据”，不是来源可信度或客观真实性判断。未记录项记 0 分并显式标注 unknown/unreviewed。用户主观参考分保留在单独区块，不计入证据分。',
   );
   if (video.provenance.search_method) {
     addSourceText($sourceDetails, 'p', 'main-video-source-search-method', `检索方法: ${video.provenance.search_method}`);
@@ -114,9 +114,13 @@ function renderSourceDetails(payload) {
     const sectionElement = document.createElement('section');
     sectionElement.className = 'main-video-source-category';
 
+    const zeroDisclaimer = section.total === 0
+      ? '；如某类别显示 0 条：本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在；仅表示本静态快照中未发现更多已核验候选。'
+      : '';
+
     const heading = document.createElement('h4');
     heading.className = 'main-video-source-category-title';
-    heading.textContent = `${section.label}（${section.total} 条候选 · ${section.confirmedCount} 条事件匹配已确认；本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在；仅表示本静态快照未检出更多已核验候选）`;
+    heading.textContent = `${section.label}（${section.total} 条候选 · ${section.confirmedCount} 条事件匹配已确认${zeroDisclaimer}）`;
     sectionElement.append(heading);
 
     const list = document.createElement('div');
@@ -125,7 +129,7 @@ function renderSourceDetails(payload) {
     if (!section.sources.length) {
       const empty = document.createElement('p');
       empty.className = 'main-video-source-category-empty';
-      empty.textContent = `该类别候选 0 条；本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在。仅表示本静态快照中未发现已核验的${section.label}来源；未见可验证证据的条目不会被补造，也不会被评分。`;
+      empty.textContent = `该类别候选 0 条；如某类别显示 0 条：本静态目录当前未收录/本次检索未覆盖，0 不代表全网不存在。仅表示本静态快照中未发现已核验的${section.label}来源；未见可验证证据的条目不会被补造，也不会被评分。`;
       list.append(empty);
     }
 

@@ -1,0 +1,297 @@
+- generic [active] [ref=f45e1]:
+  - generic [ref=f45e2]:
+    - banner [ref=f45e3]:
+      - link "Skip to content" [ref=f45e4] [cursor=pointer]:
+        - /url: "#content"
+      - generic [ref=f45e5]:
+        - generic [ref=f45e9]:
+          - generic [ref=f45e10]:
+            - paragraph [ref=f45e14]:
+              - strong [ref=f45e15]:
+                - text: "Follow on X:"
+                - link "SingjuPost" [ref=f45e16] [cursor=pointer]:
+                  - /url: https://x.com/SingjuPost
+            - paragraph [ref=f45e20]:
+              - text: Facebook me @
+              - link "Digested Thoughts" [ref=f45e21] [cursor=pointer]:
+                - /url: https://www.facebook.com/profile.php?id=61591029396179
+          - search [ref=f45e27]:
+            - generic [ref=f45e28]: Search for...
+            - searchbox "Search for..." [ref=f45e29]
+            - button "Search" [ref=f45e30] [cursor=pointer]
+        - generic [ref=f45e38]:
+          - link "The Singju Post Read & Learn via Transcripts" [ref=f45e43] [cursor=pointer]:
+            - /url: https://singjupost.com/
+            - generic [ref=f45e44]:
+              - paragraph [ref=f45e45]: The Singju Post
+              - generic [ref=f45e46]: Read & Learn via Transcripts
+          - navigation "Primary Menu (Desktop)" [ref=f45e51]:
+            - list [ref=f45e52]:
+              - listitem [ref=f45e53]:
+                - link "Technology" [ref=f45e55] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/technology/
+              - listitem [ref=f45e56]:
+                - link "Health & Wellness" [ref=f45e58] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/health/
+              - listitem [ref=f45e59]:
+                - link "Politics" [ref=f45e61] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/politics/
+              - listitem [ref=f45e62]:
+                - link "Podcasts" [ref=f45e64] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/podcasts/
+              - listitem [ref=f45e65]:
+                - link "Geopolitics" [ref=f45e67] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/geopolitics/
+    - insertion [ref=f45e74]:
+      - iframe [ref=f45e76]:
+        - generic [ref=f68e1]:
+          - link "365VPN 彻底不卡死网，极速连 打开" [ref=f68e6] [cursor=pointer]:
+            - /url: https://googleads.g.doubleclick.net/aclk?sa=l&ai=Ce8kbgsbNasmjJdLA998PweCX-AeW6aCVigHc1LP97hX--IDawwEQASChz9EKYJ2h4IHgBaABs_OniUPIAQGoAwHIA8sEqgTYAk_QxsxX4x8pNjtCfks26kR4AiJ6fI_Y-_Gl14Cl6hSa1-WNyWua-KRftxYhTpoXh3oA23u1smOWe-h95qtHOkLNnoXt_sA5VR_A0oCwHpuRNAYDvaAJZzc0tUsBhgCBD0JKt8_0rcZWTO8TGqACbZvAoBCfXTzFku0LSfu-5U3_0r5_iG376h1yLqvAGls23QWzgZ1ZRDPmAWuP0lS34vgqMVC-6kP8heeZF1afokAgrZ7XtU5lcknpEZTGzMO4vaxEBtVvwgWsw63MQ-acRAO9fvX79hnk2us0LItzVhh0chrqLhY8g0ALxZZyakVXQRpOSA4Z2Z8ZaZ8mLbizzMqI4VvNuWS91H_rt3o-wJMn7r7X-eY8awryzM1uR7ryS1hzVpbM6z2wVzLuIEg27y5V9m-3Gq58cig_Hk-wQoH_xso_jo2eCR7EOS_j8fYQfPzkpUETls5TwAS0seat8AWIBcrX1LNagAezq_joHagHp8yxAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgH_uixAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgHn-GxAqgHpuuxAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAtgHAdIIMwiAYRABGJ8DMgiKgoCAgICACDoPgECAwICAgICogAKog4AYSL39wTpYs-iYkqa2lwNgAbEJPQPXCEFpZB6ACgGYCwHICwGqDQJDTsgNAeoNEwjj7pmSpraXAxVS4P0FHUHwBX_wDQKIDgnYEw3QFQHKFgIKAPgWAYAXAbIXEBgBKgozNTY4NTY5MDEwUAa6FwI4AaoYFwkAAAAAaBMnQRIKMzU2ODU2OTAxMBgBshgJEgLybBgBIgEA0BgB6BgBwhkCCAE&ae=1&gclid=EAIaIQobChMIyeyZkqa2lwMVUuD9BR1B8AV_EAEYASAAEgJnovD_BwE&num=1&cid=CAQSjAIAQM4h3FkF6lyRKVikOH6U8q7La63e1qLWj5mr2ZnDPh8g30QQA-1S1z3pFG_ZqRi7YIJ7qq4-vX4bDcs-yzdmUqHrbBnsx9C_zJt8E-30a8So0JUVMQaoMk9xmfz6OrzIF1DvLbPKvO0jPl7bVgXwDp9Tw-87EG16-juOWrElPFzhfX5ONSvQzjOogA81pixo1UG8QGRAIeiRiESW-B1Id4JBL15qqV4c8rVjkE6q4-dwW79MSYL8vP_E9mB9yxXy8RyU-iBBSsoQb0mHWZTJ_AjqLxiUtn4yjRkV3nHdhasgkHQlAxIbBcFqOkuTyd_B0aawMvzlJHKxh9QYzzrWLEXzU_1X_TdoIgRiGAE&sig=AOD64_0z4vlJnu6U3tCiPsJPUmVjLcgzPg&client=ca-pub-2769652596668471&rf=1&nb=2&adurl=https://link365pro.com/%3Fr%3DHNI44C%26placement%3Dsingjupost.com%26network%3Dd%26device%3Dc%26campaignid%3D24267533258%26adgroupid%3D201959512244%26creative%3D825269457598%26loc_physical_ms%3D1003587%26gad_source%3D5%26gad_campaignid%3D24267533258%26gclid%3DEAIaIQobChMIyeyZkqa2lwMVUuD9BR1B8AV_EAEYASAAEgJnovD_BwE
+            - generic [ref=f68e7]:
+              - generic [ref=f68e10]:
+                - generic "365VPN" [ref=f68e11]
+                - generic "365VPN" [ref=f68e12]: 彻底不卡死网，极速连
+              - generic [ref=f68e15]: 打开
+          - generic [ref=f68e21] [cursor=pointer]
+          - button [ref=f68e26] [cursor=pointer]
+          - iframe
+    - main [ref=f45e77]:
+      - generic [ref=f45e79]:
+        - article [ref=f45e80]:
+          - generic [ref=f45e82]:
+            - 'heading "Transcript: Trump Delivers Remarks at Anduril Industries in Baltimore, MD" [level=1] [ref=f45e83]'
+            - list [ref=f45e84]:
+              - listitem [ref=f45e85]:
+                - time [ref=f45e86]: October 7, 2026 2:19 am
+                - text: /
+              - listitem [ref=f45e87]:
+                - generic [ref=f45e88]:
+                  - text: by
+                  - link "Pangambam S" [ref=f45e89] [cursor=pointer]:
+                    - /url: https://singjupost.com/author/singju/
+                - text: /
+              - listitem [ref=f45e90]:
+                - link "Politics (category)" [ref=f45e91] [cursor=pointer]:
+                  - /url: https://singjupost.com/category/politics/
+                  - text: Politics
+                  - generic [ref=f45e92]: (category)
+          - generic [ref=f45e94]:
+            - generic [ref=f45e95]:
+              - paragraph [ref=f45e96]:
+                - emphasis [ref=f45e97]: President Donald Trump joined Anduril Industries at Sparrows Point in Baltimore County, Maryland, October 6, 2026 to launch construction of Arsenal-2, a new shipyard that will build components for the Navy’s Virginia class attack submarines and autonomous undersea systems. Anduril CEO Brian Schimpf, Vice Admiral Rob Gaucher, Acting Navy Secretary Hung Cao, and Secretary of War Pete Hegseth also spoke, outlining the project’s 3,100 jobs, the push to rebuild America’s submarine industrial base, and the administration’s “Golden Fleet” vision
+                - text: .
+                - strong [ref=f45e99]: Read the full transcript below
+                - text: .
+              - heading "Anduril CEO Brian Schimpf on Rebuilding the Submarine Industrial Base" [level=2] [ref=f45e100]
+              - paragraph [ref=f45e101]:
+                - strong [ref=f45e102]: "BRIAN SCHIMPF:"
+                - text: The quality of the systems that we produce, and the strength of the industrial base that constructs and sustains those systems. As the security environment has become more demanding, so too have the questions that the nation is facing.
+              - paragraph [ref=f45e103]: The problems we now must address extend beyond whether industry can design the best military technology in the world. We now need to prove that we can produce it, maintain it, and deliver it at the pace and scale that The United States requires.
+              - status "Loading" [ref=f45e117] [cursor=pointer]
+              - paragraph [ref=f45e119]: There are a few weapons systems where the convergence of build speed and scale is more important than the Virginia class attack submarine. The United States builds the most capable nuclear powered submarines in the world, supported by expertise across shipyards, suppliers, workforce, and the navy.
+              - paragraph [ref=f45e120]: But at the same time, the demands on that expertise have grown well beyond the capacity available today. Existing shipyards and suppliers are investing heavily to increase output. Meeting the Navy’s requirements, however, will demand substantially more production.
+              - paragraph [ref=f45e121]: Whether can contribute to that production was not always obvious to us. Over two years ago, the Navy began a conversation with Anduril about whether we could assist the submarine enterprise in a larger way. At first, our answer was no.
+              - paragraph [ref=f45e122]: For years, Anduril have built autonomous aircraft, missiles, and the software that connects them. But even our most advanced systems sit at a different order of complexity than the Virginia class submarine.
+              - paragraph [ref=f45e123]: We kept returning to the submarine challenge anyway though, because its principal problem was too important to walk away from. The more time that Anduril spent learning about industrial base challenges, the clearer the need became to us. The country requires substantially more places where submarine components can be built.
+              - paragraph [ref=f45e124]: We have worked closely with the Navy and companies throughout the submarine industrial base, including General Dynamics Electric Boat and Huntington Ingalls Newport News Shipbuilding, to understand how the production system operates. We wanted to know where the most persistent constraints exist and where a new industrial player could make a meaningful contribution.
+              - paragraph [ref=f45e125]: We also started testing what we were learning. We stood up a proto factory in California where our teams are already proving new manufacturing approaches and developing components for the Virginia class program. All these efforts have led us to this moment.
+              - heading "Announcing Arsenal-2 at Sparrows Point" [level=2] [ref=f45e129]
+              - paragraph [ref=f45e130]:
+                - strong [ref=f45e131]: "BRIAN SCHIMPF:"
+                - text: Today, Anduril is announcing Arsenal-2, a new shipyard right here at Sparrows Point in Baltimore County. Arsenal-2 will be 2 million square feet of manufacturing space and will create more than 3,100 direct jobs and thousands more indirect jobs.
+              - paragraph [ref=f45e132]: Arsenal-2 will be built to produce a range of assets that are integral to the Virginia class attack submarine. It will add an entirely new source of capacity to the program, and it will significantly increase the amount of work that the broader undersea industrial base can move through the system.
+              - paragraph [ref=f45e133]: Building Arsenal-2 from the ground up means we can design the factory around how the submarine components move through production. We will minimize unnecessary movement, put equipment where it’s needed most, and connect engineering directly to the factory floor through software. Anduril has spent years developing manufacturing systems around those same principles.
+              - paragraph [ref=f45e134]: We are putting that model into practice at Arsenal-1, our manufacturing facility in Ohio. Tomorrow, we’ll do the same here in Baltimore County. But Arsenal-2 represents a much more ambitious application of this approach. Submarine manufacturing poses a different level of complexity and rigor and comes with an even higher level of responsibility.
+              - paragraph [ref=f45e135]: We intend to pair what Anduril already knows about building at scale with the extraordinary technical expertise and high standards currently in operation across the submarine industrial base.
+              - paragraph [ref=f45e136]: Where we are doing this work also matters. Anduril chose Sparrows Point in part because of what this waterfront has done for the country. The Bethlehem Steel Mill here became the largest steel producer in the world. During the second world war, hull after hull of Liberty ships were built at the shipyard on this site.
+              - paragraph [ref=f45e137]: That legacy doesn’t need to stay in the past. In the years ahead, Arsenal-2 will bring thousands of skilled manufacturing jobs back to the site and return Sparrows Point to shipbuilding.
+              - heading "Thanking the Partners Behind Arsenal-2" [level=2] [ref=f45e138]
+              - paragraph [ref=f45e139]:
+                - strong [ref=f45e140]: "BRIAN SCHIMPF:"
+                - text: An event of this magnitude and building a shipyard of this size comes with an equally long list of people who we need to acknowledge and thank. None of what we are announcing today could happen without the many local and national leaders who have helped us get to this point. America’s fleet is stronger for having their steadfast support.
+              - paragraph [ref=f45e141]: Vice Admiral Gaucher and his team have helped us understand where the production system is most constrained and where new capacity can have the greatest impact. Electric Boat and Newport News have shared decades of hard earned expertise with us and welcomed Anduril into an enterprise whose standards for quality and performance are exceptionally high.
+              - paragraph [ref=f45e142]: Governor Moore, county executive Klausmeier, the federal congressional delegation, as well as state and local leaders throughout Maryland have all moved with urgency to help bring an industrial investment of this scale to Baltimore County. They’ve also worked closely with us across the many requirements necessary to make this investment come to fruition.
+              - paragraph [ref=f45e146]: Secretary Hegseth and acting secretary Cao have pushed the department and industry to move faster, expand production, and create the conditions for both companies and new capital to contribute to established programs.
+              - paragraph [ref=f45e147]: President Trump has made rebuilding American manufacturing, expanding shipbuilding capacity, and strengthening the defense industrial base all major priorities during his administration.
+            - button "Continue Reading" [ref=f45e148] [cursor=pointer]
+          - generic [ref=f45e149]:
+            - 'link "previous Child Development in the Digital Age: Dr. Sarah Domoff (Transcript)" [ref=f45e151] [cursor=pointer]':
+              - /url: https://singjupost.com/child-development-in-the-digital-age-dr-sarah-domoff-transcript/
+              - generic [ref=f45e152]: previous
+              - generic [ref=f45e153]: "Child Development in the Digital Age: Dr. Sarah Domoff (Transcript)"
+            - 'link "next Transcript of This Past Weekend #688: w/ Candace Owens" [ref=f45e155] [cursor=pointer]':
+              - /url: https://singjupost.com/transcript-of-this-past-weekend-688-w-candace-owens/
+              - generic [ref=f45e156]: next
+              - generic [ref=f45e157]: "Transcript of This Past Weekend #688: w/ Candace Owens"
+        - complementary "Sidebar" [ref=f45e159]:
+          - insertion [ref=f45e166]:
+            - generic [ref=f45e169]:
+              - heading "These are topics related to the article that might interest you" [level=2] [ref=f45e171]: Discover more
+              - link "Podcast" [ref=f45e172] [cursor=pointer]
+              - link "Podcasts" [ref=f45e177] [cursor=pointer]
+              - link "Stream Podcasts" [ref=f45e182] [cursor=pointer]
+          - generic [ref=f45e189]:
+            - paragraph [ref=f45e190]:
+              - strong [ref=f45e191]: "LATEST POSTS:"
+            - list [ref=f45e192]:
+              - listitem [ref=f45e193]:
+                - 'link "Transcript: Rory & Alastair Interview Prime Minister Andy Burnham" [ref=f45e194] [cursor=pointer]':
+                  - /url: https://singjupost.com/transcript-rory-alastair-interview-prime-minister-andy-burnham/
+              - listitem [ref=f45e195]:
+                - link "Decoded Genius w/ Dr. Robert Lustig – Why Food Companies Want You to Stay Fat" [ref=f45e196] [cursor=pointer]:
+                  - /url: https://singjupost.com/decoded-genius-w-dr-robert-lustig-why-food-companies-want-you-to-stay-fat/
+              - listitem [ref=f45e197]:
+                - 'link "Transcript: Modern Wisdom w/ Spencer Greenberg – 12 Levers" [ref=f45e198] [cursor=pointer]':
+                  - /url: https://singjupost.com/transcript-modern-wisdom-w-spencer-greenberg-12-levers/
+              - listitem [ref=f45e199]:
+                - 'link "Transcript of Kate Manne Interview: “I Am Jane Doe” – Call Her Daddy" [ref=f45e200] [cursor=pointer]':
+                  - /url: https://singjupost.com/transcript-of-kate-manne-interview-i-am-jane-doe-call-her-daddy/
+              - listitem [ref=f45e201]:
+                - 'link "Transcript of Megyn Kelly Interview: Cornell 7 Case on Tucker Carlson Show" [ref=f45e202] [cursor=pointer]':
+                  - /url: https://singjupost.com/transcript-of-megyn-kelly-interview-cornell-7-case-on-tucker-carlson-show/
+          - paragraph [ref=f45e204]:
+            - strong [ref=f45e205]: "CATEGORIES:"
+          - list [ref=f45e207]:
+            - listitem [ref=f45e208]:
+              - link "Ancient Wisdom" [ref=f45e209] [cursor=pointer]:
+                - /url: https://singjupost.com/category/ancient-wisdom/
+            - listitem [ref=f45e210]:
+              - link "Blog" [ref=f45e211] [cursor=pointer]:
+                - /url: https://singjupost.com/category/blog/
+            - listitem [ref=f45e212]:
+              - link "Business & Finance" [ref=f45e213] [cursor=pointer]:
+                - /url: https://singjupost.com/category/business-finance/
+            - listitem [ref=f45e214]:
+              - link "Education" [ref=f45e215] [cursor=pointer]:
+                - /url: https://singjupost.com/category/education/
+            - listitem [ref=f45e216]:
+              - link "Employment & Careers" [ref=f45e217] [cursor=pointer]:
+                - /url: https://singjupost.com/category/employment-careers/
+            - listitem [ref=f45e218]:
+              - link "Entertainment" [ref=f45e219] [cursor=pointer]:
+                - /url: https://singjupost.com/category/entertainment/
+            - listitem [ref=f45e220]:
+              - link "Family & Parenting" [ref=f45e221] [cursor=pointer]:
+                - /url: https://singjupost.com/category/family-parenting/
+            - listitem [ref=f45e222]:
+              - link "Geopolitics" [ref=f45e223] [cursor=pointer]:
+                - /url: https://singjupost.com/category/geopolitics/
+            - listitem [ref=f45e224]:
+              - link "Great Speeches" [ref=f45e225] [cursor=pointer]:
+                - /url: https://singjupost.com/category/great-speeches/
+            - listitem [ref=f45e226]:
+              - link "Health & Wellness" [ref=f45e227] [cursor=pointer]:
+                - /url: https://singjupost.com/category/health/
+            - listitem [ref=f45e228]:
+              - link "Inspiration" [ref=f45e229] [cursor=pointer]:
+                - /url: https://singjupost.com/category/education/inspiration/
+            - listitem [ref=f45e230]:
+              - link "Life & Relationships" [ref=f45e231] [cursor=pointer]:
+                - /url: https://singjupost.com/category/life-relationships/
+            - listitem [ref=f45e232]:
+              - link "Life Advice" [ref=f45e233] [cursor=pointer]:
+                - /url: https://singjupost.com/category/education/life-advice/
+            - listitem [ref=f45e234]:
+              - link "Mental Health" [ref=f45e235] [cursor=pointer]:
+                - /url: https://singjupost.com/category/health/mental-health/
+            - listitem [ref=f45e236]:
+              - link "Motivation" [ref=f45e237] [cursor=pointer]:
+                - /url: https://singjupost.com/category/education/motivation/
+            - listitem [ref=f45e238]:
+              - link "News" [ref=f45e239] [cursor=pointer]:
+                - /url: https://singjupost.com/category/news/
+            - listitem [ref=f45e240]:
+              - link "Pilgrims Journey" [ref=f45e241] [cursor=pointer]:
+                - /url: https://singjupost.com/category/pilgrims-journey-2/
+            - listitem [ref=f45e242]:
+              - link "Podcasts" [ref=f45e243] [cursor=pointer]:
+                - /url: https://singjupost.com/category/podcasts/
+            - listitem [ref=f45e244]:
+              - link "Politics" [ref=f45e245] [cursor=pointer]:
+                - /url: https://singjupost.com/category/politics/
+            - listitem [ref=f45e246]:
+              - link "Science" [ref=f45e247] [cursor=pointer]:
+                - /url: https://singjupost.com/category/science/
+            - listitem [ref=f45e248]:
+              - link "Self-Improvement" [ref=f45e249] [cursor=pointer]:
+                - /url: https://singjupost.com/category/personal-transformation/
+            - listitem [ref=f45e250]:
+              - link "Sermon" [ref=f45e251] [cursor=pointer]:
+                - /url: https://singjupost.com/category/sermon/
+            - listitem [ref=f45e252]:
+              - link "Sponsored" [ref=f45e253] [cursor=pointer]:
+                - /url: https://singjupost.com/category/sponsored/
+            - listitem [ref=f45e254]:
+              - link "Sports" [ref=f45e255] [cursor=pointer]:
+                - /url: https://singjupost.com/category/sports/
+            - listitem [ref=f45e256]:
+              - link "Technology" [ref=f45e257] [cursor=pointer]:
+                - /url: https://singjupost.com/category/technology/
+    - contentinfo [ref=f45e269]:
+      - generic [ref=f45e270]:
+        - generic [ref=f45e274]:
+          - generic [ref=f45e278]:
+            - heading "MISSION STATEMENT:" [level=3] [ref=f45e280]
+            - paragraph [ref=f45e282]: Our mission is to provide the most accurate transcripts of videos and audios online.
+          - generic [ref=f45e286]:
+            - heading [level=3] [ref=f45e288]:
+              - strong [ref=f45e289]: "Follow us:"
+            - list [ref=f45e291]:
+              - listitem [ref=f45e292]:
+                - text: "X: @"
+                - link "SingjuPost" [ref=f45e293] [cursor=pointer]:
+                  - /url: https://x.com/SingjuPost
+              - listitem [ref=f45e294]:
+                - text: "Facebook: @"
+                - link "Digested Thoughts" [ref=f45e295] [cursor=pointer]:
+                  - /url: https://www.facebook.com/profile.php?id=61591029396179
+              - listitem [ref=f45e296]:
+                - text: "Through RSS Feeds: @"
+                - link "Singjupost" [ref=f45e297] [cursor=pointer]:
+                  - /url: https://follow.it/singjupost?pub
+          - search [ref=f45e303]:
+            - strong [ref=f45e305]: "Search This Site:"
+            - generic [ref=f45e306]:
+              - searchbox "Search This Site:" [ref=f45e307]
+              - button "Search" [ref=f45e308] [cursor=pointer]
+        - generic [ref=f45e313]:
+          - navigation "Footer Menu (Desktop)" [ref=f45e317]:
+            - list [ref=f45e318]:
+              - listitem [ref=f45e319]:
+                - link "About Us" [ref=f45e321] [cursor=pointer]:
+                  - /url: https://singjupost.com/about-us/
+              - listitem [ref=f45e322]:
+                - link "Contact Us" [ref=f45e324] [cursor=pointer]:
+                  - /url: https://singjupost.com/contact-us/
+              - listitem [ref=f45e325]:
+                - link "TERMS OF USE" [ref=f45e327] [cursor=pointer]:
+                  - /url: https://singjupost.com/terms-of-use/
+              - listitem [ref=f45e328]:
+                - link "PRIVACY POLICY" [ref=f45e330] [cursor=pointer]:
+                  - /url: https://singjupost.com/privacy/
+              - listitem [ref=f45e331]:
+                - link "Home" [ref=f45e333] [cursor=pointer]:
+                  - /url: https://singjupost.com
+              - listitem [ref=f45e334]:
+                - link "Affiliate Disclosure" [ref=f45e336] [cursor=pointer]:
+                  - /url: https://singjupost.com/affiliate-disclosure/
+          - generic [ref=f45e337]: © 2026 The Singju Post. All rights reserved.
+    - generic:
+      - generic:
+        - generic:
+          - insertion [ref=f45e342]:
+            - iframe [ref=f45e344]:
+              - generic [ref=f70e1]:
+                - link "365VPN 稳定，安全，极速连 打开" [ref=f70e6] [cursor=pointer]:
+                  - /url: https://googleads.g.doubleclick.net/aclk?sa=l&ai=CEg8KgsbNat2DJeG4gLQPx7WSqQKW6aCVigGP0PPIjRb--IDawwEQASChz9EKYJ2h4IHgBaABs_OniUPIAQGoAwHIA8sEqgTSAk_Qmj4rKMp03yRE2cypKCfhS6C4jcD6d3udHqsr_zJM7yB0q7l9slHeEf32VUeBO4gpyBot6Dv7vYNQlDlI-suNNajw20GB9N_2aODaBtYR-oBN7SFotecamDcaU__zQJQbkm9pRHKhQemgNIn3ilRffqTw9Bq1Zaf8s9qgKha5DUVZx6a76Tw5q_Hwx1rRcLjCuR8MVN7UarKCTqkv5JCcIUJ1u5ZbNyUDCF8RMvZ-0-GqLFV5EfKf3yPATLDd5YdDUHCrIq4K72Gr0RBPK7lqD_gMiJOIsK-ItYK4SoL8IlTdC96raWhglHdTHIVkcPstawgo1ijIKl8CoLvwG7b6pClQYh-uSR5A6p6tWnkc6ZqblGNvqb2fkVP6BZg5Zynf0IkIBcR3eawLQaMkbosWyUPIDFNHF3EQXoDQkrrHDnj4DziEkiOMhEJpKIsgSV1PwAS0seat8AWIBcrX1LNagAezq_joHagHp8yxAqgHqO2xAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgH_uixAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgHn-GxAqgHpuuxAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAtgHAdIIMwiAYRABGJ8DMgiKgoCAgICACDoPgECAwICAgICogAKog4AYSL39wTpYz6mYkqa2lwNgAbEJPQPXCEFpZB6ACgGYCwHICwGqDQJDTsgNAeoNEwj4z5mSpraXAxVhHIAAHceaJCXwDQKIDgnYEw3QFQHKFgIKAPgWAYAXAbIXEBgBKgozNTY4NTY5MDEwUAa6FwI4AaoYFwkAAAAA5pAhQRIKMzU2ODU2OTAxMBgBshgJEgLybBgBIgEA0BgB6BgBwhkCCAE&ae=1&gclid=EAIaIQobChMI3cyZkqa2lwMVYRyAAB3HmiQlEAEYASAAEgL0mfD_BwE&num=1&cid=CAQSiwIAQM4h3JOgHN-RKklgzW29dCbYrDz62tOcCK5DR3CuSSRDyLq9qqirkwiefYq73myt35dWOmCUvUeinQSgAbyYPlCpQQZrfBTVzbKPf0fIsSeEHYpiPlawTramt_2_VRLXFFYRXzH9XrbMkRdlegy72PNxwbQgFwRUF9lislx3Jkb5GsicjaYfpogQQOt6EuP0qHYEi-Miof0z3_T3sdCArS393sHpLJE93fwJRXRWH8bBEEuqm5LdomnOffS1bBtsuE0TgmWGHT-eTDSqAGO4W_grxIaoBwONwIoqY_A_SGrxteF3EUq-G-JpfBe83-0hcmwUdbRnuubt-xyvCUN2C2ZENEJRqmhyzJwYAQ&sig=AOD64_1zFA93W57bCRCgzbiIeje-119kMg&client=ca-pub-2769652596668471&rf=1&nb=2&adurl=https://link365pro.com/%3Fr%3DHNI44C%26placement%3Dsingjupost.com%26network%3Dd%26device%3Dc%26campaignid%3D24267533258%26adgroupid%3D201959512244%26creative%3D825353925005%26loc_physical_ms%3D1003587%26gad_source%3D5%26gad_campaignid%3D24267533258%26gclid%3DEAIaIQobChMI3cyZkqa2lwMVYRyAAB3HmiQlEAEYASAAEgL0mfD_BwE
+                  - generic [ref=f70e7]:
+                    - generic [ref=f70e10]:
+                      - generic "365VPN" [ref=f70e11]
+                      - generic "365VPN" [ref=f70e12]: 稳定，安全，极速连
+                    - generic [ref=f70e15]: 打开
+                - generic [ref=f70e21] [cursor=pointer]
+                - button [ref=f70e26] [cursor=pointer]
+                - iframe
+          - generic [ref=f45e345] [cursor=pointer]: X
+  - iframe [ref=f45e346]
+  - iframe [ref=f45e347]
