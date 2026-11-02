@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="分别记录 Rose Garden Lunch 的视频源可信度与视频本身可信度；目前均待证据核验。">
+  <title>Rose Garden Lunch · 视频源与视频本身可信度</title>
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <main class="page">
+    <nav class="main-video-detail-nav" aria-label="页面导航">
+      <a href="../../#featured-video">返回主视频</a>
+    </nav>
+    <section class="panel main-video-source-detail-panel" aria-labelledby="source-heading">
+      <div class="main-video-source-detail-heading">
+        <p class="eyebrow">事件来源核验 · 待补充</p>
+        <h1 id="source-heading">视频源可信度与视频本身可信度</h1>
+        <p class="meta">2026-10-15 · Rose Garden Lunch</p>
+        <p>视频源可信度与视频本身可信度是两个不同的评估维度；只有各自对应的证据核验后，才会记录结论。</p>
+      </div>
+      <section
+        id="mainVideoSourceDetails"
+        data-video-id="rose-garden-lunch-2026-10-15-review"
+        aria-labelledby="pending-heading"
+      >
+        <h2 id="pending-heading">视频源可信度 · 待证据核验</h2>
+        <p id="roseGardenSourceStatus" role="status">
+          当前没有已记录并核验的候选来源或来源比对证据。此处暂为空，不代表不存在其他来源，也不表示已完成检索。
+        </p>
+        <p>云端公开网页/落地页元数据搜索状态与查询覆盖：请查看<a href="https://github.com/gdelt0003/gdelt0003/actions/workflows/research-rose-garden-sources.yml">Rose Garden metadata research workflow</a>对应 run 的报告 artifact。本页不推定检索已完成；报告仅覆盖所列查询与页面元数据，不代表已核验视频内容。</p>
+      </section>
+      <section aria-labelledby="video-credibility-heading">
+        <h2 id="video-credibility-heading">视频本身可信度 · 待证据核验</h2>
+        <p id="roseGardenVideoStatus" role="status">
+          当前没有记录足以评估视频内容及其完整性的核验事实；实际动态画面、连续性、音频与码流分辨率均未检查，此处暂不作可信度结论。
+        </p>
+      </section>
+      <section aria-labelledby="bbox-estimate-heading">
+        <h2 id="bbox-estimate-heading">用户提供的 banner bbox 估计 · 未核验</h2>
+        <p><code>user_estimated_banner_bbox</code>：源坐标 xyxy = <code>[68, 885, 1850, 1020]</code>；每边 padding = <code>2 px</code>；推导 mask xyxy = <code>[66, 883, 1852, 1022]</code>。</p>
+        <p>状态为 <code>unverified_still_estimate</code>。这是单帧估计，不是签名或已核验的源帧审查记录；当前没有与特定 render run 绑定的输入证据，因此不声称 run <code>38895767927</code> 使用了该 bbox。</p>
+      </section>
+      <p>搜索摘要和页面元数据不能替代对动态画面、音频、连续性或实际视频流分辨率的核验；候选只有在授权的云端 runner 完成相应人工内容审查后，才可更新这些状态。</p>
+    </section>
+  </main>
+  <script>
+    fetch('../../outputs/main-videos.json', { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Catalog HTTP ${response.status}`);
+        return response.json();
+      })
+      .then((catalog) => {
+        const item = Array.isArray(catalog.videos)
+          ? catalog.videos.find((video) => video.id === 'rose-garden-lunch-2026-10-15-review')
+          : null;
+        if (!item || !item.provenance || !Array.isArray(item.provenance.sources)) return;
+        const sourceStatus = document.getElementById('roseGardenSourceStatus');
+        sourceStatus.textContent = `${item.provenance.sources.length} 条候选来源记录；均不得仅据此认定事件匹配或视频源可信度。`;
+      })
+      .catch((error) => {
+        console.error('Rose Garden source metadata unavailable', error);
+      });
+  </script>
+</body>
+</html>

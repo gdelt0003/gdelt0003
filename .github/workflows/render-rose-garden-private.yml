@@ -1,0 +1,341 @@
+name: Render private Rose Garden artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      event_id:
+        description: Pinned event ID
+        type: string
+        required: true
+        default: rose-garden-lunch-2026-10-15
+      event_title:
+        description: Pinned event title
+        type: string
+        required: true
+        default: President Trump Participates in a Rose Garden Lunch
+      event_date:
+        description: Pinned event date
+        type: string
+        required: true
+        default: "2026-10-15"
+      source_url:
+        description: Official-source video URL
+        type: string
+        required: true
+        default: https://www.youtube.com/watch?v=IySF_8OArvw
+      source_release_tag:
+        description: Uploaded source release tag
+        type: string
+        required: true
+        default: rose-garden-lunch-source-2026-10-15
+      source_asset:
+        description: Exact uploaded source filename
+        type: string
+        required: true
+        default: RoseGardenLunch-IySF_8OArvw.mp4
+      source_sha256:
+        description: Required SHA-256 of the uploaded source asset
+        type: string
+        required: true
+        default: e0b04fb669fd0d09f1492de6a3160bb3b6dae2e3e396be77372f4b5635da5f73
+      requester_authorized_processing:
+        description: Confirm authorization to process this exact video for a private artifact
+        type: boolean
+        required: true
+        default: false
+      caption_box:
+        description: Optional half-open x1,y1,x2,y2 box in the 1920x1080 reference frame
+        type: string
+        required: false
+        default: "66,883,1852,1022"
+      rights_evidence_url:
+        description: Optional rights reference; not assessed by this private render
+        type: string
+        required: false
+        default: ""
+      event_identity_evidence_url:
+        description: Optional event identity reference; not required or confirmed by this private render
+        type: string
+        required: false
+        default: ""
+      event_match_evidence_url:
+        description: Optional source/event match reference; not required or confirmed by this private render
+        type: string
+        required: false
+        default: ""
+      event_time_timezone_evidence_url:
+        description: Optional event time and timezone reference; not assessed by this private render
+        type: string
+        required: false
+        default: ""
+      source_lineage_evidence_url:
+        description: Optional source-to-asset lineage reference; not assessed by this private render
+        type: string
+        required: false
+        default: ""
+      source_frame_review_record_json:
+        description: Authorized cloud frame/BBox review; non-occluding layouts may remain pending
+        type: string
+        required: true
+        default: "{}"
+      source_frame_review_signature:
+        description: Base64 OpenSSH signature of canonical frame-review JSON
+        type: string
+        required: false
+        default: ""
+      frame_review_mode:
+        description: Draft mode keeps frame review pending; trusted mode requires signed review
+        type: choice
+        options:
+          - unverified-review-draft
+          - trusted-signed-review
+        required: true
+        default: unverified-review-draft
+      caption_position:
+        description: Caption area; lower-third masking requires reviewed BBox authorization
+        type: choice
+        options:
+          - top
+          - center
+          - mask-lower-third
+        required: true
+        default: top
+      caption_safe_region_reviewed:
+        description: Confirm source graphics and selected caption position were visually reviewed
+        type: boolean
+        required: true
+        default: false
+      source_graphics_regions_json:
+        description: Source graphic BBoxes; masking requires a human-verified banner BBox
+        type: string
+        required: true
+        default: "[]"
+      rose_mask_authorized:
+        description: Confirm the user-authorized Rose-only lower-third masking exception
+        type: boolean
+        required: true
+        default: false
+      mask_padding_px_per_edge:
+        description: Mask expansion per edge, 1–5 output pixels
+        type: number
+        required: true
+        default: 2
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rose-garden-private-render-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Check out default branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate processing authorization and pinned event/source inputs
+        env:
+          EVENT_ID: ${{ inputs.event_id }}
+          EVENT_TITLE: ${{ inputs.event_title }}
+          EVENT_DATE: ${{ inputs.event_date }}
+          SOURCE_URL: ${{ inputs.source_url }}
+          SOURCE_RELEASE_TAG: ${{ inputs.source_release_tag }}
+          SOURCE_ASSET: ${{ inputs.source_asset }}
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          PROCESSING_AUTHORIZED: ${{ inputs.requester_authorized_processing }}
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Private Rose Garden rendering may only run from main." >&2
+            exit 1
+          fi
+          if [[ "$PROCESSING_AUTHORIZED" != "true" ]]; then
+            echo "Requester authorization to process this exact video is required." >&2
+            exit 1
+          fi
+          python scripts/verify_rose_garden_review.py \
+            --validate-private-dispatch-inputs \
+            --event-id "$EVENT_ID" \
+            --event-title "$EVENT_TITLE" \
+            --event-date "$EVENT_DATE" \
+            --source-url "$SOURCE_URL" \
+            --source-release-tag "$SOURCE_RELEASE_TAG" \
+            --source-asset "$SOURCE_ASSET" \
+            --source-sha256 "$SOURCE_SHA256" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
+          layout_args=(
+            --validate-layout-inputs
+            --caption-position "$CAPTION_POSITION"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            layout_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            layout_args+=(--rose-mask-authorized)
+          fi
+          python scripts/verify_rose_garden_review.py "${layout_args[@]}"
+          python scripts/verify_rose_garden_review.py \
+            --validate-review-gates \
+            --private-render \
+            --caption-position "$CAPTION_POSITION" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL" \
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON" \
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE" \
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON" \
+            --dispatch-actor "$GITHUB_ACTOR" \
+            --frame-review-mode "$FRAME_REVIEW_MODE"
+        shell: bash
+
+      - name: Install ffmpeg and CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-noto-cjk
+
+      - name: Download and verify the pinned source asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RELEASE_TAG: ${{ inputs.source_release_tag }}
+          SOURCE_ASSET: ${{ inputs.source_asset }}
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/rose-garden-input" "$RUNNER_TEMP/rose-garden-output"
+          python scripts/download_rose_garden_source_asset.py \
+            --repo "$GITHUB_REPOSITORY" \
+            --release-tag "$SOURCE_RELEASE_TAG" \
+            --asset-name "$SOURCE_ASSET" \
+            --sha256 "$SOURCE_SHA256" \
+            --output "$RUNNER_TEMP/rose-garden-input/$SOURCE_ASSET"
+          python scripts/verify_rose_garden_review.py \
+            --source "$RUNNER_TEMP/rose-garden-input/$SOURCE_ASSET" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL"
+        shell: bash
+
+      - name: Cache transcription and translation models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-rose-garden-full-video-whisper-large-v3-turbo-m2m100-1.2b
+
+      - name: Install CPU transcription and translation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install faster-whisper transformers sentencepiece pysubs2==1.8.0
+
+      - name: Render bilingual video
+        env:
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          EVENT_IDENTITY_EVIDENCE_URL: ${{ inputs.event_identity_evidence_url }}
+          EVENT_MATCH_EVIDENCE_URL: ${{ inputs.event_match_evidence_url }}
+          EVENT_TIMEZONE_EVIDENCE_URL: ${{ inputs.event_time_timezone_evidence_url }}
+          SOURCE_LINEAGE_EVIDENCE_URL: ${{ inputs.source_lineage_evidence_url }}
+          CAPTION_BOX: ${{ inputs.caption_box }}
+          CAPTION_POSITION: ${{ inputs.caption_position }}
+          CAPTION_SAFE_REGION_REVIEWED: ${{ inputs.caption_safe_region_reviewed }}
+          SOURCE_GRAPHICS_REGIONS_JSON: ${{ inputs.source_graphics_regions_json }}
+          SOURCE_FRAME_REVIEW_RECORD_JSON: ${{ inputs.source_frame_review_record_json }}
+          SOURCE_FRAME_REVIEW_SIGNATURE: ${{ inputs.source_frame_review_signature }}
+          FRAME_REVIEW_MODE: ${{ inputs.frame_review_mode }}
+          ROSE_MASK_AUTHORIZED: ${{ inputs.rose_mask_authorized }}
+          MASK_PADDING_PX_PER_EDGE: ${{ inputs.mask_padding_px_per_edge }}
+        run: |
+          set -o pipefail
+          render_args=(
+            --input "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4"
+            --output-dir "$RUNNER_TEMP/rose-garden-output"
+            --asset-prefix RoseGardenLunch-IySF_8OArvw
+            --subtitle-layout rose-garden-source-aware-bilingual
+            --caption-box "$CAPTION_BOX"
+            --caption-position "$CAPTION_POSITION"
+            --source-graphics-regions-json "$SOURCE_GRAPHICS_REGIONS_JSON"
+            --mask-padding-px-per-edge "$MASK_PADDING_PX_PER_EDGE"
+            --source-frame-review-record-json "$SOURCE_FRAME_REVIEW_RECORD_JSON"
+            --source-frame-review-signature "$SOURCE_FRAME_REVIEW_SIGNATURE"
+            --frame-review-mode "$FRAME_REVIEW_MODE"
+            --dispatch-actor "$GITHUB_ACTOR"
+          )
+          if [[ "$CAPTION_SAFE_REGION_REVIEWED" == "true" ]]; then
+            render_args+=(--caption-safe-region-reviewed)
+          fi
+          if [[ "$ROSE_MASK_AUTHORIZED" == "true" ]]; then
+            render_args+=(--occlusion-exception-authorized)
+          fi
+          python scripts/process_full_video.py "${render_args[@]}"
+          python scripts/verify_operation_audit.py \
+            --audit "$RUNNER_TEMP/rose-garden-output/operation-audit.json" \
+            --manifest "$RUNNER_TEMP/rose-garden-output/manifest.json"
+          python scripts/verify_rose_garden_review.py \
+            --private-render \
+            --source "$RUNNER_TEMP/rose-garden-input/RoseGardenLunch-IySF_8OArvw.mp4" \
+            --output-dir "$RUNNER_TEMP/rose-garden-output" \
+            --rights-evidence-url "$RIGHTS_EVIDENCE_URL" \
+            --event-identity-evidence-url "$EVENT_IDENTITY_EVIDENCE_URL" \
+            --event-match-evidence-url "$EVENT_MATCH_EVIDENCE_URL" \
+            --event-time-timezone-evidence-url "$EVENT_TIMEZONE_EVIDENCE_URL" \
+            --source-lineage-evidence-url "$SOURCE_LINEAGE_EVIDENCE_URL"
+          test -s "$RUNNER_TEMP/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4"
+          test -s "$RUNNER_TEMP/rose-garden-output/manifest.json"
+          test -s "$RUNNER_TEMP/rose-garden-output/operation-audit.json"
+        shell: bash
+
+      - name: Upload private review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-private-run-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw-bilingual.mp4
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.zh-Hans.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.srt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.vtt
+            ${{ runner.temp }}/rose-garden-output/RoseGardenLunch-IySF_8OArvw.en-zh.ass
+            ${{ runner.temp }}/rose-garden-output/manifest.json
+            ${{ runner.temp }}/rose-garden-output/operation-audit.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Label review states as pending
+        run: |
+          {
+            echo "## Private Rose Garden render"
+            echo
+            echo "- Output: private Actions artifact only; no Release or Pages deployment."
+            echo "- Source-frame and visual review: pending."
+            echo "- Event identity/match: pending; reuse rights: unassessed and pending review."
+            echo "- English ASR and Chinese translation review: pending."
+            echo "- A successful render or artifact upload is not publication approval."
+          } >> "$GITHUB_STEP_SUMMARY"
+        shell: bash

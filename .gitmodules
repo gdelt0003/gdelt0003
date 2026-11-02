@@ -1,0 +1,3 @@
+[submodule "third_party/SmartSub"]
+	path = third_party/SmartSub
+	url = https://github.com/buxuku/SmartSub.git
