@@ -43,6 +43,9 @@ class SubtitleComparisonPageTests(unittest.TestCase):
             set(pathways),
             {
                 "smartsub-render",
+                "caption-models",
+                "autosubs",
+                "whisperx",
                 "copilot-gpt6-media",
                 "videocaptioner-ja",
                 "ytb2bili",
@@ -50,6 +53,15 @@ class SubtitleComparisonPageTests(unittest.TestCase):
             },
         )
         self.assertEqual(pathways["smartsub-render"]["status"], "executed_unverified")
+        self.assertEqual(
+            pathways["caption-models"]["status"],
+            "caption_artifacts_reused_unverified",
+        )
+        self.assertEqual(
+            pathways["autosubs"]["status"],
+            "implemented_not_runner_validated",
+        )
+        self.assertEqual(pathways["whisperx"]["status"], "research_only_not_run")
         self.assertEqual(pathways["copilot-gpt6-media"]["status"], "blocked_not_run")
         self.assertEqual(
             pathways["videocaptioner-ja"]["status"],
@@ -100,11 +112,12 @@ class SubtitleComparisonPageTests(unittest.TestCase):
         script = SCRIPT.read_text(encoding="utf-8")
 
         self.assertIn("Copilot coding-agent", page)
+        self.assertIn("不把代码代理与媒体模型混作同类模型", page)
         self.assertIn("Copilot coding-agent 的成果仅为本仓库编排", page)
         self.assertIn("不是视频渲染", page)
         self.assertEqual(
             json.loads(MANIFEST.read_text(encoding="utf-8"))["pathways"][2]["status"],
-            "research_only_not_run",
+            "implemented_not_runner_validated",
         )
         self.assertIn("GPT-6", script)
         self.assertIn("pvXbHQrIvTw", page)

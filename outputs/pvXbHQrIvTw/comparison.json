@@ -29,11 +29,38 @@
       "workflow_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/38540536544"
     },
     {
+      "id": "caption-models",
+      "kind": "open_source_media",
+      "label": "faster-whisper large-v3-turbo + M2M100 1.2B",
+      "status": "caption_artifacts_reused_unverified",
+      "summary": "该 run 复用了既有的英/中字幕文件，没有在 SmartSub 渲染 run 中重新运行 ASR 或翻译。源音准确性、专名/数字/否定和翻译质量仍未核验，因此不报告比较分数。",
+      "repository_url": "https://github.com/SYSTRAN/faster-whisper",
+      "translation_source_url": "https://huggingface.co/facebook/m2m100_1.2B",
+      "artifact_url": "https://github.com/gdelt0003/gdelt0003/releases/tag/pvXbHQrIvTw-smartsub-draft-38540536544"
+    },
+    {
+      "id": "autosubs",
+      "kind": "open_source_media",
+      "label": "AutoSubs 说话人分色路线",
+      "status": "implemented_not_runner_validated",
+      "summary": "PR #24 已合并，当前工作流提供可选云端说话人分色；截至 2026-11-02 检查到的工作流运行中，未发现 AutoSubs 实际执行记录。尚无本事件同输入结果或与 SmartSub 的质量比较。",
+      "repository_url": "https://github.com/tmoroney/auto-subs",
+      "evidence_url": "https://github.com/gdelt0003/gdelt0003/pull/24"
+    },
+    {
+      "id": "whisperx",
+      "kind": "open_source_media",
+      "label": "WhisperX 对齐候选",
+      "status": "research_only_not_run",
+      "summary": "候选开源对齐工具；本仓库当前没有可验证的 WhisperX 输出或同源运行记录，不作为已完成结果。",
+      "repository_url": "https://github.com/m-bain/whisperX"
+    },
+    {
       "id": "copilot-gpt6-media",
       "kind": "microsoft_media",
       "label": "Microsoft Copilot / GPT-6 media processing",
       "status": "blocked_not_run",
-      "summary": "没有证据表明 Copilot/GPT-6 对本事件媒体执行过处理；该媒体处理路线受阻且未运行，也没有可比较的产物或性能数据。"
+      "summary": "没有证据表明 Copilot 或 GPT-6 对本事件媒体执行过处理；该媒体处理路线受阻且未运行，也没有可比较的产物或性能数据。GPT-6 的具体可用性未在此记录中核实。"
     },
     {
       "id": "videocaptioner-ja",
@@ -65,10 +92,10 @@
     }
   ],
   "copilot_engineering": {
-    "kind": "copilot_engineering",
     "label": "Microsoft / GitHub Copilot coding-agent 协作路线",
     "status": "implemented_and_deployed",
-    "summary": "Copilot coding-agent 贡献的是本仓库工程：SmartSub runner 路径修复、Pages 部署并发策略、预览元数据、测试及站点发布集成。它不是本事件的视频处理或渲染工具；媒体由 SmartSub 3.9.0 渲染。",
+    "kind": "copilot_engineering",
+    "summary": "Copilot coding-agent 贡献的是本仓库工程：SmartSub runner 路径修复、Pages 部署并发策略、预览元数据、测试及站点发布集成。它不是本事件的视频处理或渲染工具；媒体由 SmartSub 3.9.0 渲染，agent 会话的具体模型未记录在本次媒体产物 provenance 中。",
     "deliverables": [
       {
         "label": "SmartSub launcher 固定路径修复",

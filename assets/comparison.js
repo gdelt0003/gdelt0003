@@ -36,6 +36,7 @@ function pathwayStatus(status) {
     executed_unverified: '已运行 · 草稿未通过人工核验',
     caption_artifacts_reused_unverified: '复用既有字幕 · 未在本次重跑',
     proposed_not_runner_validated: '提案中 · 未合并/未完成 hosted-runner 验证',
+    implemented_not_runner_validated: '已合并到云端路径 · 尚未验证真实运行',
     research_only_not_run: '研究候选 · 未运行',
     blocked_not_run: '受阻 · 未运行',
     observed_no_media_evidence: '观察到路线 · 无处理该媒体的证据',
