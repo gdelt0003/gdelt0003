@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "logo":
+      - /url: https://1fichier.com
+      - img "logo" [ref=e3] [cursor=pointer]
+    - generic [ref=e4]:
+      - combobox [ref=e5] [cursor=pointer]:
+        - generic [ref=e7]: English
+      - link "Prices" [ref=e8] [cursor=pointer]:
+        - /url: https://1fichier.com/tarifs.html
+      - link "Register" [ref=e9] [cursor=pointer]:
+        - /url: https://1fichier.com/register.pl
+      - link "My Account" [ref=e10] [cursor=pointer]:
+        - /url: https://1fichier.com/login.pl
+    - generic [ref=e12]:
+      - link "🎉 Back-to-school offers 🎊 Premium 1 year at €30 · Premium GOLD 1 year at €50" [ref=e13] [cursor=pointer]:
+        - /url: https://1fichier.com/console/abo.pl
+      - button "×" [ref=e14] [cursor=pointer]
+  - generic [ref=e17]:
+    - text: "IP Address 2a09:bac1:19e0:3be0::26b:be : Accès restreint – professional infrastructure detected.This IP address has been identified as belonging to a server, proxy, VPN, relay network, or associated with abusive activity.Premium plans are reserved for private, non-shared residential Internet connections."
+    - strong [ref=e18]: "2a09:bac1:19e0:3be0::26b:be: This IP address is authorized under the Premium GOLD offer."
+    - text: For access via servers, proxies, or other professional network infrastructures, please use CDN Credits.This option is available in the "Parameters" tab of your management interface.If you are using an unauthorized personal VPN, please disable it and reload the page.
+  - generic [ref=e19]:
+    - generic:
+      - link "1fichier.com":
+        - /url: https://1fichier.com
+        - img "1fichier.com" [ref=e20] [cursor=pointer]
+      - generic [ref=e21]:
+        - link "Legal & Terms" [ref=e22] [cursor=pointer]:
+          - /url: https://1fichier.com/cgu.html
+        - link "Abuse" [ref=e23] [cursor=pointer]:
+          - /url: https://1fichier.com/abus.html
+        - link "Prices" [ref=e24] [cursor=pointer]:
+          - /url: https://1fichier.com/tarifs.html
+        - link "Resellers" [ref=e25] [cursor=pointer]:
+          - /url: https://1fichier.com/revendeurs.html
+        - link "Help" [ref=e26] [cursor=pointer]:
+          - /url: https://1fichier.com/hlp.html
+        - link "Speedtest" [ref=e27] [cursor=pointer]:
+          - /url: https://1fichier.com/network.html
+        - link "Contact" [ref=e28] [cursor=pointer]:
+          - /url: https://1fichier.com/contact.html
+        - link [ref=e29] [cursor=pointer]:
+          - /url: https://twitter.com/1fichiercom
+          - img "Twitter" [ref=e30]
+        - link [ref=e31] [cursor=pointer]:
+          - /url: https://www.facebook.com/p/1fichiercom-100069246945865/
+          - img "Facebook" [ref=e32]
+        - link "API" [ref=e33] [cursor=pointer]:
+          - /url: https://1fichier.com/api.html
+        - link "DStorage SASU © 2009-2026" [ref=e34] [cursor=pointer]:
+          - /url: https://dstorage.fr

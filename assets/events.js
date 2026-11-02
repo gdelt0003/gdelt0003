@@ -98,7 +98,13 @@ function renderDiscovery(discoverySets) {
   $eventDiscovery.replaceChildren();
   const videoCount = leads.filter(item => item.kind === 'video').length;
   const articleCount = leads.filter(item => item.kind === 'article').length;
-  $eventDiscoveryStatus.textContent = `${videoCount} 条白宫视频线索 · ${articleCount} 条 GDELT 文章线索`;
+  const unavailableSources = discoverySets
+    .filter(({ payload }) => payload.snapshot_status === 'unavailable')
+    .map(({ kind }) => kind === 'article' ? 'GDELT 暂无成功快照' : '白宫频道暂无成功快照');
+  $eventDiscoveryStatus.textContent = [
+    `${videoCount} 条白宫视频线索 · ${articleCount} 条 GDELT 文章线索`,
+    ...unavailableSources,
+  ].join(' · ');
   for (const { kind, lead, checkedAt } of leads) {
     const item = document.createElement('article');
     item.className = 'discovery-card';
@@ -122,7 +128,10 @@ function renderDiscovery(discoverySets) {
     $eventDiscovery.append(item);
   }
   if (leads.length === 0) {
-    $eventDiscovery.textContent = '本次检索没有可显示的候选。';
+    const unavailable = unavailableSources.length
+      ? `暂无成功的${unavailableSources.join('、')}；空列表不代表检索确认没有相关条目。`
+      : '本次检索没有可显示的候选。';
+    $eventDiscovery.textContent = unavailable;
   }
 }
 
@@ -134,6 +143,10 @@ function renderPublishedEvents(payload) {
     0,
   );
   $publishedEventsStatus.textContent = `${publications.length} 个事件版本 · ${clipCount} 支短片`;
+  if (publications.length === 0) {
+    $publishedEvents.textContent = '暂无登记为已发布并通过复核的事件作品。';
+    return;
+  }
   for (const publication of publications) {
     const event = document.createElement('article');
     event.className = 'published-event';
@@ -252,15 +265,12 @@ async function loadEvents() {
 
   try {
     const response = await fetch('outputs/published-events.json', { cache: 'no-store' });
-    if (!response.ok) {
-      $publishedEventsStatus.textContent = '暂无已发布版本';
-      $publishedEvents.textContent = '生成过程与公开发布分开；作品须在云端产出后再通过来源、字幕、翻译及复用权利复核。';
-      return;
-    }
+    if (!response.ok) throw new Error(`Published event catalog HTTP ${response.status}`);
     renderPublishedEvents(await response.json());
   } catch (error) {
     console.error(error);
     $publishedEventsStatus.textContent = '已发布作品暂不可用';
+    $publishedEvents.textContent = '已发布作品目录暂不可用；不会将发现线索或处理草稿显示为已发布作品。';
   }
 }
 

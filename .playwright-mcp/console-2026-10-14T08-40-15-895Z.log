@@ -1,0 +1,5 @@
+[    1543ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://gdelt0003.github.io/favicon.ico:0
+[    9890ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://gdelt0003.github.io/gdelt0003/outputs/gdelt-discovery.json:0
+[   12169ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://gdelt0003.github.io/gdelt0003/outputs/published-events.json:0
+[   16486ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://gdelt0003.github.io/gdelt0003/outputs/gdelt-discovery.json:0
+[   16675ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://gdelt0003.github.io/gdelt0003/outputs/published-events.json:0

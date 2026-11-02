@@ -1,0 +1,100 @@
+- main [ref=f1e2]:
+  - navigation "主要导航" [ref=f1e3]:
+    - link "GDELT · 事件视频" [ref=f1e4] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=f1e5]:
+      - link "Copilot 成果" [ref=f1e6] [cursor=pointer]:
+        - /url: copilot-results.html
+      - link "外部审查草稿" [ref=f1e7] [cursor=pointer]:
+        - /url: events/rose-garden-lunch-2026-10-15/
+      - link "主视频" [ref=f1e8] [cursor=pointer]:
+        - /url: "#featured-video"
+      - link "白宫最新线索" [ref=f1e9] [cursor=pointer]:
+        - /url: "#official-whitehouse-videos"
+      - link "短片" [ref=f1e10] [cursor=pointer]:
+        - /url: "#highlights"
+      - link "事件与来源" [ref=f1e11] [cursor=pointer]:
+        - /url: "#event-research"
+      - link "机位证据" [ref=f1e12] [cursor=pointer]:
+        - /url: "#camera-map"
+  - generic [ref=f1e13]:
+    - paragraph [ref=f1e14]: GITHUB ACTIONS · PAGES
+    - heading "事件视频资料与高光片段" [level=1] [ref=f1e15]
+    - paragraph [ref=f1e16]: 全长视频保持原始横屏比例 · 高光短片可采用竖屏 · 按事件隔离来源并标注核验状态
+    - paragraph [ref=f1e17]: 本页分开展示 Copilot coding-agent 的仓库工程交付与开源媒体工具的实际产物。pvX 草稿由上游开源 SmartSub 3.9.0 在 GitHub-hosted runner 渲染，未声称为 GPT-6 视频输出；字幕与完整画面仍未经人工核验。
+  - region [ref=f1e18]:
+    - generic [ref=f1e19]:
+      - generic [ref=f1e20]:
+        - paragraph [ref=f1e21]: FULL-LENGTH EVENT VIDEOS
+        - heading "主视频" [level=2] [ref=f1e22]
+      - status [ref=f1e23]: 正在读取主视频清单…
+    - generic [ref=f1e24]:
+      - group "按视频类型筛选" [ref=f1e25]:
+        - button "全部视频" [pressed] [ref=f1e26] [cursor=pointer]
+        - button "机器生成" [ref=f1e27] [cursor=pointer]
+        - button "其他版本" [ref=f1e28] [cursor=pointer]
+      - generic [ref=f1e29]:
+        - text: 排序
+        - combobox "排序" [ref=f1e30]:
+          - option "最新事件" [selected]
+          - option "热门（暂无观看量）" [disabled]
+          - option "最早事件"
+          - option "标题 A–Z"
+    - paragraph [ref=f1e31]: 按类别筛选，或按事件日期、标题排序。当前目录没有各作品的可靠观看量，因此不提供误导性的热度排序；未核验信息不会被推定。
+  - region [ref=f1e32]:
+    - generic [ref=f1e33]:
+      - generic [ref=f1e34]:
+        - paragraph [ref=f1e35]: WHITE HOUSE · OFFICIAL CHANNEL METADATA
+        - heading "白宫官方频道 · 最新视频线索" [level=2] [ref=f1e36]
+      - generic [ref=f1e37]:
+        - status [ref=f1e38]: 正在读取白宫频道元数据…
+        - link "More · 打开白宫官方频道" [ref=f1e39] [cursor=pointer]:
+          - /url: https://www.youtube.com/@WhiteHouse/videos
+    - paragraph [ref=f1e40]: 以下条目仅来自白宫官方频道上传元数据，不是经复核作品；事件、视频内容、上传日期（若未提供）和复用权利均未核实。日期显示为上传元数据或目录快照日期，不代表事件发生日期。此处不播放或重新发布视频。
+  - region [ref=f1e41]:
+    - paragraph [ref=f1e42]: PUBLIC · EXTERNAL REVIEW DRAFT
+    - heading "公开外部审查草稿 · 尚未审阅" [level=2] [ref=f1e43]
+    - paragraph [ref=f1e44]: 此页面仅用于审查，不是完成的制作成品，也不是权利/许可结论。页面对所有访问者公开，不限于质量检查部门。
+    - paragraph [ref=f1e45]:
+      - link "查看 2026-10-15 玫瑰园午餐审查草稿" [ref=f1e46] [cursor=pointer]:
+        - /url: events/rose-garden-lunch-2026-10-15/
+  - region [ref=f1e47]:
+    - generic [ref=f1e48]:
+      - generic [ref=f1e49]:
+        - paragraph [ref=f1e50]: WHITE HOUSE · BILINGUAL SHORTS
+        - heading "既有短片 · 推荐观看" [level=2] [ref=f1e51]
+      - status [ref=f1e52]: 竖屏 9:16 · 正在读取分段链接…
+    - paragraph [ref=f1e53]: 保留既有版本与原片时间码。旧版短片字幕尚未按最新缓存修复重新渲染，不代表已通过字幕准确性或画面布局复审。
+  - region [ref=f1e54]:
+    - paragraph [ref=f1e55]: DEDICATED PATHWAY COMPARISON
+    - heading "开源媒体工具 × Copilot 工程路线" [level=2] [ref=f1e56]
+    - paragraph [ref=f1e57]: 开源工具候选、实际媒体产物与 Copilot coding-agent 的仓库工程交付在专页分栏展示。只对同输入、同任务且有证据的结果作质量比较；未运行或未核验项不会冒充成绩。
+    - paragraph [ref=f1e58]:
+      - link "打开 pvXbHQrIvTw 专属路线对比页" [ref=f1e59] [cursor=pointer]:
+        - /url: events/pvXbHQrIvTw/#pathways
+  - region [ref=f1e60]:
+    - generic [ref=f1e61]:
+      - generic [ref=f1e62]:
+        - paragraph [ref=f1e63]: EVENTS · SOURCE EVIDENCE
+        - heading "按事件整理的来源与候选" [level=2] [ref=f1e64]
+      - link "下载来源核验 Excel" [ref=f1e65] [cursor=pointer]:
+        - /url: outputs/event-source-review.xlsx
+    - paragraph [ref=f1e66]: 来源按事件隔离。白宫视频与 GDELT 新闻文章仅生成未分配元数据线索；标题、上传/收录时间和缩略图都不能单独证明事件、发言或素材可用性。
+    - generic [ref=f1e67]:
+      - heading "最新视频与新闻文章发现线索" [level=3] [ref=f1e68]
+      - status [ref=f1e69]: 等待云端例行检索…
+  - region [ref=f1e70]:
+    - generic [ref=f1e71]:
+      - generic [ref=f1e72]:
+        - paragraph [ref=f1e73]: REVIEWED EVENT PRODUCTIONS
+        - heading "已审阅的事件短片" [level=2] [ref=f1e74]
+      - status [ref=f1e75]: 正在读取已发布作品…
+    - paragraph [ref=f1e76]: 只展示经过发布复核、并按事件 ID 登记的版本。字幕准确性与翻译审阅状态随作品记录显示；本页面不提供人物声音克隆。
+  - region [ref=f1e77]:
+    - generic [ref=f1e78]:
+      - generic [ref=f1e79]:
+        - paragraph [ref=f1e80]: EVENT CAMERA GEOMETRY
+        - heading "活动 3D 机位图" [level=2] [ref=f1e81]
+      - status [ref=f1e82]: 正在读取测绘证据…
+    - list
+    - paragraph [ref=f1e84]: 仅展示有来源证据的公开媒体机位。坐标显示精度不代表测量精度；每个点均须注明误差、测量来源、相对角度和高度。未核验时不绘制猜测机位。

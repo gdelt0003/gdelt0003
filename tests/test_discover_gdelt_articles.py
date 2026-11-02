@@ -27,6 +27,7 @@ class GdeltDiscoveryTests(unittest.TestCase):
             "2026-10-13T12:30:00+00:00",
         )
         self.assertEqual(len(result["leads"]), 1)
+        self.assertEqual(result["snapshot_status"], "available")
         lead = result["leads"][0]
         self.assertIsNone(lead["event_id"])
         self.assertIsNone(lead["event_date"])

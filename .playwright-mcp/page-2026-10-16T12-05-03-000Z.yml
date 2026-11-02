@@ -1,0 +1,298 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=e8]:
+    - search [ref=e9]:
+      - generic [ref=e11]:
+        - link "Google 首页" [ref=e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQPHoECAYQBA
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - combobox "搜索" [ref=e20]: "\"Trump hosts Rose Garden lunch to honor first responders\" The Hill \"Trump hosts Rose Garden lunch to honor first responders\" The Hill"
+            - generic [ref=e21]:
+              - button "清除" [ref=e23] [cursor=pointer]
+              - generic [ref=e28]:
+                - button "按语音搜索" [ref=e29] [cursor=pointer]
+                - button "按图搜索" [ref=e32] [cursor=pointer]
+          - button "搜索" [ref=e35] [cursor=pointer]
+    - generic [ref=e40]:
+      - button "设置" [ref=e42] [cursor=pointer]
+      - button "分享" [ref=e47] [cursor=pointer]
+      - generic [ref=e53]:
+        - button "Google 应用" [ref=e55] [cursor=pointer]
+        - link "登录" [ref=e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Trump%2Bhosts%2BRose%2BGarden%2Blunch%2Bto%2Bhonor%2Bfirst%2Bresponders%2522%2BThe%2BHill&ec=futura_srp_og_si_72236_p
+  - generic [ref=e62]:
+    - navigation [ref=e68]:
+      - generic [ref=e74]:
+        - list [ref=e75]:
+          - listitem [ref=e76]:
+            - link "全部" [disabled] [ref=e77]
+          - listitem [ref=e80]:
+            - link "新闻" [ref=e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ0pQJegQIGhAB
+          - listitem [ref=e84]:
+            - link "图片" [ref=e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQtKgLegQIGRAB
+          - listitem [ref=e88]:
+            - link "视频" [ref=e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQtKgLegQIGBAB
+          - listitem [ref=e92]:
+            - link "短视频" [ref=e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQs6gLegQIFxAB
+          - listitem [ref=e96]:
+            - link "网页" [ref=e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQs6gLegQIFRAB
+          - listitem [ref=e100]:
+            - link "图书" [ref=e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ0pQJegQIFhAB
+          - listitem [ref=e104]:
+            - button [ref=e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=e106]: 更多
+        - button "工具" [ref=e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=e120]
+    - main [ref=e126]:
+      - generic [ref=e130]:
+        - generic [ref=e136]:
+          - generic [ref=e139]:
+            - link "Trump hosts Rose Garden lunch to honor first responders The Hill · The Hill Staff https://thehill.com · 19小时前" [ref=e141] [cursor=pointer]:
+              - /url: /goto?url=CAESngEB6zswFf7PKsnGGqs3ly3HtyFEF6SrIEf5ywiCDPxCjyKM-4OjMZqtgmC9J5VJcygXxb8a-MbQAByB__53LHq5lFGvrkYHEKnSUIjtbqC8Z8FALQMsA34SBulG1ZoKqQnm10dx0Wr3R2P06Sdd1n1pnckxZ3ZekI6sjJU4KdgYNb1kL1ozIOMkrajHVVrPt0EV8sLyhbsjFDZ89nhrqQ
+              - heading "Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e142]
+              - generic [ref=e148]:
+                - generic [ref=e149]: The Hill · The Hill Staff
+                - generic [ref=e151]: https://thehill.com · 19小时前
+            - button "关于这条结果的详细信息" [ref=e157] [cursor=pointer]
+          - generic [ref=e162]:
+            - link "Trump hosts Rose Garden lunch to honor first responders，由The Hill Staff上传到The Hill上. 在The Hill上播放." [ref=e163] [cursor=pointer]:
+              - /url: /goto?url=CAESngEB6zswFf7PKsnGGqs3ly3HtyFEF6SrIEf5ywiCDPxCjyKM-4OjMZqtgmC9J5VJcygXxb8a-MbQAByB__53LHq5lFGvrkYHEKnSUIjtbqC8Z8FALQMsA34SBulG1ZoKqQnm10dx0Wr3R2P06Sdd1n1pnckxZ3ZekI6sjJU4KdgYNb1kL1ozIOMkrajHVVrPt0EV8sLyhbsjFDZ89nhrqQ
+            - generic [ref=e171]: "Watch live: Trump hosts Rose Garden lunch to honor first responders. Comments: by The Hill Staff - 10/15/26 12:51 PM ET. Comments: Link copied."
+        - generic [ref=e176]:
+          - generic [ref=e178]:
+            - heading "焦点新闻" [level=2] [ref=e180]
+            - link "登录后即可自定义" [ref=e184] [cursor=pointer]:
+              - /url: https://accounts.google.com/ServiceLogin?ec=oo-seaport-srp-sp-11135&continue=https://www.google.com.hk/search?q%3D%2522Trump%2Bhosts%2BRose%2BGarden%2Blunch%2Bto%2Bhonor%2Bfirst%2Bresponders%2522%2BThe%2BHill%26newwindow%3D1%26sca_esv%3D32270d8bbc5f1b00%26sxsrf%3DAPpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337%26ptid%3D11135%26ptt%3D8%26fpts%3D1792152301581
+          - 'link "The Hill 关于这条结果的详细信息 Watch live: Trump hosts Rose Garden lunch to honor first responders 19小时前" [ref=e192] [cursor=pointer]':
+            - /url: /goto?url=CAESngEB6zswFf7PKsnGGqs3ly3HtyFEF6SrIEf5ywiCDPxCjyKM-4OjMZqtgmC9J5VJcygXxb8a-MbQAByB__53LHq5lFGvrkYHEKnSUIjtbqC8Z8FALQMsA34SBulG1ZoKqQnm10dx0Wr3R2P06Sdd1n1pnckxZ3ZekI6sjJU4KdgYNb1kL1ozIOMkrajHVVrPt0EV8sLyhbsjFDZ89nhrqQ
+            - generic [ref=e198]:
+              - generic [ref=e200]:
+                - generic [ref=e201]: The Hill
+                - button "关于这条结果的详细信息" [ref=e208]
+              - 'heading "Watch live: Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e211]'
+              - generic [ref=e212]: 19小时前
+          - 'link "Yahoo 关于这条结果的详细信息 Watch live: Trump hosts Rose Garden lunch to honor first responders 19小时前" [ref=e215] [cursor=pointer]':
+            - /url: /goto?url=CAESkgEB6zswFeVWqnlTpUsq5ZFux82WeO9v0dIeaxsHeG93Dn-bg-qvxXvWHb8chR22QhboJCZtNdECKuDsJrqrwgNcva1F5M5KnisG6j-5Gvy7sEhRtPk0nIcs7CLctl8Or4qMbifksTSCepnPBgsREvUEkhFQedm6rivAfutgtH339hdn6JUfryz4iQdGchWmrJPtug
+            - generic [ref=e220]:
+              - generic [ref=e222]:
+                - generic [ref=e223]: Yahoo
+                - button "关于这条结果的详细信息" [ref=e230]
+              - 'heading "Watch live: Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e233]'
+              - generic: 19小时前
+          - link "更多新闻" [ref=e236] [cursor=pointer]:
+            - /url: /search?newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&tbm=nws&source=univ&tbo=u&sa=X&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQt8YBKAJ6BAgcEAU
+            - separator [aria-hidden] [ref=e237]
+        - generic [ref=e246]:
+          - heading "Web results" [level=2] [ref=e247]
+          - generic [ref=e248]:
+            - generic [ref=e251]:
+              - link "Trump hosts Rose Garden lunch to honor first responders YouTube · The Hill 3270+ 次观看 · 18小时前" [ref=e253] [cursor=pointer]:
+                - /url: /goto?url=CAESZgHrOzAVnDGtFTRWZbkxwQNr_xV4l9CTP2-KJ4woMO5tqAnccsK81t2zykDY_3JQrWbfV7-BbOLWz_PNsLXd9Z1KiR98XjHWrUuMc4l_4N9Az7JJ4XzfB72uCOKGPK2oSzsIC0G4bQ
+                - heading "Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e254]
+                - generic [ref=e260]:
+                  - generic [ref=e261]: YouTube · The Hill
+                  - generic [ref=e263]: 3270+ 次观看 · 18小时前
+              - button "关于这条结果的详细信息" [ref=e269] [cursor=pointer]
+            - generic [ref=e276]:
+              - text: "LIVE:"
+              - emphasis [ref=e277]: Trump hosts Rose Garden lunch to honor first responders
+              - text: ... The
+              - emphasis [ref=e278]: Hill
+              - text: and Free Media. New. 2.1K views · 12:37 · Go to channel The
+              - emphasis [ref=e279]: Hill
+              - text: ...
+        - generic [ref=e283]:
+          - generic [ref=e286]:
+            - 'link "The Hill on X: \"Watch live: Trump hosts Rose Garden lunch ... X · thehill 6 次赞 · 19小时前" [ref=e288] [cursor=pointer]':
+              - /url: /goto?url=CAESawHrOzAVdVTLKSs4M4pJ3HkFbdqiLS3yraPttUWGtABy6fdYgwGABQovL0-u_H5jHkJfyzs1RcP0D15-tSoAcm0TxLN5ff1XOY4ogigabWAgA0EzqhJmeAG086CB3Rqoj-DauG3HYiVI51wj
+              - 'heading "The Hill on X: \"Watch live: Trump hosts Rose Garden lunch ..." [level=3] [ref=e289]'
+              - generic [ref=e295]:
+                - generic [ref=e296]: X · thehill
+                - generic [ref=e298]: 6 次赞 · 19小时前
+            - button "关于这条结果的详细信息" [ref=e304] [cursor=pointer]
+          - generic [ref=e311]:
+            - text: "Watch live:"
+            - emphasis [ref=e312]: Trump hosts Rose Garden lunch to honor first responders
+            - text: https://t.co/gT5PDEaGBt.
+        - generic [ref=e316]:
+          - generic [ref=e319]:
+            - link "Trump hosts Rose Garden lunch to honor first responders The Hill https://thehill.com › video › happening-no..." [ref=e321] [cursor=pointer]:
+              - /url: /goto?url=CAESnwEB6zswFc5VEj7KY8iFtc2O6ALIZFPvYRkzOhwxH0cXb4gTbL6sf3Lmx_z9vmmTCoSt53U07SyyIplDTA5qEy3eNVjjfO8xaJS27adQ6QS8-UcTOXSpywHy-I6W_CdChMTv1EDzXmUl6wvL3tHCBxjDZicvAJgnxGQMgsvkRPzLdLvM6bS0F2ZQr8HH4DIY0SGEmoFc4EOn7QfTD-2urtg
+              - heading "Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e322]
+              - generic [ref=e328]:
+                - generic [ref=e329]: The Hill
+                - generic [ref=e331]: https://thehill.com › video › happening-no...
+            - generic [ref=e333]:
+              - generic [ref=e334]: ·
+              - link "翻译此页" [ref=e335] [cursor=pointer]:
+                - /url: /goto?url=CAES7wEB6zswFcpB8BGdMlg-TGGyVe3MpQe8W6jk7jpJHxfeIUWGM-yfPRoLt8etQ6bjlbVPFbchQdcsL5vtN0oNVOy7ujp94LEZN-YMUiG_MpoYPxXOuPl1j0JviZhYjhLR5U6IeE92gZXk9F2eWSDiTj4umF1hz7idJl8hSNFVIaZI6CkesZtm3Vatvlknn5SXHiBpQGljkMwCrEUGtXTWTvu7ypG-b-OWVh7C2XFXvHxcYkxBNqwBDZkYMVzr5-KoDA7IODsQ_EEYNODB4tGQ-5XOsZ7SDQ5Rm6bqhZdtRRz3m-ugqk95oDtH6_Y6V_SwaA
+            - button "关于这条结果的详细信息" [ref=e340] [cursor=pointer]
+          - generic [ref=e347]:
+            - text: "Watch live:"
+            - emphasis [ref=e348]: Trump hosts Rose Garden lunch to honor first responders
+            - text: . Oct 16 ... THE
+            - emphasis [ref=e349]: HILL
+            - text: 400 N CAPITOL STREET NW, SUITE 650 WASHINGTON DC 20002. © 1998 ...
+        - generic [ref=e353]:
+          - generic [ref=e356]:
+            - link "Trump hosts Rose Garden lunch to honor first responders AOL.com https://www.aol.com › articles › watch-live-..." [ref=e358] [cursor=pointer]:
+              - /url: /goto?url=CAESggEB6zswFVgSXrmy4OIKc3OepLe9joD33s6b-ShdTocySZIL_7XzYrpKNXPv1NI14yqn07esmFwJ9mL9bC2Y06-VsmTRLPOmT2lSy1f_cp3_fhA0yVixqU8xcrNjADG98FSfLZ0eeVQlcawkO8EkX2IlOHID6r9L4QM8frNzzzrbynmO
+              - heading "Trump hosts Rose Garden lunch to honor first responders" [level=3] [ref=e359]
+              - generic [ref=e365]:
+                - generic [ref=e366]: AOL.com
+                - generic [ref=e368]: https://www.aol.com › articles › watch-live-...
+            - generic [ref=e370]:
+              - generic [ref=e371]: ·
+              - link "翻译此页" [ref=e372] [cursor=pointer]:
+                - /url: /goto?url=CAES0gEB6zswFfsmmEhi2v-mMeXBZl36h5QEPdCpyBcbVcI8W8_3vmZFgchzwUo0Jc4T6wCuY33XujcwHbumFxUWmQU7weU7RJQmXfBg0YNUmoSHqLpNuTgSpE7Al-ZhVkbl2LWfW9uu97VHWfF383LQ8HpmNXOk2SZ6CHfLyoqnXtQhfmdoRPjxejAzAYHUPXOVvg3IQlOt353oYNkNCNz4YbhfC-tCIxKaiulezkhk9GxhL4fJFyx9MhUQp-c8wdlCoOvhNFZFsoprCS-SPN09xN1jCYY
+            - button "关于这条结果的详细信息" [ref=e377] [cursor=pointer]
+          - generic [ref=e383]:
+            - generic [ref=e384]: 19小时前 —
+            - generic [ref=e385]:
+              - text: "Watch live:"
+              - emphasis [ref=e386]: Trump hosts Rose Garden lunch to honor first responders
+              - text: . The
+              - emphasis [ref=e387]: Hill
+              - text: Staff. Updated Thu, October 15, 2026 at 9:51 AM PDT. 0.
+        - generic [ref=e393]:
+          - generic [ref=e396]:
+            - link "Donald Trump makes a speech from the Rose Garden YouTube · LBC 1460+ 次观看 · 18小时前" [ref=e398] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV2h0GDD9d5n3u1T5IIrE-oaI7KGXfPf7wYTwPRLGqsvGeuXXxgKVPKOdvkXwUGFgfft84J3wthYObA6Z4UKvOlE5KHw6OmLwbKMn--odD0Ps2jE3pjFpIr7LQU6LQBzIgow
+              - heading "Donald Trump makes a speech from the Rose Garden" [level=3] [ref=e399]
+              - generic [ref=e405]:
+                - generic [ref=e406]: YouTube · LBC
+                - generic [ref=e408]: 1460+ 次观看 · 18小时前
+            - button "关于这条结果的详细信息" [ref=e414] [cursor=pointer]
+          - generic [ref=e419]:
+            - link "Donald Trump makes a speech from the Rose Garden，由LBC上传到YouTube上. 在YouTube上播放. 21:45" [ref=e420] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV2h0GDD9d5n3u1T5IIrE-oaI7KGXfPf7wYTwPRLGqsvGeuXXxgKVPKOdvkXwUGFgfft84J3wthYObA6Z4UKvOlE5KHw6OmLwbKMn--odD0Ps2jE3pjFpIr7LQU6LQBzIgow
+              - generic [ref=e421]: 21:45
+            - generic [ref=e433]: LBC. New. 160 views · 37:10 · Go to channel The Hill. Trump hosts Rose Garden lunch to honor first responders. The Hill. New. 342 views · 8:07.
+        - generic [ref=e441]:
+          - generic [ref=e444]:
+            - link "President Trump participates in a \"Rose Garden\" Lunch - NBC 15 YouTube · NBC 15 20+ 次观看 · 18小时前" [ref=e446] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVZIhYTRdXrZ8TziXX8zGz-MEUDCnW4HoAtV2LsEBmBihqinTPslvb-kbxuk6QIONSYduGcCyB4-FvOHAdS-RvzIyWM9aaeRwcvTr3KQnIpyhkMubN-noFdv51beS596H9dg
+              - heading "President Trump participates in a \"Rose Garden\" Lunch - NBC 15" [level=3] [ref=e447]
+              - generic [ref=e453]:
+                - generic [ref=e454]: YouTube · NBC 15
+                - generic [ref=e456]: 20+ 次观看 · 18小时前
+            - button "关于这条结果的详细信息" [ref=e462] [cursor=pointer]
+          - generic [ref=e467]:
+            - button "President Trump participates in a \"Rose Garden\" Lunch - NBC 15，由NBC 15上传到YouTube上. 在 Google 上播放. 1:45:12" [ref=e468] [cursor=pointer]:
+              - generic [ref=e469]: 1:45:12
+            - generic [ref=e482]: Fox News. New. 96K views · 37:10 · Go to channel The Hill. Trump hosts Rose Garden lunch to honor first responders. The Hill. New. 334 views.
+        - generic [ref=e489]:
+          - generic [ref=e492]:
+            - 'link "Watch live: Donald Trump hosts Rose Garden dinner The Hill · The Hill staff https://thehill.com · 2026年9月17日" [ref=e494] [cursor=pointer]':
+              - /url: /goto?url=CAESmgEB6zswFVq8Z46LBevudGjJT_C5tDfYW-7xkNV2eTgtXEhX30mbJleC8F6K6vbtoDy1xP6XkattP_MUq4eWGwsMZOMiBT47goS5L_yOr8Lm7z1diSXUgSsu-upFmF1Zr0jVLS87VotgEHE5vn9VBfxHF0VqeGQLQBHaByKBBjtv7GcZ4Hk96fRAZE8W_HWUnlpHPXzx6jClqxN-
+              - 'heading "Watch live: Donald Trump hosts Rose Garden dinner" [level=3] [ref=e495]'
+              - generic [ref=e501]:
+                - generic [ref=e502]: The Hill · The Hill staff
+                - generic [ref=e504]: https://thehill.com · 2026年9月17日
+            - button "关于这条结果的详细信息" [ref=e510] [cursor=pointer]
+          - generic [ref=e515]:
+            - 'link "Watch live: Donald Trump hosts Rose Garden dinner，由The Hill staff上传到The Hill上. 在The Hill上播放." [ref=e516] [cursor=pointer]':
+              - /url: /goto?url=CAESmgEB6zswFVq8Z46LBevudGjJT_C5tDfYW-7xkNV2eTgtXEhX30mbJleC8F6K6vbtoDy1xP6XkattP_MUq4eWGwsMZOMiBT47goS5L_yOr8Lm7z1diSXUgSsu-upFmF1Zr0jVLS87VotgEHE5vn9VBfxHF0VqeGQLQBHaByKBBjtv7GcZ4Hk96fRAZE8W_HWUnlpHPXzx6jClqxN-
+            - generic [ref=e524]: "... Hill's broadcasting partner, NewsNation. Trump will ... See All · Video · Watch live: Trump hosts Rose Garden lunch to honor first responders."
+        - generic [ref=e529]:
+          - heading "图片" [level=2] [ref=e533]
+          - generic [ref=e537]:
+            - generic [ref=e541] [cursor=pointer]:
+              - 'link "Watch live: Donald Trump honors first responders at White ... The Hill" [ref=e542]':
+                - /url: /goto?url=CAESngEB6zswFf7PKsnGGqs3ly3HtyFEF6SrIEf5ywiCDPxCjyKM-4OjMZqtgmC9J5VJcygXxb8a-MbQAByB__53LHq5lFGvrkYHEKnSUIjtbqC8Z8FALQMsA34SBulG1ZoKqQnm10dx0Wr3R2P06Sdd1n1pnckxZ3ZekI6sjJU4KdgYNb1kL1ozIOMkrajHVVrPt0EV8sLyhbsjFDZ89nhrqQ
+              - button [ref=e544]:
+                - 'img "Watch live: Donald Trump honors first responders at White ..." [ref=e547]'
+                - generic [ref=e548]: 19 小时前
+              - generic [ref=e550]:
+                - generic [ref=e552]: "Watch live: Donald Trump honors first responders at White ..."
+                - generic [ref=e553]:
+                  - generic [ref=e555]: The Hill
+                  - button "关于这条结果的详细信息" [ref=e565]
+            - generic [ref=e573] [cursor=pointer]:
+              - link "Trump hosts Rose Garden lunch to honor first responders YouTube" [ref=e574]:
+                - /url: /goto?url=CAESZgHrOzAVZNgnGKcXM4cRbBvpZ2qOQv9IutYqNwKuCeI9MAu6Pa6ggj5C6OZ_qvI2tkFjJYVHZQtzDBfGHZHtQy3bphew2lxqrQx_eXy-314kJ-EYnhDuszD_Ogd3QUKhHkn-f5VsAA
+              - button [ref=e576]:
+                - img "Trump hosts Rose Garden lunch to honor first responders" [ref=e579]
+                - generic [ref=e580]: 19 小时前
+              - generic [ref=e582]:
+                - generic [ref=e584]: Trump hosts Rose Garden lunch to honor first responders
+                - generic [ref=e585]:
+                  - generic [ref=e587]: YouTube
+                  - button "关于这条结果的详细信息" [ref=e597]
+            - generic [ref=e605] [cursor=pointer]:
+              - link "Trump hosts Rose Garden lunch to honor first responders ... YouTube" [ref=e606]:
+                - /url: /goto?url=CAESZgHrOzAVZNgnGKcXM4cRbBvpZ2qOQv9IutYqNwKuCeI9MAu6Pa6ggj5C6OZ_qvI2tkFjJYVHZQtzDBfGHZHtQy3bphew2lxqrQx_eXy-314kJ-EYnhDuszD_Ogd3QUKhHkn-f5VsAA
+              - button [ref=e608]:
+                - img "Trump hosts Rose Garden lunch to honor first responders ..." [ref=e611]
+                - generic [ref=e612]: 13 小时前
+              - generic [ref=e614]:
+                - generic [ref=e616]: Trump hosts Rose Garden lunch to honor first responders ...
+                - generic [ref=e617]:
+                  - generic [ref=e619]: YouTube
+                  - button "关于这条结果的详细信息" [ref=e629]
+          - button "显示更多图片" [ref=e635] [cursor=pointer]:
+            - separator [aria-hidden] [ref=e636]
+      - navigation [ref=e644]:
+        - heading "网页导航" [level=1] [ref=e645]
+        - text: "1"
+        - link "Page 2" [ref=e648] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=10&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAE
+          - text: "2"
+        - link "Page 3" [ref=e650] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=20&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAG
+          - text: "3"
+        - link "Page 4" [ref=e652] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=30&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAI
+          - text: "4"
+        - link "Page 5" [ref=e654] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=40&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAK
+          - text: "5"
+        - link "Page 6" [ref=e656] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=50&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAM
+          - text: "6"
+        - link "Page 7" [ref=e658] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=60&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAO
+          - text: "7"
+        - link "Page 8" [ref=e660] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=70&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAQ
+          - text: "8"
+        - link "Page 9" [ref=e662] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=80&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAS
+          - text: "9"
+        - link "Page 10" [ref=e664] [cursor=pointer]:
+          - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=90&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8tMDegQIHxAU
+          - text: "10"
+        - heading [level=2] [ref=e666]:
+          - link "下一页" [ref=e667] [cursor=pointer]:
+            - /url: /search?q=%22Trump+hosts+Rose+Garden+lunch+to+honor+first+responders%22+The+Hill&newwindow=1&sca_esv=32270d8bbc5f1b00&sxsrf=APpeQnv95N1MxwWeADelv3bpnqsiFl3HMg:1792152301337&ei=7RLSaomeFNrRkPIPgZuwyQE&start=10&sa=N&sstk=AS6-VmJnrNZy5AEyxQeozkhlGw1GXPmXriXWPHlFjoG0XPG861__ye6Qf6FCN4BG14N6YpCA1dEVrOAL3KukfT3Ool_RFfsevgdj1w&ved=2ahUKEwjJyLfKv76XAxXaKEQIHYENLBkQ8NMDegQIHxAW
+      - navigation
+    - contentinfo [ref=e670]:
+      - heading "页脚链接" [level=1] [ref=e671]
+      - generic [ref=e675]:
+        - generic [ref=e679]:
+          - button "美兰区 中国海南省海口市 - 根据您的活动记录" [ref=e681] [cursor=pointer]:
+            - generic [ref=e682]: 美兰区 中国海南省海口市
+            - generic [ref=e684]:
+              - text: "-"
+              - generic [ref=e685]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=e687] [cursor=pointer]
+        - generic [ref=e690]:
+          - link "帮助" [ref=e691] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=e693] [cursor=pointer]
+          - link "隐私权" [ref=e695] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=e696] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

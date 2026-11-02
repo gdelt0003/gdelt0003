@@ -1,4 +1,4 @@
-name: Archive official Columbus Day source
+name: Validate official Columbus Day source
 
 on:
   workflow_dispatch:
@@ -15,186 +15,101 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - name: Set up Node.js for yt-dlp
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install yt-dlp and ffmpeg
+      - name: Install ffmpeg
         run: |
-          python -m pip install --upgrade yt-dlp
           sudo apt-get update
           sudo apt-get install --yes ffmpeg
-          yt-dlp --version
           ffprobe -version
 
-      - name: Fetch metadata without downloading media
-        id: metadata
+      - name: Verify the authorized draft asset and runner capacity
+        id: preflight
         env:
-          SOURCE_URL: https://www.youtube.com/watch?v=noI4BbQ2wZQ
-          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_API_URL: ${{ github.api_url }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
           GITHUB_SHA: ${{ github.sha }}
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source-evidence
+          RELEASE_ID: "411797416"
+          ASSET_ID: "638711904"
+          RELEASE_TAG: "columbus-day-source-intake-20261013"
+          EXPECTED_ASSET_NAME: "President.Trump.Hosts.a.Columbus.Day.Celebration.noI4BbQ2wZQ.mp4"
+          EXPECTED_SOURCE_BYTES: "1630686056"
+          EXPECTED_SOURCE_SHA256: "066e3b2ed33ab7ce8ec658b6b4c98e15e81eddf5ba63c8c924f5c774b8e95dd6"
         run: |
           set -euo pipefail
           mkdir -p "$PACKAGE_DIR"
-          yt-dlp \
-            --dump-single-json \
-            --skip-download \
-            --no-warnings \
-            --js-runtimes node \
-            "$SOURCE_URL" > "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json"
-          python - "$RUNNER_TEMP/columbus-day-yt-dlp-metadata.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" <<'PY'
+          gh api "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" \
+            > "$RUNNER_TEMP/columbus-day-release-asset.json"
+          available_bytes="$(df -B1 --output=avail "$RUNNER_TEMP" | tail -n 1 | tr -d '[:space:]')"
+          python - "$RUNNER_TEMP/columbus-day-release-asset.json" "$PACKAGE_DIR" "$GITHUB_OUTPUT" "$GITHUB_STEP_SUMMARY" "$available_bytes" <<'PY'
           import json
           import os
-          import re
           import sys
           from pathlib import Path
 
-          metadata_path, package_dir, output_path, summary_path = map(Path, sys.argv[1:])
-          metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-          if metadata.get("id") != "noI4BbQ2wZQ":
-              raise SystemExit("Extracted video ID does not match the allow-listed White House source.")
-          if metadata.get("title") != "President Trump Hosts a Columbus Day Celebration":
-              raise SystemExit("Extracted title does not match the official White House event page.")
-
-          safe_metadata = {
-              key: metadata.get(key)
-              for key in (
-                  "id", "title", "channel", "channel_id", "channel_url", "uploader",
-                  "uploader_id", "uploader_url", "duration", "availability",
-                  "upload_date", "release_timestamp",
-              )
-          }
-          safe_metadata["formats"] = [
-              {
-                  key: fmt.get(key)
-                  for key in (
-                      "format_id", "ext", "width", "height", "format_note",
-                      "vcodec", "acodec", "filesize", "filesize_approx",
-                  )
-              }
-              for fmt in metadata.get("formats", [])
-          ]
-          (package_dir / "source-metadata.json").write_text(
-              json.dumps(safe_metadata, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8",
-          )
-
-          maximum_source_bytes = 1_500_000_000
-
-          def known_size(fmt):
-              for key in ("filesize", "filesize_approx"):
-                  value = fmt.get(key)
-                  if isinstance(value, (int, float)) and value > 0:
-                      return int(value)
-              return None
-
-          formats = metadata.get("formats", [])
-          videos = [
-              fmt for fmt in formats
-              if fmt.get("vcodec") not in (None, "none")
-              and isinstance(fmt.get("width"), int)
-              and isinstance(fmt.get("height"), int)
-              and fmt["width"] >= 1920
-              and fmt["height"] >= 1080
-              and fmt["width"] > fmt["height"]
-              and known_size(fmt) is not None
-          ]
-          audios = [
-              fmt for fmt in formats
-              if fmt.get("acodec") not in (None, "none")
-              and fmt.get("vcodec") == "none"
-              and known_size(fmt) is not None
-          ]
-
-          candidates = []
-          for video in videos:
-              video_id = str(video.get("format_id", ""))
-              if not re.fullmatch(r"[A-Za-z0-9._-]+", video_id):
-                  continue
-              video_size = known_size(video)
-              if video.get("acodec") not in (None, "none"):
-                  candidates.append({
-                      "format_selector": video_id,
-                      "format_ids": [video_id],
-                      "width": video["width"],
-                      "height": video["height"],
-                      "estimated_bytes": video_size,
-                  })
-              for audio in audios:
-                  audio_id = str(audio.get("format_id", ""))
-                  if not re.fullmatch(r"[A-Za-z0-9._-]+", audio_id):
-                      continue
-                  estimated_bytes = video_size + known_size(audio)
-                  candidates.append({
-                      "format_selector": f"{video_id}+{audio_id}",
-                      "format_ids": [video_id, audio_id],
-                      "width": video["width"],
-                      "height": video["height"],
-                      "estimated_bytes": estimated_bytes,
-                  })
-
-          eligible = [
-              candidate for candidate in candidates
-              if candidate["estimated_bytes"] <= maximum_source_bytes
-          ]
-          eligible.sort(
-              key=lambda candidate: (
-                  candidate["height"],
-                  candidate["width"],
-                  candidate["estimated_bytes"],
-              ),
-              reverse=True,
-          )
-          selected = eligible[0] if eligible else None
+          asset_path, package_dir, output_path, summary_path = map(Path, sys.argv[1:5])
+          available_bytes = int(sys.argv[5])
+          asset = json.loads(asset_path.read_text(encoding="utf-8"))
+          expected_size = int(os.environ["EXPECTED_SOURCE_BYTES"])
+          expected_digest = f"sha256:{os.environ['EXPECTED_SOURCE_SHA256']}"
 
           record = {
               "workflow_run_url": (
-                  f"{os.environ['GITHUB_SERVER_URL']}/"
-                  f"{os.environ['GITHUB_REPOSITORY']}/actions/runs/"
-                  f"{os.environ['GITHUB_RUN_ID']}"
+                  f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+                  f"/actions/runs/{os.environ['GITHUB_RUN_ID']}"
               ),
               "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
               "workflow_commit_sha": os.environ["GITHUB_SHA"],
               "source_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
-              "video_id": metadata["id"],
-              "title": metadata["title"],
-              "publisher_as_reported_by_youtube": metadata.get("channel")
-                  or metadata.get("uploader"),
-              "duration_seconds": metadata.get("duration"),
+              "video_id": "noI4BbQ2wZQ",
+              "title": "President Trump Hosts a Columbus Day Celebration",
               "event_date": None,
               "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
-              "video_formats_with_known_size": len(videos),
-              "maximum_source_bytes": maximum_source_bytes,
-              "preflight_reference_observation": {
-                  "video_id": "noI4BbQ2wZQ",
-                  "title": "President Trump Hosts a Columbus Day Celebration",
-                  "format_id": "137",
-                  "resolution": "1920x1080",
-                  "fps": 30,
-                  "content_length_bytes": 963613436,
-                  "evidence": (
-                      "A coordinator reported inspecting the public YouTube watch-page "
-                      "adaptiveFormats metadata without requesting media segments. This is "
-                      "a preliminary metadata observation only, not a download or file-integrity "
-                      "check; the workflow independently rechecks current formats before downloading."
+              "ingest_method": "Authenticated download of a user-provided GitHub draft release asset; no YouTube requests.",
+              "release": {
+                  "id": int(os.environ["RELEASE_ID"]),
+                  "tag_name": os.environ["RELEASE_TAG"],
+                  "draft_status": (
+                      "not queried by runner: contents:read GITHUB_TOKEN was denied draft-release "
+                      "metadata; the workflow never mutates or publishes releases"
                   ),
               },
-              "selected_format": selected,
-              "download_status": "eligible" if selected else "not_downloaded",
-              "download_blocker": None if selected else (
-                  "No landscape video format at least 1920x1080 with known estimated size "
-                  "within the 1.5 GB source limit was reported."
-              ),
+              "source_asset": {
+                  "id": asset.get("id"),
+                  "name": asset.get("name"),
+                  "state": asset.get("state"),
+                  "size_bytes": asset.get("size"),
+                  "digest": asset.get("digest"),
+                  "browser_download_url": asset.get("browser_download_url"),
+                  "expected_size_bytes": expected_size,
+                  "expected_digest": expected_digest,
+              },
+              "runner_disk_space": {
+                  "runner_image": "ubuntu-latest; documented standard runner SSD is 14 GB",
+                  "available_bytes_at_preflight": available_bytes,
+                  "required_bytes": expected_size,
+              },
+              "download_status": "preflight_failed",
+              "source_resolution": None,
+              "downloaded_bytes": None,
+              "sha256": None,
+              "source_frame_review": "not reviewed in this download-and-validation workflow",
+              "artifact_storage": {
+                  "contains_source_video": False,
+                  "retention_days": 30,
+                  "quota_status": (
+                      "Only the small evidence files are uploaded as an Actions artifact. "
+                      "The source remains in the unpublished draft release; account quota is unknown."
+                  ),
+              },
               "rights_evidence": {
                   "official_event_page": (
                       "https://www.whitehouse.gov/videos/"
@@ -202,146 +117,254 @@ jobs:
                   ),
                   "white_house_copyright_policy": "https://www.whitehouse.gov/copyright/",
                   "basis": (
-                      "The official event page identifies this exact YouTube video and White House "
-                      "publisher. The policy says government-produced materials appearing on the "
-                      "site are not copyright protected, while noting the U.S. Government may hold "
-                      "transferred copyrights. This records the evidence, not a separate legal "
-                      "attestation or a claim about third-party material."
+                      "These identify the exact event/source and state the limited government-produced "
+                      "materials policy. They are evidence, not a separate legal attestation or a claim "
+                      "that third-party content has been reviewed."
                   ),
               },
               "known_in_picture_graphics": (
                   "Prior sampled frames show a White House emblem, POTUS text banner, and QR code; "
                   "these remain in the source. Full-video frame review is incomplete."
               ),
-              "processing": "Original source download only; no ASR, translation, editing, or re-encoding.",
-              "deferred_checks": [
+              "processing": "Original source download, checksum, and ffprobe validation only; no editing, ASR, translation, or re-encoding.",
+              "shortcomings_for_follow_up": [
+                  "Event-date/source identity linkage remains incomplete; event_date is null and must not be inferred from upload time.",
+                  "Full-video frame and third-party-content review remains incomplete.",
+                  "Source-to-edit provenance, reviewed highlights, ASR, and translation review remain future work.",
+                  "YouTube anonymous metadata retrieval was previously blocked; this workflow uses only the exact verified draft asset and never retries YouTube.",
+              ],
+              "next_phase_shortfalls": [
                   {
-                      "name": "Verified event date and local time",
-                      "status": "unknown; event_date remains null",
-                      "reason": "Official upload/publish timestamps do not establish when the event occurred.",
-                      "risk": "Do not assign a date-specific event ID or claim event-day metadata.",
-                      "follow_up": "Find a reliable event-date source before event editing or publication.",
+                      "id": "source-to-edit-audit",
+                      "title": "Original source to edited-media provenance and review remains incomplete",
+                      "risk": "Event-date linkage, complete source-frame review, edit/caption review, and source-to-output verification are not established.",
+                      "follow_up": "Design and test an audited editing workflow only after human source and rights review.",
                   },
                   {
-                      "name": "Full-video frame/rights review",
-                      "status": "incomplete",
-                      "reason": "This workflow only archives the original source; prior samples show White House branding, banner, and QR.",
-                      "risk": "No clean-frame claim; any third-party notice discovered later blocks reuse.",
-                      "follow_up": "Review the full source and any additional content before edited/public release.",
-                  },
-                  {
-                      "name": "Editorial highlights and bilingual caption review",
-                      "status": "not performed",
-                      "reason": "No clipping, ASR, translation, or subtitle work is in scope.",
-                      "risk": "No reviewed excerpts, captions, or translation claims are made.",
-                      "follow_up": "Complete source-backed highlight, ASR, translation, and human review before editing/publishing.",
-                  },
-                  {
-                      "name": "Additional publishers, camera angles, and edit presets",
-                      "status": "deferred",
-                      "reason": "Not needed to archive this single official source.",
-                      "risk": "No independent camera, alternate source, or multi-style coverage is claimed.",
-                      "follow_up": "Revisit only if a later event-editing task requires additional sources or variants.",
+                      "id": "source-acquisition-method",
+                      "title": "Supported source handoff is currently a manually authorized draft-asset transfer",
+                      "risk": "This one-time handoff is not a general-purpose automated ingestion service; the release must remain a draft to avoid publishing its asset.",
+                      "follow_up": "Define a repeatable approved private transfer and retention/removal process before future ingests.",
                   },
               ],
           }
-          (package_dir / "source-record.json").write_text(
-              json.dumps(record, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8",
+          record_path = package_dir / "source-record.json"
+          record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          checks = {
+              "repository": os.environ["GITHUB_REPOSITORY"] == "gdelt0003/gdelt0003",
+              "asset_id": asset.get("id") == int(os.environ["ASSET_ID"]),
+              "asset_name": asset.get("name") == os.environ["EXPECTED_ASSET_NAME"],
+              "asset_uploaded": asset.get("state") == "uploaded",
+              "asset_size": asset.get("size") == expected_size,
+              "asset_digest": asset.get("digest") == expected_digest,
+              "runner_has_space": available_bytes >= expected_size,
+          }
+          failed = [name for name, passed in checks.items() if not passed]
+          record["preflight_checks"] = checks
+          record["download_status"] = "preflight_failed" if failed else "ready"
+          record["failure_reason"] = (
+              "Preflight checks failed: " + ", ".join(failed) if failed else None
           )
+          record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          if failed:
+              raise SystemExit(record["failure_reason"])
+
           with output_path.open("a", encoding="utf-8") as output:
-              output.write(f"download_allowed={'true' if selected else 'false'}\n")
-              if selected:
-                  output.write(f"format_selector={selected['format_selector']}\n")
+              output.write("download_allowed=true\n")
           with summary_path.open("a", encoding="utf-8") as summary:
-              if selected:
-                  summary.write(
-                      f"Metadata confirms an eligible {selected['width']}x{selected['height']} "
-                      f"landscape format, estimated at {selected['estimated_bytes']} bytes. "
-                      "The source will be downloaded without re-encoding.\n"
-                  )
-              else:
-                  summary.write(record["download_blocker"] + " Metadata-only artifact will be retained.\n")
+              summary.write(
+                  f"Verified draft asset {asset['id']} ({asset['size']} bytes, {asset['digest']}); "
+                  f"runner has {available_bytes} bytes free. Release remains unpublished.\n"
+              )
           PY
         shell: bash
 
-      - name: Download the allow-listed source without re-encoding
-        if: steps.metadata.outputs.download_allowed == 'true'
+      - name: Download and validate the exact draft asset on the hosted runner
+        id: validate
+        if: steps.preflight.outputs.download_allowed == 'true'
         env:
-          SOURCE_URL: https://www.youtube.com/watch?v=noI4BbQ2wZQ
-          FORMAT_SELECTOR: ${{ steps.metadata.outputs.format_selector }}
-          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_API_URL: ${{ github.api_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source-evidence
+          DOWNLOAD_DIR: ${{ runner.temp }}/columbus-day-source-input
+          ASSET_ID: "638711904"
+          EXPECTED_SOURCE_BYTES: "1630686056"
+          EXPECTED_SOURCE_SHA256: "066e3b2ed33ab7ce8ec658b6b4c98e15e81eddf5ba63c8c924f5c774b8e95dd6"
         run: |
           set -euo pipefail
-          download_dir="$RUNNER_TEMP/columbus-day-source-download"
-          mkdir -p "$download_dir"
-          yt-dlp \
-            --no-warnings \
-            --no-progress \
-            --concurrent-fragments 8 \
-            --js-runtimes node \
-            --format "$FORMAT_SELECTOR" \
-            --merge-output-format mkv \
-            --output "$download_dir/source.%(ext)s" \
-            "$SOURCE_URL"
-          shopt -s nullglob
-          files=("$download_dir"/source.*)
-          if (( ${#files[@]} != 1 )); then
-            echo "Expected exactly one downloaded source file." >&2
-            exit 1
-          fi
-          source_file="${files[0]}"
-          source_bytes="$(stat -c '%s' "$source_file")"
-          if (( source_bytes > 1500000000 )); then
-            echo "Downloaded source exceeds the 1.5 GB archive limit." >&2
-            exit 1
-          fi
-          ffprobe -v error -select_streams v:0 \
-            -show_entries stream=width,height \
-            -of json "$source_file" > "$PACKAGE_DIR/source-probe.json"
-          python - "$PACKAGE_DIR" "$source_file" "$source_bytes" <<'PY'
+          mkdir -p "$DOWNLOAD_DIR"
+          source_file="$DOWNLOAD_DIR/President.Trump.Hosts.a.Columbus.Day.Celebration.noI4BbQ2wZQ.mp4"
+          curl \
+            --fail \
+            --location \
+            --retry 3 \
+            --retry-all-errors \
+            --silent \
+            --show-error \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/octet-stream" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" \
+            --output "$source_file"
+          python - "$PACKAGE_DIR" "$source_file" "$EXPECTED_SOURCE_BYTES" "$EXPECTED_SOURCE_SHA256" <<'PY'
           import hashlib
           import json
+          import subprocess
           import sys
           from pathlib import Path
 
-          package_dir = Path(sys.argv[1])
-          source_file = Path(sys.argv[2])
-          source_bytes = int(sys.argv[3])
+          package_dir, source_file = map(Path, sys.argv[1:3])
+          expected_size, expected_digest = int(sys.argv[3]), sys.argv[4]
           record_path = package_dir / "source-record.json"
           record = json.loads(record_path.read_text(encoding="utf-8"))
-          probe = json.loads((package_dir / "source-probe.json").read_text(encoding="utf-8"))
-          streams = probe.get("streams", [])
-          if not streams:
-              raise SystemExit("Downloaded file has no video stream.")
-          width, height = streams[0].get("width"), streams[0].get("height")
-          if not isinstance(width, int) or not isinstance(height, int) or width < 1920 or height < 1080 or width <= height:
-              raise SystemExit("Downloaded stream failed the landscape 1920x1080 minimum.")
+          actual_size = source_file.stat().st_size
           digest = hashlib.sha256()
           with source_file.open("rb") as source:
               for chunk in iter(lambda: source.read(1024 * 1024), b""):
                   digest.update(chunk)
-          record["download_status"] = "downloaded_and_probe_verified"
-          record["downloaded_file"] = source_file.name
-          record["downloaded_bytes"] = source_bytes
-          record["verified_video_resolution"] = f"{width}x{height}"
-          record["sha256"] = digest.hexdigest()
-          record["source_frame_review"] = "not reviewed in this download-only workflow"
-          archived_file = package_dir / source_file.name
-          source_file.replace(archived_file)
+          actual_digest = digest.hexdigest()
+          record["downloaded_bytes"] = actual_size
+          record["sha256"] = actual_digest
+          failures = []
+          if actual_size != expected_size:
+              failures.append(f"downloaded byte count {actual_size} did not match {expected_size}")
+          if actual_digest != expected_digest:
+              failures.append("downloaded SHA-256 did not match the pinned source digest")
+
+          probe_path = package_dir / "source-probe.json"
+          probe_result = subprocess.run(
+              [
+                  "ffprobe", "-v", "error", "-show_entries",
+                  "format=duration:format_tags=title:stream=codec_type,width,height",
+                  "-of", "json", str(source_file),
+              ],
+              check=False,
+              capture_output=True,
+              text=True,
+          )
+          if probe_result.returncode:
+              failures.append("ffprobe could not read the downloaded source")
+              record["probe_error"] = probe_result.stderr[-4000:]
+          else:
+              probe = json.loads(probe_result.stdout)
+              probe_path.write_text(json.dumps(probe, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+              streams = [stream for stream in probe.get("streams", []) if stream.get("codec_type") == "video"]
+              if not streams:
+                  failures.append("downloaded file has no video stream")
+              else:
+                  width, height = streams[0].get("width"), streams[0].get("height")
+                  record["source_resolution"] = f"{width}x{height}"
+                  if not isinstance(width, int) or not isinstance(height, int) or width < 1920 or height < 1080 or width <= height:
+                      failures.append("source is not landscape at least 1920x1080")
+              record["duration_seconds"] = probe.get("format", {}).get("duration")
+              record["container_title_tag"] = probe.get("format", {}).get("tags", {}).get("title")
+
+          record["validation_checks"] = {
+              "byte_count_matches_pinned_source": actual_size == expected_size,
+              "sha256_matches_pinned_source": actual_digest == expected_digest,
+              "video_stream_present": bool(
+                  "probe" in locals()
+                  and any(stream.get("codec_type") == "video" for stream in probe.get("streams", []))
+              ),
+              "landscape_1920x1080_minimum": not any(
+                  "landscape at least" in failure for failure in failures
+              ) and "probe" in locals() and any(
+                  stream.get("codec_type") == "video"
+                  and isinstance(stream.get("width"), int)
+                  and isinstance(stream.get("height"), int)
+                  and stream["width"] >= 1920
+                  and stream["height"] >= 1080
+                  and stream["width"] > stream["height"]
+                  for stream in probe.get("streams", [])
+              ),
+          }
+          record["download_status"] = "download_failed_or_unverified" if failures else "downloaded_and_probe_verified"
+          record["failure_reason"] = "; ".join(failures) if failures else None
+          record["source_frame_review"] = "not reviewed; source graphics are preserved"
           record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          if failures:
+              raise SystemExit(record["failure_reason"])
+
           with (package_dir / "SHA256SUMS").open("w", encoding="utf-8") as sums:
-              sums.write(f"{digest.hexdigest()}  {archived_file.name}\n")
+              sums.write(f"{actual_digest}  {source_file.name}\n")
+          print(
+              f"Cloud validation passed: {actual_size} bytes, SHA-256 {actual_digest}, "
+              f"video {record['source_resolution']}."
+          )
           PY
           cat "$PACKAGE_DIR/source-record.json" >> "$GITHUB_STEP_SUMMARY"
         shell: bash
 
-      - name: Upload source and evidence as a time-limited artifact
+      - name: Preserve a diagnostic record after preflight or source validation
+        if: always()
+        env:
+          PREFLIGHT_OUTCOME: ${{ steps.preflight.outcome }}
+          VALIDATION_OUTCOME: ${{ steps.validate.outcome }}
+          PACKAGE_DIR: ${{ runner.temp }}/columbus-day-source-evidence
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          python - "$PACKAGE_DIR" "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          package_dir, summary_path = map(Path, sys.argv[1:])
+          package_dir.mkdir(parents=True, exist_ok=True)
+          record_path = package_dir / "source-record.json"
+          if record_path.exists():
+              record = json.loads(record_path.read_text(encoding="utf-8"))
+          else:
+              record = {
+                  "workflow_run_url": (
+                      f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+                      f"/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+                  ),
+                  "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+                  "workflow_commit_sha": os.environ["GITHUB_SHA"],
+                  "source_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
+                  "video_id": "noI4BbQ2wZQ",
+                  "title": "President Trump Hosts a Columbus Day Celebration",
+                  "event_date": None,
+                  "event_date_status": "unknown; upload/publish timestamps are not event-date evidence",
+                  "source_asset_id": 638711904,
+                  "source_asset_name": "President.Trump.Hosts.a.Columbus.Day.Celebration.noI4BbQ2wZQ.mp4",
+                  "expected_source_bytes": 1630686056,
+                  "expected_sha256": "066e3b2ed33ab7ce8ec658b6b4c98e15e81eddf5ba63c8c924f5c774b8e95dd6",
+                  "download_status": "preflight_failed",
+              }
+          record["preflight_outcome"] = os.environ.get("PREFLIGHT_OUTCOME")
+          record["validation_outcome"] = os.environ.get("VALIDATION_OUTCOME")
+          if os.environ.get("PREFLIGHT_OUTCOME") != "success":
+              reason = "Authenticated draft-asset preflight failed; inspect this Actions run log."
+              record["download_status"] = "preflight_failed"
+          elif os.environ.get("VALIDATION_OUTCOME") != "success":
+              reason = record.get("failure_reason") or "Draft-asset download or media validation failed; inspect this Actions run log."
+              if record.get("download_status") != "downloaded_and_probe_verified":
+                  record["download_status"] = "download_failed_or_unverified"
+          else:
+              reason = record.get("failure_reason")
+          if reason:
+              record["failure_reason"] = reason
+              with summary_path.open("a", encoding="utf-8") as summary:
+                  summary.write(f"Diagnostic record retained: {reason}\n")
+          record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"Source evidence manifest: {record_path}")
+          PY
+        shell: bash
+
+      - name: Upload validation evidence only
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: columbus-day-official-source-${{ github.run_id }}
-          path: ${{ runner.temp }}/columbus-day-source/
+          name: columbus-day-source-validation-${{ github.run_id }}
+          path: ${{ runner.temp }}/columbus-day-source-evidence/
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
