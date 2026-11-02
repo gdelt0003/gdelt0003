@@ -46,6 +46,14 @@ FRAME_REVIEW_ALLOWED_SIGNERS = (
 )
 
 
+def _process_full_video_module():
+    if __package__:
+        from . import process_full_video
+    else:
+        import process_full_video
+    return process_full_video
+
+
 def user_provided_still_measurement() -> dict[str, Any]:
     source_bbox = USER_PROVIDED_STILL_BANNER_BBOX
     padding = USER_PROVIDED_STILL_MASK_PADDING_PX_PER_EDGE
