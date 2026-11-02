@@ -1,0 +1,100 @@
+- generic [active] [ref=f8e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f8e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f8e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f8e8]:
+    - search [ref=f8e9]:
+      - generic [ref=f8e11]:
+        - link "Google 首页" [ref=f8e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQPHoECAYQBA
+        - generic [ref=f8e16]:
+          - generic [ref=f8e17]:
+            - combobox "搜索" [ref=f8e20]: "\"Katie Zacharia\" October 13 2026 news article ABC AP Reuters BBC CBC NBC WFSB \"Katie Zacharia\" October 13 2026 news article ABC AP Reuters BBC CBC NBC WFSB"
+            - generic [ref=f8e21]:
+              - button "清除" [ref=f8e23] [cursor=pointer]
+              - generic [ref=f8e28]:
+                - button "按语音搜索" [ref=f8e29] [cursor=pointer]
+                - button "按图搜索" [ref=f8e32] [cursor=pointer]
+          - button "搜索" [ref=f8e35] [cursor=pointer]
+    - generic [ref=f8e40]:
+      - button "设置" [ref=f8e42] [cursor=pointer]
+      - button "分享" [ref=f8e47] [cursor=pointer]
+      - generic [ref=f8e53]:
+        - button "Google 应用" [ref=f8e55] [cursor=pointer]
+        - link "登录" [ref=f8e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Katie%2BZacharia%2522%2BOctober%2B13%2B2026%2Bnews%2Barticle%2BABC%2BAP%2BReuters%2BBBC%2BCBC%2BNBC%2BWFSB&ec=futura_srp_og_si_72236_p
+  - generic [ref=f8e62]:
+    - navigation [ref=f8e68]:
+      - generic [ref=f8e74]:
+        - list [ref=f8e75]:
+          - listitem [ref=f8e76]:
+            - link "全部" [disabled] [ref=f8e77]
+          - listitem [ref=f8e80]:
+            - link "新闻" [ref=f8e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQ0pQJegQIFhAB
+          - listitem [ref=f8e84]:
+            - link "视频" [ref=f8e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQtKgLegQIGBAB
+          - listitem [ref=f8e88]:
+            - link "短视频" [ref=f8e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQs6gLegQIFRAB
+          - listitem [ref=f8e92]:
+            - link "图片" [ref=f8e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQtKgLegQIFxAB
+          - listitem [ref=f8e96]:
+            - link "网页" [ref=f8e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQs6gLegQIFBAB
+          - listitem [ref=f8e100]:
+            - link "图书" [ref=f8e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQnuYm3qMVGUk6-CgfTNuTVfNqyoBaw:1792047143165&q=%22Katie+Zacharia%22+October+13+2026+news+article+ABC+AP+Reuters+BBC+CBC+NBC+WFSB&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5x_ILMucyRWIwHmWdWtVhIOWlfs4KXdVs1Mdq9gbPg-mJY0QgClYcd0N4BZcZq516nblKvsBvZKcGlsSyWvzAkfCVcLw-qpSkXdai6OSIcxJTlV93QrKGECS2JCzDcwI4wLlIue&sa=X&ved=2ahUKEwiDkI7rt7uXAxUhLkQIHXLqMyEQ0pQJegQIExAB
+          - listitem [ref=f8e104]:
+            - button [ref=f8e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f8e106]: 更多
+        - button "工具" [ref=f8e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f8e120]
+    - main [ref=f8e126]:
+      - generic [ref=f8e133]:
+        - heading "Web results" [level=2] [ref=f8e134]
+        - generic [ref=f8e135]:
+          - generic [ref=f8e138]:
+            - link "Caliper — measure both sides of your news dugh.uk https://dugh.uk" [ref=f8e140] [cursor=pointer]:
+              - /url: /goto?url=CAESSwHrOzAVgWMc-O-s_v4fHfiwrD7GVoIci6U0a77omFgwmnDLkuQpYI43gfwqmG157muf4EkaB_EbBS_8bbBE3pJfdJ9kqpETABR9mg
+              - heading "Caliper — measure both sides of your news" [level=3] [ref=f8e141]
+              - generic [ref=f8e150]:
+                - generic [ref=f8e151]: dugh.uk
+                - generic [ref=f8e153]: https://dugh.uk
+            - generic [ref=f8e155]:
+              - generic [ref=f8e156]: ·
+              - link "翻译此页" [ref=f8e157] [cursor=pointer]:
+                - /url: /goto?url=CAESmgEB6zswFfH8eKAosPIczciUUZNFXSUEDicvXr8uGUjJh9YvIBZ4Ad-LzFh_MuoJF6OIm7lf90hYTNb8-Z-mRJ5_bLY1csEm1E_AxC1oyGn6dO_0w7aoUw1BPBS97Jsvo0WBCxVrOwEKunAEL_gx_mmxuMhkKpZLsCf2-7P62DOL77mC-LZ7dNn8816KlvpKAyLHgvawLccu3LRS
+            - button "关于这条结果的详细信息" [ref=f8e162] [cursor=pointer]
+          - generic [ref=f8e169]:
+            - emphasis [ref=f8e170]: Katie Zacharia
+            - text: worked at a Beijing law firm and calls herself a lawyer, but reporters found no record of her admission to practise in the US.
+            - emphasis [ref=f8e171]: Katie Zacharia
+            - text: ...
+      - generic:
+        - generic:
+          - navigation
+      - navigation
+    - contentinfo [ref=f8e172]:
+      - heading "页脚链接" [level=1] [ref=f8e173]
+      - generic [ref=f8e177]:
+        - generic [ref=f8e181]:
+          - button "美兰区 中国海南省海口市 - 根据您的活动记录" [ref=f8e183] [cursor=pointer]:
+            - generic [ref=f8e184]: 美兰区 中国海南省海口市
+            - generic [ref=f8e186]:
+              - text: "-"
+              - generic [ref=f8e187]: 根据您的活动记录
+          - text: "-"
+          - button "更新位置信息" [ref=f8e189] [cursor=pointer]
+        - generic [ref=f8e192]:
+          - link "帮助" [ref=f8e193] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f8e195] [cursor=pointer]
+          - link "隐私权" [ref=f8e197] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f8e198] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

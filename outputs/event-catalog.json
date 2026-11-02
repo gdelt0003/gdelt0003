@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "identity_fields": [
+    "event_date",
+    "event_time_local",
+    "time_precision",
+    "timezone",
+    "location",
+    "event_type",
+    "title",
+    "participants"
+  ],
+  "matching_rule": "The White House recording is the factual and event-background anchor even when its in-picture banner makes it unsuitable as editing material. Other candidates must come from credible publishers and be checked against corresponding official content, with conflicts in date, speech, sequence, or scene details flagged rather than accepted from title or thumbnail similarity. Classify background references separately from editing candidates; assess resolution and overlays independently.",
+  "events": [
+    {
+      "event_id": "evt-20261006-7794a6967fc9f877",
+      "identity_status": "partial_time",
+      "identity": {
+        "event_date": "2026-10-06",
+        "event_time_local": null,
+        "time_precision": "day",
+        "timezone": null,
+        "location": "Baltimore, Maryland",
+        "event_type": "shipyard remarks",
+        "title": "President Trump Delivers Remarks, Oct. 6, 2026",
+        "participants": [
+          "President Trump"
+        ],
+        "notes": "Official page/video establish the date, event title and city; exact venue and event clock time are not established in the reviewed evidence."
+      },
+      "official_reference": {
+        "publisher": "The White House",
+        "event_page": "https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/",
+        "video_url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+        "duration_seconds": 3532,
+        "status": "verified_event_anchor"
+      },
+      "sources": [
+        {
+          "publisher": "The White House",
+          "url": "https://www.youtube.com/watch?v=oW-PQlgw1wo",
+          "source_role": "official_event_anchor",
+          "match_status": "verified_event_anchor",
+          "clean_source_status": "failed",
+          "evidence": "At approximately 08:15 and 35:07, in-picture lower-third, White House emblem and QR code are visible."
+        },
+        {
+          "publisher": "Moneycontrol",
+          "url": "https://www.youtube.com/watch?v=jAq7oEbw9Hs",
+          "source_role": "same_event_source_lead",
+          "match_status": "same_event_contiguous_speech_observed; exact_cue_offset_unverified",
+          "clean_source_status": "failed",
+          "camera_position_status": "unverified",
+          "evidence": "At approximately 01:00:01 it shows the matched 'Secretary of War' remarks at tighter framing; in-picture m mark present. The camera station and source lineage are unproved."
+        },
+        {
+          "publisher": "NDTV Profit",
+          "url": "https://www.youtube.com/watch?v=CRiW-xC_-WU",
+          "source_role": "same_event_source_lead",
+          "match_status": "not_matched_to_reference_moment",
+          "clean_source_status": "unverified",
+          "evidence": "Sample at approximately 00:30:01 shows ship/stage and crowd, not the matched speaking moment."
+        }
+      ],
+      "camera_map_status": "not_verified"
+    },
+    {
+      "event_id": null,
+      "identity_status": "incomplete",
+      "identity": {
+        "event_date": null,
+        "event_time_local": null,
+        "time_precision": "unknown",
+        "timezone": null,
+        "location": "White House, East Room (direct moving-frame audit)",
+        "event_type": "Columbus Day celebration",
+        "title": "President Trump Hosts a Columbus Day Celebration",
+        "participants": [
+          "President Trump"
+        ],
+        "notes": "The official title and direct frame audit establish the Columbus Day celebration at the White House East Room. The event's recording date and local clock time remain unverified. Candidate page publication timestamps must not be substituted for event time."
+      },
+      "official_reference": {
+        "publisher": "The White House",
+        "event_page": "https://www.whitehouse.gov/videos/president-trump-hosts-a-columbus-day-celebration/",
+        "video_url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
+        "duration_seconds": 3764,
+        "status": "event_anchor_identity_incomplete"
+      },
+      "sources": [
+        {
+          "publisher": "The White House",
+          "title": "President Trump Hosts a Columbus Day Celebration",
+          "url": "https://www.youtube.com/watch?v=noI4BbQ2wZQ",
+          "source_role": "official_event_anchor",
+          "match_status": "official_title_and_event_anchor; event_date_time_unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "sampled_at_20:01,25:01,27:01",
+          "duration_seconds": 3764,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-09 09:30 PDT",
+          "published_timestamp_unix": 1791563400,
+          "independence_status": "official_source",
+          "evidence": "Direct moving-frame audit at approximately 20:01, 25:01 and 27:01; the live scene identifies the White House event. In-picture White House emblem, TEXT “POTUS” TO 45470 FOR WHITE HOUSE UPDATES banner and QR were directly visible. At 27:01 YouTube player CC was separately visible. Browser-decoded rendition was 1280x720; not claimed as maximum/source-master resolution. Page publication time is not used as event date."
+        },
+        {
+          "publisher": "RSBN",
+          "title": "FULL EVENT: President Trump Holds Exciting Columbus Day Celebration - 10/09/26",
+          "url": "https://www.youtube.com/watch?v=-6mZSshfpAc",
+          "source_role": "same_event_search_lead",
+          "match_status": "same_event_scene_verified; exact_reference_moment_unverified",
+          "clean_source_status": "failed",
+          "frame_review_status": "sampled_at_22:31",
+          "duration_seconds": 3714,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-09 10:10 PDT",
+          "published_timestamp_unix": 1791565800,
+          "independence_status": "same_publisher_lineage_unverified",
+          "evidence": "At 22:31 player CC reads a phrase matching the same event speech; White House East Room decor and speaker establish same-event content. Forward medium-close framing resembles the White House view; sample does not establish exact reference cue, independent camera, or continuity. RSBN logo, LIVE/White House label and ticker are in-picture. Browser-decoded rendition 1280x720; not maximum/source-master resolution. 61:54, shorter than the 62:44 official video."
+        },
+        {
+          "publisher": "RSBN",
+          "title": "LIVE REPLAY: President Trump Hosts Columbus Day Celebration at White House - 10/09/26",
+          "url": "https://www.youtube.com/watch?v=Os4aPmvxZjA",
+          "source_role": "same_event_search_lead",
+          "match_status": "same_event_context_only; sampled_time_not_matched",
+          "clean_source_status": "failed",
+          "frame_review_status": "sampled_at_20:01,30:01",
+          "duration_seconds": 5516,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-09 09:31 PDT",
+          "published_timestamp_unix": 1791563460,
+          "independence_status": "same_publisher_lineage_unverified",
+          "evidence": "At 20:01 sample shows RSBN pre-event/weather split screen; 30:01 shows live wide shot of the same flags/speaker/event. RSBN logo, LIVE bar and ticker are in-picture; player CC separately showed anthem captions. Sampled moments do not match the White House speech cue; no continuity claim. Browser-decoded rendition 1280x720; not maximum/source-master resolution."
+        },
+        {
+          "publisher": "Fox News",
+          "title": "President Trump hosts Columbus Day Celebration at the White House",
+          "url": "https://www.youtube.com/watch?v=Ubivu0AQHXo",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "sampled_at_20:01,25:01,27:01",
+          "duration_seconds": 5032,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-09 09:36 PDT",
+          "published_timestamp_unix": 1791563760,
+          "independence_status": "unverified",
+          "evidence": "Moving frames at 20:01, 25:01 and 27:01 show the same East Room event, speaker, audience phones and flags; the 25:01 frame is wider than the White House anchor. YouTube CC is a separate player layer. No persistent in-picture station logo/lower-third was seen in the sampled frames, but the whole video was not checked and cleanliness is unverified. No exact matching spoken cue or independent camera/source lineage established. Browser-decoded rendition 1280x720; not maximum/source-master resolution."
+        },
+        {
+          "publisher": "FOX6 News Milwaukee",
+          "title": "LIVE | President Trump hosts Columbus Day celebration at White House",
+          "url": "https://www.youtube.com/watch?v=5kT9wyjoNWA",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "metadata_only",
+          "duration_seconds": 4206,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623286,
+          "independence_status": "unverified",
+          "evidence": "Direct page/oEmbed metadata identifies publisher/title; no moving frames, matched timestamp, graphics, or footage lineage reviewed."
+        },
+        {
+          "publisher": "FOX 9 Minneapolis-St. Paul",
+          "title": "LIVE | President Trump hosts Columbus Day celebration at White House",
+          "url": "https://www.youtube.com/watch?v=879Q3BNa_KQ",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "metadata_only",
+          "duration_seconds": 4206,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623414,
+          "independence_status": "same_network_lineage_unverified",
+          "evidence": "Direct page/oEmbed metadata identifies publisher/title; same listed runtime as FOX6 may indicate a shared feed, but lineage is unverified. No moving frames or matched time reviewed."
+        },
+        {
+          "publisher": "USA TODAY",
+          "title": "Live: Trump hosts Columbus Day event at White House after 2026 Nobel Peace Prize announced",
+          "url": "https://www.youtube.com/watch?v=bkVco4TkKAk",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "metadata_only",
+          "duration_seconds": 5886,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623286,
+          "independence_status": "unverified",
+          "evidence": "Direct page/oEmbed metadata identifies publisher/title; no moving frames, matched timestamp, graphics, or footage lineage reviewed."
+        },
+        {
+          "publisher": "Fox Business",
+          "title": "President Trump hosts Columbus Day Celebration at the White House",
+          "url": "https://www.youtube.com/watch?v=27CXvjs7jFY",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "metadata_only",
+          "duration_seconds": 5043,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623286,
+          "independence_status": "unverified",
+          "evidence": "Direct page/oEmbed metadata identifies publisher/title; no moving frames, matched timestamp, graphics, or footage lineage reviewed."
+        },
+        {
+          "publisher": "Associated Press",
+          "title": "LIVE: Trump hosts a Columbus Day celebration at the White House",
+          "url": "https://www.youtube.com/watch?v=eteny1ES3wk",
+          "source_role": "same_event_verified_higher_resolution_candidate",
+          "match_status": "same_speech_moment_observed",
+          "clean_source_status": "failed",
+          "frame_review_status": "sampled_at_20:01,27:01,45:01",
+          "duration_seconds": 3753.621,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "1920x1080 (HD1080 player decode)",
+          "page_published_local": "2026-10-09 09:51 PDT",
+          "published_timestamp_unix": 1791564660,
+          "independence_status": "independent_publisher; camera station and source lineage unverified",
+          "evidence": "Direct moving-frame review at 20:01, 27:01, and 45:01 after selecting the HD1080 rendition; decoded frames are 1920x1080. At 27:01, player CC reads “of monuments, fountains, uh statues. They were all graffiti strewn,” immediately following the White House anchor's 27:01 cue “of Interior. We fixed 82 monuments,” confirming the same event and contiguous speech. No White House banner, emblem, or QR was visible in sampled AP source frames; an AP logo is burned into the lower-right corner in all samples, so this is not watermark-free. Audience heads/phones touch the lower edge at 20:01 and 27:01 but do not obscure the speaker. Framing is similar to the White House feed and does not establish a distinct camera station. At 62:34 (3753.621 seconds), this is about 10 seconds shorter than the 62:44 official video and is not a longer continuous version. Page upload time is not treated as event time; publication metadata is not used to fill the event date."
+        },
+        {
+          "publisher": "NBC News",
+          "title": "LIVE: Trump hosts Columbus Day celebration at White House | NBC News",
+          "url": "https://www.youtube.com/watch?v=OLbQ9L1aoks",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "metadata_only",
+          "duration_seconds": 3750,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623286,
+          "independence_status": "unverified",
+          "evidence": "Direct page/oEmbed metadata identifies publisher/title; no moving frames, matched timestamp, graphics, or footage lineage reviewed."
+        },
+        {
+          "publisher": "DawnNews English",
+          "title": "🔴 LIVE: US President Trump Hosts White House Columbus Day Celebration",
+          "url": "https://www.youtube.com/watch?v=ohDdnXmD9Zc",
+          "source_role": "same_event_search_lead",
+          "match_status": "unverified",
+          "clean_source_status": "unverified",
+          "frame_review_status": "not_inspected",
+          "duration_seconds": null,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623286,
+          "independence_status": "unverified",
+          "evidence": "Search metadata title claims the same event; details endpoint failed and duration, matched timestamp, frames, and footage lineage remain unverified."
+        },
+        {
+          "publisher": "The Economic Times",
+          "title": "President Trump hosts Columbus Day celebration at the White House",
+          "url": "https://www.youtube.com/watch?v=n1MfxwIvAs0",
+          "source_role": "same_event_background_reference_not_recommended_for_production",
+          "match_status": "same_event_speech_context_verified; exact_moment_and_lineage_unverified",
+          "clean_source_status": "failed",
+          "frame_review_status": "sampled_around_20:01",
+          "duration_seconds": 13935,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-10 00:30 PDT",
+          "published_timestamp_unix": 1791617400,
+          "independence_status": "unverified",
+          "evidence": "Useful only as long-form event/background context, not recommended production footage. Direct page shows upload 2026-10-10 00:30 PDT and 3:52:15 runtime; browser playback is 1280x720, with maximum/source resolution unverified. Around 20 minutes, the speech matches the White House Columbus Day event, but the 3:52 runtime includes extensive surrounding broadcast content and does not establish a continuous 3:52 event recording. In-picture ET logo at upper left and subscription graphic at right are visible; YouTube player CC is a separate layer. No independent camera or exact source lineage established."
+        },
+        {
+          "publisher": "Times Now World",
+          "title": "Columbus Day Celebration coverage",
+          "url": "https://www.youtube.com/watch?v=OysrZCjorfE",
+          "source_role": "same_event_syndicated_source_lead",
+          "match_status": "same_speech_moment_observed_same_angle",
+          "clean_source_status": "failed",
+          "frame_review_status": "sampled_around_25:01",
+          "duration_seconds": 10141,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "page_published_local": "2026-10-10 00:22 PDT",
+          "published_timestamp_unix": 1791616920,
+          "independence_status": "syndicated_or_shared_feed; not independent camera evidence",
+          "evidence": "At about 25:01 the player CC and moving frame match the White House 27:01 speech about fixing 82 monuments. Framing/background are nearly identical to the White House source, consistent with same-angle feed/syndication, not a proven alternate camera. In-picture White House banner/logo/QR and Times Now brand/subscribe mark are visible; player CC is separate. Not clean and not a verified longer continuous original. Browser-decoded rendition 1280x720; not maximum/source-master resolution."
+        },
+        {
+          "publisher": "CNN",
+          "title": "Trump announces new Christopher Columbus statue at White House",
+          "url": "https://www.youtube.com/watch?v=vuMW1TdX0H4",
+          "source_role": "related_event_coverage",
+          "match_status": "related_story_only",
+          "clean_source_status": "unverified",
+          "frame_review_status": "not_inspected",
+          "duration_seconds": 3806,
+          "thumbnail_resolution": "1280x720",
+          "video_resolution": "unknown",
+          "published_timestamp_unix": 1791623287,
+          "independence_status": "unverified",
+          "evidence": "Search metadata describes related Columbus statue coverage, not a full event recording; do not count as a verified same-time source."
+        }
+      ],
+      "camera_map_status": "not_verified",
+      "source_search": {
+        "queries": [
+          "President Trump Hosts a Columbus Day Celebration 2026 White House",
+          "Trump Columbus Day celebration White House October 2026 full",
+          "White House Columbus Day Celebration October 9 2026 livestream",
+          "Trump White House Columbus Day October 9 2026 full event video"
+        ],
+        "provider": "Invidious YouTube search metadata",
+        "checked_at": "2026-10-13",
+        "limitations": "The official White House anchor and selected RSBN, Fox News, Associated Press, Economic Times, and Times Now videos have direct moving-frame samples as recorded per source. AP was selected at HD1080 and decoded at 1920x1080; other browser-decoded 1280x720 renditions are not maximum or source-master resolution. AP branding remains burned in. Other rows are page/oEmbed or search metadata only. No source has verified reuse rights; independent camera provenance, uninspected footage, full-video graphics, maximum stream resolution, and many exact matched moments remain unknown."
+      }
+    }
+  ]
+}

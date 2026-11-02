@@ -1,0 +1,48 @@
+name: Research Rose Garden source metadata
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: rose-garden-source-metadata-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Require dispatch from main
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "Rose Garden source research must run from main." >&2
+            exit 1
+          fi
+        shell: bash
+
+      - name: Check out workflow code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Search public web and landing-page HTML metadata
+        run: |
+          python scripts/research_rose_garden_sources.py \
+            --output-dir "$RUNNER_TEMP/rose-garden-source-research"
+        shell: bash
+
+      - name: Upload metadata-only research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rose-garden-source-metadata-${{ github.run_id }}
+          path: ${{ runner.temp }}/rose-garden-source-research/
+          if-no-files-found: warn
+          retention-days: 30

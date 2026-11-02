@@ -1,0 +1,248 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=e8]:
+    - search [ref=e9]:
+      - generic [ref=e11]:
+        - link "Google 首页" [ref=e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQPHoECAYQBA
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - combobox "搜索" [ref=e20]: "\"Katie Zacharia\" \"October 13, 2026\" video briefing \"Katie Zacharia\" \"October 13, 2026\" video briefing"
+            - generic [ref=e21]:
+              - button "清除" [ref=e23] [cursor=pointer]
+              - generic [ref=e28]:
+                - button "按语音搜索" [ref=e29] [cursor=pointer]
+                - button "按图搜索" [ref=e32] [cursor=pointer]
+          - button "搜索" [ref=e35] [cursor=pointer]
+    - generic [ref=e40]:
+      - button "设置" [ref=e42] [cursor=pointer]
+      - button "分享" [ref=e47] [cursor=pointer]
+      - generic [ref=e53]:
+        - button "Google 应用" [ref=e55] [cursor=pointer]
+        - link "登录" [ref=e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Katie%2BZacharia%2522%2B%2522October%2B13%252C%2B2026%2522%2Bvideo%2Bbriefing&ec=futura_srp_og_si_72236_p
+  - generic [ref=e62]:
+    - navigation [ref=e68]:
+      - generic [ref=e74]:
+        - list [ref=e75]:
+          - listitem [ref=e76]:
+            - link "全部" [disabled] [ref=e77]
+          - listitem [ref=e80]:
+            - link "新闻" [ref=e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ0pQJegQIGRAB
+          - listitem [ref=e84]:
+            - link "视频" [ref=e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQtKgLegQIFxAB
+          - listitem [ref=e88]:
+            - link "图片" [ref=e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQtKgLegQIFRAB
+          - listitem [ref=e92]:
+            - link "短视频" [ref=e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQs6gLegQIFhAB
+          - listitem [ref=e96]:
+            - link "网页" [ref=e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQs6gLegQIFBAB
+          - listitem [ref=e100]:
+            - link "图书" [ref=e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp2jJW2IGeYc1a2c81EFEM5zhwAPkCApVt_3IWqzf8Fuogy_xd5CwBQhNuLavN-bz8WzjrZI4lpHAZ2avV5QyBipil5yLtofwSKwckQ8aPqFeKnUdLGQ5uG9EcpxLf99_M2_OIi0VXDq8rwYB-AyXpnSUhwrG&sa=X&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ0pQJegQIGBAB
+          - listitem [ref=e104]:
+            - button [ref=e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=e106]: 更多
+        - button "工具" [ref=e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=e120]
+    - main [ref=e126]:
+      - generic [ref=e130]:
+        - generic [ref=e136]:
+          - generic [ref=e139]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ... The White House · The White House https://www.whitehouse.gov · 1天前" [ref=e141] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFfZX4u4NFyqNRlLo-lOqYvdRMIDWVh2ycf_xppnncBxN39oDwxjmjbM42qforhZsuLZPn0HXGrtN_TjyXfGs5bWLSr2zr5M2_ItunL6agXhFI3lKjxo7c-J-Ntl3a9Pg71cCwv0cdGSMUfbosUDzyi3FYyu79h_EuqSGYS8vLFrBmPSGwwG7S6lKleDwvoZEs4GnQ0hIEswdg0gtB5nX7g
+              - heading "Press Secretary Katie Zacharia Briefs Members of the Media, ..." [level=3] [ref=e142]
+              - generic [ref=e148]:
+                - generic [ref=e149]: The White House · The White House
+                - generic [ref=e151]: https://www.whitehouse.gov · 1天前
+            - button "关于这条结果的详细信息" [ref=e157] [cursor=pointer]
+          - generic [ref=e162]:
+            - link "Press Secretary Katie Zacharia Briefs Members of the Media, ...，由The White House上传到The White House上. 在The White House上播放." [ref=e163] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFfZX4u4NFyqNRlLo-lOqYvdRMIDWVh2ycf_xppnncBxN39oDwxjmjbM42qforhZsuLZPn0HXGrtN_TjyXfGs5bWLSr2zr5M2_ItunL6agXhFI3lKjxo7c-J-Ntl3a9Pg71cCwv0cdGSMUfbosUDzyi3FYyu79h_EuqSGYS8vLFrBmPSGwwG7S6lKleDwvoZEs4GnQ0hIEswdg0gtB5nX7g
+              - generic [ref=e164]: 直播
+            - generic [ref=e176]: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026. October 13, 2026. Tap to unmute. Your browser can't play this video.
+        - generic [ref=e184]:
+          - generic [ref=e187]:
+            - 'link "FULL White House Press Briefing: October 13, 2026 YouTube · FOX 29 Philadelphia 2.5万+ 次观看 · 1天前" [ref=e189] [cursor=pointer]':
+              - /url: /goto?url=CAESZgHrOzAVBDII9dDhhHRftnrU-F9XuFSBG7lxDjiG094kol77vRdpWkZ1jITddNJ-cncO-UUb3RHNVjB4tl0ClDBkmuoN-S_Gxn4zeU_9ibWxyAjOjR2R5EomzrfxTVsJCVT88-AoTw
+              - 'heading "FULL White House Press Briefing: October 13, 2026" [level=3] [ref=e190]'
+              - generic [ref=e196]:
+                - generic [ref=e197]: YouTube · FOX 29 Philadelphia
+                - generic [ref=e199]: 2.5万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=e205] [cursor=pointer]
+          - generic [ref=e210]:
+            - 'button "FULL White House Press Briefing: October 13, 2026，由FOX 29 Philadelphia上传到YouTube上. 在 Google 上播放. 14:34" [ref=e211] [cursor=pointer]':
+              - generic [ref=e212]: 14:34
+            - generic [ref=e228]: "Watch White House Press Secretary Katie Zacharia hold a press briefing at the White House ... FULL White House Press Briefing: October 13, 2026."
+        - generic [ref=e236]:
+          - generic [ref=e239]:
+            - link "Katie Zacharia Holds First Press Briefing as New White House ... YouTube · Right Side Broadcasting Network 19.6万+ 次观看 · 1天前" [ref=e241] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVOIC6A5NSbnC6oiB5bvc5CcuGxO9gs2RA2PbzRmWGMPjOAB7CXIgx5jjNsaqkloKmYwBKBgd0-txEWGQE4n1rUIsDSBeI4Fy5nV5g07WengWnyN72KDAEcsnuGFyyNM8EbQ
+              - heading "Katie Zacharia Holds First Press Briefing as New White House ..." [level=3] [ref=e242]
+              - generic [ref=e248]:
+                - generic [ref=e249]: YouTube · Right Side Broadcasting Network
+                - generic [ref=e251]: 19.6万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=e257] [cursor=pointer]
+          - generic [ref=e262]:
+            - button "Katie Zacharia Holds First Press Briefing as New White House ...，由Right Side Broadcasting Network上传到YouTube上. 在 Google 上播放. 14:08" [ref=e263] [cursor=pointer]:
+              - generic [ref=e264]: 14:08
+            - generic [ref=e280]: "Katie Zacharia Holds First Press Briefing as New White House Press Sec. October 13, 2026 Join this channel to get access to perks: ..."
+        - generic [ref=e287]:
+          - generic [ref=e290]:
+            - link "Kaitlan Collins on Katie Zacharia's 'brutal' WH Press Briefing CNN https://www.cnn.com · 1天前" [ref=e292] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFSHAaq9nsDsC_KsCzXZBOWNEScRbhu3X6VHJUYlTNwp3MNEFd1nC9xnaR2Iyz0yC-zLlWchTE8QzjXhVU7YS1CtkkrkySqbE1wfkv-8YOYT5LdlzaiuXs1Ql-Nk0z0R8_nByq10w9R9julvrfO3bz4CNNKhll28LvAbp7xCSR0GbWevVDKYqDTRSxhpXTd5sqpwYnimhNaa-Xk4CCud2sg
+              - heading "Kaitlan Collins on Katie Zacharia's 'brutal' WH Press Briefing" [level=3] [ref=e293]
+              - generic [ref=e299]:
+                - generic [ref=e300]: CNN
+                - generic [ref=e302]: https://www.cnn.com · 1天前
+            - button "关于这条结果的详细信息" [ref=e308] [cursor=pointer]
+          - generic [ref=e313]:
+            - link "CNN上的视频《Kaitlan Collins on Katie Zacharia's 'brutal' WH Press Briefing》. 在CNN上播放. 5:14" [ref=e314] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFSHAaq9nsDsC_KsCzXZBOWNEScRbhu3X6VHJUYlTNwp3MNEFd1nC9xnaR2Iyz0yC-zLlWchTE8QzjXhVU7YS1CtkkrkySqbE1wfkv-8YOYT5LdlzaiuXs1Ql-Nk0z0R8_nByq10w9R9julvrfO3bz4CNNKhll28LvAbp7xCSR0GbWevVDKYqDTRSxhpXTd5sqpwYnimhNaa-Xk4CCud2sg
+              - generic [ref=e315]: 5:14
+            - generic [ref=e324]: ... October 13, 2026 ... What Kaitlan Collins' sources are saying about Katie Zacharia's first press briefing.
+        - generic [ref=e331]:
+          - generic [ref=e334]:
+            - link "New White House press secretary stumbles in first briefing CBC https://www.cbc.ca · 1天前" [ref=e336] [cursor=pointer]:
+              - /url: /goto?url=CAESaQHrOzAVqFN2wuoLDenvqwAyiU4fdd6-JqY_alfuMZL0Ke2Ks4E6yRJcOZYAcEFH-bsoafxLiKdfW_h3Sa-74Ed2nF0cyZ_J7UDbsZcuGbU5r9tQWcJ7cGTLlBws85dfX8mNAF4MM2Rcww
+              - heading "New White House press secretary stumbles in first briefing" [level=3] [ref=e337]
+              - generic [ref=e343]:
+                - generic [ref=e344]: CBC
+                - generic [ref=e346]: https://www.cbc.ca · 1天前
+            - button "关于这条结果的详细信息" [ref=e352] [cursor=pointer]
+          - generic [ref=e357]:
+            - link "CBC上的视频《New White House press secretary stumbles in first briefing》. 在CBC上播放. 4:01" [ref=e358] [cursor=pointer]:
+              - /url: /goto?url=CAESaQHrOzAVqFN2wuoLDenvqwAyiU4fdd6-JqY_alfuMZL0Ke2Ks4E6yRJcOZYAcEFH-bsoafxLiKdfW_h3Sa-74Ed2nF0cyZ_J7UDbsZcuGbU5r9tQWcJ7cGTLlBws85dfX8mNAF4MM2Rcww
+              - generic [ref=e359]: 4:01
+            - generic [ref=e368]: Donald Trump's new press secretary Katie Zacharia took only three questions in her first briefing ... October 13, 2026 · 5:03 PM PDT.
+        - generic [ref=e376]:
+          - generic [ref=e379]:
+            - link "Katie Zacharia's first White House press briefing draws criticism ... YouTube · CTV News 2.6万+ 次观看 · 1天前" [ref=e381] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVirbdIdhENfBdO-zlC3u82QMeos_dZ-CEmwEWRaUj9L8IY7ina5zi6nEirKSaWzXi4yyYuR8Knqpl3rRir5QuCu1LnwuHGCu61LmvKV35qXpbIk4eofuPNEKsgbYhx7yamg
+              - heading "Katie Zacharia's first White House press briefing draws criticism ..." [level=3] [ref=e382]
+              - generic [ref=e388]:
+                - generic [ref=e389]: YouTube · CTV News
+                - generic [ref=e391]: 2.6万+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=e397] [cursor=pointer]
+          - generic [ref=e402]:
+            - button "Katie Zacharia's first White House press briefing draws criticism ...，由CTV News上传到YouTube上. 在 Google 上播放. 1:34" [ref=e403] [cursor=pointer]:
+              - generic [ref=e404]: 1:34
+            - generic [ref=e420]: What Kaitlan Collins found 'bizarre' about Katie Zacharia's first WH briefing ... October 13, 2026. تعلم الانجليزية Learn english. New. 363K views.
+        - generic [ref=e427]:
+          - generic [ref=e430]:
+            - link "Katie Zacharia's widely-criticized full press briefing CTV News https://www.ctvnews.ca · 14小时前" [ref=e432] [cursor=pointer]:
+              - /url: /goto?url=CAESmQEB6zswFaZV4LtkAn_PnnNkWVux_g1Qguwo7UdOjEbTIH8xxeJKeCq-JnIfjTG9YrYsgzgLMDNWxStLbdP23sCUqQ6qL1EyEwjiH5UY7NFfAYoSg5xWB-JFOsZ-VIEatAXO9pZByxUiQdvsVw-NDC9KKhpn-ykgX3mGuLlZ6XOV9qvMey7oXPWMV4_7HHwdS7Jg7uE19bGDpa0
+              - heading "Katie Zacharia's widely-criticized full press briefing" [level=3] [ref=e433]
+              - generic [ref=e439]:
+                - generic [ref=e440]: CTV News
+                - generic [ref=e442]: https://www.ctvnews.ca · 14小时前
+            - button "关于这条结果的详细信息" [ref=e448] [cursor=pointer]
+          - generic [ref=e453]:
+            - link "CTV News上的视频《Katie Zacharia's widely-criticized full press briefing》. 在CTV News上播放. 8:29" [ref=e454] [cursor=pointer]:
+              - /url: /goto?url=CAESmQEB6zswFaZV4LtkAn_PnnNkWVux_g1Qguwo7UdOjEbTIH8xxeJKeCq-JnIfjTG9YrYsgzgLMDNWxStLbdP23sCUqQ6qL1EyEwjiH5UY7NFfAYoSg5xWB-JFOsZ-VIEatAXO9pZByxUiQdvsVw-NDC9KKhpn-ykgX3mGuLlZ6XOV9qvMey7oXPWMV4_7HHwdS7Jg7uE19bGDpa0
+              - generic [ref=e455]: 8:29
+            - generic [ref=e464]: Katie Zacharia's widely-criticized full press briefing. Watch the ... October 13, 2026 at 10:03a.m. EDT. Ottawa weighs legal actions as ...
+        - generic [ref=e471]:
+          - generic [ref=e474]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing YouTube · C-SPAN 3190+ 次观看 · 1天前" [ref=e476] [cursor=pointer]:
+              - /url: /goto?url=CAESbQHrOzAVG8eOYsdMqAx9EE_Mjy0Wxyjv6BV2z7rmED04as2Y7Ohp7YFH2gLnsdtZrlSuUqvU23HrrUotPaswkXsib-j7qkH_9sgZp804OzWIODek_XtrNtaWkP4f9nLByDzupaXmuOKxCs_6lkI
+              - heading "White House Press Secretary Katie Zacharia Holds First Briefing" [level=3] [ref=e477]
+              - generic [ref=e483]:
+                - generic [ref=e484]: YouTube · C-SPAN
+                - generic [ref=e486]: 3190+ 次观看 · 1天前
+            - button "关于这条结果的详细信息" [ref=e492] [cursor=pointer]
+          - generic [ref=e497]:
+            - link "White House Press Secretary Katie Zacharia Holds First Briefing，由C-SPAN上传到YouTube上. 在YouTube上播放. 35:35" [ref=e498] [cursor=pointer]:
+              - /url: /goto?url=CAESbQHrOzAVG8eOYsdMqAx9EE_Mjy0Wxyjv6BV2z7rmED04as2Y7Ohp7YFH2gLnsdtZrlSuUqvU23HrrUotPaswkXsib-j7qkH_9sgZp804OzWIODek_XtrNtaWkP4f9nLByDzupaXmuOKxCs_6lkI
+              - generic [ref=e499]: 35:35
+            - generic [ref=e511]: "Comments · 'Quite unusual': Kaitlan Collins reacts to Katie Zacharia's first WH briefing · Top U.S. & World Headlines — October 13, 2026 · WH ..."
+        - generic [ref=e518]:
+          - generic [ref=e521]:
+            - link "The New White House Press Secretary Has Awkward Debut The New York Times https://www.nytimes.com · 1天前" [ref=e523] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFYlEjogA7ejad06-8cmakyIRR543sfk838roVcagOcgiuefNXYHODGHT8pIMnB5kbXdwAqzhjo_AseuLRAQl4aeIKJgZz1pdqgzKWgDSZLKiVwpj-ZWkm2ZzSpd1rsw9TL-N7JFx5VM-LaQ264STPMyhDDgg0OCpMPufuzU-Ls63X5R8SZVqEWA90kS6_YIGUZl6IFEfgUuSv2bkKZXuGw
+              - heading "The New White House Press Secretary Has Awkward Debut" [level=3] [ref=e524]
+              - generic [ref=e530]:
+                - generic [ref=e531]: The New York Times
+                - generic [ref=e533]: https://www.nytimes.com · 1天前
+            - button "关于这条结果的详细信息" [ref=e539] [cursor=pointer]
+          - generic [ref=e544]:
+            - link "The New York Times上的视频《The New White House Press Secretary Has Awkward Debut》. 在The New York Times上播放. 0:53" [ref=e545] [cursor=pointer]:
+              - /url: /goto?url=CAESpAEB6zswFYlEjogA7ejad06-8cmakyIRR543sfk838roVcagOcgiuefNXYHODGHT8pIMnB5kbXdwAqzhjo_AseuLRAQl4aeIKJgZz1pdqgzKWgDSZLKiVwpj-ZWkm2ZzSpd1rsw9TL-N7JFx5VM-LaQ264STPMyhDDgg0OCpMPufuzU-Ls63X5R8SZVqEWA90kS6_YIGUZl6IFEfgUuSv2bkKZXuGw
+              - generic [ref=e546]: 0:53
+            - generic [ref=e555]: President Trump's new press secretary, Katie Zacharia, held her first press briefing on Tuesday morning at the White House lectern.
+        - generic [ref=e562]:
+          - generic [ref=e565]:
+            - link "White House Press Secretary Katie Zacharia told reporters on ... Facebook · C-SPAN 560+ 个回应 · 1天前" [ref=e567] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFZGjC-o5vM1hYXPV-QisPLdtPWiMzDJSj-hybJR1JmLcOk2m6aggCyuyzncoPoonz1OqIr6uP3sNGMkwEc6J-7CjssXKf3X5JlI4GbLWT4CRop86sJTadE8D4I8T-W7sMPGafAAlMy6sZDzhnLO3O6cM7duOw9p2fz3coW5zbrs6w1w074k7M1wnw1unSPZyHXZD4e2fzLypoHBJfDMjSssrkgSFw1nkdHhAjVVw8Bx6XbmsINNqSCQrCz8R3TMF
+              - heading "White House Press Secretary Katie Zacharia told reporters on ..." [level=3] [ref=e568]
+              - generic [ref=e574]:
+                - generic [ref=e575]: Facebook · C-SPAN
+                - generic [ref=e577]: 560+ 个回应 · 1天前
+            - button "关于这条结果的详细信息" [ref=e583] [cursor=pointer]
+          - generic [ref=e588]:
+            - link "White House Press Secretary Katie Zacharia told reporters on ...，由C-SPAN上传到Facebook上. 在Facebook上播放. 0:24" [ref=e589] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFZGjC-o5vM1hYXPV-QisPLdtPWiMzDJSj-hybJR1JmLcOk2m6aggCyuyzncoPoonz1OqIr6uP3sNGMkwEc6J-7CjssXKf3X5JlI4GbLWT4CRop86sJTadE8D4I8T-W7sMPGafAAlMy6sZDzhnLO3O6cM7duOw9p2fz3coW5zbrs6w1w074k7M1wnw1unSPZyHXZD4e2fzLypoHBJfDMjSssrkgSFw1nkdHhAjVVw8Bx6XbmsINNqSCQrCz8R3TMF
+              - generic [ref=e590]: 0:24
+            - generic [ref=e599]: ... for her resignation during a briefing on October 13, 2026. More videos you may like. AMAC - The Association of Mature American Citizens. 6y · ...
+      - navigation [ref=e603]:
+        - heading "网页导航" [level=1] [ref=e604]
+        - text: "1"
+        - link "Page 2" [ref=e607] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=10&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAE
+          - text: "2"
+        - link "Page 3" [ref=e609] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=20&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAG
+          - text: "3"
+        - link "Page 4" [ref=e611] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=30&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAI
+          - text: "4"
+        - link "Page 5" [ref=e613] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=40&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAK
+          - text: "5"
+        - link "Page 6" [ref=e615] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=50&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAM
+          - text: "6"
+        - link "Page 7" [ref=e617] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=60&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAO
+          - text: "7"
+        - link "Page 8" [ref=e619] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=70&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAQ
+          - text: "8"
+        - link "Page 9" [ref=e621] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=80&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAS
+          - text: "9"
+        - link "Page 10" [ref=e623] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=90&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8tMDegQIGxAU
+          - text: "10"
+        - heading [level=2] [ref=e625]:
+          - link "下一页" [ref=e626] [cursor=pointer]:
+            - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+video+briefing&newwindow=1&sca_esv=b806ac0cce3d6a6a&sxsrf=APpeQnvZrlV5Pkm9rUiJ1r_BzKGQWLM6Tg:1792031166934&ei=vjnQav3JOLOjur8P-bf7wA8&start=10&sa=N&sstk=AS6-VmI5QFHQ0y5dMOhQp4jxlNFkZh4eyHwKaH0R325r97d-kPeC6_Lb3y4KNjyL5yOq8lR6SxW5V0mBnSgTVR12C8GP7U7ImpYkxg&ved=2ahUKEwj9oIap_LqXAxWzke4BHfnbHvgQ8NMDegQIGxAW
+      - navigation
+    - contentinfo [ref=e629]:
+      - heading "页脚链接" [level=1] [ref=e630]
+      - generic [ref=e634]:
+        - generic [ref=e638]:
+          - button "美兰区 中国海南省海口市 - 是根据您的 IP 地址推断出来的" [ref=e640] [cursor=pointer]:
+            - generic [ref=e641]: 美兰区 中国海南省海口市
+            - generic [ref=e643]:
+              - text: "-"
+              - generic [ref=e644]: 是根据您的 IP 地址推断出来的
+          - text: "-"
+          - button "更新位置信息" [ref=e646] [cursor=pointer]
+        - generic [ref=e649]:
+          - link "帮助" [ref=e650] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=e652] [cursor=pointer]
+          - link "隐私权" [ref=e654] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=e655] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

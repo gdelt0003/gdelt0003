@@ -1,0 +1,17 @@
+[    1620ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'join-ad-interest-group'. @ :0
+[    1620ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'run-ad-auction'. @ :0
+[   10536ms] Uncaught (in promise) Error: Load timeout for modules: idcta-v2/statusbar,idcta-v2/idcta-1
+http://requirejs.org/docs/errors.html#timeout
+    at makeError (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:100:8)
+    at P (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:479:18)
+    at <anonymous> (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:512:24)
+[   10536ms] Uncaught (in promise) Error: Load timeout for modules: idcta-v2/statusbar,idcta-v2/idcta-1
+http://requirejs.org/docs/errors.html#timeout
+    at makeError (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:100:8)
+    at P (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:479:18)
+    at <anonymous> (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:512:24)
+[   19228ms] Uncaught (in promise) Error: Load timeout for modules: idcta-v2/statusbar,idcta-v2/idcta-1
+http://requirejs.org/docs/errors.html#timeout
+    at makeError (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:100:8)
+    at P (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:479:18)
+    at <anonymous> (https://static.files.bbci.co.uk/orbit/7ae881a3a30d50ff4fb1a4bdc97239ec/js/require.min.js:512:24)

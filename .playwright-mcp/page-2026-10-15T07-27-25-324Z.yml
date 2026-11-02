@@ -1,0 +1,15 @@
+- main [ref=e2]:
+  - navigation "页面导航" [ref=e3]:
+    - link "返回主视频" [ref=e4] [cursor=pointer]:
+      - /url: ../../#featured-video
+  - region [ref=e5]:
+    - generic [ref=e6]:
+      - paragraph [ref=e7]: 事件来源核验
+      - heading "来源与版本信心" [level=1] [ref=e8]
+      - paragraph [ref=e9]: 2026-10-13 · Katie Zacharia 白宫简报
+      - heading "正在读取事件来源…" [level=2] [ref=e10]
+      - status [ref=e11]: 正在读取来源记录…
+    - region [ref=e12]:
+      - heading "预览版本与处理记录" [level=3] [ref=e13]
+    - heading "来源候选与版本信心" [level=3] [ref=e14]
+    - paragraph [ref=e15]: 本页展示仓库静态清单快照，不执行实时检索、夜间复核或自动验证。播放量、托管平台和发布方不等同于来源可信度；未知或未核验字段不会被推定。内嵌横幅/标志与遮挡分别记录，遮挡状态未核验，不代表画面无遮挡；来源信任评分口径尚未定义，因此不提供或排序虚构分值。当前页面仅说明静态证据，不代表云端真实渲染已按要求合格。

@@ -1,0 +1,264 @@
+- generic [active] [ref=f164e1]:
+  - navigation [ref=f164e2]:
+    - generic [ref=f164e3]:
+      - link [ref=f164e4] [cursor=pointer]:
+        - /url: https://aclanthology.org/
+        - img "ACL Logo" [ref=f164e5]
+        - text: ACL Anthology
+      - generic [ref=f164e6]:
+        - list [ref=f164e7]:
+          - listitem [ref=f164e8]:
+            - button "Open About menu" [ref=f164e9] [cursor=pointer]:
+              - text: About
+              - generic [ref=f164e10]: 
+          - listitem [ref=f164e11]:
+            - button "Open Using menu" [ref=f164e12] [cursor=pointer]:
+              - text: Using
+              - generic [ref=f164e13]: 
+          - listitem [ref=f164e14]:
+            - button "Open Contributions menu" [ref=f164e15] [cursor=pointer]:
+              - text: Contributions
+              - generic [ref=f164e16]: 
+          - listitem [ref=f164e17]:
+            - link " GitHub" [ref=f164e18] [cursor=pointer]:
+              - /url: https://github.com/acl-org/acl-anthology/
+              - generic [ref=f164e19]: 
+              - text: GitHub
+        - text: 
+      - search [ref=f164e20]:
+        - combobox "Search papers or authors" [ref=f164e21]
+        - button "Submit search" [ref=f164e22] [cursor=pointer]:
+          - generic [ref=f164e23]: 
+        - status [ref=f164e24]
+  - generic [ref=f164e26]:
+    - generic [ref=f164e27]:
+      - heading [level=2] [ref=f164e28]:
+        - 'link "Findings of the WMT25 General Machine Translation Shared Task: Time to Stop Evaluating on Easy Test Sets" [ref=f164e29] [cursor=pointer]':
+          - /url: https://aclanthology.org/2025.wmt-1.22.pdf
+      - paragraph [ref=f164e30]:
+        - link "Tom Kocmi" [ref=f164e31] [cursor=pointer]:
+          - /url: /people/tom-kocmi/
+        - text: ","
+        - link "Ekaterina Artemova" [ref=f164e32] [cursor=pointer]:
+          - /url: /people/ekaterina-artemova/unverified/
+        - text: ","
+        - link "Eleftherios Avramidis" [ref=f164e33] [cursor=pointer]:
+          - /url: /people/eleftherios-avramidis/
+        - text: ","
+        - link "Rachel Bawden" [ref=f164e34] [cursor=pointer]:
+          - /url: /people/rachel-bawden/
+        - text: ","
+        - link "Ondřej Bojar" [ref=f164e35] [cursor=pointer]:
+          - /url: /people/ondrej-bojar/
+        - text: ","
+        - link "Konstantin Dranch" [ref=f164e36] [cursor=pointer]:
+          - /url: /people/konstantin-dranch/unverified/
+        - text: ","
+        - link "Anton Dvorkovich" [ref=f164e37] [cursor=pointer]:
+          - /url: /people/anton-dvorkovich/unverified/
+        - text: ","
+        - link "Sergey Dukanov" [ref=f164e38] [cursor=pointer]:
+          - /url: /people/sergey-dukanov/unverified/
+        - text: ","
+        - link "Mark Fishel" [ref=f164e39] [cursor=pointer]:
+          - /url: /people/mark-fishel/
+        - text: ","
+        - link "Markus Freitag" [ref=f164e40] [cursor=pointer]:
+          - /url: /people/markus-freitag/
+        - text: ","
+        - link "Thamme Gowda" [ref=f164e41] [cursor=pointer]:
+          - /url: /people/thamme-gowda/unverified/
+        - text: ","
+        - link "Roman Grundkiewicz" [ref=f164e42] [cursor=pointer]:
+          - /url: /people/roman-grundkiewicz/unverified/
+        - text: ","
+        - link "Barry Haddow" [ref=f164e43] [cursor=pointer]:
+          - /url: /people/barry-haddow/unverified/
+        - text: ","
+        - link "Marzena Karpinska" [ref=f164e44] [cursor=pointer]:
+          - /url: /people/marzena-karpinska/
+        - text: ","
+        - link "Philipp Koehn" [ref=f164e45] [cursor=pointer]:
+          - /url: /people/philipp-koehn/
+        - text: ","
+        - link "Howard Lakougna" [ref=f164e46] [cursor=pointer]:
+          - /url: /people/howard-lakougna/unverified/
+        - text: ","
+        - link "Jessica Lundin" [ref=f164e47] [cursor=pointer]:
+          - /url: /people/jessica-lundin/unverified/
+        - text: ","
+        - link "Christof Monz" [ref=f164e48] [cursor=pointer]:
+          - /url: /people/christof-monz/
+        - text: ","
+        - link "Kenton Murray" [ref=f164e49] [cursor=pointer]:
+          - /url: /people/kenton-murray/
+        - text: ","
+        - link "Masaaki Nagata" [ref=f164e50] [cursor=pointer]:
+          - /url: /people/masaaki-nagata/
+        - text: ","
+        - link "Stefano Perrella" [ref=f164e51] [cursor=pointer]:
+          - /url: /people/stefano-perrella/
+        - text: ","
+        - link "Lorenzo Proietti" [ref=f164e52] [cursor=pointer]:
+          - /url: /people/lorenzo-proietti/
+        - text: ","
+        - link "Martin Popel" [ref=f164e53] [cursor=pointer]:
+          - /url: /people/martin-popel/unverified/
+        - text: ","
+        - link "Maja Popović" [ref=f164e54] [cursor=pointer]:
+          - /url: /people/maja-popovic/
+        - text: ","
+        - link "Parker Riley" [ref=f164e55] [cursor=pointer]:
+          - /url: /people/parker-riley/unverified/
+        - text: ","
+        - link "Mariya Shmatova" [ref=f164e56] [cursor=pointer]:
+          - /url: /people/mariya-shmatova/unverified/
+        - text: ","
+        - link "Steinthór Steingrímsson" [ref=f164e57] [cursor=pointer]:
+          - /url: /people/steinthor-steingrimsson/
+        - text: ","
+        - link "Lisa Yankovskaya" [ref=f164e58] [cursor=pointer]:
+          - /url: /people/lisa-yankovskaya/unverified/
+        - text: ","
+        - link "Vilém Zouhar" [ref=f164e59] [cursor=pointer]:
+          - /url: /people/vilem-zouhar/
+    - separator [ref=f164e60]
+    - generic [ref=f164e61]:
+      - generic [ref=f164e62]:
+        - generic [ref=f164e64]:
+          - heading "Abstract" [level=5] [ref=f164e65]
+          - text: "This paper presents the results of the General Machine Translation Task organized as part of the 2025 Conference on Machine Translation (WMT). Participants were invited to build systems for any of 30 language pairs. For half of these pairs, we conducted a human evaluation on test sets spanning four to five different domains.We evaluated 60 systems in total: 36 submitted by participants and 24 for which we collected translations from large language models (LLMs) and popular online translation providers.This year, we focused on creating challenging test sets by developing a difficulty sampling technique and using more complex source data. We evaluated system outputs with professional annotators using the Error Span Annotation (ESA) protocol, except for two language pairs, for which we used Multidimensional Quality Metrics (MQM) instead.We continued the trend of increasingly moving towards document-level translation, providing the source texts as whole documents containing multiple paragraphs."
+        - generic [ref=f164e66]:
+          - term [ref=f164e67]: "Anthology ID:"
+          - definition [ref=f164e68]: 2025.wmt-1.22
+          - term [ref=f164e69]: "Volume:"
+          - definition [ref=f164e70]:
+            - link "Proceedings of the Tenth Conference on Machine Translation" [ref=f164e71] [cursor=pointer]:
+              - /url: /volumes/2025.wmt-1/
+          - term [ref=f164e72]: "Month:"
+          - definition [ref=f164e73]: November
+          - term [ref=f164e74]: "Year:"
+          - definition [ref=f164e75]: "2025"
+          - term [ref=f164e76]: "Address:"
+          - definition [ref=f164e77]: Suzhou, China
+          - term [ref=f164e78]: "Editors:"
+          - definition [ref=f164e79]:
+            - link "Barry Haddow" [ref=f164e80] [cursor=pointer]:
+              - /url: /people/barry-haddow/unverified/
+            - text: ","
+            - link "Tom Kocmi" [ref=f164e81] [cursor=pointer]:
+              - /url: /people/tom-kocmi/
+            - text: ","
+            - link "Philipp Koehn" [ref=f164e82] [cursor=pointer]:
+              - /url: /people/philipp-koehn/
+            - text: ","
+            - link "Christof Monz" [ref=f164e83] [cursor=pointer]:
+              - /url: /people/christof-monz/
+          - term [ref=f164e84]: "Venue:"
+          - definition [ref=f164e85]:
+            - link "WMT" [ref=f164e86] [cursor=pointer]:
+              - /url: /venues/wmt/
+          - term [ref=f164e87]: "SIG:"
+          - definition [ref=f164e88]:
+            - link "SIGMT" [ref=f164e89] [cursor=pointer]:
+              - /url: /sigs/sigmt/
+          - term [ref=f164e90]: "Publisher:"
+          - definition [ref=f164e91]: Association for Computational Linguistics
+          - term [ref=f164e92]: "Note:"
+          - definition [ref=f164e93]: –
+          - term [ref=f164e94]: "Pages:"
+          - definition [ref=f164e95]: 355–413
+          - term [ref=f164e96]: "Language:"
+          - definition [ref=f164e97]: –
+          - term [ref=f164e98]: "URL:"
+          - definition [ref=f164e99]:
+            - link "https://aclanthology.org/2025.wmt-1.22/" [ref=f164e100] [cursor=pointer]:
+              - /url: https://aclanthology.org/2025.wmt-1.22/
+          - term [ref=f164e101]: "DOI:"
+          - definition [ref=f164e102]:
+            - link "10.18653/v1/2025.wmt-1.22" [ref=f164e103] [cursor=pointer]:
+              - /url: https://doi.org/10.18653/v1/2025.wmt-1.22
+          - term [ref=f164e104]: "Bibkey:"
+          - definition [ref=f164e105]:
+            - button "Copy Bibkey to clipboard" [ref=f164e106] [cursor=pointer]:
+              - generic [ref=f164e107]: 
+              - text: kocmi-etal-2025-findings
+          - term [ref=f164e108]: "Cite (ACL):"
+          - definition [ref=f164e109]:
+            - generic [ref=f164e110]:
+              - text: Tom Kocmi, Ekaterina Artemova, Eleftherios Avramidis, Rachel Bawden, Ondřej Bojar, Konstantin Dranch, Anton Dvorkovich, Sergey Dukanov, Mark Fishel, Markus Freitag, Thamme Gowda, Roman Grundkiewicz, Barry Haddow, Marzena Karpinska, Philipp Koehn, Howard Lakougna, Jessica Lundin, Christof Monz, Kenton Murray, Masaaki Nagata, Stefano Perrella, Lorenzo Proietti, Martin Popel, Maja Popović, Parker Riley, Mariya Shmatova, Steinthór Steingrímsson, Lisa Yankovskaya, and Vilém Zouhar. 2025.
+              - 'link "Findings of the WMT25 General Machine Translation Shared Task: Time to Stop Evaluating on Easy Test Sets" [ref=f164e111] [cursor=pointer]':
+                - /url: https://aclanthology.org/2025.wmt-1.22/
+              - text: . In Proceedings of the Tenth Conference on Machine Translation, pages 355–413, Suzhou, China. Association for Computational Linguistics.
+            - button "Copy ACL citation to clipboard" [ref=f164e112] [cursor=pointer]:
+              - generic [ref=f164e113]: 
+          - term [ref=f164e114]: "Cite (Informal):"
+          - definition [ref=f164e115]:
+            - generic [ref=f164e116]:
+              - 'link "Findings of the WMT25 General Machine Translation Shared Task: Time to Stop Evaluating on Easy Test Sets" [ref=f164e117] [cursor=pointer]':
+                - /url: https://aclanthology.org/2025.wmt-1.22/
+              - text: (Kocmi et al., WMT 2025)
+            - button "Copy informal citation to clipboard" [ref=f164e118] [cursor=pointer]:
+              - generic [ref=f164e119]: 
+          - term [ref=f164e120]: "Copy Citation:"
+          - definition [ref=f164e121]:
+            - button "Copy BibTeX to clipboard" [ref=f164e122] [cursor=pointer]:
+              - generic [ref=f164e123]: 
+              - text: BibTeX
+            - button "Copy Markdown to clipboard" [ref=f164e124] [cursor=pointer]:
+              - generic [ref=f164e125]: 
+              - text: Markdown
+            - button "Copy MODS XML to clipboard" [ref=f164e126] [cursor=pointer]:
+              - generic [ref=f164e127]: 
+              - text: MODS XML
+            - button "Copy Endnote to clipboard" [ref=f164e128] [cursor=pointer]:
+              - generic [ref=f164e129]: 
+              - text: Endnote
+            - button "More options…" [ref=f164e130] [cursor=pointer]
+          - term [ref=f164e131]: "PDF:"
+          - definition [ref=f164e132]:
+            - link "https://aclanthology.org/2025.wmt-1.22.pdf" [ref=f164e133] [cursor=pointer]:
+              - /url: https://aclanthology.org/2025.wmt-1.22.pdf
+      - generic [ref=f164e134]:
+        - link " PDF" [ref=f164e135] [cursor=pointer]:
+          - /url: https://aclanthology.org/2025.wmt-1.22.pdf
+          - generic [ref=f164e136]: 
+          - text: PDF
+        - link " Cite" [ref=f164e137] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f164e138]: 
+          - text: Cite
+        - link "Search for this paper on Semantic Scholar" [ref=f164e139] [cursor=pointer]:
+          - /url: https://www.semanticscholar.org/search?+q=Findings+of+the+WMT25+General+Machine+Translation+Shared+Task%3A+Time+to+Stop+Evaluating+on+Easy+Test+Sets
+          - generic [ref=f164e140]: 
+          - text: Search
+        - link "Suggest a correction for this paper's metadata" [ref=f164e141] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f164e142]: 
+          - generic [ref=f164e144]: Fix data
+    - separator [ref=f164e145]
+    - text:        
+  - contentinfo [ref=f164e146]:
+    - generic [ref=f164e147]:
+      - paragraph [ref=f164e148]:
+        - link [ref=f164e150] [cursor=pointer]:
+          - /url: http://creativecommons.org/licenses/by/4.0/
+          - img "Creative Commons License" [ref=f164e151]
+        - text: ACL materials are Copyright © 1963–2026 ACL; other materials are copyrighted by their respective copyright holders. Materials prior to 2016 here are licensed under the
+        - link "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 International License" [ref=f164e152] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+        - text: . Permission is granted to make copies for the purposes of teaching and research. Materials published in or after 2016 are licensed on a
+        - link "Creative Commons Attribution 4.0 International License" [ref=f164e153] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by/4.0/
+        - text: .
+      - paragraph [ref=f164e154]:
+        - text: The ACL Anthology is managed and built by the
+        - link "ACL Anthology team" [ref=f164e155] [cursor=pointer]:
+          - /url: /info/credits/
+        - text: of volunteers.
+      - paragraph [ref=f164e156]:
+        - generic [ref=f164e157]:
+          - text: Site last built on 12 October 2026 at 19:21 UTC with
+          - link "commit a75fcdc" [ref=f164e158] [cursor=pointer]:
+            - /url: https://github.com/acl-org/acl-anthology/tree/a75fcdc07381dca29654bb8fc588e7bc1cd34c95
+          - text: .

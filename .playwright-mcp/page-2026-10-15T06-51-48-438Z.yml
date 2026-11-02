@@ -1,0 +1,263 @@
+- generic [ref=f5e1]:
+  - generic:
+    - generic:
+      - link "跳到主要内容" [ref=f5e2] [cursor=pointer]
+      - link "无障碍功能帮助" [ref=f5e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=zh-CN
+  - generic [ref=f5e8]:
+    - search [ref=f5e9]:
+      - generic [ref=f5e11]:
+        - link "Google 首页" [ref=f5e13] [cursor=pointer]:
+          - /url: https://www.google.com.hk/webhp?hl=zh-CN&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQPHoECAYQBA
+        - generic [ref=f5e16]:
+          - generic [ref=f5e17]:
+            - combobox "搜索" [ref=f5e20]: "\"Katie Zacharia\" \"October 13, 2026\" site:facebook.com OR site:x.com OR site:instagram.com briefing \"Katie Zacharia\" \"October 13, 2026\" site:facebook.com OR site:x.com OR site:instagram.com briefing"
+            - generic [ref=f5e21]:
+              - button "清除" [ref=f5e23] [cursor=pointer]
+              - generic [ref=f5e28]:
+                - button "按语音搜索" [ref=f5e29] [cursor=pointer]
+                - button "按图搜索" [ref=f5e32] [cursor=pointer]
+          - button "搜索" [ref=f5e35] [cursor=pointer]
+    - generic [ref=f5e40]:
+      - button "设置" [ref=f5e42] [cursor=pointer]
+      - button "分享" [ref=f5e47] [cursor=pointer]
+      - generic [ref=f5e53]:
+        - button "Google 应用" [ref=f5e55] [cursor=pointer]
+        - link "登录" [ref=f5e60] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=zh-CN&passive=true&continue=https://www.google.com.hk/search%3Fq%3D%2522Katie%2BZacharia%2522%2B%2522October%2B13%252C%2B2026%2522%2Bsite%253Afacebook.com%2BOR%2Bsite%253Ax.com%2BOR%2Bsite%253Ainstagram.com%2Bbriefing&ec=futura_srp_og_si_72236_p
+  - generic [ref=f5e62]:
+    - navigation [ref=f5e68]:
+      - generic [ref=f5e74]:
+        - list [ref=f5e75]:
+          - listitem [ref=f5e76]:
+            - link "全部" [disabled] [ref=f5e77]
+          - listitem [ref=f5e80]:
+            - link "新闻" [ref=f5e81] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&tbm=nws&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ0pQJegQIGhAB
+          - listitem [ref=f5e84]:
+            - link "图片" [ref=f5e85] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&udm=2&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQtKgLegQIFhAB
+          - listitem [ref=f5e88]:
+            - link "视频" [ref=f5e89] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&udm=vids&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQtKgLegQIFRAB
+          - listitem [ref=f5e92]:
+            - link "短视频" [ref=f5e93] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&udm=39&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQs6gLegQIGRAB
+          - listitem [ref=f5e96]:
+            - link "网页" [ref=f5e97] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&udm=web&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQs6gLegQIFxAB
+          - listitem [ref=f5e100]:
+            - link "图书" [ref=f5e101] [cursor=pointer]:
+              - /url: /search?newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&udm=36&source=lnms&fbs=ABfTbFUhNGvvPEUFOvrsPMHwBXgOnG-3hjYihu-dLk_AAEWMp1LxkHXzup_gfir9UF44bIPLwSZ8Zi_IdVjrXW0yB9KTWz3SXxZr4Jfvh-GEZ1Sm-YUpr0GxwOlXGhUS073-oilGq8W5OjJ-SaTKSQ2nGDjkmdQyj8l90iUGhx6gAGiT7zhQMjsv_uyJVZC9PW0VghdYtUpu&sa=X&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ0pQJegQIGBAB
+          - listitem [ref=f5e104]:
+            - button [ref=f5e105] [cursor=pointer]:
+              - generic "更多过滤条件" [ref=f5e106]: 更多
+        - button "工具" [ref=f5e113] [cursor=pointer]
+    - heading "搜索结果" [level=1] [ref=f5e120]
+    - main [ref=f5e126]:
+      - generic [ref=f5e130]:
+        - generic [ref=f5e136]:
+          - generic [ref=f5e139]:
+            - link "White House Press Secretary Katie Zacharia told reporters on ... Facebook · C-SPAN 560+ 个回应 · 1天前" [active] [ref=f5e141] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFa1FAkoIi3w6qfjZerXuuO1vYk9SwpQvctbJLXv1wSSaRqOnN_WtAEJGgP7VIUspQE_6rT7r48BnAEXOPcChJ2mOtxT0t-dSTGOL1cKQRNGMpfafcKoxQfjVLzpjKv1jBDMyo2F7EFAkRlNvBbZkBA6v898ECbNxqCw15TUo3Sqoa_UgGCmCje2RWmWVBDL37uEcbE28esDSc0hh32s74u81bBCWass0edNy6iJT5s0OULze3290GB2Na49vsigS
+              - heading "White House Press Secretary Katie Zacharia told reporters on ..." [level=3] [ref=f5e142]
+              - generic [ref=f5e148]:
+                - generic [ref=f5e149]: Facebook · C-SPAN
+                - generic [ref=f5e151]: 560+ 个回应 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e157] [cursor=pointer]
+          - generic [ref=f5e162]:
+            - link "White House Press Secretary Katie Zacharia told reporters on ...，由C-SPAN上传到Facebook上. 在Facebook上播放. 0:24" [ref=f5e163] [cursor=pointer]:
+              - /url: /goto?url=CAESxAEB6zswFa1FAkoIi3w6qfjZerXuuO1vYk9SwpQvctbJLXv1wSSaRqOnN_WtAEJGgP7VIUspQE_6rT7r48BnAEXOPcChJ2mOtxT0t-dSTGOL1cKQRNGMpfafcKoxQfjVLzpjKv1jBDMyo2F7EFAkRlNvBbZkBA6v898ECbNxqCw15TUo3Sqoa_UgGCmCje2RWmWVBDL37uEcbE28esDSc0hh32s74u81bBCWass0edNy6iJT5s0OULze3290GB2Na49vsigS
+              - generic [ref=f5e164]: 0:24
+            - generic [ref=f5e173]: ... briefing on October 13, 2026. More videos you may like. AMAC - The ... White House Press Secretary Katie Zacharia holds her first press briefing.
+        - generic [ref=f5e180]:
+          - generic [ref=f5e183]:
+            - link "Watch RSBN LIVE as we cover Katie Zacharia's first press ... Facebook · Right Side Broadcasting 210+ 个回应 · 1天前" [ref=f5e185] [cursor=pointer]:
+              - /url: /goto?url=CAESyQEB6zswFUzzHAFz53R5aoX4cZdm8Roou-t1wKW9-jZtXmnLGw78mtPLRrRkErA3nXujvi85WIcVQsjH0Fhl0RU6czgaD-Mbq99Zn0Dzpp76yKsAvZi34ED3tpluNxTc0LZI9K1XWBL0RHiugQJWV9CjotnihqKlxQKZcslj61KM6wvr6SdBriAOPJwjJ03nN7tBkihYj3rrp34CFTuYYA1pwJ08NMWR8gVJGkl3bkdR9jWepTU6yjQythAcE-acvNl40EladwM2EEo
+              - heading "Watch RSBN LIVE as we cover Katie Zacharia's first press ..." [level=3] [ref=f5e186]
+              - generic [ref=f5e192]:
+                - generic [ref=f5e193]: Facebook · Right Side Broadcasting
+                - generic [ref=f5e195]: 210+ 个回应 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e201] [cursor=pointer]
+          - generic [ref=f5e206]:
+            - link "Watch RSBN LIVE as we cover Katie Zacharia's first press ...，由Right Side Broadcasting上传到Facebook上. 在Facebook上播放. 36:03" [ref=f5e207] [cursor=pointer]:
+              - /url: /goto?url=CAESyQEB6zswFUzzHAFz53R5aoX4cZdm8Roou-t1wKW9-jZtXmnLGw78mtPLRrRkErA3nXujvi85WIcVQsjH0Fhl0RU6czgaD-Mbq99Zn0Dzpp76yKsAvZi34ED3tpluNxTc0LZI9K1XWBL0RHiugQJWV9CjotnihqKlxQKZcslj61KM6wvr6SdBriAOPJwjJ03nN7tBkihYj3rrp34CFTuYYA1pwJ08NMWR8gVJGkl3bkdR9jWepTU6yjQythAcE-acvNl40EladwM2EEo
+              - generic [ref=f5e208]: 36:03
+            - generic [ref=f5e217]: Watch RSBN LIVE as we cover Katie Zacharia's first press briefing as White House Press Secretary. Tune in at 9 am EDT on October 13, 2026.
+        - generic [ref=f5e224]:
+          - generic [ref=f5e227]:
+            - link "Katie Zacharia has held her first briefing as White House press ... Instagram · aljazeeraenglish 5130+ 个赞 · 1天前" [ref=f5e229] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVRxWqRiu_obtzsg0EPWhQBs_pJJpcDWxNnsofD8OsiEtAcXgYdNSkCgNEtJKrRHmObCzWm4pRCNRXOCWtEJvykmosZ3r6T2oZn4N1eCrE9tkOu47WOs2VJaWxTdh7ye-rhg
+              - heading "Katie Zacharia has held her first briefing as White House press ..." [level=3] [ref=f5e230]
+              - generic [ref=f5e236]:
+                - generic [ref=f5e237]: Instagram · aljazeeraenglish
+                - generic [ref=f5e239]: 5130+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e245] [cursor=pointer]
+          - generic [ref=f5e250]:
+            - link "Katie Zacharia has held her first briefing as White House press ...，由Al Jazeera English上传到Instagram上. 在Instagram上播放. 1:20" [ref=f5e251] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVRxWqRiu_obtzsg0EPWhQBs_pJJpcDWxNnsofD8OsiEtAcXgYdNSkCgNEtJKrRHmObCzWm4pRCNRXOCWtEJvykmosZ3r6T2oZn4N1eCrE9tkOu47WOs2VJaWxTdh7ye-rhg
+              - generic [ref=f5e252]: 1:20
+            - generic [ref=f5e261]: "5110 likes, 1293 comments - aljazeeraenglish on October 13, 2026: \"Katie Zacharia has held her first briefing as White House press secretary ..."
+        - generic [ref=f5e268]:
+          - generic [ref=f5e271]:
+            - link "In her first briefing as White House press secretary, Katie ... Instagram · msnownews 6600+ 个赞 · 1天前" [ref=f5e273] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVMh9j-a1N1Scl2I2daPyVDF6cswdpECc_FHm8GYKFTP6JwhniqaKQOZtxqZ4jCqBROC9tIWitDLy1DhLUbP-RVwwslUOu6laIFlw87np65QMc9m339pJaFnJEu56Hq3P1oA
+              - heading "In her first briefing as White House press secretary, Katie ..." [level=3] [ref=f5e274]
+              - generic [ref=f5e280]:
+                - generic [ref=f5e281]: Instagram · msnownews
+                - generic [ref=f5e283]: 6600+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e289] [cursor=pointer]
+          - generic [ref=f5e294]:
+            - link "In her first briefing as White House press secretary, Katie ...，由MS NOW上传到Instagram上. 在Instagram上播放. 1:07" [ref=f5e295] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVMh9j-a1N1Scl2I2daPyVDF6cswdpECc_FHm8GYKFTP6JwhniqaKQOZtxqZ4jCqBROC9tIWitDLy1DhLUbP-RVwwslUOu6laIFlw87np65QMc9m339pJaFnJEu56Hq3P1oA
+              - generic [ref=f5e296]: 1:07
+            - generic [ref=f5e305]: "6605 likes, 1104 comments - msnownews on October 13, 2026: \"In her first briefing as White House press secretary, Katie Zacharia minced ..."
+        - generic [ref=f5e310]:
+          - generic [ref=f5e313]:
+            - link "Katie Zacharia held her first briefing Tuesday after ... Instagram · apnews 2790+ 个赞 · 6小时前" [ref=f5e315] [cursor=pointer]:
+              - /url: /goto?url=CAESYwHrOzAVsW4qLM3xRBy-c2HV6bEJt1uGsFuA01DW1wf6ee0lum08iwUsIxQ7OzV4BK2rOi7_BThAlBO7pfSRg7YDJDbAlOwMdIdEj-eQBG8AadxwkICMlWoWt0ULj8D0Xzs5zA
+              - heading "Katie Zacharia held her first briefing Tuesday after ..." [level=3] [ref=f5e316]
+              - generic [ref=f5e322]:
+                - generic [ref=f5e323]: Instagram · apnews
+                - generic [ref=f5e325]: 2790+ 个赞 · 6小时前
+            - button "关于这条结果的详细信息" [ref=f5e331] [cursor=pointer]
+          - generic [ref=f5e338]:
+            - emphasis [ref=f5e339]: Katie Zacharia
+            - text: held her first
+            - emphasis [ref=f5e340]: briefing
+            - text: Tuesday after President Donald ... Photo by Legit Politic on
+            - emphasis [ref=f5e341]: October 13, 2026
+            - text: . May be a Twitter ...
+          - link [aria-hidden] [ref=f5e344] [cursor=pointer]:
+            - /url: /goto?url=CAESYwHrOzAVsW4qLM3xRBy-c2HV6bEJt1uGsFuA01DW1wf6ee0lum08iwUsIxQ7OzV4BK2rOi7_BThAlBO7pfSRg7YDJDbAlOwMdIdEj-eQBG8AadxwkICMlWoWt0ULj8D0Xzs5zA
+        - generic [ref=f5e350]:
+          - generic [ref=f5e353]:
+            - link "President Trump's new press secretary, Katie Zacharia ... Instagram · kenny_holston 780+ 个赞 · 1天前" [ref=f5e355] [cursor=pointer]:
+              - /url: /goto?url=CAESYwHrOzAVmRSHdIjU-hiqrHMdDGe04f0qwYOaZPjrpYE0UFqmyE0IDGUubmfj5649SUKz8aGD6A3AtLurE5cnukdnNT4s4YacEvmHWsi5INU7i9ssy86W5KmZ9xi8B69xLzBwuw
+              - heading "President Trump's new press secretary, Katie Zacharia ..." [level=3] [ref=f5e356]
+              - generic [ref=f5e362]:
+                - generic [ref=f5e363]: Instagram · kenny_holston
+                - generic [ref=f5e365]: 780+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e371] [cursor=pointer]
+          - generic [ref=f5e378]:
+            - text: 789 likes, 29 comments - kenny_holston on
+            - emphasis [ref=f5e379]: October 13, 2026
+            - text: ": \"President Trump's new press secretary,"
+            - emphasis [ref=f5e380]: Katie Zacharia
+            - text: ", held her first press ..."
+          - link [aria-hidden] [ref=f5e383] [cursor=pointer]:
+            - /url: /goto?url=CAESYwHrOzAVmRSHdIjU-hiqrHMdDGe04f0qwYOaZPjrpYE0UFqmyE0IDGUubmfj5649SUKz8aGD6A3AtLurE5cnukdnNT4s4YacEvmHWsi5INU7i9ssy86W5KmZ9xi8B69xLzBwuw
+        - generic [ref=f5e389]:
+          - generic [ref=f5e392]:
+            - link "Brief-ing⁠ ⁠ New White House Press Secretary Katie ... Instagram · thecorum 240+ 个赞 · 1天前" [ref=f5e394] [cursor=pointer]:
+              - /url: /goto?url=CAESYwHrOzAV9jb9kYmX61Uhs2Wuxg2V_hpnuwxS6PmjH-cuFNsSITH6gb0psHyazXOsAclMLtuQEt_cYq8cyDHhwAG5VtbigRC4ceXTMTZXaskK9g46kFVOEN-Wa-2y1uVIvdZDXA
+              - heading "Brief-ing⁠ ⁠ New White House Press Secretary Katie ..." [level=3] [ref=f5e395]
+              - generic [ref=f5e401]:
+                - generic [ref=f5e402]: Instagram · thecorum
+                - generic [ref=f5e404]: 240+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e410] [cursor=pointer]
+          - generic [ref=f5e417]:
+            - text: SO. AWKWARD.
+            - emphasis [ref=f5e418]: Katie Zacharia
+            - text: made her debut as White House press secretary on
+            - emphasis [ref=f5e419]: October 13, 2026
+            - text: ", delivering a"
+            - emphasis [ref=f5e420]: briefing
+            - text: that lasted only about 14 ...
+          - link [aria-hidden] [ref=f5e423] [cursor=pointer]:
+            - /url: /goto?url=CAESYwHrOzAV9jb9kYmX61Uhs2Wuxg2V_hpnuwxS6PmjH-cuFNsSITH6gb0psHyazXOsAclMLtuQEt_cYq8cyDHhwAG5VtbigRC4ceXTMTZXaskK9g46kFVOEN-Wa-2y1uVIvdZDXA
+        - generic [ref=f5e431]:
+          - generic [ref=f5e434]:
+            - link "Katie Zacharia's first briefing as White House press secretary ... Instagram · timesnow 1080+ 个赞 · 1天前" [ref=f5e436] [cursor=pointer]:
+              - /url: /goto?url=CAESYwHrOzAVg-OVj7J1K0oLI7VemezCJJlF6ltfVzKsHPsNG1EAAh73IfirRVPGx-iIAIrecvMypzvJfD4qiIaTb4AgHXPrm2gGyqmF8fxQrzGd7SrUVmkljptMDtTwtqLHMd7t9A
+              - heading "Katie Zacharia's first briefing as White House press secretary ..." [level=3] [ref=f5e437]
+              - generic [ref=f5e443]:
+                - generic [ref=f5e444]: Instagram · timesnow
+                - generic [ref=f5e446]: 1080+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e452] [cursor=pointer]
+          - generic [ref=f5e457]:
+            - link "Katie Zacharia's first briefing as White House press secretary ...，由Times Now上传到Instagram上. 在Instagram上播放. 0:09" [ref=f5e458] [cursor=pointer]:
+              - /url: /goto?url=CAESYwHrOzAVg-OVj7J1K0oLI7VemezCJJlF6ltfVzKsHPsNG1EAAh73IfirRVPGx-iIAIrecvMypzvJfD4qiIaTb4AgHXPrm2gGyqmF8fxQrzGd7SrUVmkljptMDtTwtqLHMd7t9A
+              - generic [ref=f5e459]: 0:09
+            - generic [ref=f5e468]: "1089 likes, 29 comments - timesnow on October 13, 2026: \"Katie Zacharia's first briefing as White House press secretary took an awkward turn ..."
+        - generic [ref=f5e475]:
+          - generic [ref=f5e478]:
+            - link "FIRST PRESS CONFERENCE BY WHITE HOUSE KATIE ... Instagram · valleyviewssfv 100+ 个赞 · 1天前" [ref=f5e480] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVWFjuhn2NlaHqBBqdKS_zZRxrX4yRL1-tr5bepssoT2-3grt7WkyGaFD-9Um2HM4JUUoh07B96XGRNO5ianPHZ_8X5jqogGwQJHVCuPWtc21V0XzRZNa1LdG0GoukOuOt1w
+              - heading "FIRST PRESS CONFERENCE BY WHITE HOUSE KATIE ..." [level=3] [ref=f5e481]
+              - generic [ref=f5e487]:
+                - generic [ref=f5e488]: Instagram · valleyviewssfv
+                - generic [ref=f5e490]: 100+ 个赞 · 1天前
+            - button "关于这条结果的详细信息" [ref=f5e496] [cursor=pointer]
+          - generic [ref=f5e501]:
+            - link "FIRST PRESS CONFERENCE BY WHITE HOUSE KATIE ...，由VALLEY VIEWS SFV MEDIA上传到Instagram上. 在Instagram上播放. 0:32" [ref=f5e502] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAVWFjuhn2NlaHqBBqdKS_zZRxrX4yRL1-tr5bepssoT2-3grt7WkyGaFD-9Um2HM4JUUoh07B96XGRNO5ianPHZ_8X5jqogGwQJHVCuPWtc21V0XzRZNa1LdG0GoukOuOt1w
+              - generic [ref=f5e503]: 0:32
+            - generic [ref=f5e512]: ... October 13, 2026 Washington, D.C. New White House Press Secretary Katie Zacharia held her first press briefing on Tuesday, October 13, 2026 ...
+        - generic [ref=f5e519]:
+          - generic [ref=f5e522]:
+            - link "Trump's new White House Press Secretary, Katie Zacharia, has ... Instagram · 10newsau 370+ 个赞 · 2小时前" [ref=f5e524] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV6WjHg2MMr-ydxSWC8tT0XSjlTshE9KhLEj68UpnHfHUxqirdBq_dc7zLtQvQaO_dgJhBF1JFPmgHBH5Cc1BvamIk_uBIvvBSqIgBCIGDt4hFkOVi6s81d4s_5Mz2YITdSQ
+              - heading "Trump's new White House Press Secretary, Katie Zacharia, has ..." [level=3] [ref=f5e525]
+              - generic [ref=f5e531]:
+                - generic [ref=f5e532]: Instagram · 10newsau
+                - generic [ref=f5e534]: 370+ 个赞 · 2小时前
+            - button "关于这条结果的详细信息" [ref=f5e540] [cursor=pointer]
+          - generic [ref=f5e545]:
+            - link "Trump's new White House Press Secretary, Katie Zacharia, has ...，由10 News上传到Instagram上. 在Instagram上播放. 1:45" [ref=f5e546] [cursor=pointer]:
+              - /url: /goto?url=CAESZgHrOzAV6WjHg2MMr-ydxSWC8tT0XSjlTshE9KhLEj68UpnHfHUxqirdBq_dc7zLtQvQaO_dgJhBF1JFPmgHBH5Cc1BvamIk_uBIvvBSqIgBCIGDt4hFkOVi6s81d4s_5Mz2YITdSQ
+              - generic [ref=f5e547]: 1:45
+            - generic [ref=f5e556]: "376 likes, 82 comments - 10newsau on October 13, 2026: \"Trump's new White House Press Secretary, Katie Zacharia, has faced harsh criticism ..."
+      - navigation [ref=f5e560]:
+        - heading "网页导航" [level=1] [ref=f5e561]
+        - text: "1"
+        - link "Page 2" [ref=f5e564] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=10&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAE
+          - text: "2"
+        - link "Page 3" [ref=f5e566] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=20&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAG
+          - text: "3"
+        - link "Page 4" [ref=f5e568] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=30&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAI
+          - text: "4"
+        - link "Page 5" [ref=f5e570] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=40&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAK
+          - text: "5"
+        - link "Page 6" [ref=f5e572] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=50&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAM
+          - text: "6"
+        - link "Page 7" [ref=f5e574] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=60&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAO
+          - text: "7"
+        - link "Page 8" [ref=f5e576] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=70&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAQ
+          - text: "8"
+        - link "Page 9" [ref=f5e578] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=80&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAS
+          - text: "9"
+        - link "Page 10" [ref=f5e580] [cursor=pointer]:
+          - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=90&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8tMDegQIGxAU
+          - text: "10"
+        - heading [level=2] [ref=f5e582]:
+          - link "下一页" [ref=f5e583] [cursor=pointer]:
+            - /url: /search?q=%22Katie+Zacharia%22+%22October+13,+2026%22+site:facebook.com+OR+site:x.com+OR+site:instagram.com+briefing&newwindow=1&sca_esv=0b6b5098e114a672&sxsrf=APpeQns3YEjeh6EdzTczUTHz4oROXFHMDg:1792047084682&ei=7HfQaqmrKcrKkPIPlI6emQs&start=10&sa=N&sstk=AS6-VmL3sIYylyQxWLSHvP2MYtCTPgPyD8lRBxvWIGtVNrH3JXSbQPPTTRmOhUActgUox9yHpA-7MQaPKpwCgWp0jXElW8pMlgOrxw&ved=2ahUKEwip0ZzPt7uXAxVKJUQIHRSHJ7MQ8NMDegQIGxAW
+      - navigation
+    - contentinfo [ref=f5e586]:
+      - heading "页脚链接" [level=1] [ref=f5e587]
+      - generic [ref=f5e591]:
+        - generic [ref=f5e595]:
+          - button "海口市 中国海南省 - 是根据您的 IP 地址推断出来的" [ref=f5e597] [cursor=pointer]:
+            - generic [ref=f5e598]: 海口市 中国海南省
+            - generic [ref=f5e600]:
+              - text: "-"
+              - generic [ref=f5e601]: 是根据您的 IP 地址推断出来的
+          - text: "-"
+          - button "更新位置信息" [ref=f5e603] [cursor=pointer]
+        - generic [ref=f5e606]:
+          - link "帮助" [ref=f5e607] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=zh-CN&fg=1
+          - button "发送反馈" [ref=f5e609] [cursor=pointer]
+          - link "隐私权" [ref=f5e611] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=zh-CN&fg=1
+          - link "条款" [ref=f5e612] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=zh-CN&fg=1

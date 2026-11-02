@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class PagesDeployGuardTests(unittest.TestCase):
-    def test_deploy_only_runs_on_push_or_successful_manual_processing(self):
+    def test_deploy_is_gated_to_push_or_an_explicit_manual_action(self):
         workflow = Path(".github/workflows/deploy-pages.yml").read_text(
             encoding="utf-8"
         )
@@ -25,23 +25,20 @@ class PagesDeployGuardTests(unittest.TestCase):
         self.assertIn("github.event_name == 'push'", expression)
         self.assertIn("github.event_name == 'workflow_dispatch'", expression)
         self.assertIn(
-            "(inputs.process_full_video || inputs.restyle_full_video)", expression
+            "(inputs.regenerate_clips || inputs.diarize_speakers)", expression
         )
+        self.assertIn("needs.build.result == 'success'", expression)
         self.assertIn(
-            "needs.process-full-video.result == 'success' || "
-            "needs.restyle-full-video.result == 'success'",
+            "inputs.process_smartsub_draft && inputs.publish_smartsub_draft",
             expression,
         )
-        for job in (
-            "build",
-            "download-source",
-            "download-same-clip",
-            "download-same-full-video",
-            "process-full-video",
-            "restyle-full-video",
-        ):
-            self.assertIn(f"needs.{job}.result != 'failure'", expression)
-            self.assertIn(f"needs.{job}.result != 'cancelled'", expression)
+        self.assertIn("needs.render-smartsub-draft.result == 'success'", expression)
+        self.assertIn("inputs.deploy_site_only", expression)
+        self.assertIn(
+            "(inputs.process_full_video || inputs.restyle_full_video)", expression
+        )
+        self.assertIn("needs.process-full-video.result == 'success'", expression)
+        self.assertIn("needs.restyle-full-video.result == 'success'", expression)
 
 
 if __name__ == "__main__":

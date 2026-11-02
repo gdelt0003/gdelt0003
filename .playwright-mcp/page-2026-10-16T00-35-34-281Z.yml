@@ -1,0 +1,59 @@
+- main [ref=f2e2]:
+  - navigation "页面导航" [ref=f2e3]:
+    - link "返回主页" [ref=f2e4] [cursor=pointer]:
+      - /url: ../../
+  - generic [ref=f2e5]:
+    - paragraph [ref=f2e6]: PUBLIC · EXTERNAL REVIEW DRAFT · PENDING
+    - heading "Rose Garden Lunch · 外部审查草稿" [level=1] [ref=f2e7]
+    - paragraph [ref=f2e8]:
+      - strong [ref=f2e9]: 公开提示：
+      - text: 此 Pages 页面任何人都可以访问，不限于质量检查部门；链接本身不提供访问控制。
+    - paragraph [ref=f2e10]: 本页是供外部质量审查使用的替代性 review 页面，不是完成的制作成品，不代表发布批准，也不构成权利或许可判断。
+    - paragraph [ref=f2e11]: 事件标题、日期（2026-10-15）及地点（White House Rose Garden）来自提交信息，尚未独立核实。原视频与所述事件的匹配、音频/字幕、中文翻译均未核验。
+  - region [ref=f2e12]:
+    - heading "提交的公开视频来源" [level=2] [ref=f2e13]
+    - paragraph [ref=f2e14]:
+      - strong [ref=f2e15]: 标题（提交者提供，未核实）：
+      - text: President Trump Participates in a Rose Garden Lunch, Oct. 15, 2026
+    - paragraph [ref=f2e16]:
+      - strong [ref=f2e17]: 视频 ID：
+      - code [ref=f2e18]: IySF_8OArvw
+    - paragraph [ref=f2e19]:
+      - link "在 YouTube 打开提交的原视频" [ref=f2e20] [cursor=pointer]:
+        - /url: https://www.youtube.com/watch?v=IySF_8OArvw
+    - paragraph [ref=f2e21]: 视频不会由本仓库下载或托管。点击下方按钮后，页面才会向 YouTube 的隐私增强型嵌入域名发起请求；嵌入仍由第三方提供。
+    - generic "原视频播放器区域"
+    - button "点击后加载 YouTube 原视频" [ref=f2e22] [cursor=pointer]
+    - status [ref=f2e23]: 原视频尚未加载。播放内容的来源与事件匹配仍待审。
+  - region [ref=f2e24]:
+    - heading "外部审查清单" [level=2] [ref=f2e25]
+    - paragraph [ref=f2e26]: 以下项目均为未完成状态；本页没有提供已核实的审查结论。
+    - list "待审项目" [ref=f2e27]:
+      - listitem [ref=f2e28]:
+        - generic [ref=f2e29]:
+          - checkbox "来源与事件匹配 待审" [disabled] [ref=f2e30]
+          - text: 来源与事件匹配
+          - generic [ref=f2e31]: 待审
+      - listitem [ref=f2e32]:
+        - generic [ref=f2e33]:
+          - checkbox "原片音频、文字记录及字幕准确性 待审" [disabled] [ref=f2e34]
+          - text: 原片音频、文字记录及字幕准确性
+          - generic [ref=f2e35]: 待审
+      - listitem [ref=f2e36]:
+        - generic [ref=f2e37]:
+          - checkbox "中文翻译忠实度与可读性 待审" [disabled] [ref=f2e38]
+          - text: 中文翻译忠实度与可读性
+          - generic [ref=f2e39]: 待审
+      - listitem [ref=f2e40]:
+        - generic [ref=f2e41]:
+          - checkbox "延时效果版本产出与效果审查 待审" [disabled] [ref=f2e42]
+          - text: 延时效果版本产出与效果审查
+          - generic [ref=f2e43]: 待审
+      - listitem [ref=f2e44]:
+        - generic [ref=f2e45]:
+          - checkbox "权利/许可及后续发布适用性 待审" [disabled] [ref=f2e46]
+          - text: 权利/许可及后续发布适用性
+          - generic [ref=f2e47]: 待审
+    - paragraph [ref=f2e48]:
+      - strong [ref=f2e49]: 延时效果尚未提供：
+      - text: 当前没有可用于构建该效果的已审证据或已审处理视频，因此本页以原片延迟加载审查作为替代入口；延时效果产出项明确保留为待审，未伪造效果或审查结果。

@@ -1,15 +1,26 @@
+import json
 import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
 
+from scripts.operation_audit import OperationAudit
 from scripts.create_shorts import (
+    AVAILABLE_STYLES,
     Cue,
+    VIDEO_FILTER,
+    load_highlights,
+    parse_styles,
     parse_vtt,
     remove_rolling_overlap,
+    filter_for,
     improve_translation,
+    load_translation_cache,
     srt_time,
     subtitle_text,
+    validate_highlights,
+    validate_source_formats,
+    write_srt,
 )
 
 
@@ -78,6 +89,199 @@ The Navy will build more ships for the fleet.
         )
         self.assertEqual(subtitles[0]["start"], 0.0)
         self.assertEqual(subtitles[0]["end"], 8.0)
+
+    def test_audits_reviewed_translation_with_asset_and_tool_details(self):
+        with tempfile.TemporaryDirectory() as directory:
+            audit = OperationAudit(
+                Path(directory) / "operation-audit.json",
+                task_id="run-123.1",
+                pipeline_version="abc123",
+            )
+            subtitle_text(
+                [
+                    Cue(
+                        0.0,
+                        10.0,
+                        "Arsenal 2 will help us attack production bottlenecks "
+                        "with the footprint to add up to 9 million production "
+                        "hours per year into our submarine supply chain.",
+                    )
+                ],
+                0.0,
+                10.0,
+                {},
+                audit=audit,
+                asset_id="arsenal-production",
+            )
+            operation = audit.records[0]
+
+        self.assertEqual(operation["operation"], "translation")
+        self.assertEqual(operation["asset_id"], "arsenal-production")
+        self.assertEqual(operation["tool"], "reviewed translation table")
+        self.assertEqual(operation["status"], "succeeded")
+        self.assertIsNotNone(operation["started_at"])
+        self.assertIsNotNone(operation["ended_at"])
+
+    def test_requires_real_1080p_source_format(self):
+        with self.assertRaisesRegex(RuntimeError, "refusing to upscale"):
+            validate_source_formats(
+                {"formats": [{"width": 1280, "height": 720}]}
+            )
+        self.assertEqual(
+            validate_source_formats(
+                {
+                    "formats": [
+                        {"width": 1280, "height": 720},
+                        {"width": 1920, "height": 1080},
+                        {"width": 3840, "height": 2160},
+                    ]
+                }
+            ),
+            (3840, 2160),
+        )
+
+    def test_highlights_need_distinct_intervals_and_reasons(self):
+        highlights = [
+            {
+                "id": "topic-one",
+                "start": 1,
+                "end": 15,
+                "title": "Topic one",
+                "reason": "A clear claim and response.",
+            },
+            {
+                "id": "topic-two",
+                "start": 30,
+                "end": 45,
+                "title": "Topic two",
+                "reason": "A distinct policy point.",
+            },
+        ]
+        self.assertEqual(len(validate_highlights(highlights, 60)), 2)
+        with self.assertRaisesRegex(ValueError, "At least two"):
+            validate_highlights(highlights[:1], 60)
+        with self.assertRaisesRegex(ValueError, "must be distinct"):
+            validate_highlights(
+                [highlights[0], {**highlights[1], "start": 1, "end": 15}],
+                60,
+            )
+        with self.assertRaisesRegex(ValueError, "invalid time range"):
+            validate_highlights(
+                [{**highlights[0], "end": 61}, highlights[1]], 60
+            )
+        with self.assertRaisesRegex(ValueError, "invalid time range"):
+            validate_highlights(
+                [{**highlights[0], "start": float("nan")}, highlights[1]],
+                60,
+            )
+        with self.assertRaisesRegex(ValueError, "editorial reason"):
+            validate_highlights(
+                [{**highlights[0], "reason": ""}, highlights[1]], 60
+            )
+
+    def test_loads_highlights_from_reviewed_json(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "highlights.json"
+            path.write_text(
+                '[{"id":"one","start":0,"end":5,"title":"One","reason":"A"},'
+                '{"id":"two","start":10,"end":15,"title":"Two","reason":"B"}]',
+                encoding="utf-8",
+            )
+            self.assertEqual(len(load_highlights(path, 20)), 2)
+
+    def test_styles_are_explicit_and_validated(self):
+        self.assertEqual(parse_styles("editorial,punchy"), ["editorial", "punchy"])
+        self.assertEqual(len(AVAILABLE_STYLES), 10)
+        self.assertEqual(
+            parse_styles(",".join(AVAILABLE_STYLES)),
+            list(AVAILABLE_STYLES),
+        )
+        with self.assertRaisesRegex(ValueError, "Unsupported"):
+            parse_styles("editorial,viral")
+        with self.assertRaisesRegex(ValueError, "unique"):
+            parse_styles("punchy,punchy")
+
+    def test_writes_full_english_and_bilingual_transcripts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "full.en-zh.srt"
+            write_srt(
+                path,
+                [
+                    {
+                        "start": 0,
+                        "end": 3,
+                        "english": "Good afternoon.",
+                        "chinese": "下午好。",
+                    }
+                ],
+                bilingual=True,
+            )
+            self.assertIn("Good afternoon.\n下午好。", path.read_text(encoding="utf-8-sig"))
+
+    def test_translation_cache_parses_wrapped_srt_lines_by_language(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cache_path = root / "translations.json"
+            output_dir = root / "output"
+            output_dir.mkdir()
+            cache_path.write_text(
+                json.dumps(
+                    {
+                        "Good afternoon, everybody.": "下午好，大家好。",
+                        "of the systems": "的系统的",
+                        "We're delivering systems that will hunt threats":
+                            "before the crews can even see them.",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            (output_dir / "sample.en-zh.srt").write_text(
+                "1\n00:00:00,000 --> 00:00:05,000\n"
+                "The quality of the systems that we produce\n"
+                "and the strength of the industrial base.\n"
+                "我们生产的系统的质量以及构建和维持\n"
+                "这些系统的工业基础的强度。\n",
+                encoding="utf-8",
+            )
+
+            cache = load_translation_cache(cache_path, output_dir)
+
+        self.assertEqual(
+            cache["The quality of the systems that we produce and "
+                  "the strength of the industrial base."],
+            "我们生产的系统的质量以及构建和维持这些系统的工业基础的强度。",
+        )
+        self.assertEqual(cache["Good afternoon, everybody."], "下午好，大家好。")
+        self.assertNotIn("of the systems", cache)
+        self.assertNotIn(
+            "We're delivering systems that will hunt threats",
+            cache,
+        )
+
+    def test_portrait_layout_preserves_full_source_frame(self):
+        for style in ("editorial", "punchy"):
+            video_filter = filter_for(style, Path("captions.ass"))
+            foreground_filter = video_filter.rsplit("[fg]", 1)[1].split(
+                "[foreground]", 1
+            )[0]
+            self.assertIn("scale=1080:-2", foreground_filter)
+            self.assertNotIn("crop=", foreground_filter)
+            self.assertNotIn("overlay=0:", video_filter)
+
+    def test_styles_render_different_source_treatments(self):
+        rendered_filters = {
+            filter_for(style, Path("captions.ass"))
+            for style in AVAILABLE_STYLES
+        }
+        self.assertEqual(len(rendered_filters), 10)
+        self.assertIn("hue=s=0", filter_for("monochrome", Path("captions.ass")))
+        self.assertIn("[fg]scale=1080:-2", filter_for("vivid", Path("captions.ass")))
+        self.assertNotIn("C\\:/Windows/Fonts", filter_for("editorial", Path("captions.ass")))
+
+    def test_high_resolution_selector_does_not_accept_narrow_1080p_formats(self):
+        self.assertIn("width>=1920", VIDEO_FILTER)
+        self.assertIn("height>=1080", VIDEO_FILTER)
 
 
 if __name__ == "__main__":

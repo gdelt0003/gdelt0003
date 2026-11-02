@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "event_id": "whitehouse-oct-06-2026",
+  "event_title": "President Trump Delivers Remarks, Oct. 6, 2026",
+  "event_reference_url": "https://www.whitehouse.gov/videos/president-trump-delivers-remarks-oct-6-2026/",
+  "coordinate_reference_system": "WGS84",
+  "status": "not_verified",
+  "coordinate_display_decimal_places": 5,
+  "measurement_policy": {
+    "horizontal_uncertainty_m_required": true,
+    "ground_elevation_vertical_datum_required": true,
+    "azimuth_reference": "true_north_clockwise_degrees",
+    "relative_azimuth_reference": "stage_front_axis",
+    "lens_height_reference": "metres_above_local_ground",
+    "pitch_reference": "degrees_from_horizontal_positive_up",
+    "per_station_evidence_required": true
+  },
+  "stage": {
+    "latitude": null,
+    "longitude": null,
+    "horizontal_uncertainty_m": null,
+    "ground_elevation_m": null,
+    "vertical_datum": null,
+    "front_azimuth_deg_true": null,
+    "source_url": null,
+    "evidence_notes": null
+  },
+  "cameras": []
+}

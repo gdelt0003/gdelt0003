@@ -1,0 +1,582 @@
+- generic [ref=f114e2]:
+  - banner [ref=f114e4]:
+    - generic [ref=f114e6]:
+      - generic [ref=f114e7]:
+        - button "导视" [active] [ref=f114e9] [cursor=pointer]
+        - link "YouTube 首页" [ref=f114e14] [cursor=pointer]:
+          - /url: /
+        - button "跳过导航" [ref=f114e23] [cursor=pointer]
+      - generic [ref=f114e27]:
+        - search [ref=f114e28]:
+          - generic [ref=f114e30]:
+            - generic [ref=f114e31]:
+              - combobox "搜索" [expanded] [ref=f114e33]: Press Secretary Katie Zacharia Briefs Members of the Media Oct. 13, 2026
+              - button "清空搜索查询" [ref=f114e35] [cursor=pointer]
+            - button "Search" [ref=f114e42] [cursor=pointer]
+        - generic [ref=f114e47]:
+          - button "通过语音搜索内容" [ref=f114e49] [cursor=pointer]
+          - tooltip "tooltip"
+      - generic [ref=f114e54]:
+        - button "设置" [ref=f114e59] [cursor=pointer]
+        - link "登录" [ref=f114e65] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Dzh-CN%26next%3D%252Fresults%253Fsearch_query%253DPress%252BSecretary%252BKatie%252BZacharia%252BBriefs%252BMembers%252Bof%252Bthe%252BMedia%252BOct.%252B13%25252C%252B2026%2526sp%253DCAISBAgDEAE%2525253D&hl=zh-CN&ec=65620
+  - navigation [ref=f114e69]:
+    - generic [ref=f114e70]:
+      - link "首页" [ref=f114e72] [cursor=pointer]:
+        - /url: /
+      - link "Shorts" [ref=f114e78] [cursor=pointer]:
+        - /url: /shorts/
+      - link "订阅" [ref=f114e84] [cursor=pointer]:
+        - /url: /feed/subscriptions
+      - link "我" [ref=f114e90] [cursor=pointer]:
+        - /url: /feed/you
+  - generic [ref=f114e95]:
+    - main [ref=f114e96]:
+      - generic [ref=f114e97]:
+        - generic [ref=f114e101]:
+          - button "搜索过滤条件" [ref=f114e103] [cursor=pointer]:
+            - generic: 过滤
+          - tooltip "tooltip"
+        - generic [ref=f114e112]:
+          - generic [ref=f114e114]:
+            - link [aria-hidden] [ref=f114e116] [cursor=pointer]:
+              - /url: /watch?v=g7we6gecwnc&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+              - img [ref=f114e121]:
+                - generic [aria-hidden] [ref=f114e122]: 14:26
+              - generic: 正在播放
+            - generic [ref=f114e123] [cursor=pointer]:
+              - generic [ref=f114e124]:
+                - generic [ref=f114e125]:
+                  - heading [level=3] [ref=f114e126]:
+                    - link "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 14分钟26秒钟" [ref=f114e127]:
+                      - /url: /watch?v=g7we6gecwnc&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026
+                  - button "操作菜单" [ref=f114e131]
+                - generic [ref=f114e137]:
+                  - generic [ref=f114e138]: 33万
+                  - generic [ref=f114e139]: •直播时间：1天前
+              - generic [ref=f114e140]:
+                - link "前往频道：The White House" [ref=f114e141]:
+                  - /url: /@WhiteHouse
+                - generic [ref=f114e143]:
+                  - link "The White House" [ref=f114e147]:
+                    - /url: /@WhiteHouse
+                  - img "已验证" [ref=f114e152]
+              - generic [ref=f114e156]:
+                - text: The White House.
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e161]:
+                - generic [aria-hidden] [ref=f114e162]: 最新
+          - generic [ref=f114e164]:
+            - link [aria-hidden] [ref=f114e166] [cursor=pointer]:
+              - /url: /watch?v=xQp3fdlXBsY&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+              - img [ref=f114e171]:
+                - generic [aria-hidden] [ref=f114e172]: 11:55:00
+              - generic: 正在播放
+            - generic [ref=f114e173] [cursor=pointer]:
+              - generic [ref=f114e174]:
+                - generic [ref=f114e175]:
+                  - heading [level=3] [ref=f114e1210]:
+                    - 'link "LIVE : Press Secretary Katie Zacharia Briefs Members of the Media | NewsX World 11小时55分钟" [ref=f114e1211]':
+                      - /url: /watch?v=xQp3fdlXBsY&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "LIVE : Press Secretary Katie Zacharia Briefs Members of the Media | NewsX World"
+                  - button "操作菜单" [ref=f114e181]
+                - generic [ref=f114e187]:
+                  - generic [ref=f114e188]: "3245"
+                  - generic [ref=f114e189]: •直播时间：19小时前
+              - generic [ref=f114e190]:
+                - link "前往频道：NewsX World" [ref=f114e1212]:
+                  - /url: /@newsxworldlive
+                - link "NewsX World" [ref=f114e1213]:
+                  - /url: /@newsxworldlive
+              - generic [ref=f114e206]:
+                - generic [ref=f114e1214]: Watch Press Secretary Katie Zacharia brief members of the media LIVE. Follow key announcements, government responses, ...
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e211]:
+                - generic [aria-hidden] [ref=f114e212]: 最新
+          - generic [ref=f114e214]:
+            - link [aria-hidden] [ref=f114e216] [cursor=pointer]:
+              - /url: /watch?v=anKZ5rdT0aQ&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e218] [cursor=pointer]:
+              - generic [ref=f114e219]:
+                - generic [ref=f114e220]:
+                  - heading [level=3] [ref=f114e1215]:
+                    - link "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 42分钟" [ref=f114e1216]:
+                      - /url: /watch?v=anKZ5rdT0aQ&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026
+                  - button "操作菜单" [ref=f114e226]
+                - generic [ref=f114e232]:
+                  - generic [ref=f114e233]: "898"
+                  - generic [ref=f114e234]: •直播时间：1天前
+              - generic [ref=f114e235]:
+                - link "前往频道：ASL White House" [ref=f114e1217]:
+                  - /url: /@ASLWhiteHouse
+                - generic [ref=f114e238]:
+                  - link "ASL White House" [ref=f114e1218]:
+                    - /url: /@ASLWhiteHouse
+                  - img "已验证" [ref=f114e247]
+              - generic [ref=f114e251]:
+                - text: The White House.
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e257]:
+                - generic [aria-hidden] [ref=f114e258]: 最新
+          - generic [ref=f114e264]:
+            - link [aria-hidden] [ref=f114e266] [cursor=pointer]:
+              - /url: /watch?v=3OTOXHBVmVw&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e268] [cursor=pointer]:
+              - generic [ref=f114e269]:
+                - generic [ref=f114e270]:
+                  - heading [level=3] [ref=f114e1219]:
+                    - link "Current with Christine Romans – Oct. 13 | NBC News NOW 1小时43分钟" [ref=f114e1220]:
+                      - /url: /watch?v=3OTOXHBVmVw&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Current with Christine Romans – Oct. 13 | NBC News NOW
+                  - button "操作菜单" [ref=f114e276]
+                - generic [ref=f114e282]:
+                  - generic [ref=f114e283]: 1.8万
+                  - generic [ref=f114e284]: •1天前
+              - generic [ref=f114e285]:
+                - link "前往频道：NBC News" [ref=f114e1221]:
+                  - /url: /@NBCNews
+                - generic [ref=f114e287]:
+                  - link "NBC News" [ref=f114e1222]:
+                    - /url: /@NBCNews
+                  - img "已验证" [ref=f114e296]
+              - generic [ref=f114e300]:
+                - generic [ref=f114e1223]: Katie Zacharia holds her first briefing as White House press secretary, a deadly roller coaster accident at a Six Flags park in ...
+                - tooltip "tooltip"
+              - generic [ref=f114e302]:
+                - img "最新" [ref=f114e305]:
+                  - generic [aria-hidden] [ref=f114e306]: 最新
+                - img "字幕" [ref=f114e309]:
+                  - generic [aria-hidden] [ref=f114e310]: 字幕
+          - generic [ref=f114e329]:
+            - link [aria-hidden] [ref=f114e331] [cursor=pointer]:
+              - /url: /watch?v=TPXdcOJRmRc&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e333] [cursor=pointer]:
+              - generic [ref=f114e334]:
+                - generic [ref=f114e335]:
+                  - heading [level=3] [ref=f114e1224]:
+                    - link "ABC World News Tonight with David Muir Full Broadcast - Oct. 13, 2026 20分钟" [ref=f114e1225]:
+                      - /url: /watch?v=TPXdcOJRmRc&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: ABC World News Tonight with David Muir Full Broadcast - Oct. 13, 2026
+                  - button "操作菜单" [ref=f114e341]
+                - generic [ref=f114e347]:
+                  - generic [ref=f114e348]: 105万
+                  - generic [ref=f114e349]: •1天前
+              - generic [ref=f114e350]:
+                - link "前往频道：ABC News" [ref=f114e1226]:
+                  - /url: /@ABCNews
+                - generic [ref=f114e352]:
+                  - link "ABC News" [ref=f114e1227]:
+                    - /url: /@ABCNews
+                  - img "已验证" [ref=f114e1232]
+              - generic [ref=f114e357]:
+                - text: Tom Soufi Burridge has the latest on Pope Leo, who has been diagnosed with lung cancer and had the lower portion of his right ...
+                - tooltip "tooltip"
+              - generic [ref=f114e360]:
+                - img "最新" [ref=f114e363]:
+                  - generic [aria-hidden] [ref=f114e364]: 最新
+                - img "字幕" [ref=f114e1238]:
+                  - generic [aria-hidden] [ref=f114e1239]: 字幕
+              - generic [ref=f114e1242]:
+                - generic [ref=f114e1243]:
+                  - generic [ref=f114e1246]: 14 个章节
+                  - button [ref=f114e1248]
+                - button "更多" [ref=f114e1253]
+          - generic [ref=f114e366]:
+            - link [aria-hidden] [ref=f114e368] [cursor=pointer]:
+              - /url: /watch?v=dpnjLPKYWD0&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e370] [cursor=pointer]:
+              - generic [ref=f114e371]:
+                - generic [ref=f114e372]:
+                  - heading [level=3] [ref=f114e373]:
+                    - 'link "Good Morning San Antonio 5 a.m. : Oct 13, 2026 42分钟" [ref=f114e374]':
+                      - /url: /watch?v=dpnjLPKYWD0&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "Good Morning San Antonio 5 a.m. : Oct 13, 2026"
+                  - button "操作菜单" [ref=f114e378]
+                - generic [ref=f114e384]:
+                  - generic [ref=f114e385]: "4166"
+                  - generic [ref=f114e386]: •1天前
+              - generic [ref=f114e387]:
+                - link "前往频道：KSAT 12" [ref=f114e388]:
+                  - /url: /@KSATnews
+                - generic [ref=f114e389]:
+                  - link "KSAT 12" [ref=f114e393]:
+                    - /url: /@KSATnews
+                  - img "已验证" [ref=f114e398]
+              - generic [ref=f114e402]:
+                - generic [ref=f114e403]: The KSAT 12 News Team provides a look at local, regional, statewide and national news events and the latest information on ...
+                - tooltip "tooltip"
+              - generic [ref=f114e405]:
+                - img "最新" [ref=f114e408]:
+                  - generic [aria-hidden] [ref=f114e409]: 最新
+                - img "字幕" [ref=f114e412]:
+                  - generic [aria-hidden] [ref=f114e413]: 字幕
+          - generic [ref=f114e415]:
+            - link [aria-hidden] [ref=f114e417] [cursor=pointer]:
+              - /url: /watch?v=ZHhPVqSgf6E&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e419] [cursor=pointer]:
+              - generic [ref=f114e420]:
+                - generic [ref=f114e421]:
+                  - heading [level=3] [ref=f114e1257]:
+                    - link "New White House Press Secretary Katie Zacharia Briefs Members of the Media 25分钟" [ref=f114e1258]:
+                      - /url: /watch?v=ZHhPVqSgf6E&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: New White House Press Secretary Katie Zacharia Briefs Members of the Media
+                  - button "操作菜单" [ref=f114e427]
+                - generic [ref=f114e433]:
+                  - generic [ref=f114e434]: "92"
+                  - generic [ref=f114e435]: •直播时间：1天前
+              - generic [ref=f114e436]:
+                - link "前往频道：Diya TV" [ref=f114e1259]:
+                  - /url: /@diyatvusa
+                - link "Diya TV" [ref=f114e1260]:
+                  - /url: /@diyatvusa
+              - generic [ref=f114e1261]:
+                - generic [ref=f114e1262]: Press Secretary Katie Zacharia Briefs Members of the Media - 10/13/26 --- Find Diya TV previews, promos, clips, and digital ...
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e447]:
+                - generic [aria-hidden] [ref=f114e448]: 最新
+          - generic [ref=f114e450]:
+            - link [aria-hidden] [ref=f114e452] [cursor=pointer]:
+              - /url: /watch?v=EKXJrUHudeA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e454] [cursor=pointer]:
+              - generic [ref=f114e455]:
+                - generic [ref=f114e456]:
+                  - heading [level=3] [ref=f114e457]:
+                    - 'link "Google Whistleblower: AI Cults, Hacking Nuclear Programs, and Google’s True Motives 2小时4分钟" [ref=f114e458]':
+                      - /url: /watch?v=EKXJrUHudeA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "Google Whistleblower: AI Cults, Hacking Nuclear Programs, and Google’s True Motives"
+                  - button "操作菜单" [ref=f114e462]
+                - generic [ref=f114e468]:
+                  - generic [ref=f114e469]: 63万
+                  - generic [ref=f114e470]: •2天前
+              - generic [ref=f114e471]:
+                - link "前往频道：Tucker Carlson" [ref=f114e472]:
+                  - /url: /@TuckerCarlson
+                - generic [ref=f114e473]:
+                  - link "Tucker Carlson" [ref=f114e477]:
+                    - /url: /@TuckerCarlson
+                  - img "已验证" [ref=f114e482]
+              - generic [ref=f114e486]:
+                - text: Tristan Harris worked at Google before devoting his life to saving humanity from AI. If half of what he says is true, we need to drop ...
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e491]:
+                - generic [aria-hidden] [ref=f114e492]: 最新
+              - generic [ref=f114e495]:
+                - generic [ref=f114e496]:
+                  - generic [ref=f114e499]: 17 个章节
+                  - button "Is AI Doomerism a Psyop? | Is Technology Accelerating Too Fast? | The True Incentives of Social Media Companies | Harris’s Warning to Google and Their Response | The Lives Lost to Social Media | Harris's Role in The Social Dilemma | Is the AI Race With China a Real Concern? | The Oncoming Violent Revolution | Transhumanism and the God-Complex of Tech Oligarchs | Could AI Hack Into the World’s Nuclear Programs? | The Hugging Face Incident | Can Cryptocurrency Exist Alongside AI? | Is AI Alive? | The Dangers of AI Psychosis | The New Religious Cult of AI | Are Lawmakers Doing Anything About This? | Will Al and Data Centers Impact the Midterms?" [ref=f114e501]
+                - button "更多" [ref=f114e506]
+          - generic [ref=f114e511]:
+            - link [aria-hidden] [ref=f114e513] [cursor=pointer]:
+              - /url: /watch?v=6g4YIdM6QA4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e515] [cursor=pointer]:
+              - generic [ref=f114e516]:
+                - generic [ref=f114e517]:
+                  - heading [level=3] [ref=f114e1263]:
+                    - link "Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 | Katie Zacharia speech 14分钟20秒钟" [ref=f114e1264]:
+                      - /url: /watch?v=6g4YIdM6QA4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026 | Katie Zacharia speech
+                  - button "操作菜单" [ref=f114e523]
+                - generic [ref=f114e529]:
+                  - generic [ref=f114e530]: "0"
+                  - generic [ref=f114e531]: •1天前
+              - generic [ref=f114e532]:
+                - link "前往频道：Insight News" [ref=f114e1265]:
+                  - /url: /@insightnews12
+                - link "Insight News" [ref=f114e1266]:
+                  - /url: /@insightnews12
+              - img "最新" [ref=f114e545]:
+                - generic [aria-hidden] [ref=f114e546]: 最新
+          - generic [ref=f114e548]:
+            - link [aria-hidden] [ref=f114e550] [cursor=pointer]:
+              - /url: /watch?v=4AZ-AiGYZWY&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e552] [cursor=pointer]:
+              - generic [ref=f114e553]:
+                - generic [ref=f114e554]:
+                  - heading [level=3] [ref=f114e555]:
+                    - link "알래스카 LNG, 백악관 540억·트럼프 500억…대만 44억은 어떤 돈인가 3分钟8秒钟" [ref=f114e556]:
+                      - /url: /watch?v=4AZ-AiGYZWY&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: 알래스카 LNG, 백악관 540억·트럼프 500억…대만 44억은 어떤 돈인가
+                  - button "操作菜单" [ref=f114e560]
+                - generic [ref=f114e566]:
+                  - generic [ref=f114e567]: "0"
+                  - generic [ref=f114e568]: •33分钟前
+              - generic [ref=f114e569]:
+                - link "前往频道：정치의 맥락" [ref=f114e570]:
+                  - /url: /@politics_context
+                - link "정치의 맥락" [ref=f114e575]:
+                  - /url: /@politics_context
+              - generic [ref=f114e576]:
+                - generic [ref=f114e577]: ... 2026-10-13 https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/ ...
+                - tooltip "tooltip"
+              - generic [ref=f114e579]:
+                - img "最新" [ref=f114e582]:
+                  - generic [aria-hidden] [ref=f114e583]: 最新
+                - img "字幕" [ref=f114e586]:
+                  - generic [aria-hidden] [ref=f114e587]: 字幕
+              - generic [ref=f114e590]:
+                - generic [ref=f114e591]:
+                  - generic [ref=f114e594]: 9 个章节
+                  - button "540억과 500억, 같은 투자금인가 | 백악관 10월 13일 원음 | 두 발표의 범위 비교 | 알래스카 현장 발언 | 상원의원의 서명 언급 | 한국 공식 계획의 조건 | 대만의 구매·개발 투자 발표 | 구매와 지분의 다른 금액 | 앞으로 확인할 계약" [ref=f114e596]
+                - button "更多" [ref=f114e601]
+          - generic [ref=f114e606]:
+            - link [aria-hidden] [ref=f114e608] [cursor=pointer]:
+              - /url: /watch?v=QApQnw4yCm4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e610] [cursor=pointer]:
+              - generic [ref=f114e611]:
+                - generic [ref=f114e612]:
+                  - heading [level=3] [ref=f114e1267]:
+                    - 'link "New White House Press Secretary Katie Zacharia: Opening Statement | Briefing, Oct. 13, 2026 2分钟" [ref=f114e1268]':
+                      - /url: /watch?v=QApQnw4yCm4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "New White House Press Secretary Katie Zacharia: Opening Statement | Briefing, Oct. 13, 2026"
+                  - button "操作菜单" [ref=f114e618]
+                - generic [ref=f114e624]:
+                  - generic [ref=f114e625]: "0"
+                  - generic [ref=f114e626]: •9小时前
+              - generic [ref=f114e627]:
+                - link "前往频道：PSA News Today" [ref=f114e1269]:
+                  - /url: /@PSANewsToday
+                - link "PSA News Today" [ref=f114e1270]:
+                  - /url: /@PSANewsToday
+              - generic [ref=f114e634]:
+                - generic [ref=f114e635]: White House Press Secretary Katie Zacharia opens a briefing in the White House press briefing room, Tuesday, Oct. 13, 2026 ...
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e640]:
+                - generic [aria-hidden] [ref=f114e641]: 最新
+          - generic [ref=f114e643]:
+            - link [aria-hidden] [ref=f114e645] [cursor=pointer]:
+              - /url: /watch?v=ALGDOMmnjf4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e647] [cursor=pointer]:
+              - generic [ref=f114e648]:
+                - generic [ref=f114e649]:
+                  - heading [level=3] [ref=f114e1271]:
+                    - link "Jimmy Kimmel Exposes Trump’s New Press Secretary After Disaster First Briefing. 15分钟" [ref=f114e1272]:
+                      - /url: /watch?v=ALGDOMmnjf4&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Jimmy Kimmel Exposes Trump’s New Press Secretary After Disaster First Briefing.
+                  - button "操作菜单" [ref=f114e655]
+                - generic [ref=f114e661]:
+                  - generic [ref=f114e662]: "0"
+                  - generic [ref=f114e663]: •12分钟前
+              - generic [ref=f114e664]:
+                - link "前往频道：True Stateside" [ref=f114e1273]:
+                  - /url: /@TrueStateside
+                - link "True Stateside" [ref=f114e1274]:
+                  - /url: /@TrueStateside
+              - generic [ref=f114e671]:
+                - generic [ref=f114e672]: "... 13, 2026: https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/ Official ..."
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e677]:
+                - generic [aria-hidden] [ref=f114e678]: 最新
+          - generic [ref=f114e680]:
+            - link [aria-hidden] [ref=f114e682] [cursor=pointer]:
+              - /url: /watch?v=I4IxjkRP-UA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e684] [cursor=pointer]:
+              - generic [ref=f114e685]:
+                - generic [ref=f114e686]:
+                  - heading [level=3] [ref=f114e1275]:
+                    - link "Trump Says US Still Sharing Intelligence With Ukraine | White House Briefing 5分钟58秒钟" [ref=f114e1276]:
+                      - /url: /watch?v=I4IxjkRP-UA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Trump Says US Still Sharing Intelligence With Ukraine | White House Briefing
+                  - button "操作菜单" [ref=f114e692]
+                - generic [ref=f114e698]:
+                  - generic [ref=f114e699]: "2"
+                  - generic [ref=f114e700]: •11小时前
+              - generic [ref=f114e701]:
+                - link "前往频道：America Evertrue" [ref=f114e1277]:
+                  - /url: /@America-Evertrue
+                - link "America Evertrue" [ref=f114e1282]:
+                  - /url: /@America-Evertrue
+              - generic [ref=f114e723]:
+                - generic [ref=f114e1283]: "... 13, 2026: https://www.whitehouse.gov/videos/press-secretary-katie-zacharia-briefs-members-of-the-media-oct-13-2026/ ..."
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e728]:
+                - generic [aria-hidden] [ref=f114e729]: 最新
+          - generic [ref=f114e735]:
+            - link [aria-hidden] [ref=f114e737] [cursor=pointer]:
+              - /url: /watch?v=9B5A_8I8X9U&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e739] [cursor=pointer]:
+              - generic [ref=f114e740]:
+                - generic [ref=f114e741]:
+                  - heading [level=3] [ref=f114e1284]:
+                    - link "Full 2026 New York Governor Debate | Kathy Hochul & Bruce Blakeman 1小时33分钟" [ref=f114e1285]:
+                      - /url: /watch?v=9B5A_8I8X9U&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Full 2026 New York Governor Debate | Kathy Hochul & Bruce Blakeman
+                  - button "操作菜单" [ref=f114e747]
+                - generic [ref=f114e753]:
+                  - generic [ref=f114e754]: 26万
+                  - generic [ref=f114e755]: •直播时间：1天前
+              - generic [ref=f114e756]:
+                - button "联合创作频道" [ref=f114e1287]
+                - generic [ref=f114e1304]: NY1和Spectrum News
+              - generic [ref=f114e763]:
+                - text: Gov. Kathy Hochul faces off against Nassau County Executive Bruce Blakeman in a debate for Governor of New York.
+                - tooltip "tooltip"
+              - generic [ref=f114e766]:
+                - img "最新" [ref=f114e769]:
+                  - generic [aria-hidden] [ref=f114e770]: 最新
+                - img "字幕" [ref=f114e1309]:
+                  - generic [aria-hidden] [ref=f114e1310]: 字幕
+          - generic [ref=f114e772]:
+            - link [aria-hidden] [ref=f114e774] [cursor=pointer]:
+              - /url: /watch?v=O93uMRckBig&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e776] [cursor=pointer]:
+              - generic [ref=f114e777]:
+                - generic [ref=f114e778]:
+                  - heading [level=3] [ref=f114e1311]:
+                    - 'link "Katie Zacharia Takes Questions: Guilfoyle Asked to Resign, New Media Seat, Four Kids | Oct. 13 2分钟11秒钟" [ref=f114e1312]':
+                      - /url: /watch?v=O93uMRckBig&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "Katie Zacharia Takes Questions: Guilfoyle Asked to Resign, New Media Seat, Four Kids | Oct. 13"
+                  - button "操作菜单" [ref=f114e784]
+                - generic [ref=f114e790]:
+                  - generic [ref=f114e791]: "0"
+                  - generic [ref=f114e792]: •9小时前
+              - generic [ref=f114e793]:
+                - link "前往频道：PSA News Today" [ref=f114e794]:
+                  - /url: /@PSANewsToday
+                - link "PSA News Today" [ref=f114e799]:
+                  - /url: /@PSANewsToday
+              - generic [ref=f114e800]:
+                - generic [ref=f114e801]: "Source: The White House — \"Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026\" ..."
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e806]:
+                - generic [aria-hidden] [ref=f114e807]: 最新
+          - generic [ref=f114e809]:
+            - link [aria-hidden] [ref=f114e811] [cursor=pointer]:
+              - /url: /watch?v=WsHQLPvq2VU&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e813] [cursor=pointer]:
+              - generic [ref=f114e814]:
+                - generic [ref=f114e815]:
+                  - heading [level=3] [ref=f114e1313]:
+                    - link "Katie Zacharia on $15B Iowa Steel Plant, Korea Nuclear Deal, Alaska LNG and Fraud | Oct. 13 1分钟49秒钟" [ref=f114e1314]:
+                      - /url: /watch?v=WsHQLPvq2VU&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Katie Zacharia on $15B Iowa Steel Plant, Korea Nuclear Deal, Alaska LNG and Fraud | Oct. 13
+                  - button "操作菜单" [ref=f114e821]
+                - generic [ref=f114e827]:
+                  - generic [ref=f114e828]: "0"
+                  - generic [ref=f114e829]: •9小时前
+              - generic [ref=f114e830]:
+                - link "前往频道：PSA News Today" [ref=f114e1315]:
+                  - /url: /@PSANewsToday
+                - link "PSA News Today" [ref=f114e1316]:
+                  - /url: /@PSANewsToday
+              - generic [ref=f114e845]:
+                - generic [ref=f114e846]: "Source: The White House — \"Press Secretary Katie Zacharia Briefs Members of the Media, Oct. 13, 2026\" ..."
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e851]:
+                - generic [aria-hidden] [ref=f114e852]: 最新
+          - generic [ref=f114e858]:
+            - link [aria-hidden] [ref=f114e860] [cursor=pointer]:
+              - /url: /watch?v=HtSMhmk7LEQ&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e862] [cursor=pointer]:
+              - generic [ref=f114e863]:
+                - generic [ref=f114e864]:
+                  - heading [level=3] [ref=f114e1317]:
+                    - 'link "''GAME OF RISK'': Former Trump official describes the president''s midterm campaign strategy 8分钟49秒钟" [ref=f114e1318]':
+                      - /url: /watch?v=HtSMhmk7LEQ&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "'GAME OF RISK': Former Trump official describes the president's midterm campaign strategy"
+                  - button "操作菜单" [ref=f114e870]
+                - generic [ref=f114e876]:
+                  - generic [ref=f114e877]: "9718"
+                  - generic [ref=f114e878]: •21小时前
+              - generic [ref=f114e879]:
+                - link "前往频道：Fox News Clips" [ref=f114e1319]:
+                  - /url: /@FoxNewsChannelClips
+                - generic [ref=f114e881]:
+                  - link "Fox News Clips" [ref=f114e1320]:
+                    - /url: /@FoxNewsChannelClips
+                  - img "已验证" [ref=f114e1325]
+              - generic [ref=f114e886]:
+                - generic [ref=f114e887]: "A 'Special Report' panel discusses President Donald Trump's midterm push. #fox #foxnews #media #breakingnews #us #usa ..."
+                - tooltip "tooltip"
+              - generic [ref=f114e889]:
+                - img "最新" [ref=f114e892]:
+                  - generic [aria-hidden] [ref=f114e893]: 最新
+                - img "字幕" [ref=f114e1331]:
+                  - generic [aria-hidden] [ref=f114e1332]: 字幕
+          - generic [ref=f114e912]:
+            - link [aria-hidden] [ref=f114e914] [cursor=pointer]:
+              - /url: /watch?v=i8V4PvemBfo&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e916] [cursor=pointer]:
+              - generic [ref=f114e917]:
+                - generic [ref=f114e918]:
+                  - heading [level=3] [ref=f114e1333]:
+                    - 'link "WH: ''We have asked Guilfoyle to resign'' (Zacharia Briefing) | Extra 6分钟1秒钟" [ref=f114e1334]':
+                      - /url: /watch?v=i8V4PvemBfo&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "WH: 'We have asked Guilfoyle to resign' (Zacharia Briefing) | Extra"
+                  - button "操作菜单" [ref=f114e924]
+                - generic [ref=f114e930]:
+                  - generic [ref=f114e931]: "4"
+                  - generic [ref=f114e932]: •1天前
+              - generic [ref=f114e933]:
+                - link "前往频道：NTH MERIDIAN EXTRA" [ref=f114e1335]:
+                  - /url: /@NthMeridian
+                - link "NTH MERIDIAN EXTRA" [ref=f114e1336]:
+                  - /url: /@NthMeridian
+              - generic [ref=f114e940]:
+                - generic [ref=f114e1337]: "Footage: The White House, Oct 13, 2026 (YouTube g7we6gecwnc): Press Secretary Katie Zacharia Briefs Members of the Media."
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e945]:
+                - generic [aria-hidden] [ref=f114e946]: 最新
+              - generic [ref=f114e953]:
+                - generic [ref=f114e954]:
+                  - generic [ref=f114e957]: 12 个章节
+                  - 'button "Cold open: Guilfoyle | Zacharia''s opening | The midterm blitz | Wages, drug prices, jobs | Venezuela and oil | Greenland, fentanyl, the border | The new media seat | Doocy: a tough midterm | Ukraine intel question | Guilfoyle asked to resign | Family and Leavitt''s advice | Off to Alaska" [ref=f114e1338]'
+                - button "更多" [ref=f114e964]
+          - generic [ref=f114e969]:
+            - link [aria-hidden] [ref=f114e971] [cursor=pointer]:
+              - /url: /watch?v=A5GdWx_fU5g&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e973] [cursor=pointer]:
+              - generic [ref=f114e974]:
+                - generic [ref=f114e975]:
+                  - heading [level=3] [ref=f114e1339]:
+                    - link "Guilfoyle Resigns & Trump Turns to Putin for Fuel | ENDstream Ep.34 3小时2分钟" [ref=f114e1340]:
+                      - /url: /watch?v=A5GdWx_fU5g&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: Guilfoyle Resigns & Trump Turns to Putin for Fuel | ENDstream Ep.34
+                  - button "操作菜单" [ref=f114e981]
+                - generic [ref=f114e987]:
+                  - generic [ref=f114e988]: "142"
+                  - generic [ref=f114e989]: •直播时间：10小时前
+              - generic [ref=f114e990]:
+                - link "前往频道：ENDtv" [ref=f114e1341]:
+                  - /url: /@EveryNewDayTV
+                - link "ENDtv" [ref=f114e1342]:
+                  - /url: /@EveryNewDayTV
+              - generic [ref=f114e997]:
+                - text: Kimberly Guilfoyle “resigns” after Trump asks her to step down as US ambassador to Greece. Meanwhile, Trump thanks Putin for a ...
+                - tooltip "tooltip"
+              - generic [ref=f114e1000]:
+                - img "最新" [ref=f114e1003]:
+                  - generic [aria-hidden] [ref=f114e1004]: 最新
+                - img "字幕" [ref=f114e1345]:
+                  - generic [aria-hidden] [ref=f114e1346]: 字幕
+              - generic [ref=f114e1349]:
+                - generic [ref=f114e1350]:
+                  - generic [ref=f114e1353]: 51 个章节
+                  - button [ref=f114e1355]
+                - button "更多" [ref=f114e1360]
+          - generic [ref=f114e1006]:
+            - link [aria-hidden] [ref=f114e1008] [cursor=pointer]:
+              - /url: /watch?v=1xM7JUi7vTA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+            - generic [ref=f114e1010] [cursor=pointer]:
+              - generic [ref=f114e1011]:
+                - generic [ref=f114e1012]:
+                  - heading [level=3] [ref=f114e1364]:
+                    - 'link "4-4-1: Zacharia Debuts, Angela Rose Reacts, & POTUS Gaggles with Press 1小时2分钟" [ref=f114e1365]':
+                      - /url: /watch?v=1xM7JUi7vTA&pp=ygVIUHJlc3MgU2VjcmV0YXJ5IEthdGllIFphY2hhcmlhIEJyaWVmcyBNZW1iZXJzIG9mIHRoZSBNZWRpYSBPY3QuIDEzLCAyMDI2
+                      - text: "4-4-1: Zacharia Debuts, Angela Rose Reacts, & POTUS Gaggles with Press"
+                  - button "操作菜单" [ref=f114e1018]
+                - generic [ref=f114e1024]:
+                  - generic [ref=f114e1025]: "14"
+                  - generic [ref=f114e1026]: •直播时间：1天前
+              - generic [ref=f114e1027]:
+                - link "前往频道：KellyJayeIAm" [ref=f114e1366]:
+                  - /url: /@KellyJayeIam
+                - link "KellyJayeIAm" [ref=f114e1367]:
+                  - /url: /@KellyJayeIam
+              - generic [ref=f114e1034]:
+                - generic [ref=f114e1035]: ... Zacharia Briefs Members of the Media, Oct. 13, 2026 https://www.youtube.com/live/g7we6gecwnc?si=BBBM1WMV41C-jc3Y ...
+                - tooltip "tooltip"
+              - img "最新" [ref=f114e1040]:
+                - generic [aria-hidden] [ref=f114e1041]: 最新
+    - text: •
