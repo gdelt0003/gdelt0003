@@ -3,12 +3,14 @@ import base64
 import json
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from scripts import verify_rose_garden_review as review
+from scripts import process_full_video
 from scripts.process_full_video import (
     Cue,
     ROSE_GARDEN_SUBTITLE_LAYOUT,
@@ -27,6 +29,7 @@ WORKFLOW = (
     / "workflows"
     / "publish-rose-garden-review.yml"
 )
+SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 PRIVATE_RENDER_WORKFLOW = WORKFLOW.with_name("render-rose-garden-private.yml")
 
 
@@ -41,6 +44,25 @@ class RoseGardenReviewWorkflowTests(unittest.TestCase):
             "height": 0.3,
         }
     ]
+
+    def test_validator_imports_processing_module_as_a_package(self):
+        self.assertIs(review._process_full_video_module(), process_full_video)
+
+    def test_validator_imports_processing_module_when_loaded_from_scripts_path(self):
+        direct_import = (
+            "import sys\n"
+            "sys.path.insert(0, sys.argv[1])\n"
+            "import process_full_video\n"
+            "import verify_rose_garden_review as review\n"
+            "assert review._process_full_video_module() is process_full_video\n"
+        )
+        result = subprocess.run(
+            [sys.executable, "-c", direct_import, str(SCRIPTS)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     @staticmethod
     def synthetic_caption_frame(width, height, mask=None):
