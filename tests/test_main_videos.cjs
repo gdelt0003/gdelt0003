@@ -78,6 +78,8 @@ async function main() {
         event_date: '2026-10-15',
         homepage_status: '外部审查草稿 · 五项复核声明已记录',
         video_url: 'https://cdn.example.test/rose-garden.mp4',
+        render_engine: 'Open-source renderer v1',
+        render_engine_url: 'https://source.example.test/renderer',
         source_details_url: 'events/rose-garden-lunch-2026-10-15/',
         source_url: 'https://source.example.test/rose-garden',
       },
@@ -126,12 +128,22 @@ async function main() {
 
   assert.equal(videos.children.length, 3, 'render all safe main videos');
   assert.equal(status.textContent, '3 条主视频', 'count only playable catalog entries');
-  assert.equal(
-    videos.children[0].children[1].children[0].textContent,
-    'Rose Garden Lunch · 外部审查草稿',
-  );
+  assert.equal(videos.children[0].children[1].children[0].textContent, 'Rose Garden Lunch · 外部审查草稿');
   assert.equal(videos.children[1].children[1].children[0].textContent, 'Newer event');
   assert.equal(videos.children[2].children[1].children[0].textContent, 'Older event');
+  assert.match(
+    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').textContent,
+    /Open-source renderer v1/,
+  );
+  assert.equal(
+    videos.children[0].children[1].children.find((node) => node.className === 'main-video-engine').children.find((node) => node.tagName === 'a').href,
+    'https://source.example.test/renderer',
+  );
+  assert.equal(
+    videos.children[0].children[1].children.find((node) => node.className === 'main-video-links').children.length,
+    3,
+    'include source, source details, and MP4 links',
+  );
   assert.equal(
     videos.children[0].children[0].children[0].src,
     'https://cdn.example.test/rose-garden.mp4',

@@ -6,6 +6,14 @@ let catalogVideos = [];
 let activeFilter = 'all';
 let activeSort = 'newest';
 
+function addText(parent, tagName, className, text) {
+  const element = document.createElement(tagName);
+  if (className) element.className = className;
+  element.textContent = text;
+  parent.append(element);
+  return element;
+}
+
 function safeVideoUrl(value) {
   if (typeof value !== 'string' || !value.trim()) return null;
   try {
@@ -92,10 +100,28 @@ function renderMainVideos() {
     ].filter(Boolean).join(' · ');
     content.append(metadata);
 
+    if (item.render_engine) {
+      const engine = addText(content, 'p', 'main-video-engine', `渲染工具：${item.render_engine}`);
+      const engineUrl = safeVideoUrl(item.render_engine_url);
+      if (engineUrl) {
+        const attribution = document.createElement('a');
+        attribution.href = engineUrl;
+        attribution.textContent = '上游项目与来源';
+        attribution.target = '_blank';
+        attribution.rel = 'noreferrer';
+        engine.append(' ', attribution);
+      }
+    }
     const status = document.createElement('p');
     status.className = 'main-video-review-status';
-    status.textContent = item.homepage_status || '复核状态未登记';
+    status.textContent = item.homepage_status || item.review_status || '复核状态未登记';
     content.append(status);
+    if (item.note) {
+      const note = document.createElement('p');
+      note.className = 'main-video-note meta';
+      note.textContent = item.note;
+      content.append(note);
+    }
 
     const links = document.createElement('p');
     links.className = 'main-video-links';
