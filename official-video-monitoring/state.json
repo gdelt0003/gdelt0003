@@ -26415,22 +26415,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:05+00:00",
-        "completed_at_utc": "2026-10-29T00:20:44+00:00",
-        "run_id": "40793327394",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40793327394",
+        "completed_at_utc": "2026-11-03T02:11:25+00:00",
+        "run_id": "41564496035",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Donald J. Trump 9/11 Ceremony at White House | Steel Across America\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-29T00:20:33+00:00",
+          "researched_at_utc": "2026-11-03T02:11:09+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-29T00:20:33+00:00",
+        "additional_source_search_started_at_utc": "2026-11-03T02:11:09+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -26695,6 +26695,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-03T02:11:09+00:00",
+            "completed_at_utc": "2026-11-03T02:11:25+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "41564496035",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Donald J. Trump 9/11 Ceremony at White House | Steel Across America\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-03T02:11:09+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -26747,22 +26766,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:07+00:00",
-        "completed_at_utc": "2026-10-29T00:21:03+00:00",
-        "run_id": "40793327394",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40793327394",
+        "completed_at_utc": "2026-11-03T02:11:36+00:00",
+        "run_id": "41564496035",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Different shoes. Same American determination.\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-29T00:20:44+00:00",
+          "researched_at_utc": "2026-11-03T02:11:25+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-29T00:20:44+00:00",
+        "additional_source_search_started_at_utc": "2026-11-03T02:11:25+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -27027,6 +27046,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-11-03T02:11:25+00:00",
+            "completed_at_utc": "2026-11-03T02:11:36+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "41564496035",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Different shoes. Same American determination.\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-03T02:11:25+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -27079,22 +27117,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:07+00:00",
-        "completed_at_utc": "2026-10-29T06:05:41+00:00",
-        "run_id": "40827097880",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40827097880",
+        "completed_at_utc": "2026-11-03T02:11:52+00:00",
+        "run_id": "41564496035",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Labor Day 2026: Championing the Working Class\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-29T06:05:28+00:00",
+          "researched_at_utc": "2026-11-03T02:11:36+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-10-29T06:05:28+00:00",
+        "additional_source_search_started_at_utc": "2026-11-03T02:11:36+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -27359,6 +27397,25 @@
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
             }
+          },
+          {
+            "started_at_utc": "2026-11-03T02:11:36+00:00",
+            "completed_at_utc": "2026-11-03T02:11:52+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "41564496035",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Labor Day 2026: Championing the Working Class\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-03T02:11:36+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -27411,22 +27468,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:07+00:00",
-        "completed_at_utc": "2026-10-29T06:05:53+00:00",
-        "run_id": "40827097880",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40827097880",
+        "completed_at_utc": "2026-11-03T02:12:03+00:00",
+        "run_id": "41564496035",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"LIVE - PLAY NOW 📲 ARCADE.GOV\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-29T06:05:41+00:00",
+          "researched_at_utc": "2026-11-03T02:11:52+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-29T06:05:41+00:00",
+        "additional_source_search_started_at_utc": "2026-11-03T02:11:52+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -27691,6 +27748,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-03T02:11:52+00:00",
+            "completed_at_utc": "2026-11-03T02:12:03+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "41564496035",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"LIVE - PLAY NOW 📲 ARCADE.GOV\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-03T02:11:52+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -27743,22 +27819,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:08+00:00",
-        "completed_at_utc": "2026-10-29T06:06:04+00:00",
-        "run_id": "40827097880",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/40827097880",
+        "completed_at_utc": "2026-11-03T02:12:14+00:00",
+        "run_id": "41564496035",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Participates in a Rose Garden Dinner\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-10-29T06:05:53+00:00",
+          "researched_at_utc": "2026-11-03T02:12:03+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-10-29T06:05:53+00:00",
+        "additional_source_search_started_at_utc": "2026-11-03T02:12:03+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -28018,6 +28094,25 @@
               "query": "\"President Trump Participates in a Rose Garden Dinner\"",
               "timespan": "1w",
               "researched_at_utc": "2026-10-29T06:05:53+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-03T02:12:03+00:00",
+            "completed_at_utc": "2026-11-03T02:12:14+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "41564496035",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Participates in a Rose Garden Dinner\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-03T02:12:03+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -38331,10 +38426,10 @@
     }
   },
   "last_run": {
-    "run_id": "41514770773",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41514770773",
-    "started_at_utc": "2026-11-02T19:57:58+00:00",
-    "completed_at_utc": "2026-11-02T19:59:05+00:00",
+    "run_id": "41564496035",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/41564496035",
+    "started_at_utc": "2026-11-03T02:11:07+00:00",
+    "completed_at_utc": "2026-11-03T02:12:14+00:00",
     "status": "success"
   }
 }
