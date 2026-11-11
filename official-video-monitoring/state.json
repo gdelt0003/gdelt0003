@@ -5169,22 +5169,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:27+00:00",
-        "completed_at_utc": "2026-11-05T11:04:56+00:00",
-        "run_id": "42015847037",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42015847037",
+        "completed_at_utc": "2026-11-11T16:35:56+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 9, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-05T11:04:44+00:00",
+          "researched_at_utc": "2026-11-11T16:35:44+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-05T11:04:44+00:00",
+        "additional_source_search_started_at_utc": "2026-11-11T16:35:44+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -5487,6 +5487,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-11T16:35:44+00:00",
+            "completed_at_utc": "2026-11-11T16:35:56+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 9, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-11T16:35:44+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -5539,22 +5558,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:27+00:00",
-        "completed_at_utc": "2026-11-05T11:04:44+00:00",
-        "run_id": "42015847037",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42015847037",
+        "completed_at_utc": "2026-11-11T16:35:44+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"Trump Accounts Turn Dreams Into Possibilities\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-05T11:04:32+00:00",
+          "researched_at_utc": "2026-11-11T16:35:32+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-05T11:04:32+00:00",
+        "additional_source_search_started_at_utc": "2026-11-11T16:35:32+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -5857,6 +5876,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-11T16:35:32+00:00",
+            "completed_at_utc": "2026-11-11T16:35:44+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Trump Accounts Turn Dreams Into Possibilities\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-11T16:35:32+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -5909,22 +5947,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:36+00:00",
-        "completed_at_utc": "2026-11-05T11:05:09+00:00",
-        "run_id": "42015847037",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42015847037",
+        "completed_at_utc": "2026-11-11T16:36:07+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 7, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-05T11:04:56+00:00",
+          "researched_at_utc": "2026-11-11T16:35:56+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-05T11:04:56+00:00",
+        "additional_source_search_started_at_utc": "2026-11-11T16:35:56+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -6227,6 +6265,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-11T16:35:56+00:00",
+            "completed_at_utc": "2026-11-11T16:36:07+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 7, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-11T16:35:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -6279,22 +6336,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:36+00:00",
-        "completed_at_utc": "2026-11-05T18:42:23+00:00",
-        "run_id": "42086702643",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42086702643",
+        "completed_at_utc": "2026-11-11T16:36:29+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-05T18:42:11+00:00",
+          "researched_at_utc": "2026-11-11T16:36:18+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-05T18:42:11+00:00",
+        "additional_source_search_started_at_utc": "2026-11-11T16:36:18+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -6592,6 +6649,25 @@
               "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-05T18:42:11+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-11T16:36:18+00:00",
+            "completed_at_utc": "2026-11-11T16:36:29+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Delivers Remarks, Oct. 6, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-11T16:36:18+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -40469,22 +40545,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-30T23:52:23+00:00",
-        "completed_at_utc": "2026-11-05T18:42:11+00:00",
-        "run_id": "42086702643",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42086702643",
+        "completed_at_utc": "2026-11-11T16:36:18+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Meets with Artemis III Crew at the White House\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-05T18:41:59+00:00",
+          "researched_at_utc": "2026-11-11T16:36:07+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-05T18:41:59+00:00",
+        "additional_source_search_started_at_utc": "2026-11-11T16:36:07+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-30T23:52:24+00:00",
@@ -40518,6 +40594,25 @@
               "query": "\"President Trump Meets with Artemis III Crew at the White House\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-05T18:41:59+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-11T16:36:07+00:00",
+            "completed_at_utc": "2026-11-11T16:36:18+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Meets with Artemis III Crew at the White House\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-11T16:36:07+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -42632,13 +42727,190 @@
         "reuse_rights_status": "unknown_not_inferred",
         "publication_status": "not_published"
       }
+    },
+    "G5jsCeH4ovs": {
+      "video_id": "G5jsCeH4ovs",
+      "title": "Happy Veterans Day",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=G5jsCeH4ovs",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 61,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-11-11T16:35:18+00:00",
+        "completed_at_utc": "2026-11-11T16:35:19+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=G5jsCeH4ovs",
+        "final_url": "https://www.youtube.com/watch?v=G5jsCeH4ovs",
+        "http_status": 200,
+        "researched_at_utc": "2026-11-11T16:35:19+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_unverified_leads",
+        "started_at_utc": "2026-11-11T16:35:19+00:00",
+        "completed_at_utc": "2026-11-11T16:35:32+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "completed_with_candidates",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"Happy Veterans Day\"",
+          "timespan": "1w",
+          "max_records": 10,
+          "researched_at_utc": "2026-11-11T16:35:20+00:00",
+          "research_scope": "GDELT article metadata search only; candidates are unverified leads",
+          "candidate_count": 3,
+          "candidates": [
+            {
+              "title": "Saluting Our Heroes : Veterans Day Offers Around the Capital Region",
+              "publisher": "jamz963.com",
+              "url": "https://www.jamz963.com/news/capital-region/saluting-our-heroes-veterans-day-offers-around-the-capital-region/",
+              "seen_date_utc_metadata": "20261111T013000Z",
+              "language": "English",
+              "source_country": "",
+              "event_id": null,
+              "event_date": null,
+              "assignment_status": "unassigned_event_lead",
+              "evidence_status": "article_metadata_only"
+            },
+            {
+              "title": "Mullen Hauling & Excavating LLC Proudly Recognizes Army Veteran Dominic Merritt",
+              "publisher": "theintelligencer.net",
+              "url": "https://www.theintelligencer.net/news/top-headlines/2026/11/mullens-hauling-excavating-llc-proudly-recognizes-army-veteran-dominic-merritt/",
+              "seen_date_utc_metadata": "20261107T100000Z",
+              "language": "English",
+              "source_country": "United States",
+              "event_id": null,
+              "event_date": null,
+              "assignment_status": "unassigned_event_lead",
+              "evidence_status": "article_metadata_only"
+            },
+            {
+              "title": "Mullen Hauling & Excavating LLC Proudly Recognizes Army Veteran Dominic Merritt",
+              "publisher": "timesleaderonline.com",
+              "url": "https://www.timesleaderonline.com/news/local-news/2026/11/mullens-hauling-excavating-llc-proudly-recognizes-army-veteran-dominic-merritt/",
+              "seen_date_utc_metadata": "20261107T063000Z",
+              "language": "English",
+              "source_country": "United States",
+              "event_id": null,
+              "event_date": null,
+              "assignment_status": "unassigned_event_lead",
+              "evidence_status": "article_metadata_only"
+            }
+          ]
+        },
+        "additional_source_search_started_at_utc": "2026-11-11T16:35:20+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-11-11T16:35:20+00:00",
+            "completed_at_utc": "2026-11-11T16:35:32+00:00",
+            "status": "completed_with_candidates",
+            "error": null,
+            "run_id": "43059765844",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+            "result": {
+              "status": "completed_with_candidates",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"Happy Veterans Day\"",
+              "timespan": "1w",
+              "max_records": 10,
+              "researched_at_utc": "2026-11-11T16:35:20+00:00",
+              "research_scope": "GDELT article metadata search only; candidates are unverified leads",
+              "candidate_count": 3,
+              "candidates": [
+                {
+                  "title": "Saluting Our Heroes : Veterans Day Offers Around the Capital Region",
+                  "publisher": "jamz963.com",
+                  "url": "https://www.jamz963.com/news/capital-region/saluting-our-heroes-veterans-day-offers-around-the-capital-region/",
+                  "seen_date_utc_metadata": "20261111T013000Z",
+                  "language": "English",
+                  "source_country": "",
+                  "event_id": null,
+                  "event_date": null,
+                  "assignment_status": "unassigned_event_lead",
+                  "evidence_status": "article_metadata_only"
+                },
+                {
+                  "title": "Mullen Hauling & Excavating LLC Proudly Recognizes Army Veteran Dominic Merritt",
+                  "publisher": "theintelligencer.net",
+                  "url": "https://www.theintelligencer.net/news/top-headlines/2026/11/mullens-hauling-excavating-llc-proudly-recognizes-army-veteran-dominic-merritt/",
+                  "seen_date_utc_metadata": "20261107T100000Z",
+                  "language": "English",
+                  "source_country": "United States",
+                  "event_id": null,
+                  "event_date": null,
+                  "assignment_status": "unassigned_event_lead",
+                  "evidence_status": "article_metadata_only"
+                },
+                {
+                  "title": "Mullen Hauling & Excavating LLC Proudly Recognizes Army Veteran Dominic Merritt",
+                  "publisher": "timesleaderonline.com",
+                  "url": "https://www.timesleaderonline.com/news/local-news/2026/11/mullens-hauling-excavating-llc-proudly-recognizes-army-veteran-dominic-merritt/",
+                  "seen_date_utc_metadata": "20261107T063000Z",
+                  "language": "English",
+                  "source_country": "United States",
+                  "event_id": null,
+                  "event_date": null,
+                  "assignment_status": "unassigned_event_lead",
+                  "evidence_status": "article_metadata_only"
+                }
+              ]
+            }
+          }
+        ],
+        "missing_items": [
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-11-11T16:35:19+00:00",
+        "run_id": "43059765844",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+        "missing_items": [
+          "explicit processing authorization naming video ID G5jsCeH4ovs",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
     }
   },
   "last_run": {
-    "run_id": "42988162793",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42988162793",
-    "started_at_utc": "2026-11-11T08:35:07+00:00",
-    "completed_at_utc": "2026-11-11T08:36:05+00:00",
+    "run_id": "43059765844",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43059765844",
+    "started_at_utc": "2026-11-11T16:35:18+00:00",
+    "completed_at_utc": "2026-11-11T16:36:29+00:00",
     "status": "success"
   }
 }
