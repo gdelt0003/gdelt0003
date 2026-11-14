@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "43608107072",
+  "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43608107072",
+  "trigger": "schedule",
+  "scheduled_cadence_minutes": 5,
+  "queue_delay_note": "GitHub Actions schedule timing is best-effort; actual start may be delayed.",
+  "started_at_utc": "2026-11-14T15:04:07+00:00",
+  "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+  "status": "failure",
+  "metadata_discovery_status": "metadata_discovery_failed",
+  "new_video_ids": [],
+  "already_seen_video_ids": [],
+  "retried_video_ids": [],
+  "deferred_retry_video_ids": [],
+  "retry_batch_limit": 5,
+  "invalid_entry_count": 0,
+  "video_records": {},
+  "retry_video_records": {},
+  "error": "Channel metadata collector failed (1): ERROR: UCYxRlFDqcWM4y7FfpiAN3KQ page 1: Unable to download API page: HTTP Error 403: Forbidden (caused by <HTTPError 403: Forbidden>)",
+  "completed_at_utc": "2026-11-14T15:04:18+00:00"
+}

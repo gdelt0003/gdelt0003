@@ -44306,10 +44306,10 @@
     }
   },
   "last_run": {
-    "run_id": "43574348618",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43574348618",
-    "started_at_utc": "2026-11-14T08:08:22+00:00",
-    "completed_at_utc": "2026-11-14T08:09:32+00:00",
-    "status": "success"
+    "run_id": "43608107072",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/43608107072",
+    "started_at_utc": "2026-11-14T15:04:07+00:00",
+    "completed_at_utc": "2026-11-14T15:04:18+00:00",
+    "status": "failure"
   }
 }
