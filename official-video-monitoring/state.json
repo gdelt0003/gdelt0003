@@ -34521,22 +34521,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:41+00:00",
-        "completed_at_utc": "2026-11-10T08:48:30+00:00",
-        "run_id": "42785363243",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42785363243",
+        "completed_at_utc": "2026-11-17T19:50:30+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Delivers Remarks to Police in Nassau County, NY\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-10T08:48:18+00:00",
+          "researched_at_utc": "2026-11-17T19:50:18+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-10T08:48:18+00:00",
+        "additional_source_search_started_at_utc": "2026-11-17T19:50:18+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -34839,6 +34839,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-17T19:50:18+00:00",
+            "completed_at_utc": "2026-11-17T19:50:30+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Delivers Remarks to Police in Nassau County, NY\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:50:18+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -34891,22 +34910,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:44+00:00",
-        "completed_at_utc": "2026-11-10T16:38:05+00:00",
-        "run_id": "42856406850",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42856406850",
+        "completed_at_utc": "2026-11-17T19:50:42+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 14, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-10T16:37:52+00:00",
+          "researched_at_utc": "2026-11-17T19:50:30+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-10T16:37:52+00:00",
+        "additional_source_search_started_at_utc": "2026-11-17T19:50:30+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -35209,6 +35228,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-17T19:50:30+00:00",
+            "completed_at_utc": "2026-11-17T19:50:42+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 14, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:50:30+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -35261,22 +35299,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:44+00:00",
-        "completed_at_utc": "2026-11-10T16:38:16+00:00",
-        "run_id": "42856406850",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42856406850",
+        "completed_at_utc": "2026-11-17T19:50:58+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Attends the Patriot Games 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-10T16:38:05+00:00",
+          "researched_at_utc": "2026-11-17T19:50:42+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT metadata response must contain an articles list."
         },
-        "additional_source_search_started_at_utc": "2026-11-10T16:38:05+00:00",
+        "additional_source_search_started_at_utc": "2026-11-17T19:50:42+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -35579,6 +35617,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-17T19:50:42+00:00",
+            "completed_at_utc": "2026-11-17T19:50:58+00:00",
+            "status": "failed",
+            "error": "GDELT metadata response must contain an articles list.",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Attends the Patriot Games 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:50:42+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT metadata response must contain an articles list."
+            }
           }
         ]
       },
@@ -35631,22 +35688,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:47+00:00",
-        "completed_at_utc": "2026-11-10T16:38:27+00:00",
-        "run_id": "42856406850",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42856406850",
+        "completed_at_utc": "2026-11-17T19:51:11+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"American Citizen Robert Gilman Detained in Russia Returns Home\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-10T16:38:16+00:00",
+          "researched_at_utc": "2026-11-17T19:50:58+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-10T16:38:16+00:00",
+        "additional_source_search_started_at_utc": "2026-11-17T19:50:58+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -35944,6 +36001,25 @@
               "query": "\"American Citizen Robert Gilman Detained in Russia Returns Home\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-10T16:38:16+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-17T19:50:58+00:00",
+            "completed_at_utc": "2026-11-17T19:51:11+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"American Citizen Robert Gilman Detained in Russia Returns Home\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:50:58+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -42075,22 +42151,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-29T23:01:23+00:00",
-        "completed_at_utc": "2026-11-10T08:48:18+00:00",
-        "run_id": "42785363243",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/42785363243",
+        "completed_at_utc": "2026-11-17T19:50:18+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Arrival at Joint Base Andrews, Oct. 29, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-10T08:48:05+00:00",
+          "researched_at_utc": "2026-11-17T19:50:03+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-10T08:48:05+00:00",
+        "additional_source_search_started_at_utc": "2026-11-17T19:50:03+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-29T23:01:24+00:00",
@@ -42143,6 +42219,25 @@
               "query": "\"President Trump Gaggles with Press Upon Arrival at Joint Base Andrews, Oct. 29, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-10T08:48:05+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-17T19:50:03+00:00",
+            "completed_at_utc": "2026-11-17T19:50:18+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Arrival at Joint Base Andrews, Oct. 29, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:50:03+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -45452,13 +45547,221 @@
         "reuse_rights_status": "unknown_not_inferred",
         "publication_status": "not_published"
       }
+    },
+    "Vc3nxJVKnNM": {
+      "video_id": "Vc3nxJVKnNM",
+      "title": "President Trump Participates in a U.S. - ASEAN Photo Opportunity",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=Vc3nxJVKnNM",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 59,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-11-17T19:49:50+00:00",
+        "completed_at_utc": "2026-11-17T19:49:51+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=Vc3nxJVKnNM",
+        "final_url": "https://www.youtube.com/watch?v=Vc3nxJVKnNM",
+        "http_status": 200,
+        "researched_at_utc": "2026-11-17T19:49:51+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_search_failure",
+        "started_at_utc": "2026-11-17T19:49:51+00:00",
+        "completed_at_utc": "2026-11-17T19:50:02+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "failed",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"President Trump Participates in a U.S. - ASEAN Photo Opportunity\"",
+          "timespan": "1w",
+          "researched_at_utc": "2026-11-17T19:49:52+00:00",
+          "research_scope": "GDELT article metadata search only",
+          "candidate_count": 0,
+          "candidates": [],
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+        },
+        "additional_source_search_started_at_utc": "2026-11-17T19:49:52+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-11-17T19:49:52+00:00",
+            "completed_at_utc": "2026-11-17T19:50:02+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Participates in a U.S. - ASEAN Photo Opportunity\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:49:52+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ],
+        "missing_items": [
+          "successful GDELT additional-source metadata search",
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-11-17T19:49:51+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+        "missing_items": [
+          "explicit processing authorization naming video ID Vc3nxJVKnNM",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
+    },
+    "gXP6YgbycnM": {
+      "video_id": "gXP6YgbycnM",
+      "title": "President Donald J. Trump Arrives in Manila, Philippines, for the 49th ASEAN Summit",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=gXP6YgbycnM",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 23,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-11-17T19:49:50+00:00",
+        "completed_at_utc": "2026-11-17T19:49:51+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=gXP6YgbycnM",
+        "final_url": "https://www.youtube.com/watch?v=gXP6YgbycnM",
+        "http_status": 200,
+        "researched_at_utc": "2026-11-17T19:49:51+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_search_failure",
+        "started_at_utc": "2026-11-17T19:49:51+00:00",
+        "completed_at_utc": "2026-11-17T19:50:03+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "failed",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"President Donald J. Trump Arrives in Manila, Philippines, for the 49th ASEAN Summit\"",
+          "timespan": "1w",
+          "researched_at_utc": "2026-11-17T19:49:52+00:00",
+          "research_scope": "GDELT article metadata search only",
+          "candidate_count": 0,
+          "candidates": [],
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+        },
+        "additional_source_search_started_at_utc": "2026-11-17T19:49:52+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-11-17T19:49:52+00:00",
+            "completed_at_utc": "2026-11-17T19:50:03+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "44162747386",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Donald J. Trump Arrives in Manila, Philippines, for the 49th ASEAN Summit\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-17T19:49:52+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          }
+        ],
+        "missing_items": [
+          "successful GDELT additional-source metadata search",
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-11-17T19:49:51+00:00",
+        "run_id": "44162747386",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+        "missing_items": [
+          "explicit processing authorization naming video ID gXP6YgbycnM",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
     }
   },
   "last_run": {
-    "run_id": "44071061479",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44071061479",
-    "started_at_utc": "2026-11-17T11:07:17+00:00",
-    "completed_at_utc": "2026-11-17T11:08:20+00:00",
+    "run_id": "44162747386",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44162747386",
+    "started_at_utc": "2026-11-17T19:49:50+00:00",
+    "completed_at_utc": "2026-11-17T19:51:11+00:00",
     "status": "success"
   }
 }
