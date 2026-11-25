@@ -34485,22 +34485,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T13:00:32+00:00",
-        "completed_at_utc": "2026-11-17T02:35:59+00:00",
-        "run_id": "44004072198",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44004072198",
+        "completed_at_utc": "2026-11-25T14:26:59+00:00",
+        "run_id": "45634063216",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-17T02:35:48+00:00",
+          "researched_at_utc": "2026-11-25T14:26:47+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-17T02:35:48+00:00",
+        "additional_source_search_started_at_utc": "2026-11-25T14:26:47+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -34817,6 +34817,25 @@
               "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-17T02:35:48+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-25T14:26:47+00:00",
+            "completed_at_utc": "2026-11-25T14:26:59+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45634063216",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press at Joint Base Andrews, Aug. 21, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-25T14:26:47+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -40934,22 +40953,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-22T17:29:13+00:00",
-        "completed_at_utc": "2026-11-17T02:36:24+00:00",
-        "run_id": "44004072198",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44004072198",
+        "completed_at_utc": "2026-11-25T14:27:22+00:00",
+        "run_id": "45634063216",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"The Fraud Whistleblower Incentive Program is Here\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-17T02:36:11+00:00",
+          "researched_at_utc": "2026-11-25T14:27:10+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-17T02:36:11+00:00",
+        "additional_source_search_started_at_utc": "2026-11-25T14:27:10+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-22T17:29:14+00:00",
@@ -41063,6 +41082,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
+            }
+          },
+          {
+            "started_at_utc": "2026-11-25T14:27:10+00:00",
+            "completed_at_utc": "2026-11-25T14:27:22+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45634063216",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"The Fraud Whistleblower Incentive Program is Here\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-25T14:27:10+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ],
@@ -43928,22 +43966,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-29T18:48:31+00:00",
-        "completed_at_utc": "2026-11-17T02:36:11+00:00",
-        "run_id": "44004072198",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44004072198",
+        "completed_at_utc": "2026-11-25T14:27:10+00:00",
+        "run_id": "45634063216",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from Joint Base Andrews, Oct. 29, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-17T02:35:59+00:00",
+          "researched_at_utc": "2026-11-25T14:26:59+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-17T02:35:59+00:00",
+        "additional_source_search_started_at_utc": "2026-11-25T14:26:59+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-10-29T18:48:32+00:00",
@@ -44019,6 +44057,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-25T14:26:59+00:00",
+            "completed_at_utc": "2026-11-25T14:27:10+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45634063216",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from Joint Base Andrews, Oct. 29, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-25T14:26:59+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ],
@@ -45691,22 +45748,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-11-03T22:24:42+00:00",
-        "completed_at_utc": "2026-11-17T11:07:33+00:00",
-        "run_id": "44071061479",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44071061479",
+        "completed_at_utc": "2026-11-25T14:27:34+00:00",
+        "run_id": "45634063216",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"A pace that has yet to slow. An America that never surrenders.\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-17T11:07:19+00:00",
+          "researched_at_utc": "2026-11-25T14:27:22+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT metadata response must contain an articles list."
+          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-17T11:07:19+00:00",
+        "additional_source_search_started_at_utc": "2026-11-25T14:27:22+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-11-03T22:24:43+00:00",
@@ -45763,6 +45820,25 @@
               "candidate_count": 0,
               "candidates": [],
               "error": "GDELT metadata response must contain an articles list."
+            }
+          },
+          {
+            "started_at_utc": "2026-11-25T14:27:22+00:00",
+            "completed_at_utc": "2026-11-25T14:27:34+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45634063216",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"A pace that has yet to slow. An America that never surrenders.\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-25T14:27:22+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
           }
         ],
@@ -47191,22 +47267,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-11-10T01:29:51+00:00",
-        "completed_at_utc": "2026-11-17T02:35:48+00:00",
-        "run_id": "44004072198",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44004072198",
+        "completed_at_utc": "2026-11-25T14:26:47+00:00",
+        "run_id": "45634063216",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Delivers Remarks, Nov. 9, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-17T02:35:37+00:00",
+          "researched_at_utc": "2026-11-25T14:26:36+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-17T02:35:37+00:00",
+        "additional_source_search_started_at_utc": "2026-11-25T14:26:36+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-11-10T01:29:52+00:00",
@@ -47240,6 +47316,25 @@
               "query": "\"President Trump Delivers Remarks, Nov. 9, 2026\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-17T02:35:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-25T14:26:36+00:00",
+            "completed_at_utc": "2026-11-25T14:26:47+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45634063216",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Delivers Remarks, Nov. 9, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-25T14:26:36+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -48766,10 +48861,10 @@
     }
   },
   "last_run": {
-    "run_id": "45544984109",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45544984109",
-    "started_at_utc": "2026-11-25T04:11:15+00:00",
-    "completed_at_utc": "2026-11-25T04:12:34+00:00",
+    "run_id": "45634063216",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45634063216",
+    "started_at_utc": "2026-11-25T14:26:35+00:00",
+    "completed_at_utc": "2026-11-25T14:27:34+00:00",
     "status": "success"
   }
 }
