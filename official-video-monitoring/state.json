@@ -1553,22 +1553,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:16+00:00",
-        "completed_at_utc": "2026-11-18T09:55:33+00:00",
-        "run_id": "44280255223",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44280255223",
+        "completed_at_utc": "2026-11-27T07:43:15+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-18T09:55:21+00:00",
+          "researched_at_utc": "2026-11-27T07:43:04+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
-          "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+          "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-11-18T09:55:21+00:00",
+        "additional_source_search_started_at_utc": "2026-11-27T07:43:04+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -1909,6 +1909,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-27T07:43:04+00:00",
+            "completed_at_utc": "2026-11-27T07:43:15+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 13, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:43:04+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
           }
         ]
       },
@@ -1961,22 +1980,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:16+00:00",
-        "completed_at_utc": "2026-11-18T09:55:44+00:00",
-        "run_id": "44280255223",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44280255223",
+        "completed_at_utc": "2026-11-27T07:43:26+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 12, 2026\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-18T09:55:33+00:00",
+          "researched_at_utc": "2026-11-27T07:43:15+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
         },
-        "additional_source_search_started_at_utc": "2026-11-18T09:55:33+00:00",
+        "additional_source_search_started_at_utc": "2026-11-27T07:43:15+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2317,6 +2336,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
             }
+          },
+          {
+            "started_at_utc": "2026-11-27T07:43:15+00:00",
+            "completed_at_utc": "2026-11-27T07:43:26+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Gaggles with Press Upon Departure from the White House, Oct. 12, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:43:15+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: Expecting value: line 1 column 1 (char 0)"
+            }
           }
         ]
       },
@@ -2598,22 +2636,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:16+00:00",
-        "completed_at_utc": "2026-11-18T18:41:21+00:00",
-        "run_id": "44372300474",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44372300474",
+        "completed_at_utc": "2026-11-27T07:43:46+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump's Second Term: Stephen Miller\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-18T18:41:08+00:00",
+          "researched_at_utc": "2026-11-27T07:43:37+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-18T18:41:08+00:00",
+        "additional_source_search_started_at_utc": "2026-11-27T07:43:37+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -2954,6 +2992,25 @@
               "candidates": [],
               "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
             }
+          },
+          {
+            "started_at_utc": "2026-11-27T07:43:37+00:00",
+            "completed_at_utc": "2026-11-27T07:43:46+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump's Second Term: Stephen Miller\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:43:37+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
           }
         ]
       },
@@ -3006,22 +3063,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-10-16T12:58:26+00:00",
-        "completed_at_utc": "2026-11-18T18:41:33+00:00",
-        "run_id": "44372300474",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44372300474",
+        "completed_at_utc": "2026-11-27T07:43:56+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"$5000 to Americans\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-18T18:41:21+00:00",
+          "researched_at_utc": "2026-11-27T07:43:46+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-18T18:41:21+00:00",
+        "additional_source_search_started_at_utc": "2026-11-27T07:43:46+00:00",
         "missing_items": [
           "successful GDELT additional-source metadata search",
           "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
@@ -3357,6 +3414,25 @@
               "query": "\"$5000 to Americans\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-18T18:41:21+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-27T07:43:46+00:00",
+            "completed_at_utc": "2026-11-27T07:43:56+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"$5000 to Americans\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:43:46+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -48647,22 +48723,22 @@
       "event_source_research": {
         "status": "completed_with_search_failure",
         "started_at_utc": "2026-11-18T18:40:55+00:00",
-        "completed_at_utc": "2026-11-18T18:41:08+00:00",
-        "run_id": "44372300474",
-        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/44372300474",
+        "completed_at_utc": "2026-11-27T07:43:37+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
         "official_page_research_status": "completed",
         "additional_source_search": {
           "status": "failed",
           "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
           "query": "\"President Trump Participates in an Arrival Ceremony\"",
           "timespan": "1w",
-          "researched_at_utc": "2026-11-18T18:40:56+00:00",
+          "researched_at_utc": "2026-11-27T07:43:26+00:00",
           "research_scope": "GDELT article metadata search only",
           "candidate_count": 0,
           "candidates": [],
           "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
         },
-        "additional_source_search_started_at_utc": "2026-11-18T18:40:56+00:00",
+        "additional_source_search_started_at_utc": "2026-11-27T07:43:26+00:00",
         "additional_source_search_attempts": [
           {
             "started_at_utc": "2026-11-18T18:40:56+00:00",
@@ -48677,6 +48753,25 @@
               "query": "\"President Trump Participates in an Arrival Ceremony\"",
               "timespan": "1w",
               "researched_at_utc": "2026-11-18T18:40:56+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests"
+            }
+          },
+          {
+            "started_at_utc": "2026-11-27T07:43:26+00:00",
+            "completed_at_utc": "2026-11-27T07:43:37+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: HTTP 429 Too Many Requests",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Participates in an Arrival Ceremony\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:43:26+00:00",
               "research_scope": "GDELT article metadata search only",
               "candidate_count": 0,
               "candidates": [],
@@ -49446,13 +49541,221 @@
         "reuse_rights_status": "unknown_not_inferred",
         "publication_status": "not_published"
       }
+    },
+    "qhMrx65AHo0": {
+      "video_id": "qhMrx65AHo0",
+      "title": "President Trump and the First Lady Participate in Holiday Calls to Service Members",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=qhMrx65AHo0",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 4442,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-11-27T07:42:32+00:00",
+        "completed_at_utc": "2026-11-27T07:42:34+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=qhMrx65AHo0",
+        "final_url": "https://www.youtube.com/watch?v=qhMrx65AHo0",
+        "http_status": 200,
+        "researched_at_utc": "2026-11-27T07:42:34+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_search_failure",
+        "started_at_utc": "2026-11-27T07:42:34+00:00",
+        "completed_at_utc": "2026-11-27T07:43:04+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "failed",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"President Trump and the First Lady Participate in Holiday Calls to Service Members\"",
+          "timespan": "1w",
+          "researched_at_utc": "2026-11-27T07:42:34+00:00",
+          "research_scope": "GDELT article metadata search only",
+          "candidate_count": 0,
+          "candidates": [],
+          "error": "GDELT article metadata request failed: <urlopen error timed out>"
+        },
+        "additional_source_search_started_at_utc": "2026-11-27T07:42:34+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-11-27T07:42:34+00:00",
+            "completed_at_utc": "2026-11-27T07:43:04+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: <urlopen error timed out>",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump and the First Lady Participate in Holiday Calls to Service Members\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:42:34+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: <urlopen error timed out>"
+            }
+          }
+        ],
+        "missing_items": [
+          "successful GDELT additional-source metadata search",
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-11-27T07:42:34+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+        "missing_items": [
+          "explicit processing authorization naming video ID qhMrx65AHo0",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
+    },
+    "F3N1EiVYyfQ": {
+      "video_id": "F3N1EiVYyfQ",
+      "title": "President Trump Signs Executive Orders, Nov. 26, 2026",
+      "publisher": "The White House",
+      "official_video_url": "https://www.youtube.com/watch?v=F3N1EiVYyfQ",
+      "official_channel_url": "https://www.youtube.com/@WhiteHouse/videos",
+      "published_timestamp_unix": null,
+      "upload_date_metadata": null,
+      "duration_seconds": 629,
+      "metadata_discovery": {
+        "started_status": "metadata_discovery_started",
+        "status": "metadata_discovery_completed",
+        "started_at_utc": "2026-11-27T07:42:32+00:00",
+        "completed_at_utc": "2026-11-27T07:42:34+00:00",
+        "source_url": "https://www.youtube.com/@WhiteHouse/videos",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508"
+      },
+      "official_source_page_research": {
+        "status": "completed",
+        "requested_url": "https://www.youtube.com/watch?v=F3N1EiVYyfQ",
+        "final_url": "https://www.youtube.com/watch?v=F3N1EiVYyfQ",
+        "http_status": 200,
+        "researched_at_utc": "2026-11-27T07:42:34+00:00",
+        "research_scope": "official watch-page HTML metadata only",
+        "page_title": null,
+        "page_description": null,
+        "canonical_url": "undefined"
+      },
+      "event_source_research": {
+        "status": "completed_with_search_failure",
+        "started_at_utc": "2026-11-27T07:42:34+00:00",
+        "completed_at_utc": "2026-11-27T07:43:04+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+        "official_page_research_status": "completed",
+        "additional_source_search": {
+          "status": "failed",
+          "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+          "query": "\"President Trump Signs Executive Orders, Nov. 26, 2026\"",
+          "timespan": "1w",
+          "researched_at_utc": "2026-11-27T07:42:34+00:00",
+          "research_scope": "GDELT article metadata search only",
+          "candidate_count": 0,
+          "candidates": [],
+          "error": "GDELT article metadata request failed: <urlopen error timed out>"
+        },
+        "additional_source_search_started_at_utc": "2026-11-27T07:42:34+00:00",
+        "additional_source_search_attempts": [
+          {
+            "started_at_utc": "2026-11-27T07:42:34+00:00",
+            "completed_at_utc": "2026-11-27T07:43:04+00:00",
+            "status": "failed",
+            "error": "GDELT article metadata request failed: <urlopen error timed out>",
+            "run_id": "45960289508",
+            "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+            "result": {
+              "status": "failed",
+              "api_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+              "query": "\"President Trump Signs Executive Orders, Nov. 26, 2026\"",
+              "timespan": "1w",
+              "researched_at_utc": "2026-11-27T07:42:34+00:00",
+              "research_scope": "GDELT article metadata search only",
+              "candidate_count": 0,
+              "candidates": [],
+              "error": "GDELT article metadata request failed: <urlopen error timed out>"
+            }
+          }
+        ],
+        "missing_items": [
+          "successful GDELT additional-source metadata search",
+          "any GDELT article-metadata candidates remain unverified leads; independent source pages and candidate footage have not been opened or inspected",
+          "event date, local time/timezone, location, event type, and participants remain unverified; upload timestamps are not event time",
+          "no configured source provides source-specific reuse-rights evidence; rights have not been established or reviewed"
+        ],
+        "event_identity_status": "unassigned_event_lead",
+        "event_identity_evidence_gaps": [
+          "event date",
+          "local event time and timezone or stated day-level precision",
+          "location",
+          "event type/title confirmation",
+          "participant confirmation"
+        ],
+        "reuse_rights_research_status": "not_attempted_no_configured_evidence_source",
+        "reuse_rights_research_blocker": "No configured source provides source-specific reuse-rights evidence; public availability and GDELT article metadata do not establish rights.",
+        "reuse_rights_evidence_urls": []
+      },
+      "media_review_gate": {
+        "status": "not_started_blocked_waiting_for_authorization_and_rights",
+        "blocked_at_utc": "2026-11-27T07:42:34+00:00",
+        "run_id": "45960289508",
+        "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+        "missing_items": [
+          "explicit processing authorization naming video ID F3N1EiVYyfQ",
+          "source-specific reuse-rights evidence and confirmation; the polling request does not grant reuse rights",
+          "verified event identity and same-event/source match",
+          "direct frame/audio inspection on an authorized GitHub-hosted runner"
+        ],
+        "media_inspection_status": "blocked_not_attempted",
+        "authorization_status": "not_provided_for_this_video",
+        "reuse_rights_status": "unknown_not_inferred",
+        "publication_status": "not_published"
+      }
     }
   },
   "last_run": {
-    "run_id": "45913773309",
-    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45913773309",
-    "started_at_utc": "2026-11-26T23:56:02+00:00",
-    "completed_at_utc": "2026-11-26T23:56:54+00:00",
+    "run_id": "45960289508",
+    "run_url": "https://github.com/gdelt0003/gdelt0003/actions/runs/45960289508",
+    "started_at_utc": "2026-11-27T07:42:32+00:00",
+    "completed_at_utc": "2026-11-27T07:43:56+00:00",
     "status": "success"
   }
 }
